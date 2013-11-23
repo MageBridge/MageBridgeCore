@@ -8,4 +8,4 @@ For support options , see the following URL:
 http://www.yireo.com/software/magebridge/products-and-pricing
 
 Pull requests are welcome in this project. Support requests need to be
-placed on the Yireo Forum, according to the support-options
+placed on the Yireo Forum.
