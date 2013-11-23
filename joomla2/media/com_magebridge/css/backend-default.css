@@ -1,0 +1,87 @@
+/*
+ * Joomla! component MageBridge
+ *
+ * @author Yireo (info@yireo.com)
+ * @package MageBridge
+ * @copyright Copyright 2013
+ * @link http://www.yireo.com
+ */
+
+/* Joomla! Administrator icons */
+.icon-32-download { background-image: url(../images/toolbar/icon-32-download.png); }
+.icon-32-export { background-image: url(../images/toolbar/icon-32-export.png); }
+.icon-32-import { background-image: url(../images/toolbar/icon-32-import.png); }
+.icon-32-mode { background-image: url(../images/toolbar/icon-32-mode.png); }
+.icon-48-logo { background-image: url(../images/logo.png); }
+
+/* System Check images */
+.check-image { background: transparent url(../images/check-ok.png) no-repeat top left; width: 16px; height: 16px; }
+.check-image-ok { background-image: url(../images/check-ok.png); }
+.check-image-error { background-image: url(../images/check-error.png); }
+.check-image-warning { background-image: url(../images/check-warning.png); }
+
+/* Other */
+tr.check-row-warning td.check-description {
+    padding: 2px;
+    border: 1px solid #ffd200;
+    background-color: #fff7d2;
+}
+
+tr.check-row-error td.check-description {
+    padding: 2px;
+    border: 1px solid #c80000;
+    background-color: #f3c8c8;
+}
+
+dl#system-message ul li {
+    padding-top: 7px;
+}
+
+dl#system-message ul li:first-child {
+    padding-top: 0px;
+}
+
+div.magebridge-help { 
+    padding: 10px;
+    padding-left: 10px;
+    color: #934505; 
+    background: #EFE7B8; 
+    border-top: 3px solid #F0DC7E; 
+    border-bottom: 3px solid #F0DC7E; 
+    margin: 10px;
+    margin-bottom: 15px;
+}
+
+td.vital {
+    border: 1px solid #85b1cd !important;
+}
+
+div.loader {
+    width: 100%;
+    height: 60px;
+    background-position: center center;
+    background-image: url(../images/loader.gif);
+    background-repeat: no-repeat;
+}
+
+td.value span.sublabel {
+    padding-right: 10px;
+    line-height: 28px;
+}
+
+td.key input {
+    float:right !important;
+}
+
+td.value input[type="text"] {
+    padding: 2px;
+}
+
+#editcell input, textarea {
+    width: 20px !important;
+}
+
+select, textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {
+    margin-bottom: 0px !important;
+}
+

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="connector" group="product" method="upgrade">
+	<name>DOCman Groups</name>
+	<author>Yireo</author>
+	<creationDate>February 2012</creationDate>
+	<copyright>Copyright (C) 2013 Yireo.com. All rights reserved.</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<authorEmail>info@yireo.com</authorEmail>
+	<authorUrl>www.yireo.com</authorUrl>
+	<version>1.0.0</version>
+	<description>MageBridge Product Connector for DOCman Groups</description>
+
+	<files>
+		<filename connector="docman_group">docman_group.php</filename>
+		<filename>docman_group.xml</filename>
+	</files>
+
+</extension>

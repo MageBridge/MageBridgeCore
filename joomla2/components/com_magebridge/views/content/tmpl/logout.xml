@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="COM_MAGEBRIDGE_CONTENT_VIEW_LOGOUT_TITLE">
+		<message>
+			<![CDATA[COM_MAGEBRIDGE_CONTENT_VIEW_LOGOUT_DESC]]>
+		</message>
+	</layout>
+    <fields name="params">
+        <fieldset name="advanced" addfieldpath="/administrator/components/com_magebridge/fields">
+			<field name="page_text" type="textarea" rows="10" cols="30" default="" label="Page Text" />
+			<field name="intermediate_page" type="radio" default="1" label="Show logout page">
+				<option value="0">No</option>
+				<option value="1">Yes</option>
+			</field>
+			<field name="store" type="store" default="" label="Magento store" description="Use this to overwrite the Magento store-scope" />
+		</fieldset>
+    </fields>
+</metadata>

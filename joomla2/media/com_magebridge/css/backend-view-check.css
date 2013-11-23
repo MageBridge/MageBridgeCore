@@ -1,0 +1,29 @@
+/**
+ * Joomla! component MageBridge
+ *
+ * @author Yireo
+ * @package MageBridge
+ * @copyright Copyright 2012
+ * @link http://www.yireo.com/
+ */
+
+td.check-image {
+    width: 20px;
+}
+
+td.key {
+    font-weight: normal !important;
+    width: 200px !important;
+}
+
+td.value {
+    width: 300px;
+}
+
+td.status {
+    width: 30px;
+}
+
+input {
+    padding: 2px;
+}

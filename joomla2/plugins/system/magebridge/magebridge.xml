@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="2.5" type="plugin" group="system" method="upgrade">
+    <name>PLG_SYSTEM_MAGEBRIDGE</name>
+    <author>Yireo</author>
+    <creationDate>November 2013</creationDate>
+    <copyright>Copyright (C) 2013 Yireo.com. All rights reserved.</copyright>
+    <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+    <authorEmail>info@yireo.com</authorEmail>
+    <authorUrl>www.yireo.com</authorUrl>
+    <version>1.8.4781</version>
+    <description>PLG_SYSTEM_MAGEBRIDGE_DESC</description>
+
+    <files>
+        <filename plugin="magebridge">magebridge.php</filename>
+        <filename>index.html</filename>
+    </files>
+
+    <languages>
+        <language tag="en-GB">en-GB.plg_system_magebridge.ini</language>
+        <language tag="en-GB">en-GB.plg_system_magebridge.sys.ini</language>
+    </languages>
+
+    <config>
+        <fields name="params">
+            <fieldset name="basic">
+                <field name="enable_ssl_redirect" type="radio" default="1" label="PLG_SYSTEM_MAGEBRIDGE_ENABLE_SSL_REDIRECT" description="PLG_SYSTEM_MAGEBRIDGE_ENABLE_SSL_REDIRECT_DESC">
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+                <field name="enable_nonssl_redirect" type="radio" default="1" label="PLG_SYSTEM_MAGEBRIDGE_ENABLE_NONSSL_REDIRECT" description="PLG_SYSTEM_MAGEBRIDGE_ENABLE_NONSSL_REDIRECT_DESC">
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+                <field name="enable_nonsef_redirect" type="radio" default="1" label="PLG_SYSTEM_MAGEBRIDGE_ENABLE_NONSEF_REDIRECT" description="PLG_SYSTEM_MAGEBRIDGE_ENABLE_NONSEF_REDIRECT_DESC">
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+                <field name="enable_comuser_redirect" type="radio" default="0" label="PLG_SYSTEM_MAGEBRIDGE_ENABLE_COMUSER_REDIRECT" description="PLG_SYSTEM_MAGEBRIDGE_ENABLE_COMUSER_REDIRECT_DESC">
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+                <field name="enable_urlreplacement_redirect" type="radio" default="1" label="PLG_SYSTEM_MAGEBRIDGE_ENABLE_URLREPLACEMENT_REDIRECT" description="PLG_SYSTEM_MAGEBRIDGE_ENABLE_URLREPLACEMENT_REDIRECT_DESC">
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+                <field name="filter_js" type="list" default="remove" label="PLG_SYSTEM_MAGEBRIDGE_FILTER_JS" description="PLG_SYSTEM_MAGEBRIDGE_FILTER_JS_DESC">
+                    <option value="comment">PLG_SYSTEM_MAGEBRIDGE_FILTER_JS_OPTION_COMMENT</option>
+                    <option value="remove">PLG_SYSTEM_MAGEBRIDGE_FILTER_JS_OPTION_REMOVE</option>
+                </field>
+                <field name="spoof_jomsocial_events" type="radio" default="0" label="PLG_SYSTEM_MAGEBRIDGE_SPOOF_JOMSOCIAL_EVENTS" description="PLG_SYSTEM_MAGEBRIDGE_SPOOF_JOMSOCIAL_EVENTS_DESC">
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+                <field name="spoof_cb_events" type="radio" default="0" label="PLG_SYSTEM_MAGEBRIDGE_SPOOF_CB_EVENTS" description="PLG_SYSTEM_MAGEBRIDGE_SPOOF_CB_EVENTS_DESC">
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+                <field name="spoof_magento_login" type="radio" default="0" label="PLG_SYSTEM_MAGEBRIDGE_SPOOF_MAGENTO_LOGIN" description="PLG_SYSTEM_MAGEBRIDGE_SPOOF_MAGENTO_LOGIN_DESC">
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+                <field name="spoof_sef" type="radio" default="0" label="PLG_SYSTEM_MAGEBRIDGE_SPOOF_SEF" description="PLG_SYSTEM_MAGEBRIDGE_SPOOF_SEF_DESC">
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+                <field name="override_modulehelper" type="radio" default="1" label="PLG_SYSTEM_MAGEBRIDGE_OVERRIDE_MODULEHELPER" description="PLG_SYSTEM_MAGEBRIDGE_OVERRIDE_MODULEHELPER_DESC">
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+            </fieldset>
+        </fields>
+    </config>
+</extension>

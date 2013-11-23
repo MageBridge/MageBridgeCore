@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="COM_MAGEBRIDGE_CATALOG_VIEW_ADDTOCART_TITLE">
+		<message>
+			<![CDATA[COM_MAGEBRIDGE_CATALOG_VIEW_ADDTOCART_DESC]]>
+		</message>
+	</layout>
+
+	<fields name="request">
+		<fieldset name="request" addfieldpath="/administrator/components/com_magebridge/fields">
+			<field name="request" type="product" default="" label="Magento Product" required="true" return="id" />
+		    <field name="redirect" type="text" default="" label="Redirect Page" description="Example: checkout/onepage" />
+		</fieldset>
+	</fields>
+    <fields name="params">
+        <fieldset name="advanced" addfieldpath="/administrator/components/com_magebridge/fields">
+			<field name="store" type="store" default="" label="Magento store" />
+		</fieldset>
+    </fields>
+</metadata>

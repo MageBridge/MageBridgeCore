@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="module" version="2.5" client="site" method="upgrade">
+	<name>MOD_MAGEBRIDGE_PROGRESS</name>
+	<author>Yireo</author>
+	<creationDate>November 2013</creationDate>
+	<copyright>Copyright (C) 2013 Yireo.com. All rights reserved.</copyright>
+	<license>GNU/GPL</license>
+	<authorEmail>development@yireo.com</authorEmail>
+	<authorUrl>www.yireo.com</authorUrl>
+	<version>1.8.4781</version>
+	<description>MOD_MAGEBRIDGE_PROGRESS_DESC</description>
+
+	<files>
+		<filename module="mod_magebridge_progress">mod_magebridge_progress.php</filename>
+		<filename>helper.php</filename>
+		<filename>index.html</filename>
+		<folder>tmpl</folder>
+	</files>
+
+    <languages>
+        <language tag="en-GB">en-GB.mod_magebridge_progress.ini</language>
+        <language tag="en-GB">en-GB.mod_magebridge_progress.sys.ini</language>
+    </languages>
+
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="layout" type="modulelayout" label="JFIELD_ALT_LAYOUT_LABEL" description="JFIELD_ALT_MODULE_LAYOUT_DESC" />
+        		<field name="load_css" type="list" default="1" label="MOD_MAGEBRIDGE_LOAD_CSS" description="MOD_MAGEBRIDGE_LOAD_CSS_DESC">
+        			<option value="1">JYES</option>
+		        </field>
+        		<field name="load_js" type="list" default="1" label="MOD_MAGEBRIDGE_LOAD_JS" description="MOD_MAGEBRIDGE_LOAD_JS_DESC">
+        			<option value="1">JYES</option>
+		        </field>
+           	</fieldset>
+			<fieldset name="advanced">
+        		<field name="moduleclass_sfx" type="text" default="" label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL" description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
+        		<field name="cache" type="list" default="1" label="COM_MODULES_FIELD_CACHING_LABEL" description="COM_MODULES_FIELD_CACHING_DESC">
+        			<option value="0">COM_MODULES_FIELD_VALUE_NOCACHING</option>
+		        </field>
+        	</fieldset>
+        </fields>
+	</config>
+</extension>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="COM_MAGEBRIDGE_CONTENT_VIEW_SEARCH_TITLE">
+		<message>
+			<![CDATA[COM_MAGEBRIDGE_CONTENT_VIEW_SEARCH_DESC]]>
+		</message>
+	</layout>
+    <fields name="params">
+        <fieldset name="advanced" addfieldpath="/administrator/components/com_magebridge/fields">
+			<field name="store" type="store" default="" label="Magento store" description="Use this to overwrite the Magento store-scope" />
+		</fieldset>
+    </fields>
+</metadata>

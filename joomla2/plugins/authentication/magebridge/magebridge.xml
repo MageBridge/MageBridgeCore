@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="2.5" type="plugin" group="authentication" method="upgrade">
+    <name>PLG_AUTHENTICATION_MAGEBRIDGE</name>
+    <author>Yireo</author>
+    <creationDate>November 2013</creationDate>
+    <copyright>Copyright (C) 2013 Yireo.com. All rights reserved.</copyright>
+    <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+    <authorEmail>info@yireo.com</authorEmail>
+    <authorUrl>www.yireo.com</authorUrl>
+    <version>1.8.4781</version>
+    <description>PLG_AUTHENTICATION_MAGEBRIDGE_DESC</description>
+
+    <files>
+        <filename plugin="magebridge">magebridge.php</filename>
+        <filename>index.html</filename>
+    </files>
+
+    <languages>
+        <language tag="en-GB">en-GB.plg_authentication_magebridge.ini</language>
+        <language tag="en-GB">en-GB.plg_authentication_magebridge.sys.ini</language>
+    </languages>
+
+    <config>
+        <fields name="params">
+            <fieldset name="basic">
+                <field name="lookup_email" type="radio" default="0" label="PLG_AUTHENTICATION_MAGEBRIDGE_LOOKUP_EMAIL" description="PLG_AUTHENTICATION_MAGEBRIDGE_LOOKUP_EMAIL_DESC">
+                    <option value="0">No</option>
+                    <option value="1">Yes</option>
+                </field>
+            </fieldset>
+        </fields>
+    </config>
+</extension>

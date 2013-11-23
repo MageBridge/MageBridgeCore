@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="Product">
+		<message>
+			<![CDATA[This layout shows a specific Magento product-page.]]>
+		</message>
+	</layout>
+
+	<fields name="request">
+		<fieldset name="request" addfieldpath="/administrator/components/com_magebridge/fields">
+			<field name="request" type="product" return="id" default="" label="Magento Product" required="true" />
+		</fieldset>
+	</fields>
+    <fields name="params">
+        <fieldset name="advanced" addfieldpath="/administrator/components/com_magebridge/fields">
+			<field name="store" type="store" default="" label="Magento store" description="Use this to overwrite the Magento store-scope" />
+		</fieldset>
+    </fields>
+</metadata>

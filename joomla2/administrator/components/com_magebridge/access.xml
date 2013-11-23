@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<access component="com_magebridge">
+	<section name="component">
+		<action name="core.manage" title="JACTION_MANAGE" description="JACTION_MANAGE_COMPONENT_DESC" />
+		<action name="com_magebridge.config" title="COM_MAGEBRIDGE_JACTION_CONFIG" description="COM_MAGEBRIDGE_JACTION_CONFIG_DESC" />
+		<action name="com_magebridge.check" title="COM_MAGEBRIDGE_JACTION_CHECK" description="COM_MAGEBRIDGE_JACTION_CHECK_DESC" />
+		<action name="com_magebridge.stores" title="COM_MAGEBRIDGE_JACTION_STORES" description="COM_MAGEBRIDGE_JACTION_STORES_DESC" />
+		<action name="com_magebridge.products" title="COM_MAGEBRIDGE_JACTION_PRODUCTS" description="COM_MAGEBRIDGE_JACTION_PRODUCTS_DESC" />
+		<action name="com_magebridge.connectors" title="COM_MAGEBRIDGE_JACTION_CONNECTORS" description="COM_MAGEBRIDGE_JACTION_CONNECTORS_DESC" />
+		<action name="com_magebridge.urls" title="COM_MAGEBRIDGE_JACTION_URLS" description="COM_MAGEBRIDGE_JACTION_URLS_DESC" />
+		<action name="com_magebridge.users" title="COM_MAGEBRIDGE_JACTION_USERS" description="COM_MAGEBRIDGE_JACTION_USERS_DESC" />
+        <action name="com_magebridge.usergroups" title="COM_MAGEBRIDGE_JACTION_USERGROUPS" description="COM_MAGEBRIDGE_JACTION_USERGROUPS_DESC" />
+		<action name="com_magebridge.logs" title="COM_MAGEBRIDGE_JACTION_LOGS" description="COM_MAGEBRIDGE_JACTION_LOGS_DESC" />
+		<action name="com_magebridge.update" title="COM_MAGEBRIDGE_JACTION_UPDATE" description="COM_MAGEBRIDGE_JACTION_UPDATE_DESC" />
+		<action name="com_magebridge.demo_ro" title="COM_MAGEBRIDGE_JACTION_DEMO_RO" description="COM_MAGEBRIDGE_JACTION_DEMO_RO_DESC" />
+		<action name="com_magebridge.demo_rw" title="COM_MAGEBRIDGE_JACTION_DEMO_RW" description="COM_MAGEBRIDGE_JACTION_DEMO_RW_DESC" />
+	</section>
+</access>

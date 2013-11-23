@@ -1,0 +1,17 @@
+/**             
+ * Joomla! module MageBridge: Products
+ *              
+ * @author Yireo (info@yireo.com)
+ * @package MageBridge
+ * @copyright Copyright 2012
+ * @license GNU Public License
+ * @link http://www.yireo.com 
+ */
+
+span.normal_price_with_special, span.normal_price_with_final {
+    text-decoration: line-through;
+}
+
+span.special_price, span.final_price {
+    font-weight: bold;
+}

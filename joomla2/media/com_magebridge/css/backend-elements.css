@@ -1,0 +1,15 @@
+/*
+ * Joomla! component MageBridge
+ *
+ * @author Yireo (info@yireo.com)
+ * @package MageBridge
+ * @copyright Copyright 2012
+ * @link http://www.yireo.com
+ */
+
+tr.current td {
+    font-weight: bold;
+}
+tr.inactive td {
+    color: #b5b5b5;
+}

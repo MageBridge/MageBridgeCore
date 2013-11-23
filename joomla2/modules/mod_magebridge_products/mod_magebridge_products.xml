@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="module" version="2.5" client="site" method="upgrade">
+	<name>MOD_MAGEBRIDGE_PRODUCTS</name>
+	<author>Yireo</author>
+	<creationDate>November 2013</creationDate>
+	<copyright>Copyright (C) 2013 Yireo.com. All rights reserved.</copyright>
+	<license>GNU/GPL</license>
+	<authorEmail>development@yireo.com</authorEmail>
+	<authorUrl>www.yireo.com</authorUrl>
+	<version>1.8.4781</version>
+	<description>MOD_MAGEBRIDGE_PRODUCTS_DESC</description>
+
+	<files>
+		<filename module="mod_magebridge_products">mod_magebridge_products.php</filename>
+		<filename>helper.php</filename>
+		<filename>index.html</filename>
+		<folder>tmpl</folder>
+	</files>
+
+    <languages>
+        <language tag="en-GB">en-GB.mod_magebridge_products.ini</language>
+        <language tag="en-GB">en-GB.mod_magebridge_products.sys.ini</language>
+    </languages>
+
+	<config>
+		<fields name="params">
+			<fieldset name="basic" addfieldpath="/administrator/components/com_magebridge/fields">
+        		<field name="ordering" type="list" default="1" label="MOD_MAGEBRIDGE_PRODUCTS_FIELD_ORDERING" description="MOD_MAGEBRIDGE_PRODUCTS_FIELD_ORDERING_DESC">
+		        	<option value="">MOD_MAGEBRIDGE_PRODUCTS_FIELD_ORDERING_OPTION_DEFAULT</option>
+        			<option value="newest">MOD_MAGEBRIDGE_PRODUCTS_FIELD_ORDERING_OPTION_NEWEST</option>
+		        	<option value="oldest">MOD_MAGEBRIDGE_PRODUCTS_FIELD_ORDERING_OPTION_OLDEST</option>
+        			<!--<option value="purchased">MOD_MAGEBRIDGE_PRODUCTS_FIELD_ORDERING_OPTION_PURCHASED</option>-->
+		        	<option value="random">MOD_MAGEBRIDGE_PRODUCTS_FIELD_ORDERING_OPTION_RANDOM</option>
+        			<option value="popular">MOD_MAGEBRIDGE_PRODUCTS_FIELD_ORDERING_OPTION_POPULAR</option>
+		        </field>
+        		<field name="count" type="text" default="5" label="MOD_MAGEBRIDGE_PRODUCTS_FIELD_COUNT" description="MOD_MAGEBRIDGE_PRODUCTS_FIELD_COUNT_DESC" />
+		        <field name="category_id" type="mcategory" return="id" default="" label="MOD_MAGEBRIDGE_PRODUCTS_FIELD_CATEGORY_ID" description="MOD_MAGEBRIDGE_PRODUCTS_FIELD_CATEGORY_ID_DESC" />
+				<field name="layout" type="modulelayout" label="JFIELD_ALT_LAYOUT_LABEL" description="JFIELD_ALT_MODULE_LAYOUT_DESC" />
+        	</fieldset>
+        	<fieldset name="product" label="MOD_MAGEBRIDGE_PRODUCTS_FIELDSET_PRODUCT_OPTIONS">
+		        <field name="show_title" type="list" default="1" label="MOD_MAGEBRIDGE_PRODUCTS_FIELD_SHOW_TITLE" description="MOD_MAGEBRIDGE_PRODUCTS_FIELD_SHOW_TITLE_DESC">
+        			<option value="0">JHIDE</option>
+		        	<option value="1">JSHOW</option>
+        		</field>
+		        <field name="show_short_description" type="list" default="1" label="MOD_MAGEBRIDGE_PRODUCTS_FIELD_SHOW_SHORT_DESCRIPTION" description="MOD_MAGEBRIDGE_PRODUCTS_FIELD_SHOW_SHORT_DESCRIPTION_DESC">
+        			<option value="0">JHIDE</option>
+		        	<option value="1">JSHOW</option>
+        		</field>
+        		<field name="show_description" type="list" default="0" label="MOD_MAGEBRIDGE_PRODUCTS_FIELD_SHOW_DESCRIPTION" description="MOD_MAGEBRIDGE_PRODUCTS_FIELD_SHOW_DESCRIPTION_DESC">
+		        	<option value="0">JHIDE</option>
+        			<option value="1">JSHOW</option>
+		        </field>
+        		<field name="show_thumb" type="list" default="1" label="MOD_MAGEBRIDGE_PRODUCTS_FIELD_SHOW_THUMB" description="MOD_MAGEBRIDGE_PRODUCTS_FIELD_SHOW_THUMB_DESC">
+		        	<option value="0">JHIDE</option>
+        			<option value="1">JSHOW</option>
+        		</field>
+        		<field name="show_price" type="list" default="1" label="MOD_MAGEBRIDGE_PRODUCTS_FIELD_SHOW_PRICE" description="MOD_MAGEBRIDGE_PRODUCTS_FIELD_SHOW_PRICE_DESC">
+		        	<option value="0">JHIDE</option>
+        			<option value="1">JSHOW</option>
+		        </field>
+        		<field name="special_price" type="list" default="1" label="MOD_MAGEBRIDGE_PRODUCTS_FIELD_SPECIAL_PRICE" description="MOD_MAGEBRIDGE_PRODUCTS_FIELD_SPECIAL_PRICE_DESC">
+			        <option value="0">JHIDE</option>
+        			<option value="1">MOD_MAGEBRIDGE_PRODUCTS_FIELD_SPECIAL_PRICE_OPTION_1</option>
+		        	<option value="2">MOD_MAGEBRIDGE_PRODUCTS_FIELD_SPECIAL_PRICE_OPTION_2</option>
+		        </field>
+        		<field name="final_price" type="list" default="1" label="MOD_MAGEBRIDGE_PRODUCTS_FIELD_FINAL_PRICE" description="MOD_MAGEBRIDGE_PRODUCTS_FIELD_FINAL_PRICE_DESC">
+			        <option value="0">JHIDE</option>
+        			<option value="1">MOD_MAGEBRIDGE_PRODUCTS_FIELD_FINAL_PRICE_OPTION_1</option>
+		        	<option value="2">MOD_MAGEBRIDGE_PRODUCTS_FIELD_FINAL_PRICE_OPTION_2</option>
+		        </field>
+        		<field name="show_readmore" type="list" default="1" label="MOD_MAGEBRIDGE_PRODUCTS_FIELD_SHOW_READMORE" description="MOD_MAGEBRIDGE_PRODUCTS_FIELD_SHOW_READMORE_DESC">
+        			<option value="0">JHIDE</option>
+		        	<option value="1">JSHOW</option>
+        		</field>
+		        <field name="show_addtocart" type="list" default="1" label="MOD_MAGEBRIDGE_PRODUCTS_FIELD_SHOW_ADDTOCART" description="MOD_MAGEBRIDGE_PRODUCTS_FIELD_SHOW_ADDTOCART_DESC">
+        			<option value="0">JHIDE</option>
+		        	<option value="1">JSHOW</option>
+        		</field>
+        		<field name="thumb" type="list" default="thumbnail" label="MOD_MAGEBRIDGE_PRODUCTS_FIELD_THUMB" description="MOD_MAGEBRIDGE_PRODUCTS_FIELD_THUMB_DESC">
+		        	<option value="thumbnail">MOD_MAGEBRIDGE_PRODUCTS_FIELD_THUMB_OPTION_THUMBNAIL</option>
+        			<option value="small_image">MOD_MAGEBRIDGE_PRODUCTS_FIELD_THUMB_OPTION_SMALL_IMAGE</option>
+		        	<option value="image">MOD_MAGEBRIDGE_PRODUCTS_FIELD_THUMB_OPTION_IMAGE</option>
+        		</field>
+		        <field name="thumb_size" type="text" default="" label="MOD_MAGEBRIDGE_PRODUCTS_FIELD_THUMB_SIZE" size="4" description="MOD_MAGEBRIDGE_PRODUCTS_FIELD_THUMB_SIZE_DESC" />
+		        <field name="readmore" type="text" default="Read more about %s" label="MOD_MAGEBRIDGE_PRODUCTS_FIELD_READMORE" description="MOD_MAGEBRIDGE_PRODUCTS_FIELD_READMORE_DESC" />
+        		<field name="addtocart" type="text" default="Add %s to cart" label="MOD_MAGEBRIDGE_PRODUCTS_FIELD_ADDTOCART" description="MOD_MAGEBRIDGE_PRODUCTS_FIELD_ADDTOCART_DESC" />
+		        <field name="show_noitems" type="list" default="1" label="MOD_MAGEBRIDGE_PRODUCTS_FIELD_SHOW_NOITEMS" description="MOD_MAGEBRIDGE_PRODUCTS_FIELD_SHOW_NOITEMS_DESC">
+        			<option value="0">JHIDE</option>
+		        	<option value="1">JSHOW</option>
+        		</field>
+        	</fieldset>
+        	<fieldset name="category" label="MOD_MAGEBRIDGE_PRODUCTS_FIELDSET_CATEGORY_OPTIONS">
+		        <field name="show_category_readmore" type="list" default="0" label="MOD_MAGEBRIDGE_PRODUCTS_FIELD_SHOW_CATEGORY_READMORE" description="MOD_MAGEBRIDGE_PRODUCTS_FIELD_SHOW_CATEGORY_READMORE_DESC">
+        			<option value="0">JHIDE</option>
+		        	<option value="1">JSHOW</option>
+        		</field>
+		        <field name="category_readmore" type="text" default="More products" label="MOD_MAGEBRIDGE_PRODUCTS_FIELD_CATEGORY_READMORE" description="MOD_MAGEBRIDGE_PRODUCTS_FIELD_CATEGORY_READMORE_DESC" />
+		        <field name="load_category_data" type="list" default="0" label="MOD_MAGEBRIDGE_PRODUCTS_FIELD_LOAD_CATEGORY_DATA" description="MOD_MAGEBRIDGE_PRODUCTS_FIELD_LOAD_CATEGORY_DATA_DESC">
+        			<option value="0">JNO</option>
+		        	<option value="1">JYES</option>
+        		</field>
+            </fieldset>
+        	<fieldset name="other" label="MOD_MAGEBRIDGE_PRODUCTS_FIELDSET_OTHER">
+        		<field name="effect" type="list" default="fade" label="MOD_MAGEBRIDGE_PRODUCTS_FIELD_EFFECT" description="MOD_MAGEBRIDGE_PRODUCTS_FIELD_EFFECT_DESC">
+		        	<option value="blindX">Blind Horizontal</option>
+        			<option value="blindY">Blind Vertical</option>
+		        	<option value="blindZ">Blind Diagonal</option>
+        			<option value="cover">Cover</option>
+        			<option value="curtainX">Curtain Horizontal</option>
+		        	<option value="curtainY">Curtain Vertical</option>
+            		<option value="fade">Fade</option>
+			        <option value="fadeZoom">Fade Zoom</option>
+        			<option value="growX">Grow Horizontal</option>
+			        <option value="growY">Grow Vertical</option>
+		        	<option value="scrollUp">Scroll Up</option>
+			        <option value="scrollDown">Scroll Down</option>
+        			<option value="scrollLeft">Scroll Left</option>
+		        	<option value="scrollRight">Scroll Right</option>
+        			<option value="scrollHorz">Scroll Horinzontal</option>
+        			<option value="scrollVert">Scroll Vertical</option>
+        			<option value="shuffle">Shuffle</option>
+        			<option value="slideX">Slide Horizontal</option>
+        			<option value="slideY">Slide Vertical</option>
+        			<option value="toss">Toss</option>
+        			<option value="turnUp">Turn Up</option>
+        			<option value="turnDown">Turn Down</option>
+	        		<option value="turnLeft">Turn Left</option>
+        			<option value="turnRight">Turn Right</option>
+	        		<option value="uncover">Uncover</option>
+        			<option value="wipe">Wipe</option>
+	        		<option value="zoom">Zoom</option>
+        		</field>
+	        	<field name="timeout" type="text" default="4000" label="MOD_MAGEBRIDGE_PRODUCTS_FIELD_TIMEOUT" />
+        		<field name="speed" type="text" default="1000" label="MOD_MAGEBRIDGE_PRODUCTS_FIELD_SPEED" />
+	        	<field name="easing" type="list" default="" label="MOD_MAGEBRIDGE_PRODUCTS_FIELD_EASING" description="MOD_MAGEBRIDGE_PRODUCTS_FIELD_EASING_DESC">
+        			<option value="">JNOne</option>
+	        		<option value="jswing">Swing</option>
+		        	<option value="easeInOutQuad">Quad</option>
+        			<option value="easeInOutCubic">Cubic</option>
+	        		<option value="easeInOutQuart">Quart</option>
+		        	<option value="easeInOutQint">Qint</option>
+		        	<option value="easeInOutSine">Sine</option>
+        			<option value="easeInOutExpo">Expo</option>
+	        		<option value="easeInOutCirc">Circ</option>
+        			<option value="easeInOutElastic">Elastic</option>
+	        		<option value="easeInOutBack">Back</option>
+		        	<option value="easeInOutBounce">Bounce</option>
+        		</field>
+        		<field name="load_slideshow_jquery" type="list" default="1" label="MOD_MAGEBRIDGE_PRODUCTS_FIELD_LOAD_SLIDESHOW_JQUERY" description="MOD_MAGEBRIDGE_PRODUCTS_FIELD_LOAD_SLIDESHOW_JQUERY_DESC">
+	        		<option value="0">JNO</option>
+		        	<option value="1">JYES</option>
+        		</field>
+	        	<field name="load_slideshow_jquery_easing" type="list" default="1" label="MOD_MAGEBRIDGE_PRODUCTS_FIELD_LOAD_SLIDESHOW_JQUERY_EASING" description="MOD_MAGEBRIDGE_PRODUCTS_FIELD_LOAD_SLIDESHOW_JQUERY_EASING_DESC">
+		        	<option value="0">JNO</option>
+        			<option value="1">JYES</option>
+	        	</field>
+        		<field name="load_slideshow_jquery_cycle" type="list" default="1" label="MOD_MAGEBRIDGE_PRODUCTS_FIELD_LOAD_SLIDESHOW_JQUERY_CYCLE" description="MOD_MAGEBRIDGE_PRODUCTS_FIELD_LOAD_SLIDESHOW_JQUERY_CYCLE_DESC">
+	        		<option value="0">JNO</option>
+		        	<option value="1">JYES</option>
+        		</field>
+	        	<field name="load_slideshow_css" type="list" default="1" label="MOD_MAGEBRIDGE_PRODUCTS_FIELD_LOAD_SLIDESHOW_CSS" description="MOD_MAGEBRIDGE_PRODUCTS_FIELD_LOAD_SLIDESHOW_CSS_DESC">
+		        	<option value="0">JNO</option>
+        			<option value="1">JYES</option>
+	        	</field>
+        	</fieldset>
+			<fieldset name="advanced">
+        		<field name="moduleclass_sfx" type="text" default="" label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL" description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
+        		<field name="cache" type="list" default="1" label="COM_MODULES_FIELD_CACHING_LABEL" description="COM_MODULES_FIELD_CACHING_DESC">
+		        	<option value="1">JGLOBAL_USE_GLOBAL</option>
+        			<option value="0">COM_MODULES_FIELD_VALUE_NOCACHING</option>
+		        </field>
+        		<field name="cache_time" type="text" default="900" label="COM_MODULES_FIELD_CACHE_TIME_LABEL" description="COM_MODULES_FIELD_CACHE_TIME_DESC" />
+        	</fieldset>
+        </fields>
+	</config>
+</extension>

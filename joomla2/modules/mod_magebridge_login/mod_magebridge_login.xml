@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="module" version="2.5" client="site" method="upgrade">
+    <name>MOD_MAGEBRIDGE_LOGIN</name>
+	<author>Yireo</author>
+	<creationDate>November 2013</creationDate>
+	<copyright>Copyright (C) 2013 Yireo.com. All rights reserved.</copyright>
+	<license>GNU/GPL</license>
+	<authorEmail>development@yireo.com</authorEmail>
+	<authorUrl>www.yireo.com</authorUrl>
+    <version>1.8.4781</version>
+    <description>MOD_MAGEBRIDGE_LOGIN</description>
+
+    <files>
+        <filename module="mod_magebridge_login">mod_magebridge_login.php</filename>
+        <filename>index.html</filename>
+        <folder>tmpl</folder>
+    </files>
+
+    <languages>
+        <language tag="en-GB">en-GB.mod_magebridge_login.ini</language>
+        <language tag="en-GB">en-GB.mod_magebridge_login.sys.ini</language>
+    </languages>
+
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+                <field name="text" type="textarea" cols="30" rows="5" default="" label="MOD_MAGEBRIDGE_LOGIN_TEXT" description="MOD_MAGEBRIDGE_LOGIN_TEXT_DESC" />
+                <field name="greeting" type="textarea" cols="30" rows="5" default="Hello, %s" label="MOD_MAGEBRIDGE_LOGIN_GREETING" description="MOD_MAGEBRIDGE_LOGIN_GREETING_DESC" />
+                <field name="greeting_name" type="list" default="username" label="MOD_MAGEBRIDGE_LOGIN_GREETING_NAME" description="MOD_MAGEBRIDGE_LOGIN_GREETING_NAME_DESC">
+                    <option value="name">MOD_MAGEBRIDGE_LOGIN_GREETING_NAME_OPTION_NAME</option>
+                    <option value="username">MOD_MAGEBRIDGE_LOGIN_GREETING_NAME_OPTION_USERNAME</option>
+                </field>
+                <field name="login_link" type="list" default="current" label="MOD_MAGEBRIDGE_LOGIN_LOGIN_LINK" description="MOD_MAGEBRIDGE_LOGIN_LOGIN_LINK_DESC">
+                    <option value="current">MOD_MAGEBRIDGE_LOGIN_LOGIN_LINK_OPTION_CURRENT</option>
+                    <option value="home">MOD_MAGEBRIDGE_LOGIN_LOGIN_LINK_OPTION_HOME</option>
+                    <option value="mbhome">MOD_MAGEBRIDGE_LOGIN_LOGIN_LINK_OPTION_MBHOME</option>
+                    <option value="mbaccount">MOD_MAGEBRIDGE_LOGIN_LOGIN_LINK_OPTION_MBACCOUNT</option>
+                </field>
+                <field name="logout_link" type="list" default="current" label="MOD_MAGEBRIDGE_LOGIN_LOGOUT_LINK" description="MOD_MAGEBRIDGE_LOGIN_LOGOUT_LINK_DESC">
+                    <option value="current">MOD_MAGEBRIDGE_LOGIN_LOGOUT_LINK_OPTION_CURRENT</option>
+                    <option value="home">MOD_MAGEBRIDGE_LOGIN_LOGOUT_LINK_OPTION_HOME</option>
+                    <option value="mbhome">MOD_MAGEBRIDGE_LOGIN_LOGOUT_LINK_OPTION_MBHOME</option>
+                </field>
+           	</fieldset>
+			<fieldset name="advanced">
+                <field name="allow_autocomplete" type="radio" default="1" label="MOD_MAGEBRIDGE_LOGIN_ALLOW_AUTOCOMPLETE" description="MOD_MAGEBRIDGE_LOGIN_ALLOW_AUTOCOMPLETE_DESC">
+                    <option value="1">JYES</option>
+                    <option value="0">JNO</option>
+                </field>
+				<field name="layout" type="modulelayout" label="JFIELD_ALT_LAYOUT_LABEL" description="JFIELD_ALT_MODULE_LAYOUT_DESC" />
+        		<field name="moduleclass_sfx" type="text" default="" label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL" description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
+        		<field name="cache" type="list" default="1" label="COM_MODULES_FIELD_CACHING_LABEL" description="COM_MODULES_FIELD_CACHING_DESC">
+        			<option value="0">COM_MODULES_FIELD_VALUE_NOCACHING</option>
+		        </field>
+        	</fieldset>
+        </fields>
+	</config>
+</extension>

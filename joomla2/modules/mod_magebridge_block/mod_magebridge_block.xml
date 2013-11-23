@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="module" version="2.5" client="site" method="upgrade">
+	<name>MOD_MAGEBRIDGE_BLOCK</name>
+	<author>Yireo</author>
+	<creationDate>November 2013</creationDate>
+	<copyright>Copyright (C) 2013 Yireo.com. All rights reserved.</copyright>
+	<license>GNU/GPL</license>
+	<authorEmail>development@yireo.com</authorEmail>
+	<authorUrl>http://www.yireo.com/</authorUrl>
+	<version>1.8.4781</version>
+	<description>MOD_MAGEBRIDGE_BLOCK_DESC</description>
+
+	<files>
+		<filename module="mod_magebridge_block">mod_magebridge_block.php</filename>
+		<filename>helper.php</filename>
+		<filename>index.html</filename>
+		<folder>tmpl</folder>
+	</files>
+
+    <languages>
+        <language tag="en-GB">en-GB.mod_magebridge_block.ini</language>
+        <language tag="en-GB">en-GB.mod_magebridge_block.sys.ini</language>
+    </languages>
+
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+		        <field name="block" type="list" default="" label="MOD_MAGEBRIDGE_BLOCK_BLOCK" description="MOD_MAGEBRIDGE_BLOCK_BLOCK_DESC">
+        			<option value="">-- Select --</option>
+		        	<option value="tags_popular">Popular Tags</option>
+        			<option value="catalog.compare.sidebar">Catalog: Compare Sidebar</option>
+		        	<option value="catalog.product.related">Catalog: Related Products</option>
+        			<option value="catalog.leftnav">Catalog: Layered Navigation</option>
+		        	<option value="product_tag_list">Product Tags</option>
+        			<option value="customer_account_navigation">Customer Account Navigation</option>
+		        	<option value="cart_sidebar">Cart: Sidebar</option>
+		        	<option value="right.newsletter">Newsletter: Subscription</option>
+        			<option value="right.reports.product.viewed">Reports: Recently viewed products</option>
+		        	<option value="right.reports.product.compared">Reports: Product compared</option>
+            		<option value="seo.searchterm">Search: Popular Search terms</option>
+			        <option value="top.search">Top Search</option>
+			        <option value="top.links">Top Links</option>
+        			<option value="top.menu">Top Menu</option>
+		        	<option value="currency">Currency</option>
+        			<option value="after_body_start">After Body Start</option>
+		        	<option value="before_body_end">Before Body End</option>
+        			<option value="left">Full left column</option>
+		        	<option value="right">Full right column</option>
+                    <option value="messages">Messages</option>
+                    <option value="global_messages">Global Messages</option>
+                    <option value="global_notices">Global Notices</option>
+                    <option value="store_language">Store Language</option>
+                    <option value="store_switcher">Store Switcher</option>
+        		</field>
+		        <field name="custom" type="text" default="" label="MOD_MAGEBRIDGE_BLOCK_CUSTOM" description="MOD_MAGEBRIDGE_BLOCK_CUSTOM_DESC" />
+				<field name="layout" type="modulelayout" default="_:default" label="JFIELD_ALT_LAYOUT_LABEL" description="JFIELD_ALT_MODULE_LAYOUT_DESC" />
+        		<field name="load_css" type="list" default="1" label="MOD_MAGEBRIDGE_LOAD_CSS" description="MOD_MAGEBRIDGE_LOAD_CSS_DESC">
+		        	<option value="0">JNO</option>
+        			<option value="1">JYES</option>
+		        </field>
+        		<field name="load_js" type="list" default="1" label="MOD_MAGEBRIDGE_LOAD_JS" description="MOD_MAGEBRIDGE_LOAD_JS_DESC">
+		        	<option value="0">JNO</option>
+        			<option value="1">JYES</option>
+		        </field>
+           	</fieldset>
+			<fieldset name="advanced">
+        		<field name="moduleclass_sfx" type="text" default="" label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL" description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
+        		<field name="cache" type="list" default="1" label="COM_MODULES_FIELD_CACHING_LABEL" description="COM_MODULES_FIELD_CACHING_DESC">
+		        	<option value="1">JGLOBAL_USE_GLOBAL</option>
+        			<option value="0">COM_MODULES_FIELD_VALUE_NOCACHING</option>
+		        </field>
+        		<field name="cache_time" type="text" default="900" label="COM_MODULES_FIELD_CACHE_TIME_LABEL" description="COM_MODULES_FIELD_CACHE_TIME_DESC" />
+        	</fieldset>
+        </fields>
+	</config>
+</extension>
