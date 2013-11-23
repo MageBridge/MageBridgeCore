@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * MageBridge
+ *
+ * @author Yireo
+ * @package MageBridge
+ * @copyright Copyright 2013
+ * @license Open Source License
+ * @link http://www.yireo.com
+ */
+-->
+<config>
+    <menu>
+         <cms>
+            <children>
+                <magebridge translate="title" module="magebridge">
+                    <title>MageBridge settings</title>
+                    <action>adminhtml/magebridge/index</action>
+                </magebridge>
+            </children>
+         </cms>
+    </menu>
+</config>

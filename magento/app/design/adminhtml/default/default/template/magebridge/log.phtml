@@ -1,0 +1,44 @@
+<?php
+/**
+ * Magento Bridge
+ *
+ * @author Yireo
+ * @package Magento Bridge
+ * @copyright Copyright 2013
+ * @license Open Source License
+ * @link http://www.yireo.com
+ */
+?>
+
+<div class="columns ">
+
+<div class="side-col" id="page:left">
+<?php echo $this->getMenu(); ?>
+</div>
+
+<div class="main-col" id="content">
+<div class="main-col-inner">
+
+<div class="content-header">
+<table cellspacing="0">
+	<tr>
+		<td style="width:100%;"><h3 class="icon-head head-tag"><?php echo $this->getHeader(); ?></h3></td>
+	</tr>
+</table>
+</div>
+
+<div class="entry-edit">
+    <div class="entry-edit-head">
+        <h4 class="icon-head head-edit-form fieldset-legend"><?php echo $this->__('Content'); ?></h4>
+    </div>
+
+    <div class="fieldset ">
+        <pre><?php echo $this->getContent(); ?></pre>
+    </div>
+</div>
+
+<a href="<?php echo $this->getWipelogUrl(); ?>">Wipe log</a>
+
+</div>
+</div>
+

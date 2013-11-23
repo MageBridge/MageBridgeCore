@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <magebridge_backend>
+        <remove name="header" />
+        <remove name="footer" />
+    </magebridge_backend>
+
+    <adminhtml_system_config_edit>
+        <reference name="head">
+            <action method="addJs"><script>magebridge/configuration.js</script></action>
+        </reference>
+    </adminhtml_system_config_edit>
+</layout>

@@ -1,0 +1,70 @@
+<?php
+/**
+ * Magento Bridge
+ *
+ * @author Yireo
+ * @package Magento Bridge
+ * @copyright Copyright 2013
+ * @license Open Source License
+ * @link http://www.yireo.com
+ */
+?>
+
+<div class="columns ">
+
+<div class="side-col" id="page:left">
+<?php echo $this->getMenu(); ?>
+</div>
+
+<div class="main-col" id="content">
+<div class="main-col-inner">
+
+<div class="content-header">
+<table cellspacing="0">
+	<tr>
+		<td style="width:100%;"><h3 class="icon-head head-tag"><?php echo $this->getHeader('System Check'); ?></h3></td>
+	</tr>
+</table>
+</div>
+    
+<?php foreach($this->getChecks() as $group => $checks) { ?>
+<?php if($group == 'conf') $title = 'Magento Configuration';  ?>
+<?php if($group == 'system') $title = 'Hosting Requirements';  ?>
+<?php if($group == 'overrides') $title = 'Class overrides';  ?>
+<div class="entry-edit">
+    <div class="entry-edit-head">
+        <h4 class="icon-head head-edit-form fieldset-legend"><?php echo $this->__($title); ?></h4>
+    </div>
+
+    <div class="fieldset ">
+        <table cellspacing="5" class="form-list">
+            <?php foreach($checks as $check) { ?>
+            <tr>
+                <td width="150"><strong><?php echo $check['check']; ?></strong></td>
+                <td width="50"><img src="<?php echo $this->getSkinUrl('images/magebridge/check-'.$check['status'].'.png'); ?>" title="<?php echo $check['status']; ?>" alt="<?php echo $check['status']; ?>" /></td>
+                <td><?php echo $check['description']; ?></td>
+            </tr>
+            <?php } ?>
+        </table>
+    </div>
+</div>
+<?php } ?>
+
+<div class="entry-edit">
+    <div class="entry-edit-head">
+        <h4 class="icon-head head-edit-form fieldset-legend"><?php echo $this->__('Other checks'); ?></h4>
+    </div>
+    <div class="fieldset ">
+        <a href="<?php echo $this->getLogUrl('magebridge'); ?>"><?php echo $this->__('MageBridge Log'); ?></a><br/>
+        <a href="<?php echo $this->getLogUrl('system'); ?>"><?php echo $this->__('System Log'); ?></a><br/>
+        <a href="<?php echo $this->getLogUrl('exception'); ?>"><?php echo $this->__('Exception Log'); ?></a><br/>
+    </div>
+</div>
+
+<strong>Legend:</strong><br/>
+<img src="<?php echo $this->getSkinUrl('images/magebridge/check-ok.png'); ?>" />&nbsp;<?php echo $this->__('Everything is ok'); ?><br/>
+<img src="<?php echo $this->getSkinUrl('images/magebridge/check-warning.png'); ?>" />&nbsp;<?php echo $this->__('There might be something wrong, so be warned'); ?><br/>
+<img src="<?php echo $this->getSkinUrl('images/magebridge/check-error.png'); ?>" />&nbsp;<?php echo $this->__('Something is preventing MageBridge from functioning correctly'); ?><br/>
+</div>
+</div>
+

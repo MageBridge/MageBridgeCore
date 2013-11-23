@@ -1,0 +1,26 @@
+<?php
+/**
+ * MageBridge
+ *
+ * @author Yireo
+ * @package MageBridge
+ * @copyright Copyright 2013
+ * @license Open Source License
+ * @link http://www.yireo.com
+ */
+?>
+
+<?php $_product = $this->getProduct() ?>
+<form method="post" action="<?php echo $this->getUrl('checkout/cart/add') ?>">
+<?php if($_product->isSaleable()): ?>
+    <div class="add-to-cart">
+        <?php if(!$_product->isGrouped()): ?>
+        <label for="qty"><?php echo $this->__('Qty:') ?></label>
+        <input type="text" name="qty" id="qty" maxlength="12" value="<?php echo $this->getMinimalQty($_product) ?>" title="<?php echo $this->__('Qty') ?>" class="input-text qty" />
+        <?php endif; ?>
+        <button type="button" title="<?php echo $this->__('Add to Cart') ?>" class="button btn-cart" onclick="this.form.submit()"><span><span><?php echo $this->__('Add to Cart') ?></span></span></button>
+        <input type="hidden" name="product" value="<?php echo $_product->getId(); ?>" />
+        <?php echo $this->getChildHtml('', true, true) ?>
+    </div>
+</form>
+<?php endif; ?>

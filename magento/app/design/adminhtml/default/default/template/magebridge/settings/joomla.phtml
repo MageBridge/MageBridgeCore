@@ -1,0 +1,44 @@
+<?php
+/**
+ * Magento Bridge
+ *
+ * @author Yireo
+ * @package Magento Bridge
+ * @copyright Copyright 2013
+ * @license Open Source License
+ * @link http://www.yireo.com
+ */
+
+$apiDetails = $this->getApiDetails();
+?>
+
+<div class="fieldset">
+
+    <table cellspacing="5" class="form-list" style="width:100%">
+    <tbody>
+    <?php if(!empty($apiDetails)) { ?>
+        <tr>
+            <th width="20%"><?php echo $this->__('Scope'); ?></th>
+            <th width="15%"><?php echo $this->__('API type'); ?></th>
+            <th width="30%"><?php echo $this->__('API host'); ?></th>
+            <th width="15%"><?php echo $this->__('API user'); ?></th>
+            <th width="20%"><?php echo $this->__('API test'); ?></th>
+        </tr>
+        <?php foreach($apiDetails as $api) { ?>
+        <tr>
+            <td><?php echo (isset($api['scope_name'])) ? $api['scope_name'] : null; ?></td>
+            <td><?php echo (isset($api['api_type'])) ? $api['api_type'] : null; ?></td>
+            <td><?php echo (isset($api['api_host'])) ? $api['api_host'] : null; ?></td>
+            <td><?php echo (isset($api['api_user'])) ? $api['api_user'] : null; ?></td>
+            <td><a href="<?php echo $this->getBrowseUrl($api['scope'], $api['scope_id']); ?>"><?php echo $this->__('API Browse Test'); ?></a></td>
+        </tr>
+        <?php } ?>
+    <?php } else { ?>
+        <tr>
+            <td><?php echo $this->__('No cached API-details available'); ?></td>
+        </tr>
+    <?php } ?>
+    </tbody>
+    </table>
+
+</div>

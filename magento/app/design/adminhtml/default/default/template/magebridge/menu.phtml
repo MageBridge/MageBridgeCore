@@ -1,0 +1,21 @@
+<?php
+/**
+ * Magento Bridge
+ *
+ * @author Yireo
+ * @package Magento Bridge
+ * @copyright Copyright 2013
+ * @license Open Source License
+ * @link http://www.yireo.com
+ */
+?>
+<ul id="system_config_tabs" class="tabs config-tabs">
+<li>
+    <dl>
+    <dt class="label">Menu</dt>
+    <?php foreach($this->getMenuItems() as $item) { ?>
+    <dd><a href="<?php echo $item['url']; ?>" class="<?php echo $item['class']; ?>"><span><?php echo $item['title']; ?></span></a></dd>
+    <?php } ?>
+    </dl>
+</li>
+</ul>

@@ -1,0 +1,52 @@
+<?php
+/**
+ * Magento Bridge
+ *
+ * @author Yireo
+ * @package Magento Bridge
+ * @copyright Copyright 2013
+ * @license Open Source License
+ * @link http://www.yireo.com
+ */
+?>
+
+<form action="<?php echo $this->getSaveUrl() ?>" method="post" id="magebridge_edit_form" autocomplete="off">
+<div class="columns ">
+
+<div class="side-col" id="page:left">
+<?php echo $this->getMenu(); ?>
+</div>
+
+<div class="main-col" id="content">
+<div class="main-col-inner">
+
+<div class="content-header">
+<table cellspacing="0">
+	<tr>
+		<td style="width:50%;"><h3 class="icon-head head-tag"><?php echo $this->getHeader('Settings'); ?></h3></td>
+        <td class="formbuttons" align="right">
+            <?php echo $this->getSaveButtonHtml(); ?>
+            <?php echo $this->getChildHtml('resetapi_button'); ?>
+            <?php echo $this->getChildHtml('resetusermap_button'); ?>
+            <?php echo $this->getChildHtml('resetevents_button'); ?>
+            <button type="button" class="scalable" onclick="doSubmit();"><span><?php echo $this->__('Save'); ?></span></button>
+        </td>
+	</tr>
+</table>
+</div>
+
+<div class="entry-edit">
+<?php echo $this->getChildHtml('accordion') ?>
+</div>
+</div>
+
+<?php echo $this->getBlockHtml('formkey'); ?>
+</form>
+
+<script type="text/javascript">
+var magebridgeForm = new varienForm('magebridge_edit_form');
+function doSubmit() {
+    magebridgeForm.submit();
+    return true;
+}
+</script>

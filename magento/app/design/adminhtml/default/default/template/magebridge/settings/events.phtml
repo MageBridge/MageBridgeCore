@@ -1,0 +1,49 @@
+<?php
+/**
+ * Magento Bridge
+ *
+ * @author Yireo
+ * @package Magento Bridge
+ * @copyright Copyright 2013
+ * @license Open Source License
+ * @link http://www.yireo.com
+ */
+?>
+
+<div class="fieldset">
+
+    <table cellspacing="5" class="form-list" style="width:100%">
+    <thead>
+        <tr>
+            <th width="45%"><?php echo $this->__('Magento event'); ?></th>
+            <th width="15%"><?php echo $this->__('Status'); ?></th>
+            <th width="15%"><?php echo $this->__('Recommended'); ?></th>
+            <th width="25%"><?php echo $this->__('Group'); ?></th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach($this->getEvents() as $event) { ?>
+        <tr>
+            <td><label for="license_key"><?php echo $event['name']; ?></label></td>
+            <td>
+                <select name="event_forwarding[<?php echo $event['name']; ?>]" id="<?php echo $event['name']; ?>">
+                    <?php if($event['value'] == 1) { ?>
+                    <option value="0"><?php echo $this->__('Disabled'); ?></option>
+                    <option value="1" selected><?php echo $this->__('Enabled'); ?></option>
+                    <?php } else { ?>
+                    <option value="0" selected><?php echo $this->__('Disabled'); ?></option>
+                    <option value="1"><?php echo $this->__('Enabled'); ?></option>
+                    <?php } ?>
+                </select>
+                <?php if($event['value'] != $event['recommended']) { ?>
+                    <img src="<?php echo $this->getSkinUrl('images/magebridge/check-warning.png'); ?>" title="<?php echo $this->__('Different then recommended'); ?>" />
+                <?php } ?>
+            </td>
+            <td><?php echo ($event['recommended']) ? $this->__('Enabled') : $this->__('Disabled') ; ?></td>
+            <td><?php echo $event['group']; ?></td>
+        </tr>
+        <?php } ?>
+    </tbody>
+    </table>
+
+</div>

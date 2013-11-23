@@ -1,0 +1,51 @@
+<?php
+/**
+ * MageBridge
+ *
+ * @author Yireo
+ * @copyright Copyright 2013
+ * @license Open Source License
+ * @link http://www.yireo.com
+ */ 
+
+/**
+ * Product media data template
+ *
+ * @see Mage_Catalog_Block_Product_View_Media
+ */
+?>
+<?php
+$_product = $this->getProduct();
+$_helper = $this->helper('catalog/output');
+$_label = $this->htmlEscape($this->getImageLabel());
+
+$_image_class = Mage::helper('magebridge/theme')->getProductImageClass();
+$_image_rel = Mage::helper('magebridge/theme')->getProductImageRelation();
+$_image_size = Mage::helper('magebridge/theme')->getProductImageSize();
+
+$_image_max_size = Mage::helper('magebridge/theme')->getProductImageMaxSize();
+$_image_destination = $this->helper('catalog/image')->init($_product, 'image');
+if($_image_max_size > 0) $_image_destination = $_image_destination->resize($_image_max_size);
+
+$_thumb_size = Mage::helper('magebridge/theme')->getProductThumbSize();
+$_thumb_height = $_thumb_size;
+$_thumb_width = $_thumb_size;
+?>
+<p class="product-image">
+    <a rel="<?php echo $_image_rel; ?>" class="<?php echo $_image_class; ?>" href="<?php echo $_image_destination; ?>" title="<?php echo $_label; ?>"><img src="<?php echo $this->helper('catalog/image')->init($_product, 'image')->resize($_image_size); ?>" alt="<?php echo $_label;?>" title="<?php echo $_label; ?>" /></a>
+</p>
+<?php if(count($this->getGalleryImages()) > 0): ?>
+<div class="more-views">
+    <h2><?php echo $this->__('More Views') ?></h2>
+    <ul>
+    <?php foreach ($this->getGalleryImages() as $_image): ?>
+        <?php $_image_label = $this->htmlEscape($_image->getLabel()); ?>
+        <?php $_thumb_destination = $this->helper('catalog/image')->init($_product, 'image', $_image->getFile()); ?>
+        <?php if($_image_max_size > 0) $_thumb_destination = $_thumb_destination->resize($_image_max_size); ?>
+        <li>
+            <a rel="<?php echo $_image_rel; ?>" class="<?php echo $_image_class; ?>" href="<?php echo $_thumb_destination;?>" title="<?php echo $_image_label;?>"><img src="<?php echo $this->helper('catalog/image')->init($_product, 'thumbnail', $_image->getFile())->resize($_thumb_size); ?>" width="<?php echo $_thumb_width; ?>" height="<?php echo $_thumb_height; ?>" alt="<?php echo $_image_label;?>" /></a>
+        </li>
+    <?php endforeach; ?>
+    </ul>
+</div>
+<?php endif; ?>

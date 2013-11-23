@@ -1,0 +1,96 @@
+<?php
+/**
+ * Magento Bridge
+ *
+ * @author Yireo
+ * @package Magento Bridge
+ * @copyright Copyright 2013
+ * @license Open Source License
+ * @link http://www.yireo.com
+ */
+?>
+
+<style type="text/css">
+div#mbajax-updater {
+    width: 100%;
+    padding: 10px;
+}
+</style>
+
+<div class="columns ">
+
+<div class="side-col" id="page:left">
+<?php echo $this->getMenu(); ?>
+</div>
+
+<div class="main-col" id="content">
+<div class="main-col-inner">
+
+<div class="content-header">
+<table cellspacing="0">
+	<tr>
+		<td style="width:40%;"><h3 class="icon-head head-tag"><?php echo $this->getHeader('Update'); ?></h3></td>
+        <td class="formbuttons" align="right">
+            <?php if($this->upgradeNeeded() == true) { ?> 
+            <button type="button" class="scalable" onclick="doUpdate();"><span><?php echo $this->__('Update MageBridge extension'); ?></span></button>
+            <?php } else { ?>
+            <?php echo $this->__('No update needed'); ?>
+            <?php } ?>
+        </td>
+	</tr>
+</table>
+</div>
+    
+<div class="entry-edit">
+
+    <div class="entry-edit-head">
+        <h4 class="icon-head head-edit-form fieldset-legend"><?php echo $this->__('Version check'); ?></h4>
+    </div>
+
+    <div class="fieldset ">
+        <div id="mbajax-updater">
+        <table cellspacing="5" class="form-list">
+            <tr>
+                <td width="150"><?php echo $this->__('Current version'); ?></td>
+                <td><?php echo $this->getCurrentVersion(); ?></td>
+            </tr>
+            <tr>
+                <?php $newversion = $this->getNewVersion(); if(preg_match('/^ERROR/', $newversion)) { ?>
+                <td colspan="2" id="mbajax-version"><?php echo $newversion; ?></td>
+                <?php } else { ?>
+                <td><?php echo $this->__('New version'); ?></td>
+                <td><span id="mbajax-version"><?php echo $newversion; ?></span></td>
+                <?php } ?>
+            </tr>
+        </table>
+        </div>
+    </div>
+</div>
+<small><a href="<?php echo $this->getUpdateUrl(); ?>">Debug update</a></small>
+
+</div>
+</div>
+
+<script type="text/javascript">
+function doUpdate() {
+    var answer = confirm("Upgrading MageBridge is easy, but still needs to be done with proper planning. Are you sure you want to continue?\n\nDon't forget to upgrade Joomla as well.");
+    if(answer) {
+        $('mbajax-updater').update('Please wait while MageBridge is being installed');
+        new Ajax.Request('<?php echo $this->getUpdateUrl(); ?>', {
+            method:'get',
+            onSuccess: function(transport){
+                var response = transport.responseText;
+                var data = response.evalJSON(true);
+                if(data.message && data.message != '') {
+                    $('mbajax-updater').update(data.message);
+                } else {
+                    document.location = '<?php echo $this->getThisUrl(); ?>';
+                }
+            },
+            onFailure: function() { 
+                $('mbajax-updater').update('Failed to fetch update-info');
+            }
+        });
+    }
+}
+</script>

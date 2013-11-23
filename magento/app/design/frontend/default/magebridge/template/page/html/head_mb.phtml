@@ -1,0 +1,31 @@
+<?php
+/*
+ * Example MageBridge HTML-header for usage in a Joomla! module-position
+ * Do not copy this entire file to your custom Magento theme, but only use those lines you actually need
+ * http://www.yireo.com/tutorials/magebridge/theming/1270-adding-the-magento-header-to-the-joomla-template
+ */
+?>
+<!-- Begin custom MageBridge header -->
+<!-- Default Magento includes -->
+<?php echo $this->getChildHtml() ?>
+<?php echo $this->getIncludes() ?>
+
+<!-- Extra link-tags -->
+<link rel="icon" href="<?php echo $this->getFaviconFile(); ?>" type="image/x-icon" />
+<link rel="shortcut icon" href="<?php echo $this->getFaviconFile(); ?>" type="image/x-icon" />
+
+<!-- Add custom Facebook-headers to the product-page -->
+<?php if (Mage::registry('current_product')) : ?>
+<meta property="og:image" content="<?php echo Mage::helper('catalog/image')->init(Mage::registry('current_product'), 'small_image')->resize(100,100);?>" />
+<meta property="og:title" content="<?php echo htmlentities(Mage::registry('current_product')->getMetaTitle())?>" /> 
+<?php endif;?>
+
+<!-- Add a pingback link -->
+<link rel="pingback" href="<?php echo Mage::helper('core/url')->getCurrentUrl(); ?>" />
+
+<!-- Enable IE-9 standards mode -->
+<meta http-equiv="X-UA-Compatible" content="IE=9" >
+
+<!-- Disable prefetch control -->
+<meta http-equiv="x-dns-prefetch-control" content="off" />
+<!-- End custom MageBridge header -->

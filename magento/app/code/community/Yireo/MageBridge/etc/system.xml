@@ -1,0 +1,285 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * MageBridge
+ *
+ * @author Yireo
+ * @package MageBridge
+ * @copyright Copyright 2013
+ * @license Open Source License
+ * @link http://www.yireo.com
+ */
+-->
+<config>
+    <sections>
+        <magebridge translate="label" module="magebridge">
+            <label>MageBridge</label>
+            <tab>service</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>342</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <theme translate="label">
+                    <label>MageBridge Theme</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>1</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <product_image_class translate="label">
+                            <label>Product View: Image Class</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[
+                                Class-attribute of anchor-tag<br/>
+                                Example: lightbox<br/>
+                                Resulting HTML: &lt;a ... class="lightbox"&gt;
+                            ]]></comment>
+                        </product_image_class>
+                        <product_image_rel translate="label">
+                            <label>Product View: Relation</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[
+                                Relation-attribute of anchor-tag<br/>
+                                Example: lightbox<br/>
+                                Resulting HTML: &lt;a ... rel="lightbox"&gt;
+                            ]]></comment>
+                        </product_image_rel>
+                        <product_image_size translate="label">
+                            <label>Product View: Image Size</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>3</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-number</validate>
+                            <comment>Size in pixels of primary image</comment>
+                        </product_image_size>
+                        <product_thumb_size translate="label">
+                            <label>Product View: Thumbnail Size</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>4</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-number</validate>
+                            <comment>Size in pixels of gallery thumbnails</comment>
+                        </product_thumb_size>
+                        <product_image_max_size translate="label">
+                            <label>Product View: Image Maximum Size</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>5</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <validate>validate-number</validate>
+                            <comment>Maximum size for popup image</comment>
+                        </product_image_max_size>
+                    </fields>
+                </theme>
+                <settings translate="label">
+                    <label>System Options</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>2</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <caching translate="label">
+                            <label>Caching</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[
+                                Extra block-caching capabilities per page per block<br/>
+                                <strong>WARNING</strong>: Make sure you have enough cache-space
+                            ]]></comment>
+                        </caching>
+                        <caching_gzip translate="label">
+                            <label>Cache compression</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[
+                                Compress cache-elements to save diskspace.<br/>
+                                <strong>WARNING</strong>: Do NOT use with APC or memcache
+                            ]]></comment>
+                        </caching_gzip>
+                        <preoutput_compare translate="label">
+                            <label>Preoutput Compare Page</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>3</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Directly output the content of the compare-pages</comment>
+                        </preoutput_compare>
+                        <preoutput_gallery translate="label">
+                            <label>Preoutput Gallery Pages</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>4</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Directly output the content of gallery-pages</comment>
+                        </preoutput_gallery>
+                        <bridge_downloads translate="label">
+                            <label>Bridge Downloadable Links</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>5</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Convert downloadable links to Joomla! links</comment>
+                        </bridge_downloads>
+                        <bridge_all translate="label">
+                            <label>Bridge all HTTP-content</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>6</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[
+                                <strong>EXPERIMENTAL</strong>: This is for experts only
+                            ]]></comment>
+                        </bridge_all>
+                        <joomla_remotesso translate="label">
+                            <label>Joomla! Remote SSO</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>7</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Perform remote SSO from within standalone Magento frontend</comment>
+                        </joomla_remotesso>
+                        <joomla_auth translate="label">
+                            <label>Joomla! Authentication</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>7</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Authenticate customers with Joomla! (JSON-RPC)</comment>
+                        </joomla_auth>
+                        <continue_shopping_to_previous translate="label">
+                            <label>Continue Shopping to Previous</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>8</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment>Set "Continue Shopping" link to previous page</comment>
+                        </continue_shopping_to_previous>
+                        <direct_output translate="label">
+                            <label>Direct Output URLs</label>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment>Comma-seperated list of URLs that MageBridge should directly output</comment>
+                        </direct_output>
+                        <full_dispatch translate="label">
+                            <label>Full dispatch</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Experimental feature; Default is yes;</comment>
+                        </full_dispatch>
+                        <debug_print translate="label">
+                            <label>Print errors</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Print all errors on screen when debugging</comment>
+                        </debug_print>
+                        <debug_log translate="label">
+                            <label>Debug Log</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Log debugging to MAGENTO/var/log/magebridge.log</comment>
+                        </debug_log>
+                        <encryption translate="label">
+                            <label>Encryption</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>41</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment>Encrypt sensitive data using Mcrypt if SSL is not available</comment>
+                        </encryption>
+                        <api_detect translate="label">
+                            <label>Joomla! API auto-detect</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment>Disable to manually configure API-details below</comment>
+                        </api_detect>
+                        <api_url translate="label">
+                            <label>Joomla! API URL</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>51</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </api_url>
+                        <api_user translate="label">
+                            <label>Joomla! API user</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>52</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </api_user>
+                        <api_key translate="label">
+                            <label>Joomla! API key</label>
+                            <frontend_type>password</frontend_type>
+                            <sort_order>53</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </api_key>
+                    </fields>
+                </settings>
+            </groups>
+        </magebridge>
+    </sections>
+</config>
+

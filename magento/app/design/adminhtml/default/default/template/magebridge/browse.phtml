@@ -1,0 +1,82 @@
+<?php
+/**
+ * Magento Bridge
+ *
+ * @author Yireo
+ * @package Magento Bridge
+ * @copyright Copyright 2013
+ * @license Open Source License
+ * @link http://www.yireo.com
+ */
+
+$apiDetails = $this->getApiDetails();
+?>
+
+<div class="columns ">
+
+<div class="side-col" id="page:left">
+<?php echo $this->getMenu(); ?>
+</div>
+
+<div class="main-col" id="content">
+<div class="main-col-inner">
+
+<div class="content-header">
+<table cellspacing="0">
+	<tr>
+		<td style="width:100%;"><h3 class="icon-head head-tag"><?php echo $this->getHeader('Joomla! API browse test'); ?></h3></td>
+	</tr>
+</table>
+</div>
+
+<div class="entry-edit">
+    <div class="entry-edit-head">
+        <h4 class="icon-head head-edit-form fieldset-legend"><?php echo $this->__('API settings'); ?></h4>
+    </div>
+
+    <div class="fieldset ">
+        <table cellspacing="5" class="form-list">
+            <tr>
+                <td width="150"><strong><?php echo $this->__('Scope'); ?></strong></td>
+                <td><?php echo $apiDetails['scope_name']; ?></td>
+            </tr>
+            <tr>
+                <td width="150"><strong><?php echo $this->__('API URL'); ?></strong></td>
+                <td><?php echo $apiDetails['api_url']; ?></td>
+            </tr>
+            <tr>
+                <td width="150"><strong><?php echo $this->__('API Host'); ?></strong></td>
+                <td>
+                    <?php echo $apiDetails['api_host']; ?>
+                    &nbsp; [<?php echo gethostbyname($apiDetails['api_host']); ?>]
+                </td>
+            </tr>
+            <tr>
+                <td width="150"><strong><?php echo $this->__('API username'); ?></strong></td>
+                <td><?php echo $apiDetails['api_user']; ?></td>
+            </tr>
+            <tr>
+                <td width="150"><strong><?php echo $this->__('API password'); ?></strong></td>
+                <td><?php echo $apiDetails['api_key']; ?></td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<div class="entry-edit">
+    <div class="entry-edit-head">
+        <h4 class="icon-head head-edit-form fieldset-legend"><?php echo $this->__('API result'); ?></h4>
+    </div>
+
+    <div class="fieldset ">
+        <table cellspacing="5" class="form-list">
+            <tr>
+                <td><?php echo $apiDetails['api_result']; ?></td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+</div>
+</div>
+

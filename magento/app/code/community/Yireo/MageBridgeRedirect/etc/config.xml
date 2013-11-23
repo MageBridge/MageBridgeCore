@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * MageBridgeRedirect
+ *
+ * @author Yireo
+ * @package MageBridge
+ * @copyright Copyright 2013
+ * @license Open Source License
+ * @link http://www.yireo.com
+ */
+-->
+<config>
+
+    <modules>
+        <Yireo_MageBridgeRedirect>
+            <version>1.0.1</version>
+        </Yireo_MageBridgeRedirect>
+    </modules>
+
+    <global>
+
+        <helpers>
+            <magebridgeredirect>
+                <class>Yireo_MageBridgeRedirect_Helper</class>
+            </magebridgeredirect>
+        </helpers>
+
+        <models>
+            <magebridgeredirect>
+                <class>Yireo_MageBridgeRedirect_Model</class>
+            </magebridgeredirect>
+        </models>
+    </global>
+
+    <frontend>
+        <events>
+            <controller_action_predispatch>
+                <observers>
+                    <magebridgeredirect_controller_action_predispatch>
+                        <type>singleton</type>
+                        <class>magebridgeredirect/observer</class>
+                        <method>controllerActionPredispatch</method>
+                    </magebridgeredirect_controller_action_predispatch>
+                </observers>
+            </controller_action_predispatch>
+        </events>
+    </frontend>
+</config>
