@@ -71,8 +71,8 @@ class MageBridgeModelCacheBlock extends MageBridgeModelCache
      */
     public function store($data)
     {
-        $data = MageBridgeModelBridgeBlock::decode($data);
-        $data = MageBridgeModelBridgeBlock::filterHtml($data);
+        $data = MageBridgeModelBridgeBlock::getInstance()->decode($data);
+        $data = MageBridgeModelBridgeBlock::getInstance()->filterHtml($data);
         return parent::store($data);
     }
 }
