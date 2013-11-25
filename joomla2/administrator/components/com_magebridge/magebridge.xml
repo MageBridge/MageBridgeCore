@@ -81,7 +81,6 @@
             <filename>index.html</filename>
             <filename>magebridge.php</filename>
             <filename>script.magebridge.php</filename>
-            <filename>upgrade.php</filename>
             <filename>view.php</filename>
             <folder>controllers</folder>
             <folder>elements</folder>
