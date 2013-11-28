@@ -71,6 +71,7 @@ class modMageBridgeProductsHelper extends MageBridgeModuleHelper
     {
         $products = parent::getCall('getAPI', 'magebridge_product.list', modMageBridgeProductsHelper::getArguments($params));
         $category = parent::getCall('getAPI', 'catalog_category.info', $params->get('category_id'));
+        $form_key = MageBridgeModelBridge::getInstance()->getMageConfig('form_key');
 
         if (!empty($products)) {
             foreach ($products as $index => $product) {
@@ -83,7 +84,10 @@ class modMageBridgeProductsHelper extends MageBridgeModuleHelper
                 } elseif (empty($product['url'])) {
                     $product['url'] = MageBridgeUrlHelper::route($product['url_key']);
                 }
-                $product['addtocart_url'] = MageBridgeUrlHelper::route('checkout/cart/add/product/'.$product['product_id'].'/');
+
+                $addtocart_url = 'checkout/cart/add/product/'.$product['product_id'].'/';
+                if(!empty($form_key)) $addtocart_url .= 'form_key/'.$form_key.'/';
+                $product['addtocart_url'] = MageBridgeUrlHelper::route($addtocart_url);
 
                 // Create labels
                 $product['addtocart_label'] = JText::sprintf($params->get('addtocart', 'MOD_MAGEBRIDGE_PRODUCTS_ADDTOCART'), $product['label']);

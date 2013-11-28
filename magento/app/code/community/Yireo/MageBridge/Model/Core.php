@@ -671,6 +671,7 @@ class Yireo_MageBridge_Model_Core
             'store_code' => Mage::app()->getStore()->getCode(),
             'base_js_url' => Mage::getBaseUrl('js'),
             'base_media_url' => Mage::getBaseUrl('media'),
+            'form_key' => Mage::getSingleton('core/session')->getFormKey(),
             'root_template' => $this->getRootTemplate(),
             'root_category' => Mage::app()->getStore($this->getStore())->getRootCategoryId(),
             'current_category_id' => Mage::helper('magebridge/core')->getCurrentCategoryId(),
