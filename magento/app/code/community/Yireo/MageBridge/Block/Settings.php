@@ -139,14 +139,16 @@ class Yireo_MageBridge_Block_Settings extends Mage_Core_Block_Template
                 ))
         );
 
-        $this->setChild('resetusermap_button',
-            $this->getLayout()->createBlock('adminhtml/widget_button')
-                ->setData(array(
-                    'label' => Mage::helper('catalog')->__('Reset Usermap'),
-                    'onclick' => 'magebridgeForm.submit(\''.$this->getResetUsermapUrl().'\')',
-                    'class' => 'delete'
-                ))
-        );
+        if(Mage::helper('magebridge')->useJoomlaMap()) {
+            $this->setChild('resetusermap_button',
+                $this->getLayout()->createBlock('adminhtml/widget_button')
+                    ->setData(array(
+                        'label' => Mage::helper('catalog')->__('Reset Usermap'),
+                        'onclick' => 'magebridgeForm.submit(\''.$this->getResetUsermapUrl().'\')',
+                        'class' => 'delete'
+                    ))
+            );
+        }
 
         $this->setChild('resetapi_button',
             $this->getLayout()->createBlock('adminhtml/widget_button')

@@ -23,6 +23,11 @@ class Yireo_MageBridge_Helper_User extends Mage_Core_Helper_Abstract
      */
     public function getUserMap($select = null)
     {
+        // Check whether mapping is enabled
+        if(Mage::helper('magebridge')->useJoomlaMap() == false) {
+            return null;
+        }
+
         // Load primary key
         if(is_int($select)) {
             $map = Mage::getModel('magebridge/customer_joomla');
@@ -60,6 +65,11 @@ class Yireo_MageBridge_Helper_User extends Mage_Core_Helper_Abstract
      */
     public function saveUserMap($data)
     {
+        // Check whether mapping is enabled
+        if(Mage::helper('magebridge')->useJoomlaMap() == false) {
+            return false;
+        }
+
         // Try to fetch the current mapping
         $map = Mage::getModel('magebridge/customer_joomla');
         if(isset($data['customer_id']) && is_numeric($data['customer_id'])) {
@@ -89,6 +99,11 @@ class Yireo_MageBridge_Helper_User extends Mage_Core_Helper_Abstract
      */
     public function getCurrentJoomlaId()
     {
+        // Check whether mapping is enabled
+        if(Mage::helper('magebridge')->useJoomlaMap() == false) {
+            return 0;
+        }
+
         // Load the current customer
         $customer = Mage::getModel('customer/session')->getCustomer();
 

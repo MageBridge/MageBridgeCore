@@ -90,6 +90,23 @@ class Yireo_MageBridge_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     /*
+     * Helper-method to check whether Joomla! mapping is enabled
+     *
+     * @access public
+     * @param null
+     * @return bool
+     */
+    public function useJoomlaMap()
+    {
+        $joomla_map = Mage::getStoreConfig('magebridge/settings/joomla_map');
+        if(empty($joomla_map)) {
+            return false;
+        }
+
+        return (bool)$joomla_auth;
+    }
+
+    /*
      * Helper-method to get the current license key
      *
      * @access public
