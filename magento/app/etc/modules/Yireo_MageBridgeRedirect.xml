@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * MageBridgeRedirect-module for Magento 
+ *
+ * @package     Yireo_MageBridgeRedirect
+ * @author      Yireo (http://www.yireo.com/)
+ * @copyright   Copyright (c) 2012 Yireo (http://www.yireo.com/)
+ * @license     Open Software License
+ */
+-->
+<config>
+    <modules>
+        <Yireo_MageBridgeRedirect>
+            <active>true</active>
+            <codePool>community</codePool>
+        </Yireo_MageBridgeRedirect>
+    </modules>
+</config>
