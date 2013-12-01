@@ -103,7 +103,7 @@ class Yireo_MageBridge_Helper_Data extends Mage_Core_Helper_Abstract
             return false;
         }
 
-        return (bool)$joomla_auth;
+        return (bool)$joomla_map;
     }
 
     /*
