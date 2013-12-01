@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Joomla! API
+ *
+ * @author Yireo
+ * @package JoomlaApi
+ * @copyright Copyright 2013
+ * @license Open Source License v3
+ * @link http://www.yireo.com
+ */
+-->
+<config>
+
+    <modules>
+        <Yireo_JoomlaApi>
+            <version>1.0.1</version>
+        </Yireo_JoomlaApi>
+    </modules>
+
+    <global>
+        <helpers>
+            <joomlaapi>
+                <class>Yireo_JoomlaApi_Helper</class>
+            </joomlaapi>
+        </helpers>
+
+        <models>
+            <joomlaapi>
+                <class>Yireo_JoomlaApi_Model</class>
+            </joomlaapi>
+        </models>
+
+        <events>
+            <controller_action_predispatch>
+                <observers>
+                    <joomlaapi_controller_action_predispatch>
+                        <type>singleton</type>
+                        <class>Yireo_JoomlaApi_Model_Observer</class>
+                        <method>controllerActionPredispatch</method>
+                    </joomlaapi_controller_action_predispatch>
+                </observers>
+            </controller_action_predispatch>
+        </events>
+    </global>
+
+    <adminhtml>
+        <translate>
+            <modules>
+                <Yireo_JoomlaApi>
+                    <files>
+                        <default>Yireo_JoomlaApi.csv</default>
+                    </files>
+                </Yireo_JoomlaApi>
+            </modules>
+        </translate>
+        <acl>
+            <resources>
+                <admin>
+                    <children>
+                        <system>
+                            <children>
+                                <config>
+                                    <children>
+                                        <joomlaapi translate="title" module="joomlaapi">
+                                            <title>JoomlaApi Settings</title>
+                                        </joomlaapi>
+                                    </children>
+                                </config>
+                            </children>
+                        </system>
+                    </children>
+                </admin>
+            </resources>
+        </acl>
+    </adminhtml>
+
+    <default>
+        <joomlaapi>
+            <settings>
+                <path></path>
+            </settings>
+        </joomlaapi>
+    </default>
+
+</config>

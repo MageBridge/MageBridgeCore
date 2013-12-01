@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * JoomlaApi
+ *
+ * @author Yireo
+ * @package JoomlaApi
+ * @copyright Copyright 2013
+ * @license Open Source License v3
+ * @link http://www.yireo.com
+ */
+-->
+<config>
+    <sections>
+        <joomlaapi translate="label" module="joomlaapi">
+            <label>JoomlaApi</label>
+            <tab>service</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>342</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <settings translate="label">
+                    <label>Settings</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>1</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>0</show_in_website>
+                    <show_in_store>0</show_in_store>
+                    <fields>
+                        <path translate="label">
+                            <label>Joomla! Root Path</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>51</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </path>
+                    </fields>
+                </settings>
+            </groups>
+        </joomlaapi>
+    </sections>
+</config>
+
