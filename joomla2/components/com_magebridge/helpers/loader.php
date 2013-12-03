@@ -15,6 +15,13 @@ defined('_JEXEC') or die();
 // Include the original Joomla! loader
 require_once(JPATH_LIBRARIES.'/loader.php');
 
+// Also include the Yireo loader
+if(file_exists(JPATH_LIBRARIES.'/yireo/loader.php')) {
+    require_once(JPATH_LIBRARIES.'/yireo/loader.php');
+} else {
+    require_once JPATH_ADMINISTRATOR.'/components/com_magebridge/libraries/loader.php';
+}
+
 // If the Joomla! autoloader exists, add it to SPL
 if (function_exists('__autoload')) {
     spl_autoload_register('__autoload');
@@ -121,5 +128,3 @@ class MageBridge_Autoload
     }
 }
 
-// Also include the backend loader
-require_once JPATH_ADMINISTRATOR.'/components/com_magebridge/libraries/loader.php';
