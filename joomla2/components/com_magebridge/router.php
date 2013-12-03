@@ -97,7 +97,6 @@ function MagebridgeBuildRoute(&$query)
         if (!empty($current_item)) {
 
             // Get data from the current Menu-Item
-            require_once JPATH_ADMINISTRATOR.'/components/com_magebridge/libraries/helper.php';
             $cparams = YireoHelper::toRegistry($current_item->params);
             $cquery = $current_item->query;
 
