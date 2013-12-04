@@ -88,7 +88,8 @@ class MageBridgeDebugHelper
             // Add information on bridge-segments
             if (MagebridgeModelConfig::load('debug_bar_parts')) {
                 $i = 0;
-                foreach ($register->getRegister() as $segment) {
+                $segments = $register->getRegister();
+                foreach ($segments as $segment) {
                     if (isset($segment['status']) && $segment['status'] == 1) {
                         switch ($segment['type']) {
                             case 'breadcrumbs': 
