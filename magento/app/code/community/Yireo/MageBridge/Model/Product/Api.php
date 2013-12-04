@@ -230,6 +230,10 @@ class Yireo_MageBridge_Model_Product_Api extends Mage_Catalog_Model_Api_Resource
                 case 'popular':
                     $collection->setOrder('ordered_qty', 'desc');
                     break;
+                case 'featured':
+                    $collection->addAttributeToFilter('feature', 1);
+                    $collection->setOrder('created_at', 'desc');
+                    break;
                 case 'random':
                     $collection->getSelect()->order('rand()');
                     break;
