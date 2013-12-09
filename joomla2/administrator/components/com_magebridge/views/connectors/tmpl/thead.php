@@ -12,14 +12,14 @@
 defined('_JEXEC') or die('Restricted access');
 ?>
 <th width="150" class="title">
-    <?php echo JHTML::_('grid.sort',  'Title', 'p.title', $this->lists['order_Dir'], $this->lists['order'] ); ?>
+    <?php echo JHTML::_('grid.sort',  'Title', 'connector.title', $this->lists['order_Dir'], $this->lists['order'] ); ?>
 </th>
 <th width="80" class="title">
-    <?php echo JHTML::_('grid.sort',  'Name', 'p.name', $this->lists['order_Dir'], $this->lists['order'] ); ?>
+    <?php echo JHTML::_('grid.sort',  'Name', 'connector.name', $this->lists['order_Dir'], $this->lists['order'] ); ?>
 </th>
 <th width="80" class="title">
-    <?php echo JHTML::_('grid.sort',  'Connector Type', 'p.type', $this->lists['order_Dir'], $this->lists['order'] ); ?>
+    <?php echo JHTML::_('grid.sort',  'Connector Type', 'connector.type', $this->lists['order_Dir'], $this->lists['order'] ); ?>
 </th>
 <th width="80" nowrap="nowrap">
-    <?php echo JHTML::_('grid.sort',  'Filename', 'p.filename', $this->lists['order_Dir'], $this->lists['order'] ); ?>
+    <?php echo JText::_('Filename'); ?>
 </th>
