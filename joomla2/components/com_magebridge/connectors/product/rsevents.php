@@ -27,7 +27,7 @@ class MageBridgeConnectorProductRSEvents extends MageBridgeConnectorProduct
      */
     public function isEnabled()
     {
-        if($this->checkComponent('com_rsevents') || $this->checkComponent('com_rseventspro')) {
+        if($this->checkComponent('com_rsevents')) {
             return true;
         }
         return false;
