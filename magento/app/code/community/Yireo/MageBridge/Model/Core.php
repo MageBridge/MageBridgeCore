@@ -248,7 +248,23 @@ class Yireo_MageBridge_Model_Core
                 // Rewrite specific values
                 if($this->getMetaData('joomla_conf_lifetime') > 0) $config_values['web/cookie/cookie_lifetime'] = $this->getMetaData('joomla_conf_lifetime');
                 if($this->getMetaData('customer_group') > 0) $config_values['customer/create_account/default_group'] = $this->getMetaData('customer_group');
-                if(strlen($this->getMetaData('theme')) > 0) $config_values['design/theme/default'] = $this->getMetaData('theme');
+                if(strlen($this->getMetaData('theme')) > 0) {
+                    $theme = $this->getMetaData('theme');
+                    if(preg_match('/([a-zA-Z0-9\-\_]+)\/([a-zA-Z0-9\-\_]+)/', $theme, $match)) {
+                        $config_values['design/package/name'] = $match[1];
+                        $config_values['design/theme/default'] = $match[2];
+                        $config_values['design/theme/skin'] = $match[2];
+                        $config_values['design/theme/locale'] = $match[2];
+                        $config_values['design/theme/layout'] = $match[2];
+                        $config_values['design/theme/template'] = $match[2];
+                    } else {
+                        $config_values['design/theme/default'] = $theme;
+                        $config_values['design/theme/skin'] = $theme;
+                        $config_values['design/theme/locale'] = $theme;
+                        $config_values['design/theme/layout'] = $theme;
+                        $config_values['design/theme/template'] = $theme;
+                    }
+                }
 
                 // Rewrite these values for all stores
                 foreach($config_values as $path => $value) {
