@@ -41,13 +41,13 @@ class MageBridgeConnectorProductRSEventsPro extends MageBridgeConnectorProduct
      */
     public function getFormField($value = null)
     {
-        $query = "SELECT `EventName` AS `title`, `IdEvent` AS `value` FROM `#__rseventspro_events`";
+        $query = "SELECT `name` AS `title`, `id` AS `value` FROM `#__rseventspro_events`";
 
         $db = JFactory::getDBO();
         $db->setQuery($query);
         $options = $db->loadObjectList();
         if (!empty($options)) {
-            return JHTML::_('select.genericlist', $options, 'rsevents_event', null, 'value', 'title', $value);
+            return JHTML::_('select.genericlist', $options, 'rseventpros_event', null, 'value', 'title', $value);
         } else {
             return JText::_('No events found');
         }
@@ -61,8 +61,8 @@ class MageBridgeConnectorProductRSEventsPro extends MageBridgeConnectorProduct
      */
     public function getFormPost($post = array())
     {
-        if (!empty($post['rsevents_event'])) {
-            return $post['rsevents_event'];
+        if (!empty($post['rseventpros_event'])) {
+            return $post['rseventpros_event'];
         }
         return null;
     }
@@ -79,8 +79,28 @@ class MageBridgeConnectorProductRSEventsPro extends MageBridgeConnectorProduct
     {
         $db = JFactory::getDBO();
 
+        // Check for a valid user
+        $query = 'SELECT `id` FROM `#__rseventspro_users` WHERE `ide`='.(int)$event_id.' AND `idu`='.(int)$user->id.' LIMIT 1';
+        $db->setQuery($query);
+        $user_event_id = $db->loadResult();
+
+        // Create the user if needed
+        if(empty($user_id)) {
+            $query_values = array();
+            $query_values[] = '`idu`='.(int)$user->id;
+            $query_values[] = '`ide`='.(int)$event_id;
+            $query_values[] = '`name`='.(int)$user->name;
+            $query_values[] = '`email`='.(int)$user->email;
+            $query_values[] = '`date`='.date('Y-m-d H:i:s');
+            $query_values[] = '`state`=1';
+            $query = 'INSERT INTO `#__rseventspro_users` SET '.implode(',', $query_values);
+            $db->setQuery($query);
+            $db->query();
+            $user_event_id = $db->insertId();
+        }
+
         // See if the user is already subscribed
-        $query = 'SELECT * FROM `#__rseventspro_user_tickets` WHERE `IdUser`='.(int)$user->id.' AND `IdEvent`='.(int)$event_id;
+        $query = 'SELECT * FROM `#__rseventspro_user_tickets` WHERE `ide`='.(int)$user_event_id;
         $db->setQuery($query);
         $rows = $db->loadObjectList();
 
@@ -88,17 +108,8 @@ class MageBridgeConnectorProductRSEventsPro extends MageBridgeConnectorProduct
         if (empty($rows)) {
 
             $values = array(
-                'IdEvent' => (int)$event_id,
-                'IdUser' => (int)$user->id,
-                'FirstName' => $user->name,
-                'LastName' => '-',
-                'Email' => $user->email,
-                'SubscriptionState' => 0,
-                'SubscriptionTotalFee' => 0,
-                'SubscriptionDate' => time(),
-                'ValidationDate' => 0,
-                'ConfirmationDate' => 0,
-                'SubscriptionFormId' => 1,
+                'ids' => (int)$user_event_id,
+                'quantity' => 1,
             );
     
             $query_values = array();
@@ -106,7 +117,7 @@ class MageBridgeConnectorProductRSEventsPro extends MageBridgeConnectorProduct
                 $query_values[] = "`$name`=".$db->Quote($value);
             }
 
-            $query = 'INSERT INTO `#__rsevents_user_tickets` SET '.implode(',', $query_values);
+            $query = 'INSERT INTO `#__rseventspro_user_tickets` SET '.implode(',', $query_values);
             $db->setQuery($query);
             $db->query();
         }
@@ -121,15 +132,24 @@ class MageBridgeConnectorProductRSEventsPro extends MageBridgeConnectorProduct
      * @param JUser $user
      * @return bool
      */
-    public function onReverse($value = null, $user = null)
+    public function onReverse($event_id = null, $user = null)
     {
         $db = JFactory::getDBO();
 
-        // See if the user is already there
-        $query = 'DELETE FROM `#__rsevents_subscriptions` WHERE `Email`='.$db->Quote($user->email).' AND `IdEvent`='.(int)$value;
+        // Check for a valid user
+        $query = 'SELECT `id` FROM `#__rseventspro_users` WHERE `ide`='.(int)$event_id.' AND `idu`='.(int)$user->id.' LIMIT 1';
+        $db->setQuery($query);
+        $user_event_id = $db->loadResult();
+
+        // Delete the user-record
+        $query = 'DELETE FROM `#__rseventspro_users` WHERE `ide`='.(int)$event_id.' AND `idu`='.(int)$user->id;
         $db->setQuery($query);
         $db->query();
 
+        // Delete the ticket-record
+        $query = 'DELETE FROM `#__rseventspro_user_tickets` WHERE `id`='.(int)$user_event_id;
+        $db->setQuery($query);
+        $db->query();
         return true;
     }
 }
