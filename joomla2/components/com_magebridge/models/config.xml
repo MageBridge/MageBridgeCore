@@ -107,6 +107,7 @@
 
 		    <field type="spacer" name="theming_other" class="fieldgroup" />
 		    <field name="template" type="template" />
+		    <field name="magento_theme" type="theme" />
 		    <field name="mobile_joomla_theme" type="template" />
 		    <field name="mobile_magento_theme" type="theme" />
 		    <field name="module_chrome" type="text" />
