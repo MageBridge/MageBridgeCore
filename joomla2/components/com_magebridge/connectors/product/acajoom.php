@@ -77,7 +77,7 @@ class MageBridgeConnectorProductAcajoom extends MageBridgeConnectorProduct
         $db = JFactory::getDBO();
 
         // See if the user is already there
-        $query = 'SELECT id FROM `#__acajoom_subscribers` WHERE `email`='.$db->Quote($user->email).' LIMIT 1';
+        $query = 'SELECT `id` FROM `#__acajoom_subscribers` WHERE `email`='.$db->Quote($user->email).' LIMIT 1';
         $db->setQuery($query);
         $subscriber_id = $db->loadResult();
 
