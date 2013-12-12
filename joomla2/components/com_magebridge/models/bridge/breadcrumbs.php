@@ -96,15 +96,28 @@ class MageBridgeModelBridgeBreadcrumbs extends MageBridgeModelBridgeSegment
             // Remove the last entry because it always is inaccurate
             @array_pop($pathway_items);
 
-            // Add the root-item to this pathway
-            $pathway_item = (object)null;
+            // Construct the root-item to this pathway
+            $root_pathway_item = (object)null;
             if(isset($rootItem->name)) {
-                $pathway_item->name = JText::_($rootItem->name);
+                $root_pathway_item->name = JText::_($rootItem->name);
             } else {
-                $pathway_item->name = JText::_($rootItem->title);
+                $root_pathway_item->name = JText::_($rootItem->title);
             }
-            $pathway_item->link = JRoute::_($rootItem->link);
-            $pathway_items[] = $pathway_item;
+            $root_pathway_item->link = preg_replace('/\/$/', '', JURI::base()).JRoute::_($rootItem->link);
+
+            // Scan the current items to see whether there is a match or not
+            $match = false;
+            foreach($pathway_items as $pathway_item) {
+                if($pathway_item->link == $root_pathway_item->link) {
+                    $match = true;
+                    break;
+                }
+            }
+
+            // Only add the root, if there is no match yet
+            if($match == false) {
+                $pathway_items[] = $pathway_item;
+            }
 
         // Actions when we do not have a root-item
         } else {
