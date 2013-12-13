@@ -49,6 +49,7 @@ class Yireo_MageBridge_MagebridgeController extends Mage_Adminhtml_Controller_Ac
             ->_addBreadcrumb(Mage::helper('adminhtml')->__('MageBridge'), Mage::helper('adminhtml')->__('MageBridge'))
         ;
 
+        $this->prependTitle('MageBridge');
         return $this;
     }
 
@@ -338,5 +339,19 @@ class Yireo_MageBridge_MagebridgeController extends Mage_Adminhtml_Controller_Ac
     {
         $this->loadLayout(false);
         $this->renderLayout();
+    }
+
+    /*
+     * Method to prepend a page-title
+     *
+     * @access public
+     * @param $subtitle string
+     * @return null
+     */
+    protected function prependTitle($subtitle)
+    {
+        $headBlock = $this->getLayout()->getBlock('head');
+        $title = $headBlock->getTitle();
+        $headBlock->setTitle($subtitle.' - '.$title);
     }
 }
