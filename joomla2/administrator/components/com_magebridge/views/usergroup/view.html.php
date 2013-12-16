@@ -44,6 +44,11 @@ class MageBridgeViewUsergroup extends MageBridgeView
         $fields['ordering'] = $this->getFieldOrdering($this->item);
         $fields['published'] = JHTML::_('select.booleanlist',  'published', 'class="inputbox"', $this->item->published );
 
+        // Initialize parameters
+        $file = JPATH_ADMINISTRATOR.'/components/com_magebridge/models/usergroup.xml';
+        $form = JForm::getInstance('params', $file);
+	    $this->assignRef('params_form', $form);
+
 		$this->assignRef('fields', $fields);
 		parent::display($tpl);
 	}

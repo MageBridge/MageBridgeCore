@@ -38,6 +38,14 @@ class JFormFieldUsergroup extends JFormFieldAbstract
         $value = $this->value;
 
         $usergroups = MageBridgeFormHelper::getUsergroupOptions();
-        return JHTML::_('select.genericlist', $usergroups, $fieldName, null, 'value', 'text', $value);
+
+        $html = null;
+        $multiple = (string)$this->element['multiple'];
+        if(!empty($multiple)) {
+            $size = count($usergroups);
+            $html = 'multiple="multiple" size="'.$size.'"';
+        }
+
+        return JHTML::_('select.genericlist', $usergroups, $fieldName, $html, 'value', 'text', $value);
     }
 }

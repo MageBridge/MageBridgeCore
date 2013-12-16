@@ -78,15 +78,22 @@ class MageBridgeUserHelper
         }
 
         if (!empty($rows)) {
-            if (MageBridgeHelper::isJoomla15()) {
-                $usergroups = (isset($user['gid'])) ? array($user['gid']) : array();
-            } else {
-                $usergroups = (isset($user['groups'])) ? $user['groups'] : array();
-            }
+            $usergroups = (isset($user['groups'])) ? $user['groups'] : array();
 
             foreach ($rows as $row) {
                 if (in_array($row->joomla_group, $usergroups)) {
                     return $row->magento_group;
+                }
+                if (!empty($row->params)) {
+                    $params = YireoHelper::toRegistry($row->params);
+                    $paramUsergroups = $params->get('usergroup');
+                    if (!empty($paramUsergroups)) {
+                        foreach($paramUsergroups as $paramUsergroup) {
+                            if (in_array($paramUsergroup, $usergroups)) {
+                                return $row->magento_group;
+                            }
+                        }
+                    }
                 }
             }
         }

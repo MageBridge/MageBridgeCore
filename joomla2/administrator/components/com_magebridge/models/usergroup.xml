@@ -2,7 +2,7 @@
 <form>
     <fields name="params" addfieldpath="/administrator/components/com_magebridge/fields/">
         <fieldset name="params">
-		    <field name="usergroup" type="usergroup" label="COM_MAGEBRIDGE_" description="" />
+		    <field name="usergroup" type="usergroup" multiple="multiple" label="COM_MAGEBRIDGE_USERGROUP_PARAM_USERGROUP" description="COM_MAGEBRIDGE_USERGROUP_PARAM_USERGROUP_DESC" />
         </fieldset>
     </fields>
 </form>

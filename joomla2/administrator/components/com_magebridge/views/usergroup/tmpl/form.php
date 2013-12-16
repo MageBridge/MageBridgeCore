@@ -81,12 +81,12 @@ defined('_JEXEC') or die('Restricted access');
         </table>
     </fieldset>
 </td>
-<!--<td width="50%" valign="top">
+<td width="50%" valign="top">
     <fieldset class="adminform">
         <legend><?php echo JText::_( 'Parameters (optional)' ); ?></legend>
-        <?php //$this->loadTemplate('params'); ?>
+        <?php echo $this->loadTemplate('params'); ?>
     </fieldset>
-</td>-->
+</td>
 </tr>
 </tbody>
 </table>
