@@ -529,16 +529,25 @@ class MageBridgeModelProxy
 
         // Handle cookies
         if(MagebridgeModelConfig::load('bridge_cookie_all') == 1) {
-            preg_match_all('/Set-Cookie: ([a-zA-Z0-9\-\_\.]+)\=([a-zA-Z0-9\_\-\%]{12,64})(.*)/', $this->_head['headers'], $matches);
+            preg_match_all('/Set-Cookie: ([a-zA-Z0-9\-\_\.]+)\=(.*)/', $this->_head['headers'], $matches);
         } else {
-            preg_match_all('/Set-Cookie: ('.implode('|',$cookies).')\=([a-zA-Z0-9\_\-\%]{12,64})(.*)/', $this->_head['headers'], $matches);
+            preg_match_all('/Set-Cookie: ('.implode('|',$cookies).')\=(.*)/', $this->_head['headers'], $matches);
         }
+
+        // Loop through the matches
         if (!empty($matches)) {
             foreach ($matches[0] as $index => $match) {
 
-                // Set the cookie
+                // Extract the cookie-information
                 $cookieName = $matches[1][$index];
                 $cookieValue = $matches[2][$index];
+
+                // Strip the meta-data from the cookie
+                if(preg_match('/^([^\;]+)\;(.*)/', $cookieValue, $cookieValueMatch)) {
+                    $cookieValue = $cookieValueMatch[1];
+                }
+
+                // Set the cookie
                 if (!headers_sent()) {
                     if ($cookieName == 'persistent_shopping_cart' && preg_match('/expires=([^\;]+)/', $matches[3][$index], $paramsMatch)) {
                         $expires = strtotime($paramsMatch[1]);
