@@ -151,6 +151,7 @@ class MageBridgeModelProxy
             // Increase the counter to make sure endless redirects don't happen
             $this->_count++;
 
+            //MageBridgeModelDebug::getInstance()->trace( 'Proxy headers', $this->_head );
             //MageBridgeModelDebug::getInstance()->trace( 'Proxy raw response', $raw );
             //MageBridgeModelDebug::getInstance()->trace( 'Proxy decoded response', $decoded );
 
