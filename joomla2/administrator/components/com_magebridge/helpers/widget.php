@@ -38,6 +38,10 @@ class MageBridgeWidgetHelper
                 $function = 'getCmspages';
                 break;
 
+            case 'customergroup':
+                $function = 'getCustomergroups';
+                break;
+
             case 'theme':
                 $function = 'getThemes';
                 break;
@@ -82,6 +86,17 @@ class MageBridgeWidgetHelper
     static public function getCmspages()
     {
         return self::getApiData('magebridge_cms.list');
+    }
+
+    /*
+     * Get a list of Magento customer-groups from the API
+     *
+     * @param null
+     * @return array
+     */
+    static public function getCustomergroups()
+    {
+        return self::getApiData('customer_group.list');
     }
 
     /*

@@ -41,8 +41,7 @@ class JFormFieldCustomerGroup extends JFormFieldAbstract
         if (MagebridgeModelConfig::load('api_widgets') == true) {
 
             // Fetch the widget data from the API
-            $cache = JFactory::getCache('com_magebridge.admin');
-            $options = $cache->call( array( 'JFormFieldCustomerGroup', 'getResult' ));
+            $options = MageBridgeWidgetHelper::getWidgetData('customergroup');
 
             // Parse the result into an HTML form-field
             if (!empty($options) && is_array($options)) {
@@ -83,27 +82,5 @@ class JFormFieldCustomerGroup extends JFormFieldAbstract
 
         // Return a simple input-field by default
         return '<input type="text" name="'.$name.'" value="'.$value.'" />';
-    }
-
-    /*
-     * Helper-method to get a list of customer-groups from the API
-     *
-     * @param null
-     * @return array
-     */
-    static public function getResult()
-    {
-        $bridge = MageBridgeModelBridge::getInstance();
-        $result = $bridge->getAPI('customer_group.list');
-        if (empty($result)) {
-
-            // Register this request
-            $register = MageBridgeModelRegister::getInstance();
-            $register->add('api', 'customer_group.list');
-
-            // Send the request to the bridge
-            $result = $bridge->getAPI('customer_group.list');
-        }
-        return $result;
     }
 }

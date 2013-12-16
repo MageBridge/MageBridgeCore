@@ -35,4 +35,8 @@ class MageBridgeViewUsergroups extends YireoViewList
 
 		parent::display($tpl);
 	}
+
+    public function getUsergroupLabel()
+    {
+    }
 }
