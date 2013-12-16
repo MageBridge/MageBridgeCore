@@ -4,7 +4,7 @@
  *
  * @author Yireo (info@yireo.com)
  * @package MageBridge
- * @copyright Copyright 2012
+ * @copyright Copyright 2013
  * @license GNU Public License
  * @link http://www.yireo.com
  */
@@ -105,10 +105,15 @@ class modMageBridgeMenuHelper extends MageBridgeModuleHelper
      * @param int $endLevel
      * @return mixed
      */
-    static public function parseTree($tree, $endLevel = 99 ) 
+    static public function parseTree($tree, $startLevel = 0, $endLevel = 99)
     {
+        $current_category_id = modMageBridgeMenuHelper::getCurrentCategoryId();
+        $current_category_path = modMageBridgeMenuHelper::getCurrentCategoryPath();
+
         if (is_array($tree) && count($tree) > 0) {
             foreach ($tree as $index => $item) {
+
+                $item['path'] = explode('/', $item['path']);
 
                 if (empty($item)) {
                     unset($tree[$index]);
@@ -127,7 +132,13 @@ class modMageBridgeMenuHelper extends MageBridgeModuleHelper
                     continue;
                 }
 
-                // Remove items from the wrong level
+                // Remove items from the wrong start-level
+                if ($startLevel > 0 && $item['level'] < $startLevel && !in_array($current_category_id, $item['path'])) {
+                    unset($tree[$index]);
+                    continue;
+                }
+
+                // Remove items from the wrong end-level
                 if ($item['level'] >= $endLevel) {
                     unset($tree[$index]);
                     continue;
@@ -135,12 +146,14 @@ class modMageBridgeMenuHelper extends MageBridgeModuleHelper
 
                 // Handle HTML-entities in the title
                 if (isset($item['name'])) {
+                    // @todo
                     $item['name'] = htmlspecialchars($item['name']);
+                    //$item['name'] = '['.$item['level'].'='.$startLevel.'] '.htmlspecialchars($item['name']);
                 }
 
                 // Parse the children-tree
                 if (!empty($item['children'])) {
-                    $item['children'] = modMageBridgeMenuHelper::parseTree($item['children'], $endLevel );
+                    $item['children'] = modMageBridgeMenuHelper::parseTree($item['children'], $startLevel, $endLevel);
                 } else {
                     $item['children'] = array();
                 }
@@ -172,15 +185,15 @@ class modMageBridgeMenuHelper extends MageBridgeModuleHelper
      */
     static public function getCssClass($params, $item, $level, $counter, $tree)
     {
-        $config = MageBridge::getBridge()->getMageConfig();
-        $current_category_id = (isset($config['current_category_id'])) ? $config['current_category_id'] : null;
-        $current_category_path = (isset($config['current_category_path'])) ? explode('/', $config['current_category_path']) : array();
+        $current_category_id = modMageBridgeMenuHelper::getCurrentCategoryId();
+        $current_category_path = modMageBridgeMenuHelper::getCurrentCategoryPath();
 
         $class = array();
 
         if (isset($item['entity_id'])) {
             if ($item['entity_id'] == $current_category_id) {
                 $class[] = 'current';
+                $class[] = 'active';
             } elseif (in_array($item['entity_id'], $current_category_path)) {
                 $class[] = 'active';
             }
@@ -189,10 +202,6 @@ class modMageBridgeMenuHelper extends MageBridgeModuleHelper
         if (isset($item['children_count']) && $item['children_count'] > 0) {
             $class[] = 'parent';
         }
-
-        //if (isset($item['product_count']) && $item['product_count'] > 0) {
-        //    $class[] = 'hasproducts';
-        //}
 
         if ($params->get('css_level', 0) == 1) {
             $class[] = 'level'.$level;
@@ -211,5 +220,39 @@ class modMageBridgeMenuHelper extends MageBridgeModuleHelper
         $class = array_unique($class);
         $class = implode(' ', $class);
         return $class;
+    }
+
+    /*
+     * Helper-method to return the current category ID
+     * 
+     * @access public
+     * @param null
+     * @return int
+     */
+    static public function getCurrentCategoryId()
+    {
+        static $current_category_id = false;
+        if($current_category_id == false) {
+            $config = MageBridge::getBridge()->getMageConfig();
+            $current_category_id = (isset($config['current_category_id'])) ? $config['current_category_id'] : 0;
+        }
+        return $current_category_id;
+    }
+
+    /*
+     * Helper-method to return the current category path
+     * 
+     * @access public
+     * @param null
+     * @return array
+     */
+    static public function getCurrentCategoryPath()
+    {
+        static $current_category_path = false;
+        if($current_category_path == false) {
+            $config = MageBridge::getBridge()->getMageConfig();
+            $current_category_path = (isset($config['current_category_path'])) ? explode('/', $config['current_category_path']) : array();
+        }
+        return $current_category_path;
     }
 }
