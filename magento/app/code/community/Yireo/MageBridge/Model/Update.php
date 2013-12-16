@@ -98,7 +98,6 @@ class Yireo_MageBridge_Model_Update extends Mage_Core_Model_Abstract
     {
         // Set the umask as for index.php
         $indexPermissions = substr(sprintf('%o', fileperms(Mage::getBaseDir().DS.'index.php')), -4);
-        //$indexPermissions = octdec($indexPermissions);
         @chmod(Mage::getBaseDir().DS.'js'.DS.'index.php', $indexPermissions);
         $umask = 666 - (int)$indexPermissions;
         $umask = str_pad($umask, 4, '0', STR_PAD_LEFT);
@@ -161,12 +160,12 @@ class Yireo_MageBridge_Model_Update extends Mage_Core_Model_Abstract
                 $zip->close();
 
                 if($rt == false) {
-                    $msg = 'ERROR: Failed to extra ZIP in '.$rootDir;
+                    $msg = 'ERROR: Failed to extract ZIP in '.$rootDir;
                     Mage::getSingleton('adminhtml/session')->addError($msg);
                     return $msg;
-                } else {
-                    @unlink($tmpfile);
                 }
+
+                @unlink($tmpfile);
 
             } else {
                 $msg = 'ERROR: Unable to open ZIP '.$tmpfile;
