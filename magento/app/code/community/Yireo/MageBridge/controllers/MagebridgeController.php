@@ -49,7 +49,7 @@ class Yireo_MageBridge_MagebridgeController extends Mage_Adminhtml_Controller_Ac
             ->_addBreadcrumb(Mage::helper('adminhtml')->__('MageBridge'), Mage::helper('adminhtml')->__('MageBridge'))
         ;
 
-        $this->prependTitle('MageBridge');
+        $this->prependTitle(array('MageBridge', 'CMS'));
         return $this;
     }
 
@@ -345,13 +345,14 @@ class Yireo_MageBridge_MagebridgeController extends Mage_Adminhtml_Controller_Ac
      * Method to prepend a page-title
      *
      * @access public
-     * @param $subtitle string
+     * @param $subtitles array
      * @return null
      */
-    protected function prependTitle($subtitle)
+    protected function prependTitle($subtitles)
     {
         $headBlock = $this->getLayout()->getBlock('head');
         $title = $headBlock->getTitle();
-        $headBlock->setTitle($subtitle.' - '.$title);
+        if(!is_array($subtitles)) $subtitles = array($subtitles);
+        $headBlock->setTitle(implode(' / ', $subtitles).' / '.$title);
     }
 }
