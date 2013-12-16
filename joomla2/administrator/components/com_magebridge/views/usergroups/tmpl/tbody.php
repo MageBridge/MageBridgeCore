@@ -15,8 +15,16 @@ defined('_JEXEC') or die('Restricted access');
     <a href="<?php echo $item->edit_link; ?>" title="<?php echo JText::_( 'Edit usergroup relation' ); ?>"><?php echo $item->description; ?></a>
 </td>
 <td>
-    <?php echo $item->joomla_group; ?>
+    <?php if(!empty($item->joomla_group_label)) : ?>
+    <?php echo $item->joomla_group_label; ?> (ID <?php echo $item->joomla_group; ?>)
+    <?php else: ?>
+    (ID <?php echo $item->joomla_group; ?>)
+    <?php endif; ?>
 </td>
 <td>
-    <?php echo $item->magento_group; ?>
+    <?php if(!empty($item->magento_group_label)) : ?>
+    <?php echo $item->magento_group_label; ?> (ID <?php echo $item->magento_group; ?>)
+    <?php else: ?>
+    (ID <?php echo $item->magento_group; ?>)
+    <?php endif; ?>
 </td>
