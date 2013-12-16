@@ -59,21 +59,7 @@ class MageBridgeWidgetHelper
      */
     static public function getWebsites()
     {
-        $bridge = MageBridgeModelBridge::getInstance();
-        $result = $bridge->getAPI('magebridge_websites.list');
-        if (empty($result)) {
-
-            // Register this request
-            $register = MageBridgeModelRegister::getInstance();
-            $register->add('api', 'magebridge_websites.list');
-
-            // Build the bridge
-            $bridge->build();
-
-            // Send the request to the bridge
-            $result = $bridge->getAPI('magebridge_websites.list');
-        }
-        return $result;
+        return self::getApiData('magebridge_websites.list');
     }
 
     /*
@@ -84,22 +70,7 @@ class MageBridgeWidgetHelper
      */
     static public function getStores()
     {
-        $bridge = MageBridgeModelBridge::getInstance();
-        $result = $bridge->getAPI('magebridge_storeviews.hierarchy');
-        if (empty($result)) {
-
-            // Register this request
-            $register = MageBridgeModelRegister::getInstance();
-            $id = $register->add('api', 'magebridge_storeviews.hierarchy');
-
-            // Build the bridge
-            $bridge->build();
-
-            // Send the request to the bridge
-            $result = $bridge->getAPI('magebridge_storeviews.hierarchy');
-        }
-
-        return $result;
+        return self::getApiData('magebridge_storeviews.hierarchy');
     }
 
     /*
@@ -110,22 +81,7 @@ class MageBridgeWidgetHelper
      */
     static public function getCmspages()
     {
-        $bridge = MageBridgeModelBridge::getInstance();
-        $result = $bridge->getAPI('magebridge_cms.list');
-        if (empty($result)) {
-
-            // Register this request
-            $register = MageBridgeModelRegister::getInstance();
-            $register->add('api', 'magebridge_cms.list');
-
-            // Build the bridge
-            $bridge->build();
-
-            // Send the request to the bridge
-            $result = $bridge->getAPI('magebridge_cms.list');
-        }
-
-        return $result;
+        return self::getApiData('magebridge_cms.list');
     }
 
     /*
@@ -136,13 +92,24 @@ class MageBridgeWidgetHelper
      */
     static public function getThemes()
     {
+        return self::getApiData('magebridge_theme.list');
+    }
+
+    /*
+     * Get an API-result
+     *
+     * @param null
+     * @return array
+     */
+    static public function getApiData($method)
+    {
         $bridge = MageBridgeModelBridge::getInstance();
-        $result = $bridge->getAPI('magebridge_theme.list');
+        $result = $bridge->getAPI($method);
         if (empty($result)) {
 
             // Register this request
             $register = MageBridgeModelRegister::getInstance();
-            $id = $register->add('api', 'magebridge_theme.list');
+            $id = $register->add('api', $method);
 
             // Build the bridge
             $bridge->build();
