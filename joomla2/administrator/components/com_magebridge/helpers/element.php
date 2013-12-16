@@ -43,8 +43,7 @@ class MageBridgeElementHelper
         $this->setLayout('category');
         
         // Set the data
-        $cache = JFactory::getCache('com_magebridge_admin');
-        $cache->setCaching(1);
+        $cache = JFactory::getCache('com_magebridge.admin');
         $tree = $cache->call( array( 'MageBridgeElementHelper', 'getCategoryTree' ));
         $categories = $this->getCategoryList($tree);
 

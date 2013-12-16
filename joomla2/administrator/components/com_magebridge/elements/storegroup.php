@@ -44,8 +44,7 @@ class JElementStoregroup extends JElement
         // Are the API widgets enabled?
         if (MagebridgeModelConfig::load('api_widgets') == true) {
 
-            $cache = JFactory::getCache('com_magebridge_admin');
-            $cache->setCaching(0);
+            $cache = JFactory::getCache('com_magebridge.admin');
             $options = $cache->call( array( 'JElementStoregroup', 'getResult' ));
 
             // Parse the result into an HTML form-field

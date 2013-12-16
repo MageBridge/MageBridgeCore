@@ -93,7 +93,7 @@ class MageBridgeController extends YireoController
         if ($this->_validate(false) == false) return false;
 
         // Clean the backend cache 
-        $cache = JFactory::getCache('com_magebridge_admin');
+        $cache = JFactory::getCache('com_magebridge.admin');
         $cache->clean();
         
         // Clean the frontend cache 
@@ -155,7 +155,7 @@ class MageBridgeController extends YireoController
         $model->updateAll($packages);
 
         // Clean the cache
-        $cache = JFactory::getCache('com_magebridge_admin');
+        $cache = JFactory::getCache('com_magebridge.admin');
         $cache->clean();
 
         // Redirect

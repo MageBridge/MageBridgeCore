@@ -99,7 +99,7 @@ class MageBridgeViewCommon extends MageBridgeView
         $this->setLayout('category');
         
         // Set the data
-        $cache = JFactory::getCache('com_magebridge_admin');
+        $cache = JFactory::getCache('com_magebridge.admin');
         $cache->setCaching(0);
         $tree = $cache->call( array( 'MageBridgeElementHelper', 'getCategoryTree' ));
         $categories = MageBridgeElementHelper::getCategoryList($tree);
@@ -146,7 +146,7 @@ class MageBridgeViewCommon extends MageBridgeView
         $this->setLayout('widget');
         
         // Set the data
-        $cache = JFactory::getCache('com_magebridge_admin');
+        $cache = JFactory::getCache('com_magebridge.admin');
         $cache->setCaching(0);
         $widgets = $cache->call( array( 'MageBridgeElementHelper', 'getWidgetList' ));
 
@@ -179,7 +179,7 @@ class MageBridgeViewCommon extends MageBridgeView
         $this->setLayout('customer');
         
         // Set the data
-        $cache = JFactory::getCache('com_magebridge_admin');
+        $cache = JFactory::getCache('com_magebridge.admin');
         $cache->setCaching(0);
         $customers = $cache->call( array( 'MageBridgeElementHelper', 'getCustomerList' ));
 
@@ -212,7 +212,7 @@ class MageBridgeViewCommon extends MageBridgeView
         $this->setLayout('product');
         
         // Set the data
-        $cache = JFactory::getCache('com_magebridge_admin');
+        $cache = JFactory::getCache('com_magebridge.admin');
         $cache->setCaching(0);
         $products = $cache->call( array( 'MageBridgeElementHelper', 'getProductList' ));
 

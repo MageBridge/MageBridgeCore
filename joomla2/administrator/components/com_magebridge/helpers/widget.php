@@ -46,8 +46,7 @@ class MageBridgeWidgetHelper
                 return null;
         }
 
-        $cache = JFactory::getCache('com_magebridge_admin');
-        $cache->setCaching(0);
+        $cache = JFactory::getCache('com_magebridge.admin');
         $result = $cache->call( array( 'MageBridgeWidgetHelper', $function ));
         return $result;
     }

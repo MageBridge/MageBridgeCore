@@ -40,8 +40,7 @@ class JFormFieldStylesheets extends JFormFieldAbstract
 
         if (MagebridgeModelConfig::load('api_widgets') == true) {
 
-            $cache = JFactory::getCache('com_magebridge_admin');
-            $cache->setCaching(0);
+            $cache = JFactory::getCache('com_magebridge.admin');
             $options = $cache->call(array('JFormFieldStylesheets', 'getResult'));
 
             if (empty($options) && !is_array($options)) {
