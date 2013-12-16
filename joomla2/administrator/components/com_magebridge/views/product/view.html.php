@@ -36,13 +36,8 @@ class MageBridgeViewProduct extends MageBridgeView
 
         // Initialize parameters
         $file = JPATH_ADMINISTRATOR.'/components/com_magebridge/models/product.xml';
-        if(YireoHelper::isJoomla15()) {
-            $params = YireoHelper::toRegistry($this->item->params, $file);
-		    $this->assignRef('params', $params);
-        } else {
-            $form = JForm::getInstance('params', $file);
-		    $this->assignRef('params_form', $form);
-        }
+        $form = JForm::getInstance('params', $file);
+	    $this->assignRef('params_form', $form);
 
         // Build the fields
         $this->lists['product'] = MageBridgeFormHelper::getField('product', 'sku', $this->item->sku, null);
