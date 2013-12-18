@@ -18,18 +18,19 @@ jimport('joomla.utilities.utility');
 <?php echo $this->loadTemplate('script'); ?>
 
 <form method="post" name="adminForm" id="adminForm">
-<table cellspacing="0" cellpadding="0" border="0" width="100%">
-<tbody>
-<tr>
-<td width="70%" valign="top">
-    <?php echo $this->loadTemplate('fieldset', array('fieldset' => 'LIB_YIREO_VIEW_FIELDSET_DETAILS', 'fields' => $this->fields)); ?>
-    <?php echo $this->loadTemplate('editor'); ?>
-</td>
-<td width="30%" valign="top">
-    <?php echo $this->loadTemplate('params'); ?>
-</td>
-</tr>
-</tbody>
-</table>
+<div class="row-fluid">
+    <div class="span6">
+        <?php echo $this->loadTemplate('fieldset', array('fieldset' => 'basic')); ?>
+    </div>
+    <div class="span6">
+        <?php echo $this->loadTemplate('fieldset', array('fieldset' => 'other')); ?>
+        <?php echo $this->loadTemplate('fieldset', array('fieldset' => 'params')); ?>
+    </div>
+</div>
+<div class="row-fluid">
+    <div class="span12">
+        <?php echo $this->loadTemplate('editor'); ?>
+    </div>
+</div>
 <?php echo $this->loadTemplate('formend'); ?>
 </form>

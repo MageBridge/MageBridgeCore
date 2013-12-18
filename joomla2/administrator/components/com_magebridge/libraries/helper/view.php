@@ -7,7 +7,7 @@
  * @copyright Copyright 2013
  * @license GNU Public License
  * @link http://www.yireo.com
- * @version 0.5.2
+ * @version 0.6.0
  */
 
 // Check to ensure this file is included in Joomla!
@@ -118,6 +118,7 @@ class YireoHelperView
         }
 
         if (YireoHelper::isJoomla15()) {
+            JHtml::_('behavior.mootools');
             $script = "<script type=\"text/javascript\">\n"
                 . "window.addEvent('domready', function(){\n"
                 . "    var MBajax = new Ajax( '".$url."', {onSuccess: function(r){\n"
@@ -127,6 +128,7 @@ class YireoHelperView
                 . "});\n"
                 . "</script>";
         } elseif (YireoHelper::isJoomla25()) {
+            JHtml::_('behavior.mootools');
             $script = "<script type=\"text/javascript\">\n"
                 . "window.addEvent('domready', function(){\n"
                 . "    var MBajax = new Request({\n"

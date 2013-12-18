@@ -4,7 +4,7 @@
  *
  * @author Yireo
  * @package YireoLib
- * @copyright Copyright (C) 2012
+ * @copyright Copyright (C) 2013
  * @license GNU Public License
  * @link http://www.yireo.com/
  */
@@ -23,7 +23,8 @@ if(!empty($field)) {
         <td class="value">
             <?php
             $editor = JFactory::getEditor();
-            echo @$editor->display($field, $this->item->$field, '100%', '300', '44', '9', array('pagebreak', 'readmore' )) ;
+            $value = $this->item->$field;
+            echo @$editor->display($field, $value, '100%', '300', '44', '9', array('pagebreak', 'readmore' )) ;
             ?>
         </td>
     </tr>

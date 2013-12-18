@@ -4,14 +4,19 @@
  *
  * @author Yireo (http://www.yireo.com/)
  * @package YireoLib
- * @copyright Copyright 2012
+ * @copyright Copyright 2013
  * @license GNU Public License
  * @link http://www.yireo.com/
- * @version 0.5.1
+ * @version 0.6.0
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
+
+// Load the Yireo Library loader if possible
+if(is_file(JPATH_LIBRARIES.'/yireo/loader.php')) {
+    require_once JPATH_LIBRARIES.'/yireo/loader.php';
+}
 
 // Include the original Joomla! loader
 require_once(JPATH_LIBRARIES.'/loader.php');

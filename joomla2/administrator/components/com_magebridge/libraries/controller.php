@@ -4,10 +4,10 @@
  *
  * @author Yireo (http://www.yireo.com/)
  * @package YireoLib
- * @copyright Copyright 2012
+ * @copyright Copyright 2013
  * @license GNU Public License
  * @link http://www.yireo.com/
- * @version 0.5.1
+ * @version 0.6.0
  */
 
 // Check to ensure this file is included in Joomla!
@@ -277,7 +277,8 @@ class YireoController extends YireoCommonController
 
         // Store these data with the model
         if ($model->store($post)) {
-            $this->id = $model->getId();
+            $id = $model->getId();
+            if($id > 0) $this->id = $id;
             $this->msg = JText::sprintf('LIB_YIREO_CONTROLLER_ITEM_SAVED', JRequest::getCmd('view'));
 
         // If this fails, set the error
@@ -383,6 +384,15 @@ class YireoController extends YireoCommonController
     {
         // Security check
         JRequest::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+
+        // Store these data
+        $this->store();
+
+        // Remove the identifier from whereever
+        JRequest::setVar('id', 0);
+        JRequest::setVar('cid[]', 0);
+        JRequest::setVar('cid', null);
+        $this->setId(0);
 
         // Store these data
         $this->store();
@@ -847,6 +857,19 @@ class YireoController extends YireoCommonController
         if ($this->_application->isSite()) $link = JRoute::_($link);
         $this->setRedirect($link, $this->msg, $this->msg_type);
         return true;
+    }
+
+    /**
+     * Manually set the ID
+     *
+     * @access protected
+     * @subpackage Yireo
+     * @param int
+     * @param null
+     */
+    protected function setId($id)
+    {
+        $this->id = $id;
     }
 
     /**

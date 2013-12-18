@@ -7,7 +7,7 @@
  * @copyright Copyright 2013
  * @license GNU Public License
  * @link http://www.yireo.com/
- * @version 0.5.2
+ * @version 0.6.0
  */
 
 // Check to ensure this file is included in Joomla!
@@ -21,7 +21,7 @@ require_once dirname(__FILE__).'/loader.php';
  *
  * @package Yireo
  */
-if(YireoHelper::isJoomla25() || YireoHelper::isJoomla15()) {
+if(YireoHelper::isJoomla25()) {
     jimport('joomla.application.component.model');
     class YireoAbstractModel extends JModel {}
 } else {
@@ -251,7 +251,7 @@ class YireoModel extends YireoAbstractModel
 
         // Set the parameters for the frontend
         if (empty($this->params)) {
-            if (YireoHelper::isJoomla15() || $this->application->isSite() == false) {
+            if ($this->application->isSite() == false) {
                 $this->params = JComponentHelper::getParams($this->_option);
             } else {
                 $this->params = $this->application->getParams($this->_option);
@@ -271,7 +271,7 @@ class YireoModel extends YireoAbstractModel
             }
         }
 
-        // Initialize the ID
+        // Initialize the ID for single records
         if ($this->isSingular()) {
 
             $cid = JRequest::getVar( 'cid', array(0), '', 'array' );
@@ -284,9 +284,21 @@ class YireoModel extends YireoAbstractModel
                 $this->setId((int)$id);
             }
 
+        // Multiple records
         } else {
+
+            // Initialize limiting
             $this->initLimit();
             $this->initLimitstart();
+
+            // Initialize ordering 
+            $filter_order = $this->getFilter('order', '{tableAlias}.'.$this->_orderby_default, 'string');
+            $filter_order_Dir = $this->getFilter('order_Dir');
+            if (!empty($filter_order_Dir)) $filter_order_Dir = ' '.strtoupper($filter_order_Dir);
+
+            $this->addOrderby($filter_order.$filter_order_Dir);
+            $this->addOrderby('{tableAlias}.'.$this->_orderby_default);
+
         }
     }
 
@@ -436,21 +448,6 @@ class YireoModel extends YireoAbstractModel
                     return;
                 }
 
-                // Check whether this items access level allows access
-                if (YireoHelper::isJoomla15()) {
-                    if (isset($data->access) && is_numeric($data->access)) {
-                        if ($data->access > $this->user->get('aid', 0)) {
-                            if($this->user->get('aid', 0) == 0) {
-                                $url = 'index.php?option=com_user&view=login';
-                                $this->application->redirect(JRoute::_($url));
-                            } else {
-                                JError::raiseError(403, JText::_('LIB_YIREO_MODEL_NOT_AUTHORIZED'));
-                            }
-                            return;
-                        }
-                    }
-                }
-
             // Plural model
             } else if ($this->isSingular() == false) {
 
@@ -461,51 +458,42 @@ class YireoModel extends YireoAbstractModel
 
                     // Prepare these data
                     foreach ($data as $index => $item) {
-                        if (YireoHelper::isJoomla15()) {
-                            if ($this->application->isSite() && isset($item->access) && is_numeric($item->access)) {
-                                if ($item->access > $this->user->get('aid', 0)) {
+
+                        // Frontend permissions
+                        if ($this->application->isSite() && isset($item->access) && is_numeric($item->access)) {
+                            $accessLevels = $this->user->getAuthorisedViewLevels();
+                            if (YireoHelper::isJoomla25()) {
+                                if (!array_key_exists($item->access, $accessLevels) || $accessLevels[$item->access] == 0) {
+                                    unset($data[$index]);
+                                    continue;
+                                }
+                            } else {
+                                if ($item->access > 0 && !in_array($item->access, $accessLevels)) {
                                     unset($data[$index]);
                                     continue;
                                 }
                             }
-                        } else {
+                        }
 
-                            // Frontend permissions
-                            if ($this->application->isSite() && isset($item->access) && is_numeric($item->access)) {
-                                $accessLevels = $this->user->getAuthorisedViewLevels();
-                                if (YireoHelper::isJoomla25()) {
-                                    if (!array_key_exists($item->access, $accessLevels) || $accessLevels[$item->access] == 0) {
-                                        unset($data[$index]);
-                                        continue;
-                                    }
-                                } else {
-                                    if (!in_array($item->access, $accessLevels)) {
-                                        unset($data[$index]);
-                                        continue;
-                                    }
-                                }
-                            }
+                        // Backend permissions
+                        if ($this->application->isAdmin() && (bool)$this->_tbl->hasAssetId() == true) {
 
-                            // Backend permissions
-                            if ($this->application->isAdmin() && (bool)$this->_tbl->hasAssetId() == true) {
+                            // Get the ID
+                            $key = $this->getPrimaryKey();
+                            $id = $item->$key;
 
-                                // Get the ID
-                                $key = $this->getPrimaryKey();
-                                $id = $item->$key;
+                            // Asset data
+                            $option = str_replace('com_', '#__', $this->_option);
+                            $view = JRequest::getCmd('view');
 
-                                // Asset data
-                                $option = str_replace('com_', '#__', $this->_option);
-                                $view = JRequest::getCmd('view');
+                            // Construct the ACL-data
+                            $action = ($id > 0) ? 'core.manage' : 'core.create';
+                            $itemAsset = ($id > 0) ? $option.'_'.$view.'.'.$id : $option;
 
-                                // Construct the ACL-data
-                                $action = ($id > 0) ? 'core.manage' : 'core.create';
-                                $itemAsset = ($id > 0) ? $option.'_'.$view.'.'.$id : $option;
-
-                                // Check
-                                if ($this->user->authorise($action, $itemAsset) == false) {
-                                    unset($data[$index]);
-                                    continue;
-                                }
+                            // Check
+                            if ($this->user->authorise($action, $itemAsset) == false) {
+                                unset($data[$index]);
+                                continue;
                             }
                         }
 
@@ -719,20 +707,15 @@ class YireoModel extends YireoAbstractModel
         $now = new JDate('now');
         $uid = $this->user->get('id');
 
-        // Convert the JForm text-array into the default data-text
-        if (!empty($data['text'])) {
-            foreach($data['text'] as $name => $value) {
-                $data[$name] = $value;
+        // Convert the JForm array into the default data-set
+        $fieldgroups = array('text', 'basic', 'item');
+        foreach($fieldgroups as $fieldgroup) {
+            if (!empty($data[$fieldgroup]) && is_array($data[$fieldgroup])) {
+                foreach($data[$fieldgroup] as $name => $value) {
+                    $data[$name] = $value;
+                }
+                unset($data[$fieldgroup]);
             }
-            if(is_array($data['text'])) unset($data['text']);
-        }
-
-        // Convert the JForm basic-array into the default data-set
-        if (!empty($data['basic'])) {
-            foreach($data['basic'] as $name => $value) {
-                $data[$name] = $value;
-            }
-            unset($data['basic']);
         }
 
         // Automatically set some data
@@ -796,8 +779,9 @@ class YireoModel extends YireoAbstractModel
         }
 
         // Try to fetch the last ID from the table
-        if (!isset($this->_id) || !$this->_id > 0) {
-            $this->_id = $this->_tbl->getLastInsertId();
+        $id = $this->_tbl->getLastInsertId();
+        if ((!isset($this->_id) || !$this->_id > 0) && $id > 0) {
+            $this->_id = $id;
         }
 
         return true;
@@ -1006,13 +990,8 @@ class YireoModel extends YireoAbstractModel
 
         // Add-in access-details
         if (strstr($query, '{access}')) {
-            if (YireoHelper::isJoomla15()) {
-                $query = str_replace('{access}', '`usergroup`.`name` AS `accesslevel`', $query);
-                $query .= " LEFT JOIN `#__groups` AS `usergroup` ON `usergroup`.`id`=`".$this->_tbl_alias."`.`access`\n";
-            } else {
-                $query = str_replace('{access}', '`viewlevel`.`title` AS `accesslevel`', $query);
-                $query .= " LEFT JOIN `#__viewlevels` AS `viewlevel` ON `viewlevel`.`id`=`".$this->_tbl_alias."`.`access`\n";
-            }
+            $query = str_replace('{access}', '`viewlevel`.`title` AS `accesslevel`', $query);
+            $query .= " LEFT JOIN `#__viewlevels` AS `viewlevel` ON `viewlevel`.`id`=`".$this->_tbl_alias."`.`access`\n";
         }
 
         // Add-in editor-details
@@ -1039,13 +1018,6 @@ class YireoModel extends YireoAbstractModel
      */
     protected function buildQueryOrderBy()
     {
-        $filter_order = $this->getFilter('order', '{tableAlias}.'.$this->_orderby_default, 'string');
-        $filter_order_Dir = $this->getFilter('order_Dir');
-        if (!empty($filter_order_Dir)) $filter_order_Dir = ' '.strtoupper($filter_order_Dir);
-
-        $this->addOrderby($filter_order.$filter_order_Dir);
-        $this->addOrderby('{tableAlias}.'.$this->_orderby_default);
-
         $this->_orderby = array_unique($this->_orderby);
         if (count($this->_orderby)) {
             foreach ($this->_orderby as $index => $orderby) {
@@ -1308,11 +1280,6 @@ class YireoModel extends YireoAbstractModel
      */
     public function getForm($data = array(), $loadData = true)
     {
-        // Joomla! 1.5 is unable to deal with this
-        if (YireoHelper::isJoomla15()) {
-            return false;
-        }
-
         // Do not continue if this is not a backend singular view
         if ($this->application->isAdmin() == false || $this->isSingular() == false) {
             return false;
@@ -1327,16 +1294,19 @@ class YireoModel extends YireoAbstractModel
 
         // Construct the form-object
         jimport('joomla.form.form');
-        $form = JForm::getInstance('params', $xmlFile);
+        $form = JForm::getInstance('item', $xmlFile);
         if (empty($form)) {
             return false;
         }
 
-        // Insert the params-data if set
+        // Bind the data
         $data = $this->getData();
-        if (isset($data->params)) {
+        $form->bind(array('item' => $data));
+
+        // Insert the params-data if set
+        if (!empty($data->params)) {
             $params = $data->params;
-            if (is_string($params)) $params = json_decode($params, true);
+            if (is_string($params)) $params = YireoHelper::toRegistry($params)->toArray();
             $form->bind(array('params' => $params));
         }
 
@@ -1353,11 +1323,6 @@ class YireoModel extends YireoAbstractModel
      */
     protected function canEditState($data)
     {
-        // Joomla! 1.5 is unable to deal with this
-        if (YireoHelper::isJoomla15()) {
-            return true;
-        }
-
         // Check the permissions for this edit.state action
         if ($this->getId() > 0) {
             return $this->user->authorise('core.edit.state', $this->_option.'.'.$this->_entity.'.'.(int)$this->getId());

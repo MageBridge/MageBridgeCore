@@ -7,7 +7,7 @@
  * @copyright Copyright 2013
  * @license GNU Public License
  * @link http://www.yireo.com/
- * @version 0.5.2
+ * @version 0.6.0
  */
 
 // Check to ensure this file is included in Joomla!
@@ -24,7 +24,7 @@ require_once dirname(__FILE__).'/loader.php';
  *
  * @package Yireo
  */
-if(YireoHelper::isJoomla25() || YireoHelper::isJoomla15()) {
+if(YireoHelper::isJoomla25()) {
     jimport('joomla.application.component.view');
     class YireoAbstractView extends JView {}
 } else {
@@ -215,9 +215,7 @@ class YireoCommonView extends YireoAbstractView
     public function loadTemplate($file = null, $variables = array())
     {
         // Define version-specific folder
-        if (YireoHelper::isJoomla15() == true) {
-            $versionFolder = 'joomla15';
-        } elseif (YireoHelper::isJoomla25() == true) {
+        if (YireoHelper::isJoomla25() == true) {
             $versionFolder = 'joomla25';
         } else {
             $versionFolder = 'joomla35';
@@ -234,6 +232,8 @@ class YireoCommonView extends YireoAbstractView
             $this->addNewTemplatePath(JPATH_ADMINISTRATOR.'/components/'.$this->_option.'/views/'.$this->_view.'/tmpl/'.$versionFolder, true);
 
             // Library defaults
+            $this->addNewTemplatePath(JPATH_LIBRARIES.'/yireo/view/'.$this->_viewParent.'/'.$versionFolder, false);
+            $this->addNewTemplatePath(JPATH_LIBRARIES.'/yireo/view/'.$this->_viewParent, false);
             $this->addNewTemplatePath(JPATH_ADMINISTRATOR.'/components/'.$this->_option.'/lib/view/'.$this->_viewParent.'/'.$versionFolder, false);
             $this->addNewTemplatePath(JPATH_ADMINISTRATOR.'/components/'.$this->_option.'/lib/view/'.$this->_viewParent, false);
             $this->addNewTemplatePath(JPATH_ADMINISTRATOR.'/components/'.$this->_option.'/libraries/view/'.$this->_viewParent.'/'.$versionFolder, false);
@@ -251,6 +251,8 @@ class YireoCommonView extends YireoAbstractView
             $this->addNewTemplatePath(JPATH_THEMES.'/'.$template.'/html/'.$this->_option.'/'.$this->_view.'/'.$versionFolder, true);
 
             // Library defaults
+            $this->addNewTemplatePath(JPATH_LIBRARIES.'/yireo/view/'.$this->_viewParent.'/'.$versionFolder, false);
+            $this->addNewTemplatePath(JPATH_LIBRARIES.'/yireo/view/'.$this->_viewParent, false);
             $this->addNewTemplatePath(JPATH_ADMINISTRATOR.'/components/'.$this->_option.'/lib/view/'.$this->_viewParent.'/'.$versionFolder, false);
             $this->addNewTemplatePath(JPATH_ADMINISTRATOR.'/components/'.$this->_option.'/lib/view/'.$this->_viewParent, false);
             $this->addNewTemplatePath(JPATH_ADMINISTRATOR.'/components/'.$this->_option.'/libraries/view/'.$this->_viewParent.'/'.$versionFolder, false);
@@ -262,6 +264,10 @@ class YireoCommonView extends YireoAbstractView
         if (!preg_match('/\.php$/', $file)) $file = $file.'.php';
         jimport('joomla.filesystem.path');
         $template = JPath::find($this->templatePaths, $file);
+
+        //if($_SERVER['REMOTE_ADDR'] == '84.86.237.157') {
+        //    print_r($this->templatePaths);
+        //}
 
         // If this template is empty, try to use alternatives
         if(empty($template) && $file == 'default.php') {
@@ -304,6 +310,7 @@ class YireoCommonView extends YireoAbstractView
         }
         else {
             return null;
+            //return JText::_('LIB_YIREO_NO_TEMPLATE');
         }
     }
 }
@@ -355,7 +362,7 @@ class YireoView extends YireoCommonView
 
         // Set the parameters
         if (empty($this->params)) {
-            if (YireoHelper::isJoomla15() || $this->application->isSite() == false) {
+            if ($this->application->isSite() == false) {
                 $this->params = JComponentHelper::getParams($this->_option);
             } else {
                 $this->params = $this->application->getParams($this->_option);
@@ -435,13 +442,14 @@ class YireoView extends YireoCommonView
         $this->addJs('view-'.$this->_view.'.js');
 
         // Fetch parameters if they exist
-        if (file_exists( JPATH_COMPONENT.'/models/'.$this->_name.'.xml' )) {
-            $file = JPATH_COMPONENT.'/models/'.$this->_name.'.xml';
-            $params = YireoHelper::toParameter($this->item->params, $file);
-        } else if (!empty($this->item->params)) {
-            $params = YireoHelper::toParameter($this->item->params);
-        } else {
-            $params = null;
+        $params = null;
+        if(!empty($this->item->params)) {
+            if (file_exists( JPATH_COMPONENT.'/models/'.$this->_name.'.xml' )) {
+                $file = JPATH_COMPONENT.'/models/'.$this->_name.'.xml';
+                $params = YireoHelper::toParameter($this->item->params, $file);
+            } else if (!empty($this->item->params)) {
+                $params = YireoHelper::toParameter($this->item->params);
+            }
         }
 
         // Assign parameters
@@ -454,13 +462,8 @@ class YireoView extends YireoCommonView
         }
 
         // Load the form if it's there
-        if (YireoHelper::isJoomla15() == false) {
-            $form = $this->get('Form');
-            if(!empty($form)) {
-                $form->bind(array('basic' => $this->item));
-                $form->bind(array('text' => $this->item));
-                if(!empty($params)) $form->bind(array('params' => $params->toArray()));
-            }
+        $form = $this->get('Form');
+        if(!empty($form)) {
             $this->assignRef('form', $form);
         }
 
@@ -623,7 +626,7 @@ class YireoView extends YireoCommonView
             }
 
             // Clean data
-            if ($this->application->isAdmin() == false || JRequest::getCmd('task') != 'edit') {
+            if ($this->application->isAdmin() == false || (JRequest::getCmd('task') != 'edit' && $this->_viewParent != 'form')) {
                 if ($this->autoclean == true) {
                     JFilterOutput::objectHTMLSafe( $this->item, ENT_QUOTES, 'text' );
                     if (isset($this->item->title)) $this->item->title = htmlspecialchars($this->item->title);
@@ -661,12 +664,7 @@ class YireoView extends YireoCommonView
 
         $ordering = $this->model->getOrderByDefault();
         if ($this->application->isAdmin() && !empty($ordering) && $ordering == 'ordering') {
-            if (YireoHelper::isJoomla15()) {
-                $order = JHTML::_('list.genericordering',  $this->model->getOrderingQuery());
-                $this->lists['ordering'] = JHTML::_('select.genericlist', $order, 'ordering', 'class="inputbox" size="1"', 'value', 'text', intval($this->item->ordering));
-            } else {
-                $this->lists['ordering'] = JHTML::_('list.ordering', 'ordering', $this->model->getOrderingQuery(), $this->item->ordering);
-            }
+            $this->lists['ordering'] = JHTML::_('list.ordering', 'ordering', $this->model->getOrderingQuery(), $this->item->ordering);
         } else {
             $this->lists['ordering'] = null;
         }
@@ -697,21 +695,7 @@ class YireoView extends YireoCommonView
      */
     public function getAjaxFunction()
     {
-        if (YireoHelper::isJoomla15()) {
-            $script = "<script type=\"text/javascript\">\n"
-                . "function getAjax(ajax_url, element_id, type) {\n"
-                . "    var MBajax = new Ajax( ajax_url, {method: 'get', onSuccess: function(result){\n"
-                . "        if (result != '') {\n"
-                . "            if (type == 'input') {\n"
-                . "                $(element_id).value = result;\n"
-                . "            } else {\n"
-                . "                $(element_id).innerHTML = result;\n"
-                . "            }\n"
-                . "        }\n"
-                . "    }}).request();\n"
-                . "}\n"
-                . "</script>";
-        } elseif (YireoHelper::isJoomla25()) {
+        if (YireoHelper::isJoomla25()) {
             $script = "<script type=\"text/javascript\">\n"
                 . "function getAjax(ajax_url, element_id, type) {\n"
                 . "    var MBajax = new Request({\n"
@@ -803,14 +787,25 @@ class YireoView extends YireoCommonView
     public function getModel($name = null)
     {
         if (empty($name)) $name = $this->_name;
-        $model = parent::getModel($name);
+        $name = strtolower($name);
+        if(isset($this->_models[$name])) $model = $this->_models[$name];
+
         if (empty($model)) {
-    		jimport('joomla.application.component.model');
-        	JModel::addIncludePath(JPATH_ADMINISTRATOR.'/components/'.$this->_option.'/models');
+            jimport('joomla.application.component.model');
+            if (YireoHelper::isJoomla25()) {
+                JModel::addIncludePath(JPATH_ADMINISTRATOR.'/components/'.$this->_option.'/models');
+            } else {
+                JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR.'/components/'.$this->_option.'/models');
+            }
 
             $classPrefix = ucfirst(preg_replace('/^com_/', '', $this->_option)).'Model';
-		    $classPrefix = preg_replace('/[^A-Z0-9_]/i', '', $classPrefix);
-		    $model = JModel::getInstance($name, $classPrefix, array());
+            $classPrefix = preg_replace('/[^A-Z0-9_]/i', '', $classPrefix);
+
+            if (YireoHelper::isJoomla25()) {
+                $model = JModel::getInstance($name, $classPrefix, array());
+            } else {
+                $model = JModelLegacy::getInstance($name, $classPrefix, array());
+            }
         }
 
         return $model;
@@ -862,11 +857,7 @@ class YireoView extends YireoCommonView
             $html .= '<input type="text" name="order[]" size="5" value="'.$item->$field.'" '.$disabled.' class="text_area" style="text-align: center" />';
 
         } else if ($type == 'published') {
-            if (YireoHelper::isJoomla15() == false) {
-				$html .= JHtml::_('jgrid.published', $item->published, $i, 'articles.', false, 'cb', $item->params->get('publish_up'), $item->params->get('publish_down'));
-            } else {
-                $html .= JHTML::_('grid.published', $item, $i);
-            }
+			$html .= JHtml::_('jgrid.published', $item->published, $i, 'articles.', false, 'cb', $item->params->get('publish_up'), $item->params->get('publish_down'));
 
         } else if ($type == 'checked') {
             $html .= JHTML::_('grid.checkedout', $item, $i);
