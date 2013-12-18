@@ -18,7 +18,7 @@ require_once JPATH_SITE.'/components/com_magebridge/helpers/loader.php';
 /**
  * MageBridge Newsletter Plugin - Example
  */
-class plgMageBridgeNewsletterExample extends MageBridgePluginMagento
+class plgMageBridgeNewsletterExample extends MageBridgePlugin
 {
     /**
      * Event "onNewsletterSubscribe"
