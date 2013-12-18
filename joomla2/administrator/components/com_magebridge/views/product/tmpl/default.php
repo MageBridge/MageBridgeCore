@@ -106,7 +106,11 @@ defined('_JEXEC') or die('Restricted access');
 </td>
 <td width="50%" valign="top">
     <fieldset class="adminform">
-        <legend><?php echo JText::_( 'Parameters (optional)' ); ?></legend>
+        <legend><?php echo JText::_('Actions'); ?></legend>
+        <?php echo $this->loadTemplate('actions'); ?>
+    </fieldset>
+    <fieldset class="adminform">
+        <legend><?php echo JText::_('Parameters (optional)'); ?></legend>
         <?php echo $this->loadTemplate('params'); ?>
     </fieldset>
 </td>

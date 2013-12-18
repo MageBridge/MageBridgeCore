@@ -34,10 +34,22 @@ class MageBridgeViewProduct extends MageBridgeView
         // Fetch this item
         $this->fetchItem();
 
-        // Initialize parameters
+        // Initialize the form-file
         $file = JPATH_ADMINISTRATOR.'/components/com_magebridge/models/product.xml';
-        $form = JForm::getInstance('params', $file);
-	    $this->assignRef('params_form', $form);
+
+        // Prepare the params-form
+        $params = YireoHelper::toRegistry($this->item->params)->toArray();
+        $params_form = JForm::getInstance('params', $file);
+        $params_form->bind(array('params' => $params));
+	    $this->assignRef('params_form', $params_form);
+
+        // Prepare the actions-form
+        $actions = YireoHelper::toRegistry($this->item->actions)->toArray();
+        $actions_form = JForm::getInstance('actions', $file);
+        JPluginHelper::importPlugin('magebridgeproduct');
+        JFactory::getApplication()->triggerEvent('onMageBridgeProductPrepareForm', array(&$actions_form, (array)$this->item));
+        $actions_form->bind(array('actions' => $actions));
+	    $this->assignRef('actions_form', $actions_form);
 
         // Build the fields
         $this->lists['product'] = MageBridgeFormHelper::getField('product', 'sku', $this->item->sku, null);
