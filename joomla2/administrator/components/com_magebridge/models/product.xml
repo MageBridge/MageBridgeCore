@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <form>
+    <fields name="actions">
+        <fieldset name="actions">
+        </fieldset>
+    </fields>
     <fields name="params">
         <fieldset name="params">
 		    <field name="allowed_status" type="list" default="any" label="COM_MAGEBRIDGE_PRODUCT_PARAM_ALLOWED_STATUS" description="COM_MAGEBRIDGE_PRODUCT_PARAM_ALLOWED_STATUS_DESC" multiple="true" size="5">
