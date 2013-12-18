@@ -75,6 +75,7 @@ class MageBridgeInstallHelper
             "DELETE FROM `#__magebridge_connectors` WHERE `published`='0'",
             "ALTER TABLE `#__magebridge_log` ADD `session` VARCHAR( 50 ) NOT NULL AFTER  `http_agent`",
             "ALTER TABLE `#__magebridge_urls` ADD UNIQUE `published` ( `published`)",
+            "ALTER TABLE `#__magebridge_products` ADD `actions` TEXT NOT NULL AFTER `connector_value`",
         );
 
         // Perform the update queries

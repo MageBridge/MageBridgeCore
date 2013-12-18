@@ -42,6 +42,7 @@ CREATE TABLE IF NOT EXISTS `#__magebridge_products` (
     `sku` varchar(255) NOT NULL,
     `connector` varchar(255) NOT NULL,
     `connector_value` varchar(255) NOT NULL,
+    `actions` text NOT NULL,
     `access` tinyint(3) NOT NULL default '0',
     `ordering` int(11) NOT NULL default '0',
     `published` tinyint(1) NOT NULL,
