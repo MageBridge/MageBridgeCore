@@ -23,7 +23,7 @@ class plgMageBridgeNewsletterExample extends MageBridgePluginMagento
     /**
      * Event "onNewsletterSubscribe"
      * 
-     * @access private
+     * @access public
      * @param object $user Joomla! user object
      * @param tinyint $state Whether the user is subscribed or not (0 for no, 1 for yes)
      * @return bool
@@ -46,7 +46,7 @@ class plgMageBridgeNewsletterExample extends MageBridgePluginMagento
      * @param null
      * @return bool
      */
-    public function isEnabled()
+    protected function isEnabled()
     {
         // Check for the existance of a specific component
         return $this->checkComponent('com_example');
