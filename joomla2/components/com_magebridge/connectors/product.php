@@ -56,44 +56,38 @@ class MageBridgeConnectorProduct extends MageBridgeConnector
             return null;
         }
 
-        // Foreach of these conditions, run the appropriate connector method
+        // Foreach of these conditions, run the product-plugins
         foreach ($conditions as $condition) {
-            $connector = $this->getConnector($condition->connector);
-            if (!empty($condition->connector_value) && !empty($connector)) {
 
-                if (!empty($condition->params)) {
-                    $params = YireoHelper::toRegistry($condition->params);
-                    $allowed_statuses = $params->get('allowed_status', 'any');
-                    $expire_amount = $params->get('expire_amount', 0);
-                    $expire_unit = $params->get('expire_unit', 'day');
-                } else {
-                    $allowed_statuses = array('any');
-                    $expire_amount = 0;
-                    $expire_unit = null;
-                }
-
-                // Do not continue if the order-status is not matched
-                if(!empty($allowed_statuses) && !in_array('any', $allowed_statuses) && !in_array($status, $allowed_statuses)) {
-                    continue;
-                }
-
-                // Try to call the connector-method
-                $rt = false;
-                if (method_exists($connector, 'onPurchase')) {
-                    try {
-                        if ($qty < 1) $qty = 1;
-                        for($i = 0; $i < $qty; $i++) {
-                            $rt = $connector->onPurchase($condition->connector_value, $user, $status);
-                        }
-                    } catch(Exception $e) {
-                        MageBridgeModelDebug::getInstance()->trace('Product Connector failed', $e->getMessage());
-                    }
-                    $this->saveLog($user->id, $sku, $expire_unit, $expire_amount);
-                }
-
-                // If this result is false (read: an error), do not continue with other product relations
-                //if ($rt == false) break;
+            // Extract the parameters and make sure there's something to do
+            $actions = YireoHelper::toRegistry($condition->actions)->toArray();
+            if(empty($actions)) {
+                continue;
             }
+
+            // Check for the parameters
+            if (!empty($condition->params)) {
+                $params = YireoHelper::toRegistry($condition->params);
+                $allowed_statuses = $params->get('allowed_status', 'any');
+                $expire_amount = $params->get('expire_amount', 0);
+                $expire_unit = $params->get('expire_unit', 'day');
+            } else {
+                $allowed_statuses = array('any');
+                $expire_amount = 0;
+                $expire_unit = null;
+            }
+
+            // Do not continue if the order-status is not matched
+            if(!empty($allowed_statuses) && !in_array('any', $allowed_statuses) && !in_array($status, $allowed_statuses)) {
+                continue;
+            }
+
+            // Run the product plugins
+            JPluginHelper::importPlugin('magebridgeproduct');
+            JFactory::getApplication()->triggerEvent('onMageBridgeProductPurchase', array($actions, $user, $status));
+ 
+            // Log this event
+            $this->saveLog($user->id, $sku, $expire_unit, $expire_amount);
         }
 
         // Refresh the user session, just in case
