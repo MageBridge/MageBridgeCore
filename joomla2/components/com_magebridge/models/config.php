@@ -48,6 +48,7 @@ class MagebridgeModelConfig extends YireoAbstractModel
             'protocol' => 'http',
             'method' => 'post',
             'encryption' => '0',
+            'encryption_key' => null,
             'http_auth' => 0,
             'http_user' => '',
             'http_password' => '',
@@ -309,6 +310,12 @@ class MagebridgeModelConfig extends YireoAbstractModel
         // Return the port-number
         } else if ($element == 'port') {
             return ($config['protocol']['value'] == 'http') ? 80 : 443;
+
+        // Return the encryption key
+        } else if ($element == 'encryption_key') {
+            if(empty($config['encryption_key']['value'])) {
+                return $config['support_key']['value'];
+            }
 
         // Return any other element
         } else if ($element != null && isset($config[$element])) {

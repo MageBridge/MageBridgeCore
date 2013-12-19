@@ -28,6 +28,9 @@
 		    <field type="spacer" name="magento_api" class="fieldgroup" />
 		    <field name="api_user" type="text" />
 		    <field name="api_key" type="password" />
+
+		    <field type="spacer" name="encryption" class="fieldgroup" />
+		    <field name="encryption_key" type="textarea" />
         </fieldset>
     
         <fieldset name="bridge" label="COM_MAGEBRIDGE_MODEL_CONFIG_FIELDSET_BRIDGE">
