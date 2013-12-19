@@ -46,6 +46,11 @@ class JFormFieldUsergroup extends JFormFieldAbstract
             $html = 'multiple="multiple" size="'.$size.'"';
         }
 
+        $allownone = (bool)$this->element['allownone'];
+        if($allownone) {
+            array_unshift($usergroups, array('value' => '', 'text' => ''));
+        }
+
         return JHTML::_('select.genericlist', $usergroups, $fieldName, $html, 'value', 'text', $value);
     }
 }
