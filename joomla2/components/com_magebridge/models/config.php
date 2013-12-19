@@ -311,12 +311,6 @@ class MagebridgeModelConfig extends YireoAbstractModel
         } else if ($element == 'port') {
             return ($config['protocol']['value'] == 'http') ? 80 : 443;
 
-        // Return the encryption key
-        } else if ($element == 'encryption_key') {
-            if(empty($config['encryption_key']['value'])) {
-                return $config['support_key']['value'];
-            }
-
         // Return any other element
         } else if ($element != null && isset($config[$element])) {
             return $config[$element]['value'];

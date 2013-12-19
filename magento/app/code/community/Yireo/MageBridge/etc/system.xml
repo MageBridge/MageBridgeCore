@@ -252,6 +252,15 @@
                             <show_in_store>0</show_in_store>
                             <comment>Encrypt sensitive data using Mcrypt if SSL is not available</comment>
                         </encryption>
+                        <encryption_key translate="label">
+                            <label>Encryption Key</label>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>41</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment>Encrypt-key (the same as in Joomla!)</comment>
+                        </encryption_key>
                         <api_detect translate="label">
                             <label>Joomla! API auto-detect</label>
                             <frontend_type>select</frontend_type>

@@ -46,9 +46,11 @@ class MageBridgeEncryptionHelper
      * @param string $string
      * @return string
      */
-    public static function getSaltKey($string)
+    public static function getSaltedKey($string)
     {
-        return md5(MagebridgeModelConfig::load('supportkey').$string);
+        $key = MagebridgeModelConfig::load('encryption_key');
+        if(empty($key)) $key = MagebridgeModelConfig::load('supportkey');
+        return md5($key.$string);
     }
 
     /*
@@ -82,7 +84,7 @@ class MageBridgeEncryptionHelper
 
         // Generate a random key
         $random = str_shuffle('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz');
-        $key = MageBridgeEncryptionHelper::getSaltKey($random);
+        $key = MageBridgeEncryptionHelper::getSaltedKey($random);
 
         // Generate the mcrypt encryption
         $iv = substr($key, 0, mcrypt_get_iv_size(MCRYPT_CAST_256, MCRYPT_MODE_CFB));
@@ -114,7 +116,7 @@ class MageBridgeEncryptionHelper
 
         $array = explode( '|=|', $data);
         $encrypted = MageBridgeEncryptionHelper::base64_decode($array[0], true);
-        $key = MageBridgeEncryptionHelper::getSaltKey($array[1]);
+        $key = MageBridgeEncryptionHelper::getSaltedKey($array[1]);
         $iv = substr($key, 0, mcrypt_get_iv_size(MCRYPT_CAST_256,MCRYPT_MODE_CFB));
 
         try {

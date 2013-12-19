@@ -21,9 +21,11 @@ class Yireo_MageBridge_Helper_Encryption extends Mage_Core_Helper_Abstract
      * @param string $string
      * @return string 
      */
-    public function getKey($string)
+    public function getSaltedKey($string)
     {
-        return md5(Mage::getSingleton('magebridge/core')->getLicenseKey().$string);
+        $key = trim(Mage::getStoreConfig('magebridge/settings/encryption_key'));
+        if(empty($key)) $key = Mage::getSingleton('magebridge/core')->getLicenseKey();
+        return md5($key.$string);
     }
 
     /*
@@ -53,7 +55,7 @@ class Yireo_MageBridge_Helper_Encryption extends Mage_Core_Helper_Abstract
 
         // Generate a random key
         $random = str_shuffle('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz');
-        $key = Mage::helper('magebridge/encryption')->getKey($random);
+        $key = Mage::helper('magebridge/encryption')->getSaltedKey($random);
 
         // Generate the mcrypt encryption
         $iv = substr($key, 0,mcrypt_get_iv_size (MCRYPT_CAST_256,MCRYPT_MODE_CFB));
@@ -91,7 +93,7 @@ class Yireo_MageBridge_Helper_Encryption extends Mage_Core_Helper_Abstract
         $array = explode('|=|', $data);
         if(isset($array[0]) && isset($array[1])) {
             $encrypted = Mage::helper('magebridge/encryption')->base64_decode($array[0]);
-            $key = Mage::helper('magebridge/encryption')->getKey($array[1]);
+            $key = Mage::helper('magebridge/encryption')->getSaltedKey($array[1]);
             $iv = substr($key, 0,mcrypt_get_iv_size (MCRYPT_CAST_256,MCRYPT_MODE_CFB));
         } else {
             return null;
