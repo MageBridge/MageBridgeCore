@@ -345,7 +345,7 @@ class plgMagentoMageBridge extends JPlugin
         // Load the corresponding Joomla! user
         $user = $this->getUser()->loadByEmail($subscriber['email']);
 
-        // Run the product connector
+        // Run the newsletter plugins
         JPluginHelper::importPlugin('magebridge.newsletter');
         JFactory::getApplication()->triggerEvent('onNewsletterSubscribe', array($user, $state));
 

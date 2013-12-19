@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <fields name="actions">
+        <fieldset name="actions">
+            <field name="example" label="PLG_MAGEBRIDGEPRODUCT_EXAMPLE_FIELD_EXAMPLE" type="text" default="0" />
+        </fieldset>
+    </fields>
+</form>

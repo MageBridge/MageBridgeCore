@@ -18,65 +18,30 @@ require_once JPATH_SITE.'/components/com_magebridge/helpers/loader.php';
 /**
  * MageBridge Product Plugin - Example
  */
-class plgMageBridgeProductExample extends MageBridgePlugin
+class plgMageBridgeProductExample extends MageBridgePluginProduct
 {
-    /*
-     * Method to get some HTML-form
-     *
-     * @param string $value
-     * @return string
-     */
-    public function getFormField($value = null)
-    {
-        return null;
-    }
-
-    /*
-     * Method to return the selected value from POST
-     *
-     * @param array $post
-     * @return int
-     */
-    public function getFormPost($post = array())
-    {
-        return null;
-    }
-
     /**
-     * Event "onPurchase"
+     * Event "onMageBridgeProductPurchase"
      * 
      * @access public
+     * @param array $actions
      * @param object $user Joomla! user object
      * @param tinyint $status Status of the current order
      * @return bool
      */
-    public function onPurchase($user, $status)
+    public function onMageBridgeProductPurchase($actions = null, $user = null, $status = null)
     {
         // Make sure this plugin is enabled
         if ($this->isEnabled() == false) {
+            return false;
+        }
+
+        // Make sure to check upon the $actions array to see if it contains the data you need (for instance, defined in form.xml)
+        if(!isset($actions['example'])) {
             return false;
         }
 
         // Do your stuff after a product has been purchased
-
-        return true;
-    }
-
-    /**
-     * Event "onReverse"
-     * 
-     * @access public
-     * @param object $user Joomla! user object
-     * @return bool
-     */
-    public function onReverse($user)
-    {
-        // Make sure this plugin is enabled
-        if ($this->isEnabled() == false) {
-            return false;
-        }
-
-        // Do your stuff to undo the actions done before
 
         return true;
     }
