@@ -4,7 +4,7 @@
  *
  * @author Yireo (info@yireo.com)
  * @package MageBridge
- * @copyright Copyright 2011
+ * @copyright Copyright 2013
  * @license GNU Public License
  * @link http://www.yireo.com
  */
@@ -549,7 +549,7 @@ class MageBridgeModelProxy
 
                 // Set the cookie
                 if (!headers_sent()) {
-                    if ($cookieName == 'persistent_shopping_cart' && preg_match('/expires=([^\;]+)/', $matches[3][$index], $paramsMatch)) {
+                    if ($cookieName == 'persistent_shopping_cart' && isset($matches[3][$index]) && preg_match('/expires=([^\;]+)/', $matches[3][$index], $paramsMatch)) {
                         $expires = strtotime($paramsMatch[1]);
                     } else {
                         $expires = 0;
