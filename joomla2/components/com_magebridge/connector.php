@@ -38,34 +38,13 @@ class MageBridgeConnector
     /*
      * Method to check whether this connector is visible or not
      *
+     * @deprecated
      * @param null
      * @return bool
      */
     public function isVisible()
     {
         return true;
-    }
-
-    /*
-     * Method to get the HTML for a connector input-field
-     *
-     * @param string $value
-     * @return null
-     */
-    public function getFormField($value = null)
-    {
-        return null;
-    }
-
-    /*
-     * Method to get the HTML for a connector input-field
-     *
-     * @param string $name
-     * @return null
-     */
-    public function getFormPost($name = null)
-    {
-        return null;
     }
 
     /*

@@ -56,11 +56,21 @@ class MageBridgeConnectorProduct extends MageBridgeConnector
             return null;
         }
 
+        // Import the plugins
+        JPluginHelper::importPlugin('magebridgeproduct');
+
         // Foreach of these conditions, run the product-plugins
         foreach ($conditions as $condition) {
 
             // Extract the parameters and make sure there's something to do
             $actions = YireoHelper::toRegistry($condition->actions)->toArray();
+
+            // Detect the deprecated connector-architecture
+            if(!empty($condition->connector) && !empty($condition->connector_value)) {
+                JFactory::getApplication()->triggerEvent('onMageBridgeProductConvertField', array($condition, &$actions));
+            }
+
+            // With empty actions, there is nothing to do
             if(empty($actions)) {
                 continue;
             }
@@ -83,7 +93,6 @@ class MageBridgeConnectorProduct extends MageBridgeConnector
             }
 
             // Run the product plugins
-            JPluginHelper::importPlugin('magebridgeproduct');
             JFactory::getApplication()->triggerEvent('onMageBridgeProductPurchase', array($actions, $user, $status));
  
             // Log this event

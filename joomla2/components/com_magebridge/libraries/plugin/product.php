@@ -20,6 +20,11 @@ require_once JPATH_SITE.'/components/com_magebridge/helpers/loader.php';
  */
 class MageBridgePluginProduct extends MageBridgePlugin
 {
+    /*
+     * Deprecated variable to migrate from the original connector-architecture to new Product Plugins
+     */
+    protected $connector_field = null;
+
     /**
      * Constructor
      *
@@ -54,9 +59,35 @@ class MageBridgePluginProduct extends MageBridgePlugin
      */
     public function onMageBridgeProductPrepareForm($form, $data)
     {   
+        // Add the plugin-form to main form
         $formFile = JPATH_SITE.'/plugins/magebridgeproduct/'.$this->_name.'/form.xml';
         if(file_exists($formFile)) {
             $form->loadFile($formFile, false);
+        }
+
+        // Load the original values from the deprecated connector-architecture
+        if(!empty($this->connector_field)) {
+            $pluginName = $this->_name;
+            if(!empty($data['connector']) && !empty($data['connector_value']) && $pluginName == $data['connector']) {
+                $form->bind(array('actions' => array($this->connector_field => $data['connector_value'])));
+            }
+        }
+    }
+
+    /*
+     * Method to manipulate the MageBridge Product Relation backend-form
+     *
+     * @param object $connector The connector-row
+     * @return boolean
+     */
+    public function onMageBridgeProductConvertField($connector, $actions)
+    {   
+        // Load the original values from the deprecated connector-architecture
+        if(!empty($this->connector_field)) {
+            $pluginName = $this->_name;
+            if(!empty($connector->connector) && !empty($connector->connector_value) && $pluginName == $connector->connector) {
+                $actions = array($this->connector_field => $connector->connector_value);
+            }
         }
     }
 }
