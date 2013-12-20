@@ -40,6 +40,7 @@ class Yireo_MageBridge_Model_Category_Api extends Mage_Catalog_Model_Api_Resourc
             ->addAttributeToSelect('url_key')
             ->addAttributeToSelect('is_active')
             ->addAttributeToSelect('include_in_menu')
+            ->addAttributeToSelect('image')
         ;
 
         // Set the store
@@ -141,6 +142,7 @@ class Yireo_MageBridge_Model_Category_Api extends Mage_Catalog_Model_Api_Resourc
             ->addAttributeToSelect('url_key')
             ->addAttributeToSelect('is_active')
             ->addAttributeToSelect('include_in_menu')
+            ->addAttributeToSelect('image')
         ;
 
         // Filter only active categories
