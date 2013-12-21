@@ -12,7 +12,9 @@
 defined('_JEXEC') or die('Restricted access');
 
 $form = $this->actions_form;
+$fieldCount = count($form->getFieldset('actions'));
 ?>
+<?php if($fieldCount > 0) : ?>
 <table class="admintable">
 <?php foreach($form->getFieldset('actions') as $field): ?>
     <tr>
@@ -21,3 +23,6 @@ $form = $this->actions_form;
     </tr>
 <?php endforeach; ?>
 </table>
+<?php else: ?>
+<p><?php echo JText::_('COM_MAGEBRIDGE_PRODUCT_NO_PLUGINS'); ?></p>
+<?php endif; ?>
