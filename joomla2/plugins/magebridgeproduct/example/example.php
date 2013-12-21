@@ -47,6 +47,30 @@ class plgMageBridgeProductExample extends MageBridgePluginProduct
     }
 
     /*
+     * Method to execute when this connector is reversed
+     * 
+     * @param array $actions
+     * @param JUser $user
+     * @return bool
+     */
+    public function onMageBridgeProductReverse($actions = null, $user = null)
+    {
+        // Make sure this plugin is enabled
+        if ($this->isEnabled() == false) {
+            return false;
+        }
+
+        // Make sure to check upon the $actions array to see if it contains the data you need (for instance, defined in form.xml)
+        if(!isset($actions['example'])) {
+            return false;
+        }
+
+        // Do your stuff after a product purchase has been reversed
+
+        return true;
+    }
+
+    /*
      * Method to check whether this plugin is enabled or not
      *
      * @param null

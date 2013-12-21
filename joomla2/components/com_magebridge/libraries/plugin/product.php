@@ -58,7 +58,12 @@ class MageBridgePluginProduct extends MageBridgePlugin
      * @return boolean
      */
     public function onMageBridgeProductPrepareForm($form, $data)
-    {   
+    {       
+        // Check if this plugin can be used
+        if($this->isEnabled() == false) {
+            return false;
+        }
+        
         // Add the plugin-form to main form
         $formFile = JPATH_SITE.'/plugins/magebridgeproduct/'.$this->_name.'/form.xml';
         if(file_exists($formFile)) {
@@ -82,6 +87,11 @@ class MageBridgePluginProduct extends MageBridgePlugin
      */
     public function onMageBridgeProductConvertField($connector, $actions)
     {   
+        // Check if this plugin can be used
+        if($this->isEnabled() == false) {
+            return false;
+        }
+        
         // Load the original values from the deprecated connector-architecture
         if(!empty($this->connector_field)) {
             $pluginName = $this->_name;
