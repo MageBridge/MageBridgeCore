@@ -184,7 +184,10 @@ class MageBridgeModelUser
 
         // Only set the password, when the password does not appear to be the encrypted version
         if (empty($user['password_clear'])) {
-            if (isset($user['password']) && !preg_match('/([a-z0-9]{32}):([a-zA-Z0-9]+)/', $user['password'])) {
+            if (isset($user['password']) && 
+                !preg_match('/^\$/', $user['password']) && 
+                !preg_match('/^\{SHA256\}/', $user['password']) && 
+                !preg_match('/([a-z0-9]{32}):([a-zA-Z0-9]+)/', $user['password'])) {
                 $user['password_clear'] = $user['password'];
             }
         }
