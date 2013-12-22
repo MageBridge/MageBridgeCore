@@ -65,7 +65,7 @@ class MageBridgePluginProduct extends MageBridgePlugin
         }
         
         // Add the plugin-form to main form
-        $formFile = JPATH_SITE.'/plugins/magebridgeproduct/'.$this->_name.'/form.xml';
+        $formFile = JPATH_SITE.'/plugins/magebridgeproduct/'.$this->_name.'/form/form.xml';
         if(file_exists($formFile)) {
             $form->loadFile($formFile, false);
         }

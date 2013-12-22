@@ -93,7 +93,7 @@ class MageBridgeConnectorProduct extends MageBridgeConnector
             }
 
             // Run the product plugins
-            JFactory::getApplication()->triggerEvent('onMageBridgeProductPurchase', array($actions, $user, $status));
+            JFactory::getApplication()->triggerEvent('onMageBridgeProductPurchase', array($actions, $user, $status, $sku));
  
             // Log this event
             $this->saveLog($user->id, $sku, $expire_unit, $expire_amount);

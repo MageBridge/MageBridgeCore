@@ -176,7 +176,7 @@ class MageBridgeInstallHelper
             array('OSE MSC 4 membership', 'osemsc4', 'product', 'osemsc4.php', null),
             array('OSE MSC 5 membership', 'osemsc5', 'product', 'osemsc5.php', null),
             array('ccNewsletter', 'ccNewsletter', 'product', 'ccnewsletter.php', null),
-            array('Acajoom', 'acajoom', 'product', 'acajoom.php', null),
+            array('Acajoom', 'acajoom', 'product', 'flexiaccess.php', null),
             array('FLEXIaccess', 'FLEXIaccess', 'product', 'flexiaccess.php', null),
             array('jNews', 'JNews', 'product', 'jnews.php', null),
             array('jNewsletter', 'JNewsletter', 'product', 'jnewsletter.php', null),
