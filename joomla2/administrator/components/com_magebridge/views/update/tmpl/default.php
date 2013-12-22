@@ -35,10 +35,10 @@ function selectPackages(type) {
         <th width="20">
             &nbsp;
         </th>
-        <th width="200"> 
+        <th width="20%"> 
             <?php echo JText::_('COM_MAGEBRIDGE_VIEW_UPDATE_EXTENSION'); ?>
         </th>
-        <th width="200">
+        <th width="30%">
             <?php echo JText::_('COM_MAGEBRIDGE_VIEW_UPDATE_DESCRIPTION'); ?>
         </th>
         <th width="110"> 

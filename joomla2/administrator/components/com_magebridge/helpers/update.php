@@ -357,6 +357,49 @@ class MageBridgeUpdateHelper
             ),
         );
 
+        $productPlugins = array(
+            array('name' => 'acajoom', 'title' => 'Acajoom'),
+            array('name' => 'acctexp', 'title' => 'AEC Membership'),
+            array('name' => 'acymailing', 'title' => 'Acymailing'),
+            array('name' => 'agora', 'title' => 'Agora'),
+            array('name' => 'akeebasubs', 'title' => 'Akeeba Subscriptions'),
+            array('name' => 'alphauserpoints', 'title' => 'Alpha User Points'),
+            array('name' => 'article', 'title' => 'Joomla! Articles'),
+            array('name' => 'ccnewsletter', 'title' => 'ccNewsletter'),
+            array('name' => 'communicator', 'title' => 'Communicator'),
+            array('name' => 'docman_group', 'title' => 'DOCman Groups'),
+            array('name' => 'eventlist', 'title' => 'EventList'),
+            array('name' => 'flexiaccess', 'title' => 'FLEXIaccess'),
+            array('name' => 'jdownloads', 'title' => 'jDownloads'),
+            array('name' => 'jinc', 'title' => 'JINC'),
+            array('name' => 'jnews', 'title' => 'jNews'),
+            array('name' => 'jnewsletter', 'title' => 'jNewsletter'),
+            array('name' => 'jomsocial_group', 'title' => 'JomSocial Groups'),
+            array('name' => 'jomsocial_userpoints', 'title' => 'JomSocial User Points'),
+            array('name' => 'kunena_ranks', 'title' => 'Kunena Ranks'),
+            array('name' => 'mkpostman', 'title' => 'MkPostman'),
+            array('name' => 'ohanah', 'title' => 'Ohanah'),
+            array('name' => 'osemsc', 'title' => 'OSE MSC legacy'),
+            array('name' => 'osemsc4', 'title' => 'OSE MSC v4'),
+            array('name' => 'osemsc5', 'title' => 'OSE MSC v5'),
+            array('name' => 'rsevents', 'title' => 'RsEvents'),
+            array('name' => 'rseventspro', 'title' => 'RsEvents Pro'),
+            array('name' => 'rsfiles', 'title' => 'RsFiles'),
+            array('name' => 'usergroup', 'title' => 'Joomla! Usergroups'),
+        );
+        foreach($productPlugins as $productPlugin) {
+            $packages[] = array( 
+                'type' => 'plugin', 
+                'name' => 'plg_magebridgeproduct_'.$productPlugin['name'], 
+                'title' => $productPlugin['title'].' Product Plugin',
+                'description' => 'Product Plugin for '.$productPlugin['title'],
+                'core' => 0,
+                'base' => 1,
+                'group' => 'magebridgeproduct', 
+                'file' => $productPlugin['name'],
+            );
+        }
+
         if (MageBridgeHelper::isJoomla15() == false) {
             $packages[] = array( 
                 'type' => 'plugin', 
