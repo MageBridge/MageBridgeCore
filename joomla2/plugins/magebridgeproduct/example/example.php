@@ -27,9 +27,10 @@ class plgMageBridgeProductExample extends MageBridgePluginProduct
      * @param array $actions
      * @param object $user Joomla! user object
      * @param tinyint $status Status of the current order
+     * @param string $sku Magento SKU
      * @return bool
      */
-    public function onMageBridgeProductPurchase($actions = null, $user = null, $status = null)
+    public function onMageBridgeProductPurchase($actions = null, $user = null, $status = null, $sku = null)
     {
         // Make sure this plugin is enabled
         if ($this->isEnabled() == false) {
@@ -47,13 +48,14 @@ class plgMageBridgeProductExample extends MageBridgePluginProduct
     }
 
     /*
-     * Method to execute when this connector is reversed
+     * Method to execute when this purchase is reversed
      * 
      * @param array $actions
      * @param JUser $user
+     * @param string $sku Magento SKU
      * @return bool
      */
-    public function onMageBridgeProductReverse($actions = null, $user = null)
+    public function onMageBridgeProductReverse($actions = null, $user = null, $sku = null)
     {
         // Make sure this plugin is enabled
         if ($this->isEnabled() == false) {

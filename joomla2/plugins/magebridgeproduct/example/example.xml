@@ -12,6 +12,7 @@
 
 	<files>
 		<filename plugin="example">example.php</filename>
+		<folder>form</folder>
 		<filename>index.html</filename>
 	</files>
 
