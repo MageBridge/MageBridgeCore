@@ -34,14 +34,7 @@ class plgCommunityMageBridge extends CApplications
      */
     private function getParams()
     {
-        if (!MageBridgeHelper::isJoomla15()) {
-            return $this->params;
-        } else {
-            jimport('joomla.html.parameter');
-            $plugin = JPluginHelper::getPlugin('community', 'magebridge');
-            $params = new JParameter($plugin->params);
-            return $params;
-        }
+        return $this->params;
     }
 
     /*
@@ -53,9 +46,9 @@ class plgCommunityMageBridge extends CApplications
      */
     private function getUserParams()
     {
-        jimport('joomla.html.parameter');
+        require_once JPATH_SITE.'/components/com_magebridge/helpers/loader.php';
         $plugin = JPluginHelper::getPlugin('user', 'magebridge');
-        $params = new JParameter($plugin->params);
+        $params = YireoHelper::toRegistry($plugin->params);
         return $params;
     }
 
