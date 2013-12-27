@@ -390,7 +390,7 @@ class MageBridgeUpdateHelper
         foreach($productPlugins as $productPlugin) {
             $packages[] = array( 
                 'type' => 'plugin', 
-                'name' => 'plg_magebridgeproduct_'.$productPlugin['name'], 
+                'name' => 'plg_magebridge_product_'.$productPlugin['name'], 
                 'title' => $productPlugin['title'].' Product Plugin',
                 'description' => 'Product Plugin for '.$productPlugin['title'],
                 'core' => 0,
