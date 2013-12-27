@@ -70,6 +70,8 @@ defined('_JEXEC') or die('Restricted access');
         </table>
     </fieldset>
 
+    <?php /*
+    @todo: Remove when ready
     <fieldset class="adminform">
         <legend><?php echo JText::_( 'Connector' ); ?></legend>
         <table class="admintable">
@@ -103,12 +105,13 @@ defined('_JEXEC') or die('Restricted access');
         </tbody>
         </table>
     </fieldset>
-</td>
-<td width="50%" valign="top">
+    */ ?>
     <fieldset class="adminform">
         <legend><?php echo JText::_('Actions'); ?></legend>
         <?php echo $this->loadTemplate('actions'); ?>
     </fieldset>
+</td>
+<td width="50%" valign="top">
     <fieldset class="adminform">
         <legend><?php echo JText::_('Parameters (optional)'); ?></legend>
         <?php echo $this->loadTemplate('params'); ?>
