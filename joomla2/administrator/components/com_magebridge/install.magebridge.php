@@ -25,7 +25,7 @@ function com_install()
     $db = JFactory::getDBO();
 
     // Remove obsolete files
-    //$helper->cleanFiles();
+    $helper->cleanFiles();
 
     // Upgrade the database tables
     $helper->updateQueries();

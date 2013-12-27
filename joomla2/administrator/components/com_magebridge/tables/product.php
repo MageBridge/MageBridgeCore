@@ -27,7 +27,7 @@ class TableProduct extends YireoTable
      */
     public function __construct(& $db) 
     {
-        $this->_required = array('sku', 'connector');
+        $this->_required = array('sku');
         parent::__construct('#__magebridge_products', 'id', $db);
     }
 

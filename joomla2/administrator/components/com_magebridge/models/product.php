@@ -43,17 +43,6 @@ class MagebridgeModelProduct extends YireoModel
      */
     public function store($data)
     {
-        if(!empty($data['connector'])) {
-            $productConnector = new MageBridgeConnectorProduct();
-            $connector = $productConnector->getConnector($data['connector']);
-            if ($connector == false) {
-                $this->setError(JText::_('Failed to load connector'));
-                return false;
-            }
-
-            $data['connector_value'] = $connector->getFormPost($data);
-        }
-
         if (empty($data['label'])) {
             $data['label'] = $data['sku'];
         }

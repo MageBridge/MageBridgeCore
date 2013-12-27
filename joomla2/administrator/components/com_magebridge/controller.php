@@ -154,6 +154,15 @@ class MageBridgeController extends YireoController
         $model = $this->getModel('update');
         $model->updateAll($packages);
 
+        // Initialize the helper
+        $helper = new MageBridgeInstallHelper();
+
+        // Upgrade the database tables
+        $helper->updateQueries();
+
+        // Install new connectors
+        $helper->installConnectors();
+
         // Clean the cache
         $cache = JFactory::getCache('com_magebridge.admin');
         $cache->clean();
