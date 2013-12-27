@@ -17,9 +17,3 @@ defined('_JEXEC') or die('Restricted access');
 <td>
     <?php echo $item->sku; ?>
 </td>
-<td>
-    <?php echo $item->connector; ?>
-</td>
-<td>
-    <?php echo $item->connector_value; ?>
-</td>

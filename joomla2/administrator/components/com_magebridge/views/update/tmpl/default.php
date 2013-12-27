@@ -56,9 +56,6 @@ function selectPackages(type) {
         <th width="110">
             <?php echo JText::_('COM_MAGEBRIDGE_VIEW_UPDATE_LATEST_VERSION'); ?>
         </th>
-        <th>
-            &nbsp;
-        </th>
     </tr>
 </thead>
 <tbody>
@@ -126,9 +123,6 @@ foreach ($this->data as $package) {
         </td>
         <td class="select">
             <?php echo ($package['latest_version']) ? '<a href="'.$upgrade_url.'">'.$package['latest_version'].'</a>' :  '&nbsp;'; ?>
-        </td>
-        <td>
-            &nbsp;
         </td>
     </tr>
     <?php 
