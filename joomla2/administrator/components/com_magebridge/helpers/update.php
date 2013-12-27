@@ -347,6 +347,17 @@ class MageBridgeUpdateHelper
                 'file' => 'magebridge',
             ),
             array( 
+                'type' => 'plugin', 
+                'name' => 'plg_magebridge_finder', 
+                'title' => 'SmartSearch plugin', 
+                'description' => 'Finder-plugin for Magento products',
+                'core' => 0,
+                'base' => 1,
+                'group' => 'finder', 
+                'file' => 'magebridge',
+                'post_install_query' => self::getPostInstallQuery('plugin', 'magebridge', 'finder'),
+            ),
+            array( 
                 'type' => 'template', 
                 'name' => 'tpl_magebridge_root', 
                 'title' => 'Root Block template', 
@@ -387,31 +398,39 @@ class MageBridgeUpdateHelper
             array('name' => 'rsfiles', 'title' => 'RsFiles'),
             array('name' => 'usergroup', 'title' => 'Joomla! Usergroups'),
         );
+
+        // Load the currently configured connectors
+        $db = JFactory::getDBO();
+        $query = 'SELECT DISTINCT(`connector`) FROM `#__magebridge_products`';
+        $db->setQuery($query);
+        $usedConnectorsList = $db->loadObjectList();
+        $usedConnectors = array();
+        if(!empty($usedConnectorsList)) {
+            foreach($usedConnectorsList as $usedConnector) {
+                if(!empty($usedConnector->connector)) {
+                    $usedConnectors[] = $usedConnector->connector;
+                }
+            }
+        }
+
+        // Loop through the defined product-plugins, and add them to the packages
         foreach($productPlugins as $productPlugin) {
-            $packages[] = array( 
-                'type' => 'plugin', 
-                'name' => 'plg_magebridge_product_'.$productPlugin['name'], 
+            $package = array(    
+                'type' => 'plugin',
+                'name' => 'plg_magebridge_product_'.$productPlugin['name'],
                 'title' => $productPlugin['title'].' Product Plugin',
                 'description' => 'Product Plugin for '.$productPlugin['title'],
-                'core' => 0,
+                'core' => 1,
                 'base' => 1,
                 'group' => 'magebridgeproduct', 
                 'file' => $productPlugin['name'],
             );
-        }
 
-        if (MageBridgeHelper::isJoomla15() == false) {
-            $packages[] = array( 
-                'type' => 'plugin', 
-                'name' => 'plg_magebridge_finder', 
-                'title' => 'SmartSearch plugin', 
-                'description' => 'Finder-plugin for Magento products',
-                'core' => 0,
-                'base' => 1,
-                'group' => 'finder', 
-                'file' => 'magebridge',
-                'post_install_query' => self::getPostInstallQuery('plugin', 'magebridge', 'finder'),
-            );
+            if(in_array($productPlugin['name'], $usedConnectors)) {
+                $package['post_install_query'] = self::getPostInstallQuery('plugin', $productPlugin['name'], 'magebridgeproduct');
+            }
+
+            $packages[] = $package;
         }
 
         return $packages;
@@ -441,11 +460,7 @@ class MageBridgeUpdateHelper
                 break;
 
             case 'plugin':
-                if (MageBridgeHelper::isJoomla15()) {
-                    $file = JPATH_SITE.'/plugins/'.$package['group'].'/'.$package['file'].'.xml';
-                } else {
-                    $file = JPATH_SITE.'/plugins/'.$package['group'].'/'.$package['file'].'/'.$package['file'].'.xml';
-                }
+                $file = JPATH_SITE.'/plugins/'.$package['group'].'/'.$package['file'].'/'.$package['file'].'.xml';
                 break;
 
             case 'template':
@@ -557,11 +572,7 @@ class MageBridgeUpdateHelper
             $query = 'UPDATE `#__modules` SET `position`="'.$value.'" WHERE `module`="'.$name.'"';
 
         } else {
-            if (MageBridgeHelper::isJoomla15()) {
-                $query = 'UPDATE `#__plugins` SET `published`="1" WHERE `element`="'.$name.'" AND `folder`="'.$value.'"';
-            } else {
-                $query = 'UPDATE `#__extensions` SET `enabled`="1" WHERE `type`="plugin" AND `element`="'.$name.'" AND `folder`="'.$value.'"';
-            }
+            $query = 'UPDATE `#__extensions` SET `enabled`="1" WHERE `type`="plugin" AND `element`="'.$name.'" AND `folder`="'.$value.'"';
         }
 
         return $query;
