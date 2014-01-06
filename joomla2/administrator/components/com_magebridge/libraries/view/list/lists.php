@@ -4,7 +4,7 @@
  *
  * @author Yireo
  * @package YireoLib
- * @copyright Copyright 2013
+ * @copyright Copyright 2014
  * @license GNU Public License
  * @link http://www.yireo.com/
  * @version 0.6.0
