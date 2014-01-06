@@ -171,7 +171,9 @@ class MageBridge
     public static function addToCartUrl($product_id, $quantity = 1, $options = array(), $return_url = null)
     {
         // Basic URL
+        $form_key = MageBridgeModelBridge::getInstance()->getMageConfig('form_key');
         $request = 'checkout/cart/add/product/'.$product_id.'/qty/'.$quantity.'/';
+        if(!empty($form_key)) $request .= 'form_key/'.$form_key.'/';
 
         // Add the return URL
         if (!empty($return_url)) {
