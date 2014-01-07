@@ -43,7 +43,7 @@ class MageBridgeInstallHelper
         }
 
         // List of obsolete files
-        $obsolete_folders = array(
+        $obsolete_files = array(
             JPATH_ADMINISTRATOR.'/components/com_magebridge/views/config/tmpl/joomla25/field.php',
         );
 
