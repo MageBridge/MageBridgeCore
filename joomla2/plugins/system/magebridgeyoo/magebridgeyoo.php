@@ -91,7 +91,7 @@ class plgSystemMageBridgeYoo extends JPlugin
                 }
 
                 // Load a profile-specific color-definition
-                if (isset($data['profile_data'][$profile]['color'])) {
+                if (!empty($profile) && isset($data['profile_data'][$profile]['color'])) {
                     $color = $data['profile_data'][$profile]['color'];
                 } else if (isset($data['profile_data']['default']['color'])) {
                     $color = $data['profile_data']['default']['color'];
@@ -103,7 +103,7 @@ class plgSystemMageBridgeYoo extends JPlugin
                 }
 
                 // Load a profile-specific style-definition
-                if (isset($data['profile_data'][$profile]['style'])) {
+                if (!empty($profile) && isset($data['profile_data'][$profile]['style'])) {
                     $style = $data['profile_data'][$profile]['style'];
                 } else if (isset($data['profile_data']['default']['style'])) {
                     $style = $data['profile_data']['default']['style'];
@@ -116,7 +116,7 @@ class plgSystemMageBridgeYoo extends JPlugin
                 }
 
                 // Load a layout-specific style-definition
-                if (isset($data['layouts'][$profile]['style'])) {
+                if (!empty($profile) && isset($data['layouts'][$profile]['style'])) {
                     $layout = $data['layouts'][$profile]['style'];
                 } else if (isset($data['layouts']['default']['style'])) {
                     $layout = $data['layouts']['default']['style'];
