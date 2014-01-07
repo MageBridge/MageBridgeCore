@@ -35,7 +35,6 @@ class MageBridgeViewConnectors extends YireoViewList
         $options = array( 
             array( 'value' => '', 'text' => '- Select Type -' ),
             array( 'value' => 'store', 'text' => 'Store Connectors' ),
-            array( 'value' => 'product', 'text' => 'Product Connectors' ),
             array( 'value' => 'profile', 'text' => 'Profile Connectors' ),
         );
         $filter_type = $this->getFilter('type');
@@ -49,9 +48,7 @@ class MageBridgeViewConnectors extends YireoViewList
         if (!empty($this->items)) {
             foreach ($this->items as $index => $item) {
 
-                if ($item->type == 'product') {
-                    $object = MageBridgeConnectorProduct::getInstance()->getConnectorObject($item);
-                } else if ($item->type == 'profile') {
+                if ($item->type == 'profile') {
                     $object = MageBridgeConnectorProfile::getInstance()->getConnectorObject($item);
                 } else {
                     $object = MageBridgeConnectorStore::getInstance()->getConnectorObject($item);

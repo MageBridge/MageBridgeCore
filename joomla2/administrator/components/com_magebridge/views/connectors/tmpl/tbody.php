@@ -12,7 +12,7 @@
 defined('_JEXEC') or die('Restricted access');
 ?>
 <td>
-    <a href="<?php echo $item->edit_link; ?>" title="<?php echo JText::_( 'Edit product' ); ?>"><?php echo $item->title; ?></a>
+    <a href="<?php echo $item->edit_link; ?>" title="<?php echo JText::_( 'Edit connector' ); ?>"><?php echo $item->title; ?></a>
 </td>
 <td>
     <?php echo $item->name; ?>
