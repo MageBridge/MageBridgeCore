@@ -35,6 +35,7 @@ class MageBridgeInstallHelper
             JPATH_SITE.'/components/com_magebridge/css',
             JPATH_SITE.'/components/com_magebridge/images',
             JPATH_SITE.'/components/com_magebridge/js',
+            JPATH_SITE.'/components/com_magebridge/connectors/product',
         );
 
         // Remove obsolete folders
@@ -76,6 +77,7 @@ class MageBridgeInstallHelper
             "ALTER TABLE `#__magebridge_log` ADD `session` VARCHAR( 50 ) NOT NULL AFTER  `http_agent`",
             "ALTER TABLE `#__magebridge_urls` ADD UNIQUE `published` ( `published`)",
             "ALTER TABLE `#__magebridge_products` ADD `actions` TEXT NOT NULL AFTER `connector_value`",
+            "DELETE FROM `#__magebridge_connectors` WHERE `type` = 'product'",
         );
 
         // Perform the update queries
