@@ -4,7 +4,7 @@
  *
  * @author Yireo
  * @package JoomlaApi
- * @copyright Copyright 2013
+ * @copyright Copyright 2014
  * @license Open Source License v3
  * @link http://www.yireo.com
  */

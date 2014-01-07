@@ -4,7 +4,7 @@
  *
  * @author Yireo
  * @package MageBridge
- * @copyright Copyright 2013
+ * @copyright Copyright 2014
  * @license Open Source License
  * @link http://www.yireo.com/
  */

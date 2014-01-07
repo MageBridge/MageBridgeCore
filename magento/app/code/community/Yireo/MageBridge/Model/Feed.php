@@ -4,7 +4,7 @@
  *
  * @author Yireo
  * @package Yireo_Common
- * @copyright Copyright 2013
+ * @copyright Copyright 2014
  * @license Open Source License (OSL)
  * @link http://www.yireo.com
  */
