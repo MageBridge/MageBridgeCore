@@ -192,6 +192,9 @@ class MageBridgeController extends YireoController
         // Install new connectors
         $helper->installConnectors();
 
+        // Clean files
+        $helper->cleanFiles();
+
         // Redirect
         $link = 'index.php?option=com_magebridge&view=update';
         $msg = JText::_('Applied database upgrades');
