@@ -115,7 +115,7 @@ class MageBridgeModelBridgeBreadcrumbs extends MageBridgeModelBridgeSegment
             }
 
             // Only add the root, if there is no match yet
-            if($match == false) {
+            if(!empty($pathway_item) && $match == false) {
                 $pathway_items[] = $pathway_item;
             }
 
@@ -138,6 +138,7 @@ class MageBridgeModelBridgeBreadcrumbs extends MageBridgeModelBridgeSegment
             if (!empty($pathway_items)) {
                 $match = false;
                 foreach ($pathway_items as $pathway_item) {
+                    if (empty($pathway_item) && !is_object($pathway_item)) continue;
                     if ($pathway_item->link == $item['link']) $match = true;
                 }
                 if ($match == true) continue;
