@@ -104,7 +104,13 @@ class MagebridgeModelStore extends YireoModel
             $data['label'] = $data['title'];
         }
 
-        return parent::store($data);
+        $rt = parent::store($data);
+
+        if($rt == true && $data['published'] == 1) {
+            MageBridge::getConfig()->saveValue('load_stores', 1);
+        }
+
+        return $rt;
     }
 
     /**
