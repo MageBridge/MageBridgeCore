@@ -20,12 +20,35 @@ class Yireo_MageBridge_Helper_Update extends Mage_Core_Helper_Abstract
      */
     public function removeFiles()
     {
+        // Cleanup specific files
         $files = array(
             BP.DS.'app'.DS.'design'.DS.'frontend'.DS.'default'.DS.'default'.DS.'layout'.DS.'magebridge.xml',
             BP.DS.'app'.DS.'design'.DS.'frontend'.DS.'default'.DS.'magebridge'.DS.'layout',
             BP.DS.'app'.DS.'design'.DS.'frontend'.DS.'default'.DS.'magebridge'.DS.'template'.DS.'magebridge'.DS.'page.phtml',
             BP.DS.'app'.DS.'code'.DS.'community'.DS.'Yireo'.DS.'MageBridge'.DS.'controllers'.DS.'IndexController.php',
         );
+
+        foreach($files as $file) {
+            @unlink($file);
+        }
+
+        // Cleanup Magento Downloader left-overs
+        $packageFolder = BP.DS.'var'.DS.'package'.DS;
+        $downloaderFolder = BP.DS.'downloader'.DS;
+        $files = scandir($packageFolder);
+        $fileMatch = false;
+        foreach($files as $file) {
+            if(preg_match('/^Yireo_MageBridge/', $file)) {
+                $fileMatch = true;
+                @unlink($packageFolder.$file);
+            }
+        }
+
+        // If a file has been removed, refresh the Magento Downloader
+        if($fileMatch == true) {
+            if(file_exists($downloaderFolder.'cache.cfg')) @unlink($downloaderFilder.'cache.cfg');
+            if(file_exists($downloaderFolder.'connect.cfg')) @unlink($downloaderFilder.'connect.cfg');
+        }
     }
 
     /*
