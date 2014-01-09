@@ -96,13 +96,7 @@ class plgSystemMageBridgeT3 extends JPlugin
      */
     private function getParams()
     {
-        if (!MageBridgeHelper::isJoomla15()) {
-            return $this->params;
-        } else {
-            $plugin = JPluginHelper::getPlugin('system', 'magebridget3');
-            $params = new JParameter($plugin->params);
-            return $params;
-        }
+        return $this->params;
     }
 
     /**
@@ -115,6 +109,12 @@ class plgSystemMageBridgeT3 extends JPlugin
     private function isEnabled()
     {
         if (JFactory::getApplication()->isSite() == false) return false;
+
+        $template = JFactory::getApplication()->getTemplate();
+        if(preg_match('/^ja_/', $template) == false) {
+            return false;
+        }
+
         if (JRequest::getCmd('option') != 'com_magebridge') return false;
         if (is_file(JPATH_SITE.'/components/com_magebridge/models/config.php')) return true;
         return false;
