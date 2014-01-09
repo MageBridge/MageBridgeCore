@@ -179,13 +179,7 @@ class plgSystemMageBridgeYoo extends JPlugin
      */
     private function getParams()
     {
-        if (!MageBridgeHelper::isJoomla15()) {
-            return $this->params;
-        } else {
-            $plugin = JPluginHelper::getPlugin('system', 'magebridgeyoo');
-            $params = new JParameter($plugin->params);
-            return $params;
-        }
+        return $this->params;
     }
 
     /**
@@ -197,6 +191,11 @@ class plgSystemMageBridgeYoo extends JPlugin
      */
     private function isEnabled()
     {
+        $template = JFactory::getApplication()->getTemplate();
+        if(preg_match('/^yoo_/', $template) == false) {
+            return false;
+        }
+
         if (is_file(JPATH_SITE.'/components/com_magebridge/models/config.php')) {
             return true;
         }
