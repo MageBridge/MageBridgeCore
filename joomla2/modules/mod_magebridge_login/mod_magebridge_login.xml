@@ -2,7 +2,7 @@
 <extension type="module" version="2.5" client="site" method="upgrade">
     <name>MOD_MAGEBRIDGE_LOGIN</name>
 	<author>Yireo</author>
-	<creationDate>December 2013</creationDate>
+	<creationDate>January 2014</creationDate>
 	<copyright>Copyright (C) 2014 Yireo.com. All rights reserved.</copyright>
 	<license>GNU/GPL</license>
 	<authorEmail>development@yireo.com</authorEmail>

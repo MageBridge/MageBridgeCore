@@ -2,7 +2,7 @@
 <!DOCTYPE install PUBLIC "-//Joomla! 1.5//DTD template 1.0//EN" "http://www.joomla.org/xml/dtd/1.5/template-install.dtd">
 <extension version="2.5" type="template" method="upgrade">
 	<name>magebridge_root</name>
-	<creationDate>December 2013</creationDate>
+	<creationDate>January 2014</creationDate>
 	<author>Yireo</author>
 	<authorEmail>info@yireo.com</authorEmail>
 	<authorUrl>http://www.yireo.com</authorUrl>
