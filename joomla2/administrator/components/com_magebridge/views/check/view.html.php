@@ -112,14 +112,9 @@ class MageBridgeViewCheck extends YireoView
         }
 
         // Try to open a socket to port 80
-        if (@fsockopen($host, 80, $errno, $errmsg, 5) == false) {
+        if (fsockopen($host, 80, $errno, $errmsg, 5) == false) {
             die('ERROR: Failed to open a connection to host "'.$host.'" on port 80. Perhaps a firewall is in the way?');
         }
-
-        // Try to open a socket to port 443
-        //if (@fsockopen($host, 443, $errno, $errmsg, 5) == false) {
-        //    die('ERROR: Failed to open a socket to host "'.$host.'" on port 443. Perhaps a firewall is in the way?');
-        //}
 
         // Initialize the proxy
         $proxy = MageBridgeModelProxy::getInstance();
