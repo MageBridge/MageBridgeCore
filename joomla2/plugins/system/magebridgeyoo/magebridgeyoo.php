@@ -45,8 +45,8 @@ class plgSystemMageBridgeYoo extends JPlugin
         $whitelist = JFactory::getConfig()->get('magebridge.script.whitelist');
         if (empty($whitelist)) $whitelist = array();
         if ($this->getParams()->get('enable_js_widgetkit', 1) == 1) $whitelist[] = '/widgetkit/';
-        if ($this->getParams()->get('enable_js_warp', 1) == 1) $whitelist[] = '/warp/js/';
-        if ($this->getParams()->get('enable_js_template', 1) == 1) $whitelist[] = '/js/template.js';
+        if ($this->getParams()->get('enable_js_warp', 1) == 1) $whitelist[] = '/warp/';
+        if ($this->getParams()->get('enable_js_template', 1) == 1) $whitelist[] = '/js/';
         JFactory::getConfig()->set('magebridge.script.whitelist', $whitelist);
 
         // Read the template-related files
