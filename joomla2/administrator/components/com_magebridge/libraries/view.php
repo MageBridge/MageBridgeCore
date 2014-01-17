@@ -883,7 +883,7 @@ class YireoView extends YireoCommonView
 
         foreach($paths as $path) {
             if(file_exists(JPATH_SITE.$path)) {
-                return '<img src="'.$path.'" alt="'.$name.'" />';
+                return '<img src="'.JURI::root().$path.'" alt="'.$name.'" />';
             }
         }
 

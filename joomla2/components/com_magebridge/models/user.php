@@ -87,8 +87,8 @@ class MageBridgeModelUser
                 $pasword = (!is_string($user['password']) || empty($user['password'])) ? JUserHelper::genRandomPassword() : $user['password'];
 
                 // Generate the encrypted password
-			    $salt  = JUserHelper::genRandomPassword(32);
-    			$crypt = JUserHelper::getCryptedPassword($password, $salt);
+                $salt  = JUserHelper::genRandomPassword(32);
+                $crypt = JUserHelper::getCryptedPassword($password, $salt);
                 $data['password'] = $crypt.':'.$salt;
                 $data['password2'] = $crypt.':'.$salt;
 
@@ -112,9 +112,9 @@ class MageBridgeModelUser
                     $db->setQuery('SELECT * FROM `#__user_usergroup_map` WHERE `user_id`='.$table->id);
                     $rows = $db->loadObjectList();
                     if (empty($rows)) {
-			            $group_id = MageBridgeUserHelper::getDefaultJoomlaGroupid();
+                        $group_id = MageBridgeUserHelper::getDefaultJoomlaGroupid();
                         if (!empty($group_id)) {
-    				        $db->setQuery('INSERT INTO `#__user_usergroup_map` SET `user_id`='.$table->id.', `group_id`='.$group_id);
+                            $db->setQuery('INSERT INTO `#__user_usergroup_map` SET `user_id`='.$table->id.', `group_id`='.$group_id);
                             $db->query(); 
                         }
                     }

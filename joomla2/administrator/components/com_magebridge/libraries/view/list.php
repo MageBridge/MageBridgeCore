@@ -82,7 +82,7 @@ class YireoViewList extends YireoView
             foreach ($this->items as $index => $item) {
 
                 // Determine the primary key
-                $item->id = $item->$primaryKey;
+                $item->id = (isset($item->$primaryKey)) ? $item->$primaryKey: null;
 
                 // Set the various links
                 if(empty($item->edit_link)) {

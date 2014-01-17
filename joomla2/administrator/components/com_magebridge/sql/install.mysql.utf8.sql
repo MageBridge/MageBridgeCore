@@ -72,6 +72,7 @@ CREATE TABLE IF NOT EXISTS `#__magebridge_stores` (
 CREATE TABLE IF NOT EXISTS `#__magebridge_urls` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `source` varchar(255) NOT NULL,
+  `source_type` tinyint(2) NOT NULL,
   `destination` varchar(255) NOT NULL,
   `description` varchar(255) NOT NULL,
   `access` tinyint(3) NOT NULL DEFAULT '0',

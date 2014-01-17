@@ -448,6 +448,13 @@ class YireoModel extends YireoAbstractModel
                     return;
                 }
 
+                // Fill in non-existing fields
+                foreach($this->getEmptyFields() as $fieldName => $fieldValue) {
+                    if(!isset($data->$fieldName)) {
+                        $data->$fieldName = $fieldValue;
+                    }
+                }
+
             // Plural model
             } else if ($this->isSingular() == false) {
 
@@ -528,6 +535,13 @@ class YireoModel extends YireoAbstractModel
                         // Set the ID
                         $key = $this->getPrimaryKey();
                         $item->id = $item->$key;
+    
+                        // Fill in non-existing fields
+                        foreach($this->getEmptyFields() as $fieldName => $fieldValue) {
+                            if(!isset($item->$fieldName)) {
+                                $item->$fieldName = $fieldValue;
+                            }
+                        }
 
                         // Re-insert this item
                         $data[$index] = $item;
@@ -1072,7 +1086,7 @@ class YireoModel extends YireoAbstractModel
         if ($state == 'U' || $state == 'P') {
             $state = ($state == 'U') ? 0 : 1;
             $stateField = $this->_tbl->getStateField();
-            if (!empty($stateField)) $this->addWhere($this->_tbl_alias.'.'.$stateField.' = '.$state);
+            if (!empty($stateField)) $this->addWhere('`'.$this->_tbl_alias.'`.`'.$stateField.'` = '.$state);
         }
 
         // Automatically add a WHERE-statement if only published items should appear on the frontend
@@ -1230,6 +1244,28 @@ class YireoModel extends YireoAbstractModel
     }
 
     /**
+     * Method to get empty fields
+     *
+     * @access protected
+     * @subpackage Yireo
+     * @param null
+     * @return array
+     */
+    protected function getEmptyFields()
+    {
+        $data = array(
+            'published' => 1,
+            'publish_up' => null,
+            'publish_down' => null,
+            'state' => 1,
+            'ordering' => 0,
+            'lft' => 0,
+            'rgt' => 0,
+        );
+        return $data;
+    }
+
+    /**
      * Method to initialise the data
      *
      * @access protected
@@ -1240,15 +1276,7 @@ class YireoModel extends YireoAbstractModel
     protected function getEmpty()
     {
         // Define the fields to initialize
-        $data = array(
-            'published' => 1,
-            'publish_up' => null,
-            'publish_down' => null,
-            'state' => 1,
-            'ordering' => 0,
-            'lft' => 0,
-            'rgt' => 0,
-        );
+        $data = $this->getEmptyFields();
 
         // Lets load the data if it doesn't already exist
         if (empty($this->_data)) {

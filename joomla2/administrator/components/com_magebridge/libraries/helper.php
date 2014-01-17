@@ -249,6 +249,9 @@ class YireoHelper
             return;
         }
 
+        // Do not load this for specific extensions
+        if(JRequest::getCmd('option') == 'com_virtuemart') return false;
+
         // Load jQuery
         $option = JRequest::getCmd('option');
         if (file_exists(JPATH_SITE.'/media/'.$option.'/js/jquery.js')) {

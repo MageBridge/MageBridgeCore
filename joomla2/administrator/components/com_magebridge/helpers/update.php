@@ -358,6 +358,17 @@ class MageBridgeUpdateHelper
                 'post_install_query' => self::getPostInstallQuery('plugin', 'magebridge', 'finder'),
             ),
             array( 
+                'type' => 'plugin', 
+                'name' => 'plg_magebridge_graphdat', 
+                'title' => 'Graphdat plugin', 
+                'description' => 'MageBridge-plugin for usage with Graphdat',
+                'core' => 0,
+                'base' => 0,
+                'group' => 'magebridge', 
+                'file' => 'graphdat',
+                'post_install_query' => self::getPostInstallQuery('plugin', 'graphdat', 'magebridge'),
+            ),
+            array( 
                 'type' => 'template', 
                 'name' => 'tpl_magebridge_root', 
                 'title' => 'Root Block template', 
