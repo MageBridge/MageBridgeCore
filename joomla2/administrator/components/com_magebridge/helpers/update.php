@@ -366,7 +366,6 @@ class MageBridgeUpdateHelper
                 'base' => 0,
                 'group' => 'magebridge', 
                 'file' => 'graphdat',
-                'post_install_query' => self::getPostInstallQuery('plugin', 'graphdat', 'magebridge'),
             ),
             array( 
                 'type' => 'template', 
