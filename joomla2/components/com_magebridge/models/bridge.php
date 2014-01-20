@@ -941,6 +941,8 @@ class MageBridgeModelBridge
         $layout = JRequest::getCmd('layout');
         if ($option == 'com_content' && $view == 'form' && $layout == 'edit') {
             return true;
+        } elseif (in_array($option, array('com_scriptmerge'))) {
+            return true;
         }
 
         return false;
