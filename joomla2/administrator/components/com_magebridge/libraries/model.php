@@ -1258,6 +1258,7 @@ class YireoModel extends YireoAbstractModel
             'publish_up' => null,
             'publish_down' => null,
             'state' => 1,
+            'access' => 1,
             'ordering' => 0,
             'lft' => 0,
             'rgt' => 0,

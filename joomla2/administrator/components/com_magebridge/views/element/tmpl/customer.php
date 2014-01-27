@@ -25,7 +25,7 @@ defined('_JEXEC') or die('Restricted access');
     </td>
 </tr>
 </table>
-<table class="adminlist" cellspacing="1">
+<table class="adminlist table table-striped" cellspacing="1">
 <thead>
     <tr>
         <th width="30">
