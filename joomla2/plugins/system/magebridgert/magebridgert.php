@@ -43,10 +43,15 @@ class plgSystemMageBridgeRt extends JPlugin
 
         // Load the blacklist settings
         $blacklist = JFactory::getConfig()->get('magebridge.script.blacklist');
-        if (empty($whitelist)) $whitelist = array();
+        if (empty($blacklist)) $blacklist = array();
         $blacklist[] = '/rokbox.js';
         $blacklist[] = 'gantry/js/browser-engines.js';
         JFactory::getConfig()->set('magebridge.script.blacklist', $blacklist);
+
+        // Load the whitelist settings
+        $whitelist = JFactory::getConfig()->get('magebridge.script.whitelist');
+        if (empty($whitelist)) $whitelist = array();
+        JFactory::getConfig()->set('magebridge.script.whitelist', $whitelist);
 
         // Read the template-related files
         $ini = JPATH_THEMES.'/'.$application->getTemplate().'/params.ini';

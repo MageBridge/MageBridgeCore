@@ -25,6 +25,9 @@ class MageBridgeInstallHelper
      */
     public function cleanFiles()
     {
+        // Import library
+        jimport('joomla.filesystem.folder');
+
         // List of obsolete folders
         $obsolete_folders = array(
             JPATH_ADMINISTRATOR.'/components/com_magebridge/css',
