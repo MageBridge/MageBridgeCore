@@ -281,14 +281,19 @@ class plgSystemMageBridge extends JPlugin
 
             // Import the custom module helper - this is needed to make it possible to flush certain positions 
             if ($this->getParam('override_modulehelper', 1) == 1 && $loadModuleHelper == true) {
-                if (MageBridgeHelper::isJoomla15()) {
-                    @include_once(JPATH_SITE.'/components/com_magebridge/rewrite/joomla/application/module/helper.php');
-                } else if (MageBridgeHelper::isJoomla16()) {
-                    @include_once(JPATH_SITE.'/components/com_magebridge/rewrite-16/joomla/application/module/helper.php');
-                } else if (MageBridgeHelper::isJoomla17()) {
-                    @include_once(JPATH_SITE.'/components/com_magebridge/rewrite-17/joomla/application/module/helper.php');
+                $component_path = JPATH_SITE.'/components/com_magebridge/';
+                if (MageBridgeHelper::isJoomlaVersion('1.6')) {
+                    @include_once($component_path.'rewrite-16/joomla/application/module/helper.php');
+                } else if (MageBridgeHelper::isJoomlaVersion('1.7')) {
+                    @include_once($component_path.'rewrite-17/joomla/application/module/helper.php');
+                } else if (MageBridgeHelper::isJoomlaVersion('2.5')) {
+                    @include_once($component_path.'rewrite-25/joomla/application/module/helper.php');
+                } else if (MageBridgeHelper::isJoomlaVersion('3.0')) {
+                    @include_once($component_path.'rewrite-30/joomla/application/module/helper.php');
+                } else if (MageBridgeHelper::isJoomlaVersion('3.1')) {
+                    @include_once($component_path.'rewrite-31/cms/application/module/helper.php');
                 } else {
-                    @include_once(JPATH_SITE.'/components/com_magebridge/rewrite-25/joomla/application/module/helper.php');
+                    @include_once($component_path.'rewrite-32/cms/application/module/helper.php');
                 }
             }
         }

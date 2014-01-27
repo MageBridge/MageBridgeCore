@@ -58,14 +58,18 @@ class plgSystemMageBridgePre extends JPlugin
             // Import the custom module helper - this is needed to make it possible to flush certain positions 
             if ($this->getParam('override_modulehelper', 1) == 1 && $loadModuleHelper == true) {
                 $component_path = JPATH_SITE.'/components/com_magebridge/';
-                if (MageBridgeHelper::isJoomla15()) {
-                    @include_once($component_path.'rewrite/joomla/application/module/helper.php');
-                } else if (MageBridgeHelper::isJoomla16()) {
+                if (MageBridgeHelper::isJoomlaVersion('1.6')) {
                     @include_once($component_path.'rewrite-16/joomla/application/module/helper.php');
-                } else if (MageBridgeHelper::isJoomla17()) {
+                } else if (MageBridgeHelper::isJoomlaVersion('1.7')) {
                     @include_once($component_path.'rewrite-17/joomla/application/module/helper.php');
-                } else {
+                } else if (MageBridgeHelper::isJoomlaVersion('2.5')) {
                     @include_once($component_path.'rewrite-25/joomla/application/module/helper.php');
+                } else if (MageBridgeHelper::isJoomlaVersion('3.0')) {
+                    @include_once($component_path.'rewrite-30/joomla/application/module/helper.php');
+                } else if (MageBridgeHelper::isJoomlaVersion('3.1')) {
+                    @include_once($component_path.'rewrite-31/cms/application/module/helper.php');
+                } else {
+                    @include_once($component_path.'rewrite-32/cms/application/module/helper.php');
                 }
             }
         }
