@@ -557,6 +557,7 @@ class MageBridgeModelBridge
         } else if (preg_match('/\/customer\/account\//', JURI::current()) == false && 
             preg_match('/\/persistent\/index/', JURI::current()) == false && 
             preg_match('/\/review\/product\/post/', JURI::current()) == false && 
+            preg_match('/\/remove\/item/', JURI::current()) == false && 
             preg_match('/\/checkout\/cart/', JURI::current()) == false && 
             preg_match('/\/newsletter\/subscriber/', JURI::current()) == false && 
             JURI::current() != MageBridge::getBridge()->getJoomlaBridgeUrl()) {
