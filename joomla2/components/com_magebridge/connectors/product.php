@@ -98,9 +98,6 @@ class MageBridgeConnectorProduct extends MageBridgeConnector
             // Log this event
             $this->saveLog($user->id, $sku, $expire_unit, $expire_amount);
         }
-
-        // Refresh the user session, just in case
-        MageBridge::getUser()->updateSession(JFactory::getUser());
     }
 
     /*

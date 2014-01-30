@@ -287,9 +287,6 @@ class plgMagentoMageBridge extends JPlugin
             $profile = new MageBridgeConnectorProfile();
             $profile->onSave($user, $customer, $address);
 
-            // Update the session
-            //$this->getUser()->updateSession($user);
-
             // Return the user ID for convenience
             return $user->id;
         }

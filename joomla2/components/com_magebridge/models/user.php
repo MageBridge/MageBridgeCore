@@ -403,46 +403,6 @@ class MageBridgeModelUser
     }
 
     /*
-     * Helper method to update the current session with the new user-data
-     * - Replicate behaviour of Joomla! User Plugin > onLoginUser
-     *  
-     *
-     */
-    public function updateSession($user)
-    {
-        return false;
-        /*
-        // Check if type is JUser
-        if (!is_object($user) || !method_exists($user, 'get')) {
-            return false;
-        }
-
-        // Make sure all the fields are there
-        $user = new JUser($user->id);
-        
-        // Update the session
-        $session = JFactory::getSession();
-        $session_user = $session->get('user');
-        if ($user->id != $session_user->id) {
-            return;
-        }
-
-        // Update the session-table
-        $table = JTable::getInstance('session');
-        $table->load($session->getId());
-        $table->guest = 0;
-        $table->aid = null; // @todo: Determine the right access-level
-        $table->username = $user->get('username');
-        $table->userid = $user->get('id');
-        $table->usertype = $user->get('usertype');
-        $table->gid = $user->get('gid');
-        $table->update();
-
-        return true;
-        */
-    }
-
-    /*
      * Method to check whether an user should be synchronized or not
      *
      * @param JUser $user
@@ -564,12 +524,6 @@ class MageBridgeModelUser
             MageBridgeModelDebug::getInstance()->notice( "Firing event ".$eventName );
             JPluginHelper::importPlugin('user');
             JFactory::getApplication()->triggerEvent($eventName, array($user, $options));
-
-        } else {
-            // Update the user-session
-            if (!empty($user)) {
-                $this->updateSession($user);
-            }
         }
 
         return true;
