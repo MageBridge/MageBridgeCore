@@ -82,12 +82,6 @@ class MageBridgeRegisterHelper extends JModuleHelper
                         if (!empty($contents)) {
                             continue;
                         }
-
-                        // If the contents are empty, make sure we have a fresh start
-                        // @todo: Why was this needed? This causes under certain circumstances numerous bridge-calls which is bad.
-                        //if (empty($contents)) {
-                        //    $cache->clean();
-                        //}
                     }
 
                     // If the layout is AJAX-ified, do not fetch the block at all

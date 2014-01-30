@@ -641,11 +641,6 @@ class MageBridgeModelProxy
             $this->setRedirect($location);
         }
 
-        // @todo: Ugly workaround: In MB, the addresses are initialized on this page, but the address-items do not match?
-        //if (MageBridgeUrlHelper::getRequest() == 'checkout/multishipping/addresses') {
-        //    $this->setRedirect('checkout/multishipping/addresses');
-        //}
-
         curl_close($handle);
         return $this->_body;
     }
