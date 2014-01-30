@@ -72,7 +72,7 @@ class MageBridgeModelBridgeHeaders extends MageBridgeModelBridgeSegment
     public function getBaseJsUrl()
     {
         $bridge = MageBridge::getBridge();
-        $url = $bridge->getMageConfig('base_js_url');
+        $url = $bridge->getSessionData('base_js_url');
         if (empty($url)) {
             $url = $bridge->getMagentoUrl().'js/';
         }

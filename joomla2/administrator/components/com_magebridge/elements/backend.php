@@ -46,7 +46,7 @@ class JElementBackend extends JElement
         if (MagebridgeModelConfig::load('api_widgets') == true) {
 
             $bridge = MageBridgeModelBridge::getInstance();
-            $path = $bridge->getMageConfig('backend/path');
+            $path = $bridge->getSessionData('backend/path');
             if (!empty($path)) {
                 $html = '<input type="text" value="'.$path.'" disabled="disabled" />';
                 $html .= '<input type="hidden" name="'.$name.'" value="'.$path.'" />';

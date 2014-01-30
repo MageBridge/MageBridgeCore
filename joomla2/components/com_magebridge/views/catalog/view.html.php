@@ -48,9 +48,9 @@ class MageBridgeViewCatalog extends MageBridgeView
 
             // Determine the suffix
             if ($layout == 'product') {
-                $suffix = $bridge->getMageConfig('catalog/seo/product_url_suffix');
+                $suffix = $bridge->getSessionData('catalog/seo/product_url_suffix');
             } else if ($layout == 'category') {
-                $suffix = $bridge->getMageConfig('catalog/seo/category_url_suffix');
+                $suffix = $bridge->getSessionData('catalog/seo/category_url_suffix');
             }
 
             // Add the suffix, if this is set in the Magento configuration

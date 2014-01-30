@@ -114,7 +114,7 @@ class MageBridgeTemplateHelper
     {
         static $tmpl = null;
         if ($tmpl == null) {
-            $tmpl = MageBridge::getBridge()->getMageConfig('root_template');
+            $tmpl = MageBridge::getBridge()->getSessionData('root_template');
             $tmpl = preg_replace( '/^page\//', '', $tmpl );
             $tmpl = preg_replace( '/\.phtml$/', '', $tmpl );
         }
@@ -131,7 +131,7 @@ class MageBridgeTemplateHelper
     {
         static $handles = null;
         if ($handles == null) {
-            $handles = MageBridge::getBridge()->getMageConfig('handles');
+            $handles = MageBridge::getBridge()->getSessionData('handles');
         }
         return $handles;
     }
@@ -144,7 +144,7 @@ class MageBridgeTemplateHelper
      */
     static public function hasHandle($match)
     {
-        $handles = MageBridge::getBridge()->getMageConfig('handles');
+        $handles = MageBridge::getBridge()->getSessionData('handles');
         if(!empty($handles)) {
             foreach($handles as $handle) {
                 if($handle == $match) return true;
@@ -246,7 +246,7 @@ class MageBridgeTemplateHelper
      */
     static public function getStore()
     {
-        return MageBridge::getBridge()->getMageConfig('store_code');
+        return MageBridge::getBridge()->getSessionData('store_code');
     }
 
     /*
@@ -415,7 +415,7 @@ class MageBridgeTemplateHelper
      */
     static public function getProductId()
     {
-        $product_id = MageBridge::getBridge()->getMageConfig('current_product_id');
+        $product_id = MageBridge::getBridge()->getSessionData('current_product_id');
         if($product_id > 0) {
             return $product_id;
         }
@@ -439,7 +439,7 @@ class MageBridgeTemplateHelper
             return true;
         }
 
-        $category_path = MageBridge::getBridge()->getMageConfig('current_category_path');
+        $category_path = MageBridge::getBridge()->getSessionData('current_category_path');
         if(!empty($category_path)) {
             $category_path = explode('/', $category_path);
             if(in_array($category_id, $category_path)) return true;
@@ -456,7 +456,7 @@ class MageBridgeTemplateHelper
      */
     static public function getCategoryId()
     {
-        $category_id = MageBridge::getBridge()->getMageConfig('current_category_id');
+        $category_id = MageBridge::getBridge()->getSessionData('current_category_id');
         if($category_id > 0) {
             return $category_id;
         }

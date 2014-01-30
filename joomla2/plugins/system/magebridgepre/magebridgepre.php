@@ -91,7 +91,7 @@ class plgSystemMageBridgePre extends JPlugin
         $post = JRequest::get('post');
         if (empty($post)) {
             $postlogin_userevents = ($this->getParams()->get('postlogin_userevents', 0) == 1) ? true : false;
-            if(empty($customer_email)) $customer_email = MageBridgeModelBridge::getInstance()->getMageConfig('customer/email');
+            if(empty($customer_email)) $customer_email = MageBridgeModelBridge::getInstance()->getSessionData('customer/email');
             if (!empty($customer_email)) MageBridge::getUser()->postlogin($customer_email, null, $postlogin_userevents);
         }
     }

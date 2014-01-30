@@ -449,7 +449,7 @@ class MageBridgeModelBridge
             }
 
             if (isset($data['meta']['data']['magento_config'])) {
-                $this->setMageConfig($data['meta']['data']['magento_config']);
+                $this->setSessionData($data['meta']['data']['magento_config']);
             }
 
             // Allow others to hook into this event
@@ -671,13 +671,25 @@ class MageBridgeModelBridge
 
     /*
      * Helper-method to return the Magento configuration
-     * @todo: Rename from "MageConfig" to "MageBridgeSession"
      * 
+     * @deprecated Use getSessionData() instead
      * @access public
      * @param string $name
      * @return mixed
      */
     public function getMageConfig($name = null, $allow_cache = true)
+    {
+        return $this->getSessionData($name, $allow_cache);
+    }
+
+    /*
+     * Helper-method to return the Magento configuration
+     * 
+     * @access public
+     * @param string $name
+     * @return mixed
+     */
+    public function getSessionData($name = null, $allow_cache = true)
     {
         // Do not use this function, when Joomla! has not routed the request yet
         $option = JRequest::getCmd('option');
@@ -712,7 +724,7 @@ class MageBridgeModelBridge
      * @param array $mage_config
      * @return mixed
      */
-    public function addMageConfig($name, $value)
+    public function addSessionData($name, $value)
     {
         $session = JFactory::getSession();
         $data = $session->get('magento_config');
@@ -728,7 +740,7 @@ class MageBridgeModelBridge
      * @param array $data
      * @return mixed
      */
-    public function setMageConfig($data = array())
+    public function setSessionData($data = array())
     {
         $session = JFactory::getSession();
         if (!empty($data) && is_array($data)) {

@@ -445,7 +445,7 @@ class plgSystemMageBridge extends JPlugin
      */
     private function getBaseJsUrl()
     {
-        $url = MageBridge::getBridge()->getMageConfig('base_js_url');
+        $url = MageBridge::getBridge()->getSessionData('base_js_url');
         $url = preg_replace('/^(https|http):\/\//', '', $url);
         $url = preg_replace('/(js|js\/)$/', '', $url);
         return $url;

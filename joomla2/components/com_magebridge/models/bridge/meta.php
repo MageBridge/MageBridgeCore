@@ -7,9 +7,6 @@
  * @copyright Copyright 2014
  * @license GNU Public License
  * @link http://www.yireo.com
- *
- * @todo:
- * - Do we need to add "website_id" to custom API-calls, when it's already sent here with the meta-data?
  */
 
 // No direct access

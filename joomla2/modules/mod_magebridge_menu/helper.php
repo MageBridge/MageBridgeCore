@@ -233,7 +233,7 @@ class modMageBridgeMenuHelper extends MageBridgeModuleHelper
     {
         static $current_category_id = false;
         if($current_category_id == false) {
-            $config = MageBridge::getBridge()->getMageConfig();
+            $config = MageBridge::getBridge()->getSessionData();
             $current_category_id = (isset($config['current_category_id'])) ? $config['current_category_id'] : 0;
         }
         return $current_category_id;
@@ -250,7 +250,7 @@ class modMageBridgeMenuHelper extends MageBridgeModuleHelper
     {
         static $current_category_path = false;
         if($current_category_path == false) {
-            $config = MageBridge::getBridge()->getMageConfig();
+            $config = MageBridge::getBridge()->getSessionData();
             $current_category_path = (isset($config['current_category_path'])) ? explode('/', $config['current_category_path']) : array();
         }
         return $current_category_path;

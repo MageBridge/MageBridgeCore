@@ -135,7 +135,7 @@ class plgMagebridgeMagebridge extends JPlugin
     private function doDelayedRedirect()
     {
         $bridge = MageBridge::getBridge();
-        $redirect_url = $bridge->getMageConfig('redirect_url');
+        $redirect_url = $bridge->getSessionData('redirect_url');
         if (!empty($redirect_url)) {
             $redirect_url = MageBridgeUrlHelper::route($redirect_url);
             $application = JFactory::getApplication();
@@ -154,8 +154,8 @@ class plgMagebridgeMagebridge extends JPlugin
     private function doDelayedLogin()
     {
         $bridge = MageBridge::getBridge();
-        $user_email = $bridge->getMageConfig('customer/email');
-        $user_id = $bridge->getMageConfig('customer/joomla_id');
+        $user_email = $bridge->getSessionData('customer/email');
+        $user_id = $bridge->getSessionData('customer/joomla_id');
         return MageBridge::getUser()->postlogin($user_email, $user_id);
     }
 }

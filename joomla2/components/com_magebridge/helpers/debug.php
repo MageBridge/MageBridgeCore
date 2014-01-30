@@ -52,8 +52,8 @@ class MageBridgeDebugHelper
 
                 JError::raiseNotice( 'notice', $menu_message);
                 JError::raiseNotice( 'notice', JText::sprintf( 'Page request: %s', (!empty($request)) ? $request : '[empty]'));
-                JError::raiseNotice( 'notice', JText::sprintf( 'Received request: %s', $bridge->getMageConfig('request')));
-                JError::raiseNotice( 'notice', JText::sprintf( 'Received referer: %s', $bridge->getMageConfig('referer')));
+                JError::raiseNotice( 'notice', JText::sprintf( 'Received request: %s', $bridge->getSessionData('request')));
+                JError::raiseNotice( 'notice', JText::sprintf( 'Received referer: %s', $bridge->getSessionData('referer')));
                 JError::raiseNotice( 'notice', JText::sprintf( 'Current referer: %s', $bridge->getHttpReferer()));
                 JError::raiseNotice( 'notice', JText::sprintf( 'Magento request: <a href="%s" target="_new">%s</a>', $url, $url ));
                 JError::raiseNotice( 'notice', JText::sprintf( 'Magento session: %s', $bridge->getMageSession()));
@@ -70,17 +70,17 @@ class MageBridgeDebugHelper
 
             // Add store information
             if (MagebridgeModelConfig::load('debug_bar_store')) {
-                JError::raiseNotice( 'notice', JText::sprintf( 'Magento store loaded: %s (%s)', $bridge->getMageConfig('store_name'), $bridge->getMageConfig('store_code')));
+                JError::raiseNotice( 'notice', JText::sprintf( 'Magento store loaded: %s (%s)', $bridge->getSessionData('store_name'), $bridge->getSessionData('store_code')));
             }
 
             // Add category information
-            $category_id = $bridge->getMageConfig('current_category_id');
+            $category_id = $bridge->getSessionData('current_category_id');
             if($category_id > 0) {
                 JError::raiseNotice( 'notice', JText::sprintf( 'Magento category: %d', $category_id));
             }
 
             // Add product information
-            $product_id = $bridge->getMageConfig('current_product_id');
+            $product_id = $bridge->getSessionData('current_product_id');
             if($product_id > 0) {
                 JError::raiseNotice( 'notice', JText::sprintf( 'Magento product: %d', $product_id));
             }

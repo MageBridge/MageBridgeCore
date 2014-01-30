@@ -45,7 +45,7 @@ class MageBridgeUrlHelper
     static public function getRequest()
     {
         // Always override the current request with whatever comes from the bridge
-        self::setRequest(MageBridgeModelBridge::getInstance()->getMageConfig('request', false));
+        self::setRequest(MageBridgeModelBridge::getInstance()->getSessionData('request', false));
 
         // If the request is not set by Magento, and if it is not set earlier in MageBridge, set it
         if (empty(self::$request)) {

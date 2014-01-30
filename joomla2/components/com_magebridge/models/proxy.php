@@ -470,7 +470,7 @@ class MageBridgeModelProxy
         // Process the X-MageBridge-Customer header
         if ($this->getHeader('X-MageBridge-Customer') != null) {
             $value = $this->getHeader('X-MageBridge-Customer');
-            MageBridgeModelBridge::getInstance()->addMageConfig('customer/email', $value);
+            MageBridgeModelBridge::getInstance()->addSessionData('customer/email', $value);
         }
 
         // Log other Status Codes than 200
