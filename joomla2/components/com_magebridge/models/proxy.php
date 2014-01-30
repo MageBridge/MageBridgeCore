@@ -628,8 +628,10 @@ class MageBridgeModelProxy
 
             // Check if the current location is the Magento homepage, and if so, override it with the Joomla!-stored referer instead
             $referer = $bridge->getHttpReferer();
-            if ($location == $bridge->getJoomlaBridgeUrl() && MagebridgeModelConfig::load('use_homepage_for_homepage_redirects') == 0) {
-                if (MagebridgeModelConfig::load('use_referer_for_homepage_redirects') == 1 && !empty($referer) && $referer != JURI::current()) {
+            if ($location == $bridge->getJoomlaBridgeUrl()) {
+                if (MagebridgeModelConfig::load('use_homepage_for_homepage_redirects') == 1) {
+                    $location = JURI::base();
+                } elseif (MagebridgeModelConfig::load('use_referer_for_homepage_redirects') == 1 && !empty($referer) && $referer != JURI::current()) {
                     $location = $referer;
                 }
             }
