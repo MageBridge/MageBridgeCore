@@ -426,7 +426,7 @@ class MagebridgeModelConfig extends YireoAbstractModel
 		    $joomla_host = JFactory::getURI()->toString(array('host'));
             $magento_host = MagebridgeModelConfig::load('host');
             
-            // @todo: Test if this is still working
+            // Check whether the Magento basedir conflicts with the MageBridge alias
             if (!empty($root) && !empty($root->route) && $root->route == $value && $joomla_host == $magento_host) {
                 return JText::_( 'Magento basedir is same as MageBridge alias, which is not possible' );
             }

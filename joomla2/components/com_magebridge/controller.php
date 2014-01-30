@@ -53,13 +53,6 @@ class MageBridgeController extends YireoAbstractController
             JRequest::setVar('view' , 'root');
         }
 
-        // Check for a admin action and redirect to admin
-        // @todo: This also partially matches short custom admin-URLs
-        //if (is_numeric(stripos(MageBridgeUrlHelper::getRequest(), MagebridgeModelConfig::load('backend')))) {
-        //    $link = MagebridgeModelConfig::load('url').'index.php/'.MagebridgeModelConfig::load('backend');
-        //    return $this->setRedirect($link);
-        //}
-
         // Check for a logout action and perform a logout in Joomla! first
         if (MageBridgeUrlHelper::getRequest() == 'customer/account/logout') {
             $session = JFactory::getSession();
