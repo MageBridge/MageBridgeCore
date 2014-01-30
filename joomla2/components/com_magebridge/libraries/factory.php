@@ -219,9 +219,9 @@ class MageBridge
     /*
      * Register a segment in the bridge
      */
-    public static function register()
+    public static function register($type = null, $name = null, $arguments = null)
     {
-        //@todo
+        return self::getRegister()->add($type, $name, $arguments);
     }
 
     /*
@@ -229,7 +229,7 @@ class MageBridge
      */
     public static function build()
     {
-        //@todo
+        return self::getBridge()->build();
     }
 
     /*
@@ -237,7 +237,7 @@ class MageBridge
      */
     public static function get($id = null)
     {
-        //@todo
+        return self::getRegister()->getById($id);
     }
 
     /*
