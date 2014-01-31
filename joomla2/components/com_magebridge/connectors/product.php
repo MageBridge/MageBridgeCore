@@ -78,7 +78,7 @@ class MageBridgeConnectorProduct extends MageBridgeConnector
             // Check for the parameters
             if (!empty($condition->params)) {
                 $params = YireoHelper::toRegistry($condition->params);
-                $allowed_statuses = $params->get('allowed_status', 'any');
+                $allowed_statuses = $params->get('allowed_status', array('any'));
                 $expire_amount = $params->get('expire_amount', 0);
                 $expire_unit = $params->get('expire_unit', 'day');
             } else {
