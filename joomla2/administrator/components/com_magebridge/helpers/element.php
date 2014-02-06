@@ -104,7 +104,9 @@ class MageBridgeElementHelper
         // Fetch any current filters
         $application = JFactory::getApplication();
         $option = JRequest::getCmd( 'option' ).'-element-products';
-        $limit = $application->getUserStateFromRequest( $option.'.limit', 'limit', $application->getCfg('list_limit'), 'int' );
+        $default_limit = $application->getCfg('list_limit');
+        if(empty($default_limit)) $default_limit = 20;
+        $limit = $application->getUserStateFromRequest( $option.'.limit', 'limit', $default_limit, 'int' );
         $limitstart = $application->getUserStateFromRequest( $option.'.limitstart', 'limitstart', 0, 'int' );
         $search = $application->getUserStateFromRequest( $option.'.search', 'search', '', 'string' );
         $search = JString::strtolower(trim($search));
