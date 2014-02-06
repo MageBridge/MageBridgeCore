@@ -79,6 +79,9 @@ class YireoCommonView extends YireoAbstractView
         $this->_name = $this->_view;
         $this->_option_id = $this->_option.'_'.$this->_view.'_';
         if ($this->application->isSite()) $this->_option_id .= JRequest::getInt('Itemid').'_';
+
+        // Load additional language-files
+        YireoHelper::loadLanguageFile();
     }
 
     /*
@@ -883,7 +886,7 @@ class YireoView extends YireoCommonView
 
         foreach($paths as $path) {
             if(file_exists(JPATH_SITE.$path)) {
-                return '<img src="'.JURI::root().$path.'" alt="'.$name.'" />';
+                return '<img src="'.$path.'" alt="'.$name.'" />';
             }
         }
 

@@ -11,10 +11,3 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-?>
-<?php if(isset($this->urls['facebook'])) : ?>
-<div class="facebook">
-    <?php echo JText::_('LIB_YIREO_VIEW_HOME_FACEBOOK'); ?>:<br/>
-    <a href="<?php echo $this->urls['facebook']; ?>"><?php echo $this->urls['facebook']; ?></a>
-</div>
-<?php endif; ?>

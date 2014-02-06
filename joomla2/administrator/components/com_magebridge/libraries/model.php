@@ -1641,7 +1641,6 @@ class YireoModel extends YireoAbstractModel
      * @subpackage Yireo
      * @param null
      * @return string
-     * @todo: Implement this method
      */
     protected function getOption()
     {

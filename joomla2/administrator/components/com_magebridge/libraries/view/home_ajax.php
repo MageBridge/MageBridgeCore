@@ -59,7 +59,7 @@ class YireoViewHomeAjax extends YireoView
      */
     public function fetchFeeds($url = '', $max = 3)
     {
-        ini_set('display_errors', 0); // @todo: Hack because of SimplePie notices in strict mode
+        ini_set('display_errors', 0);
         if(method_exists('JFactory', 'getFeedParser')) {
             $rss = JFactory::getFeedParser($url);
         } else {

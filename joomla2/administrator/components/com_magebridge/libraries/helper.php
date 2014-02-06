@@ -262,4 +262,24 @@ class YireoHelper
             if(method_exists($application, 'set')) $application->set('jquery', true);
         }
     }
+
+    /*
+     * Helper-method to load additional language-files
+     *
+     * @access public
+     * @subpackage Yireo
+     * @param string $title
+     * @return null
+     */
+    public static function loadLanguageFile()
+    {
+        $application = JFactory::getApplication();
+        $language = JFactory::getLanguage();
+        $extension = 'lib_yireo';
+
+        $folder = ($application->isSite()) ? JPATH_SITE : JPATH_ADMINISTRATOR;
+        $tag = $language->getTag();
+        $reload = true;
+        $language->load($extension, $folder, $tag, $reload);
+    }
 }

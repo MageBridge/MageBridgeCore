@@ -62,7 +62,7 @@ class YireoViewForm extends YireoView
     public function __construct()
     {
         // Do not load the toolbar automatically
-        //$this->loadToolbar = false; // @todo: Is this already configurable?
+        $this->loadToolbar = false;
 
         // Call the parent constructor
         return parent::__construct();

@@ -38,9 +38,6 @@ class YireoHelperView
             array_unshift($options, array('value' => '', 'title' => $selectNone));
         }
 
-        // Allow an overview-filter to be used in this form
-        //if (empty($value)) $value = $this->getFilter($name, null, null, 'com_revisions_revisions_'); // @todo: Make this generic
-
         // Construct the attributes
         $attributes = array();
         if ($js == true) $attributes[] = 'onchange="document.adminForm.submit();"';

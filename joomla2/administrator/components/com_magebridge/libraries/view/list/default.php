@@ -14,7 +14,6 @@
 defined('_JEXEC') or die();
 
 // Check the table for certain capabilities
-// @todo: Move to $view->hasStateField()
 $table = $this->getModel()->getTable();
 $hasState = ($table->getStateField()) ? true : false;
 $hasOrdering = ($table->getDefaultOrderBy()) ? true : false;
@@ -95,7 +94,6 @@ $hasOrdering = ($table->getDefaultOrderBy()) ? true : false;
                 $orderingField = $this->fields['ordering_field'];
             }
 
-            // @todo: Make this field configurable
             // Determine whether to automatically insert common columns or not
             $auto_columns = true;
             ?>
@@ -106,7 +104,9 @@ $hasOrdering = ($table->getDefaultOrderBy()) ? true : false;
                 <td>
                     <?php echo $checkbox; ?>
                 </td>
+
                 <?php echo $this->loadTemplate('tbody', array('item' => $item, 'auto_columns' => $auto_columns, 'published' => $published)); ?>
+
                 <?php if($auto_columns): ?>
                 <?php if($hasState) : ?>
                 <td>

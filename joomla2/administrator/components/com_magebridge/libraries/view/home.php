@@ -61,20 +61,20 @@ class YireoViewHome extends YireoView
      */
     public function display($tpl = null)
     {
+        // Variables
+        $document = JFactory::getDocument();
+
         // Generate the backend feeds
         $backend_feed = $this->params->get('backend_feed', 1);
         $this->assignRef( 'backend_feed', $backend_feed);
         if ($backend_feed == 1) {
             $this->ajax('index.php?option='.$this->_option.'&view=home&format=ajax&layout=feeds', 'latest_news');
             $this->ajax('index.php?option='.$this->_option.'&view=home&format=ajax&layout=promotion', 'promotion');
-
-            $document = JFactory::getDocument();
-            if (JURI::getInstance()->isSSL() == true) {
-                $document->addStylesheet('https://fonts.googleapis.com/css?family=Just+Me+Again+Down+Here');
-            } else {
-                $document->addStylesheet('http://fonts.googleapis.com/css?family=Just+Me+Again+Down+Here');
-            }
         }
+
+        // Add additional CSS
+        $document->addStylesheet('https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700');
+        $document->addStylesheet('https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css');
 
         // Get the current version
         $current_version = YireoHelper::getCurrentVersion();

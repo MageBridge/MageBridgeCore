@@ -17,7 +17,7 @@ defined('_JEXEC') or die('Restricted access');
     <?php foreach ($this->feeds as $feed) { ?>
     <tr>
     <td>
-        <a target="_new" href="<?php echo $feed['link']; ?>"><h3><?php echo $feed['title']; ?></h3></a>
+        <a target="_new" href="<?php echo $feed['link']; ?>"><h4><?php echo $feed['title']; ?></h4></a>
         <?php echo $feed['description']; ?>
     </td>
     </tr>

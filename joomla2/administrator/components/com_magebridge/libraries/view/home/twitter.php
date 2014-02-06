@@ -11,10 +11,3 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
-?>
-<?php if(isset($this->urls['twitter'])) : ?>
-<div class="twitter shadedbox">
-    <?php echo JText::_('LIB_YIREO_VIEW_HOME_TWITTER'); ?>:<br/>
-    <a href="<?php echo $this->urls['twitter']; ?>"><?php echo $this->urls['twitter']; ?></a>
-</div>
-<?php endif; ?>

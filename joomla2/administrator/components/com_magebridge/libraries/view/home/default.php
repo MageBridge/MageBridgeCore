@@ -20,17 +20,15 @@ defined('_JEXEC') or die('Restricted access');
 <div id="cpanel">
 <?php echo $this->loadTemplate('cpanel'); ?>
 </div>
-<div id="logo" class="shadedbox">
-    <p><a href="http://www.yireo.com/" target="_new"><img src="../media/<?php echo JRequest::getCmd('option'); ?>/images/yireo.png" /></a></p>
+<div id="yireo-logo" class="shadedbox">
+    <a href="http://www.yireo.com/" target="_new"><img src="../media/<?php echo JRequest::getCmd('option'); ?>/images/yireo.png" align="left" /></a>
+    <h3><?php echo JText::_('LIB_YIREO_VIEW_HOME_SLOGAN'); ?></h3>
+</div>
+<div class="details">
     <p> 
-        Follow us on twitter: <a href="http://twitter.com/yireo">@yireo</a><br/>
-        Connect with us on <a href="http://www.facebook.com/yireo">our Facebook page</a>
-    </p>
-    <p>
-        <?php echo $this->loadTemplate('review'); ?>
+        <?php echo $this->loadTemplate('details'); ?>
     </p>
 </div>
-<?php echo $this->loadTemplate('version'); ?>
 
 </td>
 <td width="40%" valign="top" style="margin-top:0; padding:0">
