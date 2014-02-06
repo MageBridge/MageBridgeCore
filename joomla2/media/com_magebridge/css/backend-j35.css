@@ -41,9 +41,13 @@ fieldset.adminform td.value div.controls label {
     line-height: 24px;
 }
 
-/*fieldset.adminform td.value div.controls input {
-    min-height: 24px;
-}*/
+td.order {
+    width: 100px;
+}
+
+td.order input.ordering {
+    width: 20px;
+}
 
 td.vital {
     border: 0px solid #85b1cd !important;

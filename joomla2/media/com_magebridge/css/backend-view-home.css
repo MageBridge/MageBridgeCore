@@ -29,9 +29,26 @@ div.version {
     padding: 20px;
 }
 
-div#logo {
+div#yireo-logo {
+    position: relative;
     text-align: center;
     margin-top: 20px;
+    height: 100px;
+}
+
+div#yireo-logo img {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+}
+
+div#yireo-logo h3 {
+    text-align: center; 
+    padding-top: 25px;
+    font-size:180%; 
+    color:#888; 
+    font-family:'Open Sans'; 
+    font-weight:300;
 }
 
 div#promotion h3.teaser {
@@ -75,4 +92,8 @@ div#cpanel div.icon:hover {
 div#cpanel div.icon span {
     display: block;
     text-align: center;
+}
+
+div.details {
+    line-height: 180%;
 }

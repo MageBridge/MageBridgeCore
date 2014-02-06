@@ -55,7 +55,6 @@ class Yireo_MageBridge_Model_Category_Api extends Mage_Catalog_Model_Api_Resourc
 
             $result[] = $category;
         }
-        Mage::log('test = '.var_export($result, true));
 
         // Save to cache
         if(Mage::app()->useCache('collections')) {
