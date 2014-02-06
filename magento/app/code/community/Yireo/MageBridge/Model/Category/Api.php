@@ -18,12 +18,22 @@ class Yireo_MageBridge_Model_Category_Api extends Mage_Catalog_Model_Api_Resourc
      * Method to return a tree of product categories
      *
      * @access public
-     * @param int $parentId
-     * @param string $store
+     * @param array $arguments
      * @return array
      */
     public function items($arguments = null)
     {
+        // Parse the arguments
+        $storeId = (isset($arguments['storeId'])) ? $arguments['storeId'] : $this->_getStoreId();
+        $storeGroupId = (isset($arguments['storeGroupId'])) ? $arguments['storeGroupId'] : null;
+
+        // Select the storeId based on this store-group
+        if($storeGroupId > 0) $storeId = Mage::getModel('core/store_group')->load($storeGroupId)->getDefaultStoreId();
+
+        // If the arguments do not include a store-flag, include it so not to mess up caching
+        if(!is_array($arguments)) $arguments = array();
+        if(!isset($arguments['storeId'])) $arguments['storeId'] = $storeId;
+
         // Initializing caching
         if(Mage::app()->useCache('collections')) {
             $cacheId = 'magebridge_category_api__items'.md5(serialize($arguments));
@@ -34,41 +44,18 @@ class Yireo_MageBridge_Model_Category_Api extends Mage_Catalog_Model_Api_Resourc
         }
 
         // Get the collection
-        $collection = Mage::getModel('catalog/category')->getCollection()
-            ->addUrlRewriteToResult()
-            ->addAttributeToSelect('name')
-            ->addAttributeToSelect('url_key')
-            ->addAttributeToSelect('is_active')
-            ->addAttributeToSelect('include_in_menu')
-            ->addAttributeToSelect('image')
-        ;
-
-        // Set the store
-        if(!empty($arguments['store'])) {
-            $collection->setStoreId($arguments['store']);
-        }
-
-        // Add a filter
-        if (isset($arguments['filters']) && is_array($arguments['filters'])) {
-            $filters = $arguments['filters'];
-            try {
-                foreach ($filters as $field => $value) {
-                    $collection->addFieldToFilter($field, $value);
-                }
-            } catch (Mage_Core_Exception $e) {
-                Mage::getSingleton('magebridge/debug')->error('Invalid search filter', $e->getMessage());
-            }
-        }
+        $collection = $this->_getCollection($arguments, $storeId);
 
         // Parse the collection into an array
         $result = array();
         foreach($collection as $category) {
 
             // Get the debug-array of this object
-            $c = $category->debug();
+            $category = $this->_nodeToArray($category);
 
-            $result[] = $c;
+            $result[] = $category;
         }
+        Mage::log('test = '.var_export($result, true));
 
         // Save to cache
         if(Mage::app()->useCache('collections')) {
@@ -135,8 +122,32 @@ class Yireo_MageBridge_Model_Category_Api extends Mage_Catalog_Model_Api_Resourc
         }
 
         // Get the collection
+        $collection = $this->_getCollection($arguments, $storeId);
+
+        // Add the collection to this tree-structure
+        $tree->addCollectionData($collection, true);
+        $result = $this->_nodeToArray($root, true);
+
+        // Save to cache
+        if(Mage::app()->useCache('collections')) {
+            Mage::app()->saveCache(serialize($result), $cacheId, array('collections'), 86400);
+        }
+
+        return $result;
+    }
+
+    /*
+     * Method to get the category collection
+     *
+     * @access protected
+     * @param array $arguments
+     * @param int $storeId
+     * @return int
+     */
+    protected function _getCollection($arguments)
+    {
+        // Get the collection
         $collection = Mage::getModel('catalog/category')->getCollection()
-            ->setStoreId($storeId)
             ->addUrlRewriteToResult()
             ->addAttributeToSelect('name')
             ->addAttributeToSelect('url_key')
@@ -145,9 +156,28 @@ class Yireo_MageBridge_Model_Category_Api extends Mage_Catalog_Model_Api_Resourc
             ->addAttributeToSelect('image')
         ;
 
+        // Set the store
+        if(!empty($arguments['storeId'])) {
+            $collection->setStoreId($arguments['storeId']);
+        } elseif(!empty($arguments['store'])) {
+            $collection->setStoreId($arguments['store']);
+        }
+
         // Filter only active categories
         if(isset($arguments['active'])) {
             $collection->addAttributeToFilter('is_active', 1);
+        }
+
+        // Add a filter
+        if (isset($arguments['filters']) && is_array($arguments['filters'])) {
+            $filters = $arguments['filters'];
+            try {
+                foreach ($filters as $field => $value) {
+                    $collection->addAttributeToFilter($field, $value);
+                }
+            } catch (Mage_Core_Exception $e) {
+                Mage::getSingleton('magebridge/debug')->error('Invalid search filter', $e->getMessage());
+            }
         }
 
         // Fetch the products of this category
@@ -174,16 +204,7 @@ class Yireo_MageBridge_Model_Category_Api extends Mage_Catalog_Model_Api_Resourc
             }
         }
 
-        // Add the collection to this tree-structure
-        $tree->addCollectionData($collection, true);
-        $result = $this->_nodeToArray($root);
-
-        // Save to cache
-        if(Mage::app()->useCache('collections')) {
-            Mage::app()->saveCache(serialize($result), $cacheId, array('collections'), 86400);
-        }
-
-        return $result;
+        return $collection;
     }
 
     /*
@@ -226,10 +247,10 @@ class Yireo_MageBridge_Model_Category_Api extends Mage_Catalog_Model_Api_Resourc
      * Method to convert a category-node to an array
      *
      * @access protected
-     * @param Varien_Data_Tree_Node $node
+     * @param object $node
      * @return array
      */
-    protected function _nodeToArray(Varien_Data_Tree_Node $node)
+    protected function _nodeToArray($node, $include_children = false)
     {
         if(empty($node)) {
             return array();
@@ -248,8 +269,10 @@ class Yireo_MageBridge_Model_Category_Api extends Mage_Catalog_Model_Api_Resourc
         $result['products']    = $node->getProducts();
 
         $result['children']    = array();
-        foreach ($node->getChildren() as $child) {
-            $result['children'][] = $this->_nodeToArray($child);
+        if($include_children) {
+            foreach ($node->getChildren() as $child) {
+                $result['children'][] = $this->_nodeToArray($child);
+            }
         }
 
         return $result;

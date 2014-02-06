@@ -98,19 +98,25 @@ class MageBridgeViewCommon extends MageBridgeView
         $this->setTitle('Category');
         $this->setLayout('category');
         
+        // Initialize search
+        $search = $application->getUserStateFromRequest( $option.'.search', 'search', '', 'string' );
+        $search = JString::strtolower( $search );
+
         // Set the data
         $cache = JFactory::getCache('com_magebridge.admin');
         $cache->setCaching(0);
         $tree = $cache->call( array( 'MageBridgeElementHelper', 'getCategoryTree' ));
-        $categories = MageBridgeElementHelper::getCategoryList($tree);
+
+        // If search is active, we use a flat list instead of a tree
+        if(empty($search)) {
+            $categories = MageBridgeElementHelper::getCategoryList($tree);
+        } else {
+            $categories = $tree;
+        }
 
         // Initialize pagination
         $categories = $this->initPagination('categories', $categories);
         $this->assignRef('categories', $categories);
-
-        // Initialize search
-        $search = $application->getUserStateFromRequest( $option.'.search', 'search', '', 'string' );
-        $search = JString::strtolower( $search );
 
         // Add a dropdown list for Store Views
         $current_store = $application->getUserStateFromRequest($option.'.store', 'store');

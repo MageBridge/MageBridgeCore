@@ -31,26 +31,6 @@ class MageBridgeElementHelper
     }
 
     /*
-     * Initialize the category-layout
-     *
-     * @param null
-     * @return null
-     */
-    static public function doCategoryLayout()
-    {
-        // Set common options
-        $this->setTitle('Category');
-        $this->setLayout('category');
-        
-        // Set the data
-        $cache = JFactory::getCache('com_magebridge.admin');
-        $tree = $cache->call( array( 'MageBridgeElementHelper', 'getCategoryTree' ));
-        $categories = $this->getCategoryList($tree);
-
-        $this->assignRef('categories', $categories);
-    }
-
-    /*
      * Call the API for a widget-list
      *
      * @param null
@@ -104,14 +84,16 @@ class MageBridgeElementHelper
         // Fetch any current filters
         $application = JFactory::getApplication();
         $option = JRequest::getCmd( 'option' ).'-element-products';
+
+        // Set the limits
         $default_limit = $application->getCfg('list_limit');
         if(empty($default_limit)) $default_limit = 20;
         $limit = $application->getUserStateFromRequest( $option.'.limit', 'limit', $default_limit, 'int' );
         $limitstart = $application->getUserStateFromRequest( $option.'.limitstart', 'limitstart', 0, 'int' );
-        $search = $application->getUserStateFromRequest( $option.'.search', 'search', '', 'string' );
-        $search = JString::strtolower(trim($search));
 
         // Add the search-filter
+        $search = $application->getUserStateFromRequest( $option.'.search', 'search', '', 'string' );
+        $search = JString::strtolower(trim($search));
         if (strlen($search) > 0) {
             $arguments['filters'] = array(
                 'name' => array('like' => array('%'.$search.'%'))
@@ -143,22 +125,37 @@ class MageBridgeElementHelper
         $application = JFactory::getApplication();
         $option = JRequest::getCmd( 'option' ).'-element-categories';
 
+        // Add the search-filter
+        $search = $application->getUserStateFromRequest( $option.'.search', 'search', '', 'string' );
+        $search = JString::strtolower(trim($search));
+        if (strlen($search) > 0) {
+            $arguments['filters'] = array(
+                'name' => array('like' => array('%'.$search.'%'))
+            );
+        }
+
         // Add arguments
         $store = $application->getUserStateFromRequest( $option.'.store', 'store');
         $store = explode(':', $store);
         if ($store[0] == 'v' || $store[0] == 's') $arguments['storeId'] = $store[1];
         if ($store[0] == 'g') $arguments['storeGroupId'] = $store[1];
 
+        // Determine the API-call to make
+        $apiCall = 'magebridge_category.tree';
+        if(!empty($search)) {
+            $apiCall = 'magebridge_category.list';
+        }
+
         // Register this request
         $register = MageBridgeModelRegister::getInstance();
-        $register->add('api', 'magebridge_category.tree', $arguments);
+        $register->add('api', $apiCall, $arguments);
 
         // Send the request to the bridge
         $bridge = MageBridgeModelBridge::getInstance();
         $bridge->build();
 
         // Get the category-tree
-        $tree = $bridge->getAPI('magebridge_category.tree', $arguments);
+        $tree = $bridge->getAPI($apiCall, $arguments);
         return $tree;
     }
 
@@ -172,7 +169,7 @@ class MageBridgeElementHelper
     static public function getCategoryList($tree = null, $list = array()) 
     {
         // Determine if this node has children
-        if (count($tree['children']) > 0) {
+        if (isset($tree['children']) && count($tree['children']) > 0) {
             $tree['has_children'] = true;
             $children = $tree['children'];
             unset($tree['children']);

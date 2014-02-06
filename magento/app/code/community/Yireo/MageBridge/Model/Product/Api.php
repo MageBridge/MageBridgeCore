@@ -201,12 +201,6 @@ class Yireo_MageBridge_Model_Product_Api extends Mage_Catalog_Model_Api_Resource
         }
 
         // Add a filter
-        // Example 1: array('title' => array('nlike' => array('%a', '%b')))
-        // Example 2: array( array('attribute'=>'name', 'like'=>'P%')))
-        // Example 3: array(
-        //      array('attribute'=>'price','lt'=>'20'),
-        //      array('attribute'=>'name','like'=>'Product C')
-        //      ));
         if (isset($arguments['filters']) && is_array($arguments['filters'])) {
             $filters = $arguments['filters'];
             try {
