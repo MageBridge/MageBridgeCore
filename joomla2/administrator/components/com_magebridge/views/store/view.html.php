@@ -107,6 +107,10 @@ class MageBridgeViewStore extends YireoViewForm
         // Fetch this item
         $this->fetchItem();
 
+        // Override the normal toolbar
+        JToolBarHelper::save();
+        JToolBarHelper::apply();
+
         // Build extra lists
         $this->lists['store'] = $this->getFieldStore($this->item->type, $this->item->name);
 
