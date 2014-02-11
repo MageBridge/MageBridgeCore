@@ -41,29 +41,27 @@ class MageBridgeView extends YireoView
             switch(strtoupper($bridge->getApiState())) {
 
                 case 'EMPTY METADATA':
-                    $message = JText::_('The bridge-data arrived empty in Magento.' );
+                    $message = JText::_('COM_MAGEBRIDGE_VIEW_API_ERROR_EMPTY_METADATA');
                     break;
 
                 case 'SUPPORTKEY FAILED':
-                    $message = JText::sprintf('The Joomla! support-key is different from the one in Magento (%s).', $bridge->getApiExtra());
+                    $message = JText::sprintf('COM_MAGEBRIDGE_VIEW_API_ERROR_KEY_FAILED', $bridge->getApiExtra());
                     break;
 
                 case 'AUTHENTICATION FAILED':
-                    $message = JText::_('API authentication failed. Please check your API-user and API-key.' );
+                    $message = JText::_('COM_MAGEBRIDGE_VIEW_API_ERROR_AUTHENTICATION_FAILED' );
                     break;
 
                 case 'INTERNAL ERROR':
-                    $help = MageBridgeHelper::getHelpText('troubleshooting');
-                    $message = JText::sprintf('Bridge encountered a 500 Internal Server Error. Please check out the %s for more information.', $help );
+                    $message = JText::sprintf('COM_MAGEBRIDGE_VIEW_API_ERROR_INTERNAL_ERROR', MageBridgeHelper::getHelpLink('troubleshooting'));
                     break;
 
                 case 'FAILED LOAD':
-                    $help = MageBridgeHelper::getHelpText('faq-troubleshooting:api-widgets');
-                    $message = JText::sprintf('Failed to load API-widgets. Please check out the %s for more information.', $help );
+                    $message = JText::sprintf('COM_MAGEBRIDGE_VIEW_API_ERROR_FAILED_LOAD', MageBridgeHelper::getHelpLink('faq-troubleshooting:api-widgets'));
                     break;
 
                 default:
-                    $message = JText::_('An API-error occurred: '.$bridge->getApiState());
+                    $message = JText::sprintf('COM_MAGEBRIDGE_VIEW_API_ERROR_GENERIC', $bridge->getApiState());
                     break;
             }
 
@@ -72,7 +70,7 @@ class MageBridgeView extends YireoView
 
         // If debugging is enabled report it
         if (MagebridgeModelConfig::load('debug') == 1 && JRequest::getCmd('tmpl') != 'component' && in_array(JRequest::getCmd('view'), array('config', 'home'))) {
-            MageBridgeModelDebug::getInstance()->feedback('Debugging is currently enabled');
+            MageBridgeModelDebug::getInstance()->feedback('COM_MAGEBRIDGE_VIEW_API_DEBUGGING_ENABLED');
         }
 
         parent::display($tpl);
