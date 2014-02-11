@@ -12,21 +12,19 @@
 defined('_JEXEC') or die('Restricted access');
 ?>
 
-<?php echo MageBridgeHelper::help('Checkout out the {tutorials:MageBridge Design Guide} on how to use combine theming'); ?>
-
 <form method="post" name="adminForm" id="adminForm">
 <table cellspacing="0" cellpadding="0" border="0" width="100%">
 <tbody>
 <tr>
 <td width="50%" valign="top">
     <fieldset class="adminform">
-        <legend><?php echo JText::_( 'Title' ); ?></legend>
+        <legend><?php echo JText::_('COM_MAGEBRIDGE_VIEW_STORE_FIELDSET_BASIC'); ?></legend>
         <table class="admintable">
         <tbody>
         <tr>
             <td width="100" align="right" class="key">
                 <label for="label">
-                    <?php echo JText::_( 'Label' ); ?>:
+                    <?php echo JText::_('COM_MAGEBRIDGE_VIEW_STORE_FIELD_LABEL'); ?>:
                 </label>
             </td>
             <td class="value">
@@ -38,13 +36,13 @@ defined('_JEXEC') or die('Restricted access');
     </fieldset>
 
     <fieldset class="adminform">
-        <legend><?php echo JText::_( 'Store' ); ?></legend>
+        <legend><?php echo JText::_('COM_MAGEBRIDGE_VIEW_STORE_FIELDSET_STORE'); ?></legend>
         <table class="admintable">
         <tbody>
         <tr>
             <td width="100" align="right" class="key">
                 <label for="store">
-                    <?php echo JText::_( 'Magento store' ); ?>:
+                    <?php echo JText::_('COM_MAGEBRIDGE_VIEW_STORE_FIELD_STORE'); ?>:
                 </label>
             </td>
             <td class="value">
@@ -53,7 +51,7 @@ defined('_JEXEC') or die('Restricted access');
         </tr>
         <tr>
             <td valign="top" align="right" class="key">
-                <?php echo JText::_( 'Published' ); ?>:
+                <?php echo JText::_('JSTATE'); ?>:
             </td>
             <td class="value">
                 <?php echo $this->lists['published']; ?>
@@ -62,7 +60,7 @@ defined('_JEXEC') or die('Restricted access');
         <tr>
             <td valign="top" align="right" class="key">
                 <label for="ordering">
-                    <?php echo JText::_( 'Ordering' ); ?>:
+                    <?php echo JText::_('JORDERING'); ?>:
                 </label>
             </td>
             <td class="value">
@@ -74,7 +72,7 @@ defined('_JEXEC') or die('Restricted access');
     </fieldset>
 
     <fieldset class="adminform">
-        <legend><?php echo JText::_( 'Connector' ); ?></legend>
+        <legend><?php echo JText::_('COM_MAGEBRIDGE_VIEW_STORE_FIELDSET_RELATION'); ?></legend>
         <table class="admintable">
         <tbody>
         <?php if (!empty($this->connectors)) { ?>
@@ -100,7 +98,7 @@ defined('_JEXEC') or die('Restricted access');
         <?php } else { ?>
         <tr>    
             <td>
-                <?php echo JText::_('You have not enabled any Store Connectors. Without them, you will not be able to store this relation.'); ?>
+                <?php echo JText::_('COM_MAGEBRIDGE_VIEW_STORE_NO_PLUGINS'); ?>
             </td>
         </tr>
         <?php } ?>

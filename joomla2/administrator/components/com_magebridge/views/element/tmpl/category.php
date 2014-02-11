@@ -107,7 +107,7 @@ if (!empty($this->categories)) {
                 <?php if ($allowRoot || $category['level'] > 1) { ?>
                 <a style="cursor: pointer;" onclick="<?php echo $jsDefault; ?>"><?php echo $category['name']; ?></a>
                 <?php } else { ?>
-                <?php echo ($category['name']) ? $category['name'] : JText::_('COM_MAGEBRIDGE_VIEWS_ELEMENT_ROOT_CATEGORY'); ?>
+                <?php echo ($category['name']) ? $category['name'] : JText::_('COM_MAGEBRIDGE_VIEW_ELEMENT_ROOT_CATEGORY'); ?>
                 <?php } ?>
             </td>
             <td>

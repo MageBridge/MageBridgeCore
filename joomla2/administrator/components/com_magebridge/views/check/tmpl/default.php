@@ -17,19 +17,19 @@ defined('_JEXEC') or die('Restricted access');
 <tr>
 <td valign="top">
     <fieldset class="adminform">
-    <legend><?php echo JText::_('COM_MAGEBRIDGE_SUGGESTIONS'); ?></legend>
+    <legend><?php echo JText::_('COM_MAGEBRIDGE_CHECK_SUGGESTIONS'); ?></legend>
     <table class="admintable" width="100%">
         <tr>
-            <td class="key">Browse-test</td>
-            <td class="result">Use the <a href="index.php?option=com_magebridge&view=check&layout=browser">internal browse-test</a> to check if Magento is accessible from Joomla!</a></td>
+            <td class="key"><?php echo JText::_('COM_MAGEBRIDGE_CHECK_BROWSE_TEST'); ?></td>
+            <td class="result"><?php echo JText::sprintf('COM_MAGEBRIDGE_CHECK_BROWSE_TEST_DESC', 'index.php?option=com_magebridge&view=check&layout=browser'); ?></td>
         </tr>
         <tr>
-            <td class="key">Check Magento</td>
-            <td class="result">Make sure you review <strong>CMS &gt; MageBridge Settings &gt; System Check</strong> within Magento</td>
+            <td class="key"><?php echo JText::_('COM_MAGEBRIDGE_CHECK_MAGENTO_CHECK'); ?></td>
+            <td class="result"><?php echo JText::_('COM_MAGEBRIDGE_CHECK_MAGENTO_CHECK_DESC'); ?></td>
         </tr>
         <tr>
-            <td class="key">Troubleshooting Guide</td>
-            <td class="result">See the <?php echo MageBridgeHelper::getHelpText('troubleshooting'); ?> for more help</td>
+            <td class="key"><?php echo JText::_('COM_MAGEBRIDGE_CHECK_TROUBLESHOOTING_GUIDE'); ?></td>
+            <td class="result"><?php echo JText::sprintf('COM_MAGEBRIDGE_CHECK_TROUBLESHOOTING_GUIDE_DESC', MageBridgeHelper::getHelpLink('troubleshooting')); ?></td>
         </tr>
     </table>
     </fieldset>

@@ -68,7 +68,7 @@ class MageBridgeViewStore extends YireoViewForm
 	public function showDefaultForm($tpl = null)
 	{
         // Initialize the view
-        $this->setTitle('Default store');
+        $this->setTitle(JText::_('COM_MAGEBRIDGE_VIEW_STORE_DEFAULT_STORE'));
 
         // Override the normal toolbar
         JToolBarHelper::save();

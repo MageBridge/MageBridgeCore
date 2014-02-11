@@ -37,10 +37,11 @@ class MageBridgeViewHelper
         if (MageBridgeHelper::isJoomla35()) $document->addStyleSheet(JURI::root().'media/com_magebridge/css/backend-j35.css');
 
         // Page title
+        $title = 'COM_MAGEBRIDGE_VIEW_'.strtoupper($title);
         JToolBarHelper::title('MageBridge: '.$title, 'logo.png');
 
         // Add the menu
-        self::addMenuItems(); // @todo: Integrate this with the abstract-helper
+        self::addMenuItems();
     }
 
     /*

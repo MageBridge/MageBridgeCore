@@ -31,7 +31,7 @@ class MageBridgeViewConnectors extends YireoViewList
      */
     public function display($tpl = null)
     {
-        // filters
+        // Filters - type
         $options = array( 
             array( 'value' => '', 'text' => '- Select Type -' ),
             array( 'value' => 'store', 'text' => 'Store Connectors' ),

@@ -43,7 +43,7 @@ class MagebridgeModelUpdate extends YireoAbstractModel
 
             // Update the package and add an error if something goes wrong
             if ($this->update($package['name']) == false) {
-                JError::raiseWarning('SOME_ERROR_CODE', JText::sprintf('Installation of %s failed', $package['name']));
+                JError::raiseWarning('SOME_ERROR_CODE', JText::sprintf('COM_MAGEBRIDGE_MODEL_UPDATE_INSTALL_FAILED', $package['name']));
 
                 // Only crash when installing the component, continue for all other extensions
                 if ($package['name'] == 'com_magebridge') {
@@ -62,8 +62,8 @@ class MagebridgeModelUpdate extends YireoAbstractModel
         $helper->cleanFiles();
 
         // Simple notices as feedback
-        JError::raiseNotice('SOME_ERROR_CODE', JText::sprintf('Updated %d extensions successfully', $count));
-        JError::raiseNotice('SOME_ERROR_CODE', JText::sprintf('Check %s for upgrade notices', MageBridgeHelper::getHelpText('builds')));
+        JError::raiseNotice('SOME_ERROR_CODE', JText::sprintf('COM_MAGEBRIDGE_MODEL_UPDATE_INSTALL_SUCCESS', $count));
+        JError::raiseNotice('SOME_ERROR_CODE', JText::sprintf('COM_MAGEBRIDGE_MODEL_UPDATE_INSTALL_CHANGELOG', MageBridgeHelper::getHelpLink('changelog')));
         return true;
     }
 
@@ -79,7 +79,7 @@ class MagebridgeModelUpdate extends YireoAbstractModel
     {
         // Do not continue if the extension name is empty
         if ($extension_name == null) {
-            JError::raiseWarning('SOME_ERROR_CODE', JText::_('No extension specified'));
+            JError::raiseWarning('SOME_ERROR_CODE', JText::_('COM_MAGEBRIDGE_MODEL_UPDATE_INSTALL_NO_EXTENSION'));
             return false;
         }
 
@@ -94,17 +94,17 @@ class MagebridgeModelUpdate extends YireoAbstractModel
 
         // Do not continue if the extension does not appear from the list
         if ($extension == null) {
-            JError::raiseWarning('SOME_ERROR_CODE', JText::_('Unknown extension'));
+            JError::raiseWarning('SOME_ERROR_CODE', JText::_('COM_MAGEBRIDGE_MODEL_UPDATE_INSTALL_UNKNOWN_EXTENSION'));
             return false;
         }
 
         // Premature check for the component-directory to be writable
         if ($extension['type'] == 'component' && JFactory::getApplication()->getCfg('ftp_enable') == 0) {
             if (is_dir(JPATH_ADMINISTRATOR.'/components/'.$extension['name']) && !is_writable(JPATH_ADMINISTRATOR.'/components/'.$extension['name'])) {
-                JError::raiseWarning('SOME_ERROR_CODE', JText::_('Component directory is not writable'));
+                JError::raiseWarning('SOME_ERROR_CODE', JText::sprintf('COM_MAGEBRIDGE_MODEL_UPDATE_INSTALL_DIR_NOT_WRITABLE', JPATH_ADMINISTRATOR.'/components/'.$extension['name']));
                 return false;
             } else if (!is_dir(JPATH_ADMINISTRATOR.'/components/'.$extension['name']) && !is_writable(JPATH_ADMINISTRATOR.'/components')) {
-                JError::raiseWarning('SOME_ERROR_CODE', JText::_('Components folder is not writable'));
+                JError::raiseWarning('SOME_ERROR_CODE', JText::sprintf('COM_MAGEBRIDGE_MODEL_UPDATE_INSTALL_DIR_NOT_WRITABLE', JPATH_ADMINISTRATOR.'/components'));
                 return false;
             }
         }
@@ -124,7 +124,7 @@ class MagebridgeModelUpdate extends YireoAbstractModel
 
         // Simple check for the result
         if ($package_file == false) {
-            JError::raiseWarning('SOME_ERROR_CODE', JText::sprintf('Failed to download update for %s', $extension_uri));
+            JError::raiseWarning('SOME_ERROR_CODE', JText::sprintf('COM_MAGEBRIDGE_MODEL_UPDATE_INSTALL_DOWNLOAD_FAILED', $extension_uri));
             return false;
         }
 
@@ -132,13 +132,13 @@ class MagebridgeModelUpdate extends YireoAbstractModel
         $tmp_path = JFactory::getApplication()->getCfg('tmp_path');
         $package_path = $tmp_path.'/'.$package_file;
         if (!is_file($package_path)) {
-            JError::raiseWarning('MB', JText::sprintf('File %s does not exist', $package_path));
+            JError::raiseWarning('MB', JText::sprintf('COM_MAGEBRIDGE_MODEL_UPDATE_INSTALL_FILE_NOT_EXISTS', $package_path));
             return false;
         }
 
         // Check if the file is readable
         if (!is_readable($package_path)) {
-            JError::raiseWarning('MB', JText::sprintf('File %s is not readable', $package_path));
+            JError::raiseWarning('MB', JText::sprintf('COM_MAGEBRIDGE_MODEL_UPDATE_INSTALL_FILE_NOT_READABLE', $package_path));
             return false;
         }
 
@@ -147,22 +147,22 @@ class MagebridgeModelUpdate extends YireoAbstractModel
 
             $contents = @file_get_contents($package_path);
             if (empty($contents)) {
-                JError::raiseWarning('MB', JText::sprintf('Valid archive but empty content.'));
+                JError::raiseWarning('MB', JText::_('COM_MAGEBRIDGE_MODEL_UPDATE_INSTALL_FILE_EMPTY'));
                 return false;
 
             } else if (preg_match('/^Restricted/', $contents)) {
-                JError::raiseWarning('MB', JText::sprintf('Not allowed to access updates.'));
+                JError::raiseWarning('MB', JText::sprintf('COM_MAGEBRIDGE_MODEL_UPDATE_INSTALL_NO_ACCESS'));
                 return false;
             }
 
-            JError::raiseWarning('MB', JText::sprintf('File %s is not a valid archive', $package_path));
+            JError::raiseWarning('MB', JText::sprintf('COM_MAGEBRIDGE_MODEL_UPDATE_INSTALL_FILE_NO_ARCHIVE', $package_path));
             return false;
         }
 
         // Now we assume this is an archive, so let's unpack it
         $package = JInstallerHelper::unpack($package_path);
         if ($package == false) {
-            JError::raiseWarning('SOME_ERROR_CODE', JText::sprintf('Unable to find update for %s on local filesystem', $extension['name']));
+            JError::raiseWarning('SOME_ERROR_CODE', JText::sprintf('COM_MAGEBRIDGE_MODEL_UPDATE_INSTALL_FILE_GONE', $extension['name']));
             return false;
         }
 
@@ -174,7 +174,7 @@ class MagebridgeModelUpdate extends YireoAbstractModel
         // Call the actual installer to install the package
         $installer = JInstaller::getInstance();
         if ($installer->install($package['dir']) == false) {
-            JError::raiseWarning('SOME_ERROR_CODE', JText::sprintf('Failed to install %s', $extension['name']));
+            JError::raiseWarning('SOME_ERROR_CODE', JText::sprintf('COM_MAGEBRIDGE_MODEL_UPDATE_INSTALL_FAILED', $extension['name']));
             return false;
         }
 
@@ -195,11 +195,11 @@ class MagebridgeModelUpdate extends YireoAbstractModel
                 try {
                     $db->query();
                 } catch(Exception $e) {
-                    JError::raiseWarning('MB', JText::sprintf('Post install query failed: %s', $db->getErrorMsg()));
+                    JError::raiseWarning('MB', JText::sprintf('COM_MAGEBRIDGE_MODEL_UPDATE_INSTALL_POSTQUERY_FAILED', $db->getErrorMsg()));
                     return false;
                 }
                 if ($db->getErrorMsg()) {
-                    JError::raiseWarning('MB', JText::sprintf('Post install query failed: %s', $db->getErrorMsg()));
+                    JError::raiseWarning('MB', JText::sprintf('COM_MAGEBRIDGE_MODEL_UPDATE_INSTALL_POSTQUERY_FAILED', $db->getErrorMsg()));
                     return false;
                 }
             }

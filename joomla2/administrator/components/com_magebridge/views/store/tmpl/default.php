@@ -18,13 +18,13 @@ defined('_JEXEC') or die('Restricted access');
 <tr>
 <td width="50%" valign="top">
     <fieldset class="adminform">
-        <legend><?php echo JText::_( 'Default Store' ); ?></legend>
+        <legend><?php echo JText::_('COM_MAGEBRIDGE_VIEW_STORE_FIELDSET_STORE'); ?></legend>
         <table class="admintable">
         <tbody>
         <tr>
             <td width="100" align="right" class="key">
                 <label for="store">
-                    <?php echo JText::_( 'Magento store' ); ?>:
+                    <?php echo JText::_('COM_MAGEBRIDGE_VIEW_STORE_FIELD_STORE'); ?>:
                 </label>
             </td>
             <td class="value">
