@@ -399,6 +399,9 @@ class MageBridgeModelProxy
         // Add the HTTP headers
         curl_setopt($handle, CURLOPT_HTTPHEADER, $http_headers);
 
+        // Set encoding to zero
+        curl_setopt($handle, CURLOPT_ENCODING, '');
+
         // Handle direct output and bridge output
         MageBridgeModelDebug::getInstance()->notice('CURL init: '.$url.' ('.((MageBridgeUrlHelper::getRequest()) ? MageBridgeUrlHelper::getRequest() : 'no request').')');
         $this->handleFileDownloads($handle);
