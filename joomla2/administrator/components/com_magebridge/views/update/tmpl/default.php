@@ -28,6 +28,16 @@ function selectPackages(type) {
 }
 </script>
 <form method="post" name="adminForm" id="adminForm">
+<table width="100%">
+<tr>
+    <td align="left" width="40%">
+        <?php echo $this->loadTemplate('search'); ?>
+    </td>
+    <td align="right" width="60%">
+        <?php echo $this->loadTemplate('lists'); ?>
+    </td>
+</tr>
+</table>
 <div id="editcell">
 <table cellspacing="0" cellpadding="0" border="0" width="100%" class="adminlist table table-striped">
 <thead>
@@ -122,7 +132,7 @@ foreach ($this->data as $package) {
             <?php echo ($package['current_version']) ? $package['current_version'] :  JText::_('COM_MAGEBRIDGE_VIEW_UPDATE_NOT_INSTALLED'); ?>
         </td>
         <td class="select">
-            <?php echo ($package['latest_version']) ? '<a href="'.$upgrade_url.'">'.$package['latest_version'].'</a>' :  '&nbsp;'; ?>
+            <?php echo ($package['version']) ? '<a href="'.$upgrade_url.'">'.$package['version'].'</a>' :  '&nbsp;'; ?>
         </td>
     </tr>
     <?php 
