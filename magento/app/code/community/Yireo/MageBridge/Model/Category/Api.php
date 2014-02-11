@@ -143,24 +143,28 @@ class Yireo_MageBridge_Model_Category_Api extends Mage_Catalog_Model_Api_Resourc
      * @param int $storeId
      * @return int
      */
-    protected function _getCollection($arguments)
+    protected function _getCollection($arguments, $storeId = null)
     {
         // Get the collection
-        $collection = Mage::getModel('catalog/category')->getCollection()
-            ->addUrlRewriteToResult()
+        $collection = Mage::getModel('catalog/category')->getCollection();
+
+        // Set the store
+        if(!empty($storeId)) {
+            $collection->setStoreId($storeId);
+        } elseif(!empty($arguments['storeId'])) {
+            $collection->setStoreId($arguments['storeId']);
+        } elseif(!empty($arguments['store'])) {
+            $collection->setStoreId($arguments['store']);
+        }
+
+        // Add further arguments
+        $collection->addUrlRewriteToResult()
             ->addAttributeToSelect('name')
             ->addAttributeToSelect('url_key')
             ->addAttributeToSelect('is_active')
             ->addAttributeToSelect('include_in_menu')
             ->addAttributeToSelect('image')
         ;
-
-        // Set the store
-        if(!empty($arguments['storeId'])) {
-            $collection->setStoreId($arguments['storeId']);
-        } elseif(!empty($arguments['store'])) {
-            $collection->setStoreId($arguments['store']);
-        }
 
         // Filter only active categories
         if(isset($arguments['active'])) {
@@ -247,6 +251,7 @@ class Yireo_MageBridge_Model_Category_Api extends Mage_Catalog_Model_Api_Resourc
      *
      * @access protected
      * @param object $node
+     * @param bool $include_children
      * @return array
      */
     protected function _nodeToArray($node, $include_children = false)
@@ -268,9 +273,9 @@ class Yireo_MageBridge_Model_Category_Api extends Mage_Catalog_Model_Api_Resourc
         $result['products']    = $node->getProducts();
 
         $result['children']    = array();
-        if($include_children) {
+        if($include_children == true) {
             foreach ($node->getChildren() as $child) {
-                $result['children'][] = $this->_nodeToArray($child);
+                $result['children'][] = $this->_nodeToArray($child, $include_children);
             }
         }
 
