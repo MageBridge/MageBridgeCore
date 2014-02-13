@@ -633,12 +633,15 @@ class plgSystemMageBridge extends JPlugin
 
                     $mootools_scripts = array(
                         'media/system/js/modal.js',
-                        'media/system/js/caption.js',
                         'media/system/js/validate.js',
                         'beez_20/javascript/hide.js',
                         'md_stylechanger.js',
                         'media/com_finder/js/autocompleter.js',
                     );
+    
+                    if (MageBridgeHelper::isJoomla25()) {
+                        $mootools_scripts[] = 'media/system/js/caption.js';
+                    }
 
                     if (preg_match('/mootools/', $script)) {
                         $remove = true;
