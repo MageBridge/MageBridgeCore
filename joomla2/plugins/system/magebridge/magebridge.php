@@ -510,6 +510,7 @@ class plgSystemMageBridge extends JPlugin
         $whitelist[] = '/com_jce/';
         $whitelist[] = '/footools.js';
         $whitelist[] = 'www.googleadservices.com';
+        $whitelist[] = 'media/jui/js';
 
         // Load the blacklist
         $blacklist = JFactory::getConfig()->get('magebridge.script.blacklist');
