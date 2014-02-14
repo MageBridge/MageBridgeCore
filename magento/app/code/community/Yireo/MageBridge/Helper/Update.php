@@ -22,6 +22,7 @@ class Yireo_MageBridge_Helper_Update extends Mage_Core_Helper_Abstract
     {
         // Cleanup specific files
         $files = array(
+            BP.DS.'app'.DS.'etc'.DS.'modules'.DS.'Jira_MageBridge.xml',
             BP.DS.'app'.DS.'design'.DS.'frontend'.DS.'default'.DS.'default'.DS.'layout'.DS.'magebridge.xml',
             BP.DS.'app'.DS.'design'.DS.'frontend'.DS.'default'.DS.'magebridge'.DS.'layout',
             BP.DS.'app'.DS.'design'.DS.'frontend'.DS.'default'.DS.'magebridge'.DS.'template'.DS.'magebridge'.DS.'page.phtml',
