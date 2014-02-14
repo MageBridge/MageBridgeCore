@@ -47,6 +47,8 @@ class MageBridgeViewUsergroup extends MageBridgeView
         // Initialize parameters
         $file = JPATH_ADMINISTRATOR.'/components/com_magebridge/models/usergroup.xml';
         $form = JForm::getInstance('params', $file);
+        $params = YireoHelper::toRegistry($this->item->params);
+        $form->bind(array('params' => $params->toArray()));
 	    $this->assignRef('params_form', $form);
 
 		$this->assignRef('fields', $fields);

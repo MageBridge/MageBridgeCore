@@ -105,11 +105,11 @@ class MageBridgeUserHelper
      * Helper-method to return the Joomla! usergroup based on the current Magento customergroup
      *
      * @param null
-     * @return string
+     * @return array
      */
-    static public function getJoomlaGroupId($customer)
+    static public function getJoomlaGroupIds($customer)
     {
-        if (!isset($customer['group_id'])) return null;
+        if (!isset($customer['group_id'])) return array();
 
         static $rows = null;
         if (!is_array($rows)) {
@@ -121,12 +121,23 @@ class MageBridgeUserHelper
         if (!empty($rows)) {
             foreach ($rows as $row) {
                 if ($row->magento_group == $customer['group_id']) {
-                    return $row->joomla_group;
+                    $groups = array($row->joomla_group);
+                    if(!empty($row->params)) {
+                        $params = YireoHelper::toRegistry($row->params);
+                        $extra_groups = $params->get('usergroup');
+                        if(!empty($extra_groups)) {
+                            foreach($extra_groups as $extra_group) {
+                                $groups[] = $extra_group;
+                            }
+                        }
+                        $groups = array_unique($groups);
+                    }
+                    return $groups;
                 }
             }
         }
 
-        return null;
+        return array();
     }
 
     /*

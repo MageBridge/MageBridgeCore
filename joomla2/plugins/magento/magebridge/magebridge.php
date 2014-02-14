@@ -245,12 +245,11 @@ class plgMagentoMageBridge extends JPlugin
             }
 
             // Add the usergroup ID to this user (based upon groups configured in #__magebridge_usergroups)
-            $customer['usergroup'] = MageBridgeUserHelper::getJoomlaGroupId($customer);
+            $customer['usergroup'] = MageBridgeUserHelper::getJoomlaGroupIds($customer);
+            MageBridgeModelDebug::getInstance()->trace("Customer group", $customer['usergroup']);
             if (!empty($customer['usergroup'])) {
-                if (MageBridgeHelper::isJoomla15()) {
-                    $user->gid = $customer['usergroup'];
-                } else if (is_array($user->groups)) {
-                    $user->groups[] = $customer['usergroup'];
+                if (is_array($user->groups)) {
+                    $user->groups = array_merge($user->groups, $customer['usergroup']);
                 } else {
                     $user->groups = array($customer['usergroup']);
                 }
