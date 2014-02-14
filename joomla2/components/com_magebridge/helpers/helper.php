@@ -66,7 +66,7 @@ class MageBridgeHelper
                 'link' => 'http://www.yireo.com/tutorials/magebridge/troubleshooting/723-magebridge-troubleshooting-guide',
                 'internal' => 0,
             ),
-            'builds' => array(
+            'changelog' => array(
                 'title' => 'MageBridge Changelog',
                 'link' => 'http://www.yireo.com/tutorials/magebridge/updates/975-magebridge-changelog',
                 'internal' => 0,
@@ -88,6 +88,19 @@ class MageBridgeHelper
         }
         
         return null;
+    }
+
+    /*
+     * Helper-method to display Yireo.com-links
+     *
+     * @param string $name
+     * @param string $title
+     * @return string
+     */
+    static public function getHelpLink($name = null)
+    {
+        $help = MageBridgeHelper::getHelpItem($name);
+        return $help['link'];
     }
 
     /*
