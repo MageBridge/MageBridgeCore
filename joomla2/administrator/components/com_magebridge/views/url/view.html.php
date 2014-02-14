@@ -49,8 +49,8 @@ class MageBridgeViewUrl extends MageBridgeView
     public function getFieldSourceType($current = null)
     {
         $options = array(
-            array( 'value' => 0, 'text' => JText::_('Original Magento URL')),
-            array( 'value' => 1, 'text' => JText::_('Partial match')),
+            array( 'value' => 0, 'text' => JText::_('COM_MAGEBRIDGE_VIEW_URLS_MAGENTO_URL')),
+            array( 'value' => 1, 'text' => JText::_('COM_MAGEBRIDGE_VIEW_URLS_PARTIAL_MATCH')),
         );
         return JHTML::_('select.genericlist', $options, 'source_type', null, 'value', 'text', $current);
     }

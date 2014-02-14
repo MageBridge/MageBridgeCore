@@ -12,21 +12,19 @@
 defined('_JEXEC') or die('Restricted access');
 ?>
 
-<?php echo MageBridgeHelper::help('Checkout out the {tutorials:MageBridge Design Guide} on how to use combine theming'); ?>
-
 <form method="post" name="adminForm" id="adminForm">
 <table cellspacing="0" cellpadding="0" border="0" width="100%">
 <tbody>
 <tr>
 <td width="50%" valign="top">
     <fieldset class="adminform">
-        <legend><?php echo JText::_( 'Source URL' ); ?></legend>
+        <legend><?php echo JText::_('COM_MAGEBRIDGE_VIEW_URLS_SOURCE'); ?></legend>
         <table class="admintable">
         <tbody>
         <tr>
             <td width="100" align="right" class="key">
                 <label for="source">
-                    <?php echo JText::_( 'Source URL' ); ?>:
+                    <?php echo JText::_('COM_MAGEBRIDGE_VIEW_URLS_SOURCE'); ?>:
                 </label>
             </td>
             <td class="value">
@@ -35,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
         </tr>
         <tr>
             <td valign="top" align="right" class="key">
-                <?php echo JText::_( 'Source Type' ); ?>:
+                <?php echo JText::_('COM_MAGEBRIDGE_VIEW_URLS_SOURCE_TYPE'); ?>:
             </td>
             <td class="value">
                 <?php echo $this->lists['source_type']; ?>
@@ -45,13 +43,13 @@ defined('_JEXEC') or die('Restricted access');
         </table>
     </fieldset>
     <fieldset class="adminform">
-        <legend><?php echo JText::_( 'Destination URL' ); ?></legend>
+        <legend><?php echo JText::_('COM_MAGEBRIDGE_VIEW_URLS_DESTINATION'); ?></legend>
         <table class="admintable">
         <tbody>
         <tr>
             <td width="100" align="right" class="key">
                 <label for="destination">
-                    <?php echo JText::_( 'Destination URL' ); ?>:
+                    <?php echo JText::_('COM_MAGEBRIDGE_VIEW_URLS_DESTINATION'); ?>:
                 </label>
             </td>
             <td class="value">
@@ -62,13 +60,13 @@ defined('_JEXEC') or die('Restricted access');
         </table>
     </fieldset>
     <fieldset class="adminform">
-        <legend><?php echo JText::_( 'Meta information' ); ?></legend>
+        <legend><?php echo JText::_('COM_MAGEBRIDGE_VIEW_URLS_FIELDSET_META'); ?></legend>
         <table class="admintable">
         <tbody>
         <tr>
             <td width="100" align="right" class="key">
                 <label for="description">
-                    <?php echo JText::_( 'Description' ); ?>:
+                    <?php echo JText::_('LIB_YIREO_TABLE_FIELDNAME_DESCRIPTION'); ?>:
                 </label>
             </td>
             <td class="value">
@@ -77,7 +75,7 @@ defined('_JEXEC') or die('Restricted access');
         </tr>
         <tr>
             <td valign="top" align="right" class="key">
-                <?php echo JText::_( 'Published' ); ?>:
+                <?php echo JText::_('LIB_YIREO_TABLE_FIELDNAME_PUBLISHED'); ?>:
             </td>
             <td class="value">
                 <?php echo $this->lists['published']; ?>

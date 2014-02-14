@@ -118,7 +118,7 @@ class YireoFormFieldAbstract extends JFormField
      * @param null
      * @return string
      */
-    public function getAttribute($name)
+    public function getAttribute($name, $default = null)
     {
         if (isset($this->element[$name])) {
             return $this->element[$name];

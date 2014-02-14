@@ -96,6 +96,7 @@
         <languages folder="administrator/language/en-GB">
             <language tag="en-GB">en-GB.com_magebridge.sys.ini</language>
             <language tag="en-GB">en-GB.com_magebridge.ini</language>
+            <language tag="en-GB">en-GB.lib_yireo.ini</language>
         </languages>
 
     </administration>

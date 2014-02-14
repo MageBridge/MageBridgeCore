@@ -45,7 +45,7 @@ class MageBridgeViewLogs extends YireoViewList
 
         // If debugging is enabled report it
         if ($this->countLogs() > 1000) {
-            MageBridgeModelDebug::getInstance()->feedback('There are currently '.(int)$this->countLogs().' log-records in the database. We recommend you delete these logs.');
+            MageBridgeModelDebug::getInstance()->feedback(JText::sprintf('COM_MAGEBRIDGE_VIEW_LOGS_FLOOD_WARNING', (int)$this->countLogs()));
         }
 
         parent::display($tpl);
@@ -64,7 +64,7 @@ class MageBridgeViewLogs extends YireoViewList
         $rows = $db->loadObjectList();
 
         $options = array();
-        $options[] = JHTML::_('select.option', '', '- '.JText::_( 'Select Origin' ).' -', 'id', 'title' );
+        $options[] = JHTML::_('select.option', '', '- '.JText::_('COM_MAGEBRIDGE_VIEW_LOGS_SELECT_ORIGIN').' -', 'id', 'title' );
 
         if (!empty($rows)) {
             foreach ( $rows as $row ) {
@@ -89,7 +89,7 @@ class MageBridgeViewLogs extends YireoViewList
         $rows = $db->loadObjectList();
 
         $options = array();
-        $options[] = JHTML::_('select.option', '', '- '.JText::_( 'Select Address' ).' -', 'id', 'title' );
+        $options[] = JHTML::_('select.option', '', '- '.JText::_('COM_MAGEBRIDGE_VIEW_LOGS_SELECT_ADDRESS').' -', 'id', 'title' );
 
         if (!empty($rows)) {
             foreach ( $rows as $row ) {
@@ -130,7 +130,7 @@ class MageBridgeViewLogs extends YireoViewList
     {
         $options = array();
 
-        $options[] = JHTML::_('select.option', '', '- '.JText::_( 'Select Type' ).' -', 'id', 'title' );
+        $options[] = JHTML::_('select.option', '', '- '.JText::_('COM_MAGEBRIDGE_VIEW_LOGS_SELECT_TYPE').' -', 'id', 'title' );
         foreach ( $this->getTypes() as $title => $id ) {
             $options[] = JHTML::_('select.option', $id, $title, 'id', 'title' );
         }
