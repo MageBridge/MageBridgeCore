@@ -74,9 +74,8 @@ div#cpanel div.icon {
     text-align: center;
     margin-right: 15px;
     float: left;
-    margin-bottom: 15px;
-    height: 74px;
-    width: 125px;
+    height: 100px;
+    width: 110px;
     -webkit-box-shadow: inset 0 1px 0 rgba(255,255,255,.2), 0 1px 2px rgba(0,0,0,.05);
     -moz-box-shadow: inset 0 1px 0 rgba(255,255,255,.2), 0 1px 2px rgba(0,0,0,.05);
     box-shadow: inset 0 1px 0 rgba(255,255,255,.2), 0 1px 2px rgba(0,0,0,.05);
