@@ -430,9 +430,10 @@ class MageBridgeModelUser
      * @param string $user_email
      * @param int $user_id
      * @param bool $throw_event
+     * @param bool $allow_post
      * @return bool
      */
-    public function postlogin($user_email = null, $user_id = null, $throw_event = true)
+    public function postlogin($user_email = null, $user_id = null, $throw_event = true, $allow_post = false)
     {
         // Check if the arguments are set
         if (empty($user_email) && ($user_id > 0) == false) {
@@ -452,7 +453,7 @@ class MageBridgeModelUser
 
         // Check if this current request is actually a POST-request
         $post = JRequest::get('post');
-        if (!empty($post)) {
+        if (!empty($post) && $allow_post == false) {
             return false;
         }
     

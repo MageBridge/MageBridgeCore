@@ -474,6 +474,7 @@ class MageBridgeModelProxy
         if ($this->getHeader('X-MageBridge-Customer') != null) {
             $value = $this->getHeader('X-MageBridge-Customer');
             MageBridgeModelBridge::getInstance()->addSessionData('customer/email', $value);
+            MageBridgeModelUser::getInstance()->postlogin($value, null, true, true);
         }
 
         // Log other Status Codes than 200
@@ -614,6 +615,7 @@ class MageBridgeModelProxy
 
             // Check for a location-override if the customer is logged in
             if ($this->getHeader('X-MageBridge-Location-Customer') != null && $this->getHeader('X-MageBridge-Customer') != null) {
+                MageBridgeModelUser::getInstance()->postlogin($this->getHeader('X-MageBridge-Customer'), null, true, true);
                 MageBridgeModelDebug::getInstance()->notice('X-MageBridge-Location-Customer = '.$this->getHeader('X-MageBridge-Location-Customer'));
                 $location = $this->getHeader('X-MageBridge-Location-Customer');
             }
