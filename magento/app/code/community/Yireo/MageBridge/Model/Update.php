@@ -111,7 +111,7 @@ class Yireo_MageBridge_Model_Update extends Mage_Core_Model_Abstract
 
         // Check for the file
         $tmpdir = Mage::getConfig()->getOptions()->getTmpDir();
-        $tmpfile = $tmpdir.DS.'MageBridge_Magento_patch.zip';
+        $tmpfile = $tmpdir.DS.'Yireo_MageBridge_patch.zip';
         
         // If the file is not there, download it
         if(is_readable($tmpfile) == false) {
@@ -124,7 +124,7 @@ class Yireo_MageBridge_Model_Update extends Mage_Core_Model_Abstract
             }
 
             // Construct the download-URL
-            $download_url = $this->getApiLink(array('resource' => 'download', 'request' => 'MageBridge_Magento_patch.zip'));
+            $download_url = $this->getApiLink(array('resource' => 'download', 'request' => 'Yireo_MageBridge_patch.zip'));
 
             // Get the remote data
             $data = $this->_getRemote($download_url);
