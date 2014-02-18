@@ -294,7 +294,6 @@ class MagebridgeModelConfig extends YireoAbstractModel
 
         // Allow overriding values
         if (!empty($element) && isset($config[$element]) && $overload !== null) {
-            echo 'test: '.$element;
             $config[$element]['value'] = $overload;
         }
 
@@ -315,6 +314,10 @@ class MagebridgeModelConfig extends YireoAbstractModel
         } else if ($element != null && isset($config[$element])) {
             return $config[$element]['value'];
 
+        // Return no value
+        } else if (!empty($element)) {
+            return null;
+
         // Return the configuration itself
         } else {
             return $config;
@@ -328,7 +331,7 @@ class MagebridgeModelConfig extends YireoAbstractModel
      * @param string $value
      * @return string|null
      */
-    public function check($element, $value = null)
+    static public function check($element, $value = null)
     {
         // Reset an empty value to its original value
         if (empty($value)) {
