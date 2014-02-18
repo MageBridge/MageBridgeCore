@@ -46,12 +46,11 @@ class MageBridgeUpdateHelper
      */
     static public function getComponentVersion()
     {
-        $packages = MageBridgeUpdateHelper::getPackageList();
-        foreach ($packages as $package) {
-            if ($package['type'] == 'component') {
-                return MageBridgeUpdateHelper::getCurrentVersion($package);
-            }
+        static $version = false;
+        if($version == false) {
+            $version = MageBridgeUpdateHelper::getCurrentVersion(array('type' => 'component', 'name' => 'com_magebridge'));
         }
+        return $version;
     }
 
     /*
