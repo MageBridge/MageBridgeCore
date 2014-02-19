@@ -525,7 +525,8 @@ class MageBridgeModelBridge
             // If this is a MageBridge page, use it only if its not a customer-page, or homepage, or checkout-page
             } else if (preg_match('/\/customer\/account\//', JURI::current()) == false && 
                 preg_match('/\/checkout\/cart\//', JURI::current()) == false &&
-                JURI::current() != MageBridge::getBridge()->getJoomlaBridgeUrl()) {
+                $this->isAjax() == false &&
+                JURI::current() != $this->getJoomlaBridgeUrl()) {
                 $referer = JURI::getInstance()->toString();
             }
 
@@ -560,7 +561,8 @@ class MageBridgeModelBridge
             preg_match('/\/remove\/item/', JURI::current()) == false && 
             preg_match('/\/checkout\/cart/', JURI::current()) == false && 
             preg_match('/\/newsletter\/subscriber/', JURI::current()) == false && 
-            JURI::current() != MageBridge::getBridge()->getJoomlaBridgeUrl()) {
+            $this->isAjax() == false &&
+            JURI::current() != $this->getJoomlaBridgeUrl()) {
             $this->_http_referer = JURI::getInstance()->toString();
 
         } else if (empty($this->_http_referer)) {
