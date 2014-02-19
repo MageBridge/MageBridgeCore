@@ -145,6 +145,11 @@ class MageBridge
             $request_uri = $request_uri[0];
             $request_uri = '/'.preg_replace( '/^\//', '', $request_uri);
 
+            // Add backslash to some URLs
+            if(preg_match('/^\/checkout\/onepage/', $request_uri)) {
+                $request_uri = preg_replace( '/\/$/', '', $request_uri).'/';
+            }
+
             // Very ugly dirty copy of the core-hack of vendorms
             if(stripos($request_uri,'vendorms')){
                 $vms = $request_uri;
