@@ -58,7 +58,7 @@ class MageBridgeViewCheck extends YireoView
     public function displayDefault($tpl)
     {
         // Initalize common elements
-        MageBridgeViewHelper::initialize('System Check');
+        MageBridgeViewHelper::initialize('Check');
 
         // Load libraries
         JHTML::_('behavior.tooltip');

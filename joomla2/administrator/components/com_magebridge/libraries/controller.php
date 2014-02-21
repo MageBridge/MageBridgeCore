@@ -167,6 +167,14 @@ class YireoController extends YireoCommonController
             JError::raiseError(500, JText::_('LIB_YIREO_CONTROLLER_ILLEGAL_REQUEST'));
         }
 
+        // Check for ACLs in backend
+        if ($this->_application->isAdmin()) {
+            $user = JFactory::getUser();
+            if($user->authorise('core.manage', JRequest::getCmd('option')) == false) {
+                $this->_application->redirect('index.php', JText::_('LIB_YIREO_CONTROLLER_ILLEGAL_REQUEST'));
+            }
+        }
+
         // Neat trick to automatically remove obsolete files
         if (JRequest::getCmd('view') == $this->_default_view) {
             YireoHelperInstall::remove();

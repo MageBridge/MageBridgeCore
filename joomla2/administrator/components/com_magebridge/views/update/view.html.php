@@ -39,7 +39,7 @@ class MageBridgeViewUpdate extends YireoView
 	public function display($tpl = null)
 	{
         // ???
-        MageBridgeViewHelper::initialize('Updates');
+        MageBridgeViewHelper::initialize('UPDATE');
 
         // Filters - type
         $options = array( 
@@ -59,9 +59,9 @@ class MageBridgeViewUpdate extends YireoView
         $this->lists['type'] = JHTML::_('select.genericlist', $options, 'filter_type', $javascript, 'value', 'text', $filter_type );
 
         // Toolbar options
-        JToolBarHelper::custom('home', 'back', '', 'Home', false);
-        JToolBarHelper::custom('refresh', 'preview.png', 'preview_f2.png', 'Refresh', false);
-        JToolBarHelper::custom('updateQueries', 'archive', '', 'DB Upgrade', false);
+        JToolBarHelper::custom('home', 'back', '', 'LIB_YIREO_VIEW_TOOLBAR_HOME', false);
+        JToolBarHelper::custom('refresh', 'preview.png', 'preview_f2.png', 'LIB_YIREO_VIEW_TOOLBAR_REFRESH', false);
+        JToolBarHelper::custom('updateQueries', 'archive', '', 'LIB_YIREO_VIEW_TOOLBAR_DBUPGRADE', false);
 
         // Add jQuery for selection effects
         MageBridgeTemplateHelper::load('jquery');

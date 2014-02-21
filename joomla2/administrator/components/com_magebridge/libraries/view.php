@@ -100,7 +100,7 @@ class YireoCommonView extends YireoAbstractView
             if (!empty($views)) {
                 foreach ($views as $view => $view_title) {
                     if ($this->_view == $view) {
-                        $title = $view_title;
+                        $title = JText::_('COM_MAGEBRIDGE_VIEW_'.$view);
                         break;
                     }
                 }
@@ -497,7 +497,7 @@ class YireoView extends YireoCommonView
                     $layout = null;
                 }
 
-                $titleLabel = strtoupper($this->_option).'_'.strtoupper($title);
+                $titleLabel = strtoupper($this->_option).'_VIEW_'.strtoupper($title);
                 
                 if (is_dir(JPATH_COMPONENT.'/views/'.$view)) {
 

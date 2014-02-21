@@ -61,17 +61,17 @@
         <!--<menu>MageBridge</menu>-->
         <menu img="../media/com_magebridge/images/menu-magebridge.png">COM_MAGEBRIDGE</menu>
         <submenu>
-            <menu link="option=com_magebridge&amp;view=home">COM_MAGEBRIDGE_HOME</menu>
-            <menu link="option=com_magebridge&amp;view=config">COM_MAGEBRIDGE_CONFIG</menu>
-            <menu link="option=com_magebridge&amp;view=stores">COM_MAGEBRIDGE_STORES</menu>
-            <menu link="option=com_magebridge&amp;view=products">COM_MAGEBRIDGE_PRODUCTS</menu>
-            <menu link="option=com_magebridge&amp;view=usergroups">COM_MAGEBRIDGE_USERGROUPS</menu>
-            <menu link="option=com_magebridge&amp;view=connectors">COM_MAGEBRIDGE_CONNECTORS</menu>
-            <menu link="option=com_magebridge&amp;view=urls">COM_MAGEBRIDGE_URLS</menu>
-            <menu link="option=com_magebridge&amp;view=users">COM_MAGEBRIDGE_USERS</menu>
-            <menu link="option=com_magebridge&amp;view=check">COM_MAGEBRIDGE_CHECK</menu>
-            <menu link="option=com_magebridge&amp;view=logs">COM_MAGEBRIDGE_LOGS</menu>
-            <menu link="option=com_magebridge&amp;view=update">COM_MAGEBRIDGE_UPDATE</menu>
+            <menu link="option=com_magebridge&amp;view=home">COM_MAGEBRIDGE_VIEW_HOME</menu>
+            <menu link="option=com_magebridge&amp;view=config">COM_MAGEBRIDGE_VIEW_CONFIG</menu>
+            <menu link="option=com_magebridge&amp;view=stores">COM_MAGEBRIDGE_VIEW_STORES</menu>
+            <menu link="option=com_magebridge&amp;view=products">COM_MAGEBRIDGE_VIEW_PRODUCTS</menu>
+            <menu link="option=com_magebridge&amp;view=usergroups">COM_MAGEBRIDGE_VIEW_USERGROUPS</menu>
+            <menu link="option=com_magebridge&amp;view=connectors">COM_MAGEBRIDGE_VIEW_CONNECTORS</menu>
+            <menu link="option=com_magebridge&amp;view=urls">COM_MAGEBRIDGE_VIEW_URLS</menu>
+            <menu link="option=com_magebridge&amp;view=users">COM_MAGEBRIDGE_VIEW_USERS</menu>
+            <menu link="option=com_magebridge&amp;view=check">COM_MAGEBRIDGE_VIEW_CHECK</menu>
+            <menu link="option=com_magebridge&amp;view=logs">COM_MAGEBRIDGE_VIEW_LOGS</menu>
+            <menu link="option=com_magebridge&amp;view=update">COM_MAGEBRIDGE_VIEW_UPDATE</menu>
         </submenu>
 
         <files folder="administrator/components/com_magebridge">
@@ -94,8 +94,8 @@
         </files>
 
         <languages folder="administrator/language/en-GB">
-            <language tag="en-GB">en-GB.com_magebridge.sys.ini</language>
             <language tag="en-GB">en-GB.com_magebridge.ini</language>
+            <language tag="en-GB">en-GB.com_magebridge.sys.ini</language>
             <language tag="en-GB">en-GB.lib_yireo.ini</language>
         </languages>
 

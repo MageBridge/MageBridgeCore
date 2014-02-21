@@ -17,13 +17,13 @@ defined('_JEXEC') or die('Restricted access');
 <tr>
 <td width="50%" valign="top">
     <fieldset class="adminform">
-        <legend><?php echo JText::_( 'Title' ); ?></legend>
+        <legend><?php echo JText::_('LIB_YIREO_TABLE_FIELDNAME_LABEL'); ?></legend>
         <table class="admintable">
         <tbody>
         <tr>
             <td width="100" align="right" class="key">
                 <label for="label">
-                    <?php echo JText::_( 'Label' ); ?>:
+                    <?php echo JText::_('LIB_YIREO_TABLE_FIELDNAME_LABEL'); ?>:
                 </label>
             </td>
             <td>
@@ -35,13 +35,13 @@ defined('_JEXEC') or die('Restricted access');
     </fieldset>
 
     <fieldset class="adminform">
-        <legend><?php echo JText::_( 'Product' ); ?></legend>
+        <legend><?php echo JText::_('COM_MAGEBRIDGE_VIEW_PRODUCT_FIELDSET_RELATION'); ?></legend>
         <table class="admintable">
         <tbody>
         <tr>
             <td width="100" align="right" class="key">
                 <label for="sku">
-                    <?php echo JText::_( 'Magento product' ); ?>:
+                    <?php echo JText::_('COM_MAGEBRIDGE_VIEW_PRODUCT_FIELD_SKU'); ?>:
                 </label>
             </td>
             <td class="value">
@@ -50,7 +50,7 @@ defined('_JEXEC') or die('Restricted access');
         </tr>
         <tr>
             <td valign="top" align="right" class="key">
-                <?php echo JText::_( 'Published' ); ?>:
+                <?php echo JText::_('JPUBLISHED'); ?>:
             </td>
             <td class="value">
                 <?php echo $this->lists['published']; ?>
@@ -59,7 +59,7 @@ defined('_JEXEC') or die('Restricted access');
         <tr>
             <td valign="top" align="right" class="key">
                 <label for="ordering">
-                    <?php echo JText::_( 'Ordering' ); ?>:
+                    <?php echo JText::_('JORDERING'); ?>:
                 </label>
             </td>
             <td class="value">
@@ -70,44 +70,8 @@ defined('_JEXEC') or die('Restricted access');
         </table>
     </fieldset>
 
-    <?php /*
-    @todo: Remove when ready
     <fieldset class="adminform">
-        <legend><?php echo JText::_( 'Connector' ); ?></legend>
-        <table class="admintable">
-        <tbody>
-        <?php if (!empty($this->connectors)) { ?>
-        <?php foreach ($this->connectors as $connector) { ?>
-        <?php $current = ($connector->name == $this->item->connector || count($this->connectors) == 1) ? true : false; ?>
-        <?php $value = ($current) ? $this->item->connector_value : null; ?>
-        <tr>
-            <td width="100" align="right" valign="top" class="key">
-                <label for="connector<?php echo $connector->name; ?>">
-                    <?php $checked = ($current) ? 'checked' : ''; ?>
-                    <input type="radio" name="connector" value="<?php echo $connector->name; ?>" id="connector-radio-<?php echo $connector->name; ?>" <?php echo $checked; ?>/>
-                </label>
-            </td>
-            <td class="value">
-                <label for="connector-radio-<?php echo $connector->name; ?>">
-                <strong><?php echo $connector->title; ?></strong><p/>
-                <?php echo $connector->getFormField($value); ?>
-                </label>
-            </td>
-        </tr>
-        <?php } ?>
-        <?php } else { ?>
-        <tr>    
-            <td>
-                <?php echo JText::_('There are no connectors available'); ?>
-            </td>
-        </tr>
-        <?php } ?>
-        </tbody>
-        </table>
-    </fieldset>
-    */ ?>
-    <fieldset class="adminform">
-        <legend><?php echo JText::_('Actions'); ?></legend>
+        <legend><?php echo JText::_('COM_MAGEBRIDGE_VIEW_PRODUCT_FIELDSET_ACTIONS'); ?></legend>
         <?php echo $this->loadTemplate('actions'); ?>
     </fieldset>
 </td>

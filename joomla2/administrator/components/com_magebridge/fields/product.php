@@ -56,7 +56,7 @@ class JFormFieldProduct extends JFormFieldAbstract
             $html .= '<input type="text" id="'.$name.'" name="'.$name.'" value="'.$title.'" />';
             $html .= '</div>';
 		    $html .= '<div class="button2-left"><div class="blank">';
-            $html .= '<a class="modal btn" title="'.JText::_('Select a Product').'"  href="'.$link.'" rel="{handler: \'iframe\', size: {x:800, y:450}}">'.JText::_('Select').'</a>';
+            $html .= '<a class="modal btn" title="'.JText::_('JSELECT').'"  href="'.$link.'" rel="{handler: \'iframe\', size: {x:800, y:450}}">'.JText::_('JSELECT').'</a>';
             $html .= '</div></div>'."\n";
 
             return $html;

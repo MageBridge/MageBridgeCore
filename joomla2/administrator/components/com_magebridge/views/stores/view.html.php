@@ -58,7 +58,7 @@ class MageBridgeViewStores extends YireoViewList
         $default->connector_value = null;
         $default->hasState = false;
         $default->hasOrdering = false;
-        $default->label = JText::_('Default');
+        $default->label = JText::_('JDEFAULT');
         $default->custom_edit_link = 'index.php?option=com_magebridge&view=store&task=default';
 
         // Load the configuration values
@@ -67,14 +67,14 @@ class MageBridgeViewStores extends YireoViewList
 
         if (!empty($storeview)) {
             $default->name = $storeview;
-            $default->type = 'Store View';
+            $default->type = 'COM_MAGEBRIDGE_VIEW_STORE_FIELD_TYPE_VALUE_VIEW';
         } else if (!empty($storegroup)) {
             $default->name = $storegroup;
-            $default->type = 'Store Group';
+            $default->type = 'COM_MAGEBRIDGE_VIEW_STORE_FIELD_TYPE_VALUE_GROUP';
         } else {
-            $default->name = JText::_('None');
-            $default->type = JText::_('None');
-            $default->title = JText::_('None');
+            $default->name = JText::_('JNONE');
+            $default->type = JText::_('JNONE');
+            $default->title = JText::_('JNONE');
         }
 
         // Loop through the API-result just to get the title

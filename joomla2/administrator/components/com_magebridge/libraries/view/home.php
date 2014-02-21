@@ -106,7 +106,7 @@ class YireoViewHome extends YireoView
 
         $icon = array();
         $icon['link'] = JRoute::_( 'index.php?option='.$this->_option.'&view='.$view );
-        $icon['text'] = $text;
+        $icon['text'] = JText::_($text);
         $icon['target'] = $target;
         $icon['icon'] = '<img src="'.$folder.$image.'" title="'.$icon['text'].'" alt="'.$icon['text'].'" />';
         return $icon;

@@ -32,7 +32,7 @@ class MageBridgeViewConfig extends YireoCommonView
         $layout = JRequest::getCmd('layout');
 
         // Initalize common elements
-        MageBridgeViewHelper::initialize('Configuration');
+        MageBridgeViewHelper::initialize('CONFIG');
 
         // Load the import-layout directly
         if ($layout == 'import') {

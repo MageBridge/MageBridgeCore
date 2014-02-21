@@ -29,18 +29,18 @@ class MageBridgeViewHome extends YireoViewHome
     public function display($tpl = null)
     {
         $icons = array();
-        $icons[] = $this->icon( 'config', 'Configuration', 'config.png');
-        $icons[] = $this->icon( 'stores', 'Store Conditions', 'store.png');
-        $icons[] = $this->icon( 'products', 'Product Relations', 'product.png');
-        $icons[] = $this->icon( 'connectors', 'Connectors', 'connect.png');
-        $icons[] = $this->icon( 'users', 'Users', 'user.png');
-        $icons[] = $this->icon( 'check', 'System Check', 'cpanel.png');
-        $icons[] = $this->icon( 'logs', 'Logs', 'info.png');
-        $icons[] = $this->icon( 'update', 'Update', 'install.png');
-        $icons[] = $this->icon( 'cache', 'Empty Cache', 'trash.png');
-        $icons[] = $this->icon( 'magento', 'Magento Admin', 'magento.png', null, '_blank');
-        $icons[] = $this->icon( 'tutorials', 'Tutorials', 'tutorials.png', null, '_blank');
-        $icons[] = $this->icon( 'forum', 'Forum', 'forum.png', null, '_blank');
+        $icons[] = $this->icon( 'config', 'COM_MAGEBRIDGE_VIEW_CONFIG', 'config.png');
+        $icons[] = $this->icon( 'stores', 'COM_MAGEBRIDGE_VIEW_STORES', 'store.png');
+        $icons[] = $this->icon( 'products', 'COM_MAGEBRIDGE_VIEW_PRODUCTS', 'product.png');
+        $icons[] = $this->icon( 'connectors', 'COM_MAGEBRIDGE_VIEW_CONNECTORS', 'connect.png');
+        $icons[] = $this->icon( 'users', 'COM_MAGEBRIDGE_VIEW_USERS', 'user.png');
+        $icons[] = $this->icon( 'check', 'COM_MAGEBRIDGE_VIEW_CHECK', 'cpanel.png');
+        $icons[] = $this->icon( 'logs', 'COM_MAGEBRIDGE_VIEW_LOGS', 'info.png');
+        $icons[] = $this->icon( 'update', 'COM_MAGEBRIDGE_VIEW_UPDATE', 'install.png');
+        $icons[] = $this->icon( 'cache', 'COM_MAGEBRIDGE_CLEAN_CACHE', 'trash.png');
+        $icons[] = $this->icon( 'magento', 'COM_MAGEBRIDGE_MAGENTO_BACKEND', 'magento.png', null, '_blank');
+        $icons[] = $this->icon( 'tutorials', 'LIB_YIREO_TUTORIALS', 'tutorials.png', null, '_blank');
+        $icons[] = $this->icon( 'forum', 'LIB_YIREO_FORUM', 'forum.png', null, '_blank');
         $this->assignRef('icons', $icons);
 
         $urls = array();

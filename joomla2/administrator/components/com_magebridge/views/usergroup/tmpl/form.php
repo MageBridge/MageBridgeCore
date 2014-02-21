@@ -18,13 +18,13 @@ defined('_JEXEC') or die('Restricted access');
 <tr>
 <td width="50%" valign="top">
     <fieldset class="adminform">
-        <legend><?php echo JText::_( 'Usergroup Relation' ); ?></legend>
+        <legend><?php echo JText::_('COM_MAGEBRIDGE_USERGROUP_FIELDSET_USERGROUPS'); ?></legend>
         <table class="admintable">
         <tbody>
         <tr>
             <td width="100" align="right" class="key">
                 <label for="joomla_group">
-                    <?php echo JText::_( 'Joomla! group' ); ?>:
+                    <?php echo JText::_('COM_MAGEBRIDGE_USERGROUP_FIELD_JOOMLA_GROUP'); ?>:
                 </label>
             </td>
             <td class="value">
@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
         <tr>
             <td width="100" align="right" class="key">
                 <label for="magento_group">
-                    <?php echo JText::_( 'Magento group' ); ?>:
+                    <?php echo JText::_('COM_MAGEBRIDGE_USERGROUP_FIELD_MAGENTO_GROUP'); ?>:
                 </label>
             </td>
             <td class="value">
@@ -46,13 +46,13 @@ defined('_JEXEC') or die('Restricted access');
     </fieldset>
 
     <fieldset class="adminform">
-        <legend><?php echo JText::_( 'Details' ); ?></legend>
+        <legend><?php echo JText::_('JDETAILS'); ?></legend>
         <table class="admintable">
         <tbody>
         <tr>
             <td width="100" align="right" class="key">
                 <label for="description">
-                    <?php echo JText::_( 'Description' ); ?>:
+                    <?php echo JText::_('LIB_YIREO_TABLE_FIELDNAME_DESCRIPTION'); ?>:
                 </label>
             </td>
             <td>
@@ -61,7 +61,7 @@ defined('_JEXEC') or die('Restricted access');
         </tr>
         <tr>
             <td valign="top" align="right" class="key">
-                <?php echo JText::_( 'Published' ); ?>:
+                <?php echo JText::_('JPUBLISHED'); ?>:
             </td>
             <td class="value">
                 <?php echo $this->fields['published']; ?>
@@ -70,7 +70,7 @@ defined('_JEXEC') or die('Restricted access');
         <tr>
             <td valign="top" align="right" class="key">
                 <label for="ordering">
-                    <?php echo JText::_( 'Ordering' ); ?>:
+                    <?php echo JText::_('JORDERING'); ?>:
                 </label>
             </td>
             <td class="value">
@@ -83,7 +83,7 @@ defined('_JEXEC') or die('Restricted access');
 </td>
 <td width="50%" valign="top">
     <fieldset class="adminform">
-        <legend><?php echo JText::_( 'Parameters (optional)' ); ?></legend>
+        <legend><?php echo JText::_('JPARAMS'); ?></legend>
         <?php echo $this->loadTemplate('params'); ?>
     </fieldset>
 </td>

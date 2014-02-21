@@ -40,8 +40,8 @@ class JFormFieldBoolean extends JFormFieldRadio
 	protected function getOptions()
 	{
         $options = array(
-            JHtml::_('select.option', '0', JText::_('JNO')),
-            JHtml::_('select.option', '1', JText::_('JYES')),
+            JHtml::_('select.option', '0', 'JNO'),
+            JHtml::_('select.option', '1', 'JYES'),
         );
         return $options;
     }

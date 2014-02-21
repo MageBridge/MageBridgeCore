@@ -37,7 +37,7 @@ class MageBridgeViewHelper
         if (MageBridgeHelper::isJoomla35()) $document->addStyleSheet(JURI::root().'media/com_magebridge/css/backend-j35.css');
 
         // Page title
-        $title = 'COM_MAGEBRIDGE_VIEW_'.strtoupper($title);
+        $title = JText::_('COM_MAGEBRIDGE_VIEW_'.strtoupper(str_replace(' ', '_', $title)));
         JToolBarHelper::title('MageBridge: '.$title, 'logo.png');
 
         // Add the menu
@@ -66,20 +66,20 @@ class MageBridgeViewHelper
         }
 
         $items = array(
-            'Home' => 'home',
-            'Configuration' => 'config',
-            'Store Relations' => 'stores',
-            'Product Relations' => 'products',
-            'Usergroup Relations' => 'usergroups',
-            'Connectors' => 'connectors',
-            'URL Replacements' => 'urls',
-            'Users' => 'users',
-            'System Check' => 'check',
-            'Logs' => 'logs',
-            'Update' => 'update',
+            'home',
+            'config',
+            'stores',
+            'products',
+            'usergroups',
+            'connectors',
+            'urls',
+            'users',
+            'check',
+            'logs',
+            'update',
         );
 			
-        foreach ($items as $title => $view) {
+        foreach ($items as $view) {
 
             // @todo: Integrate this with the abstract-helper
 
@@ -92,7 +92,7 @@ class MageBridgeViewHelper
             // Add the view
             $active = (JRequest::getCmd('view') == $view) ? true : false;
             $url = 'index.php?option=com_magebridge&view='.$view;
-            $title = JText::_($title);
+            $title = JText::_('COM_MAGEBRIDGE_VIEW_'.$view);
 
             $alreadySet = false;
             foreach($currentItems as $currentItem) {

@@ -72,13 +72,14 @@ class JFormFieldStylesheets extends JFormFieldAbstract
         $name = 'disable_css_all';
         $value = MagebridgeModelConfig::load('disable_css_all');
         $options = array(
-            array('value' => '0', 'label' => JText::_('No')),
-            array('value' => '1', 'label' => JText::_('Yes')),
-            array('value' => '2', 'label' => JText::_('Only')),
-            array('value' => '3', 'label' => JText::_('All except')),
+            array('value' => '0', 'label' => 'JNO'),
+            array('value' => '1', 'label' => 'JYES'),
+            array('value' => '2', 'label' => 'JONLY'),
+            array('value' => '3', 'label' => 'JALL_EXCEPT'),
         );
 
         foreach ($options as $index => $option) {
+            $option['label'] = JText::_($option['label']);
             $options[$index] = JArrayHelper::toObject($option);
         }
 
@@ -107,7 +108,7 @@ class JFormFieldStylesheets extends JFormFieldAbstract
 
         if (!empty($options) && is_array($options)) {
             $size = (count($options) > 10) ? 10 : count($options);
-            array_unshift( $options, array( 'value' => '', 'label' => '- '.JText::_('None').' -'));
+            array_unshift( $options, array( 'value' => '', 'label' => '- '.JText::_('JNONE').' -'));
             return JHTML::_('select.genericlist', $options, $name.'[]', 'multiple="multiple" size="'.$size.'" '.$disabled, 'value', 'label', $value);
         }
 
