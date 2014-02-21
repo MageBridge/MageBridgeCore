@@ -4,7 +4,7 @@
  *
  * @author Yireo (info@yireo.com)
  * @package MageBridge
- * @copyright Copyright Yireo.com 2012
+ * @copyright Copyright Yireo.com 2014
  * @license GNU Public License
  * @link http://www.yireo.com
  */
@@ -62,7 +62,7 @@ class MagebridgeModelCheck extends YireoAbstractModel
             $this->doExtensionChecks();
             $this->doBridgeChecks();
             $this->doPluginChecks();
-            //$this->doConfigChecks();
+            $this->doConfigChecks();
         }
 
         return $this->_checks;
@@ -207,6 +207,10 @@ class MagebridgeModelCheck extends YireoAbstractModel
 
         $result = ($application->getCfg('caching') == 0) ? self::CHECK_OK : self::CHECK_WARNING;
         $this->addResult('system', 'Caching', $result, JText::_('COM_MAGEBRIDGE_CHECK_CACHING'));
+
+        $cachePlugin = JPluginHelper::getPlugin('system', 'cache');
+        $result = (empty($cachePlugin)) ? self::CHECK_OK : self::CHECK_ERROR;
+        $this->addResult('system', 'Cache Plugin', $result, JText::_('COM_MAGEBRIDGE_CHECK_CACHEPLUGIN'));
 
         if ($installer == false) {
             $result = ((boolean)MageBridgeUrlHelper::getRootItem()) ? self::CHECK_OK : self::CHECK_WARNING;
