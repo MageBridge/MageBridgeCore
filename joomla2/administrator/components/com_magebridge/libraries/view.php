@@ -100,7 +100,7 @@ class YireoCommonView extends YireoAbstractView
             if (!empty($views)) {
                 foreach ($views as $view => $view_title) {
                     if ($this->_view == $view) {
-                        $title = JText::_('COM_MAGEBRIDGE_VIEW_'.$view);
+                        $title = JText::_(JRequest::getCmd('option').'_VIEW_'.$view);
                         break;
                     }
                 }

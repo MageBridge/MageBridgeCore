@@ -242,6 +242,13 @@ class YireoModel extends YireoAbstractModel
             if ($this->_tbl->hasField('name')) $this->_orderby_title = 'name';
         }
 
+        // Detect checkout
+        if ($this->_tbl->hasField('checked_out')) {
+            $this->_checkout = true;
+        } else {
+            $this->_checkout = false;
+        }
+
         // Create the option-namespace
         $classParts = explode('Model', get_class($this));
         $this->_view = (!empty($classParts[1])) ? strtolower($classParts[1]) : JRequest::getCmd('view');
@@ -985,10 +992,16 @@ class YireoModel extends YireoAbstractModel
         // Build the default query if not set
         if (empty($query)) {
 
+            // Skip certain fields in frontend
+            $skipFrontendFields = array('locked', 'published', 'published_up', 'published_down',
+                'checked_out', 'checked_out_time', 'created', 'created_by', 'created_by_alias', 
+                'modified', 'modified_by', 'modified_by_alias', 'ordering');
+
             // Build the fields-string to avoid a *
             $fields = $this->_tbl->getDatabaseFields();
             $fieldsStrings = array();
             foreach($fields as $field) {
+                if($this->application->isSite() && in_array($field, $skipFrontendFields)) continue;
                 $fieldsStrings[] = '`{tableAlias}`.`'.$field.'`';
             }
             $fieldsString = implode(',', $fieldsStrings);
@@ -1573,7 +1586,7 @@ class YireoModel extends YireoAbstractModel
     public function getDbResult($query, $type = 'object')
     {
         if($this->_cache == true) {
-            $cache = JFactory::getCache();
+            $cache = JFactory::getCache('lib_yireo_model');
             $rs = $cache->call(array($this, '_getDbResult'), $query, $type);
         } else {
             $rs = $this->_getDbResult($query, $type);
