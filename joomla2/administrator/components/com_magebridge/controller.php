@@ -197,7 +197,7 @@ class MageBridgeController extends YireoController
 
         // Redirect
         $link = 'index.php?option=com_magebridge&view=update';
-        $msg = JText::_('Applied database upgrades');
+        $msg = JText::_('LIB_YIREO_CONTROLLER_DB_UPGRADED');
         $this->setRedirect($link, $msg);
     }
 
@@ -226,7 +226,7 @@ class MageBridgeController extends YireoController
             file_put_contents($file, null);
 
             // Redirect
-            $msg = 'Deleted all log entries';
+            $msg = JText::_('LIB_YIREO_CONTROLLER_LOGS_TRUNCATED');
             $link = 'index.php?option=com_magebridge&view=logs';
             $this->setRedirect($link, $msg);
             return;
@@ -287,7 +287,7 @@ class MageBridgeController extends YireoController
     {
         // Check the token
         if ($check_token == true && (JRequest::checkToken('post') == false && JRequest::checkToken('get') == false)) {
-            $msg = 'Invalid token';
+            $msg = JText::_('JINVALID_TOKEN');
             $link = 'index.php?option=com_magebridge&view=home';
             $this->setRedirect( $link, $msg );
             return false;
@@ -295,7 +295,7 @@ class MageBridgeController extends YireoController
 
         // Check demo-access
         if ($check_demo == true && MageBridgeAclHelper::isDemo() == true) {
-            $msg = 'No changes made. You are only allowed read-only access to this demo-site.';
+            $msg = JText::_('LIB_YIREO_CONTROLLER_DEMO_NO_ACTION');
             $link = 'index.php?option=com_magebridge&view=home';
             $this->setRedirect( $link, $msg );
             return false;

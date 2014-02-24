@@ -12,30 +12,11 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
-// Initialize the ACLs
-MageBridgeAclHelper::init();
-
 /*
  * Helper for encoding and encrypting
  */
 class MageBridgeAclHelper 
 {
-    /*
-     * Initialize the helper-class
-     *
-     * @param mixed $string
-     * @return string
-     */
-    public static function init()
-    {
-        // Joomla! 1.5 ACLs
-        if (MageBridgeHelper::isJoomla15() == true) {
-            $auth = JFactory::getACL();
-            $auth->addACL('com_magebridge', 'manage', 'users', 'super administrator');
-            $auth->addACL('com_magebridge', 'manage', 'users', 'administrator');
-        }
-    }
-
     /*
      * Check whether a certain person is authorised
      *

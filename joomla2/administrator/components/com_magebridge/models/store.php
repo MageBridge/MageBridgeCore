@@ -76,7 +76,7 @@ class MagebridgeModelStore extends YireoModel
             $data['title'] = $values[2];
             unset($data['store']);
         } else {
-            $this->setError(JText::_('No store was selected'));
+            $this->setError(JText::_('COM_MAGEBRIDGE_MODEL_STORE_NO_STORE_SELECTED'));
             return false;
         }
 
@@ -86,14 +86,14 @@ class MagebridgeModelStore extends YireoModel
         }
 
         if (empty($data['name']) || empty($data['title'])) {
-            $this->setError(JText::_('Invalid store'));
+            $this->setError(JText::_('COM_MAGEBRIDGE_MODEL_STORE_INVALID_STORE'));
             return false;
         }
 
         if (!empty($data['connector'])) {
             $connector = MageBridgeConnectorStore::getConnector($data['connector']);
             if ($connector == false) {
-                $this->setError(JText::_('Failed to load connector'));
+                $this->setError(JText::_('COM_MAGEBRIDGE_MODEL_STORE_CONNECTOR_FAILED'));
                 return false;
             }
 

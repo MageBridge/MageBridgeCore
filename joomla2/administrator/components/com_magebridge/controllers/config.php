@@ -245,7 +245,7 @@ class MageBridgeControllerConfig extends YireoCommonController
     {
         // Check the token
         if ($check_token == true && (JRequest::checkToken('post') == false && JRequest::checkToken('get') == false)) {
-            $msg = 'Invalid token';
+            $msg = JText::_('JINVALID_TOKEN');
             $link = 'index.php?option=com_magebridge&view=home';
             $this->setRedirect( $link, $msg );
             return false;
@@ -253,7 +253,7 @@ class MageBridgeControllerConfig extends YireoCommonController
 
         // Check demo-access
         if ($check_demo == true && MageBridgeAclHelper::isDemo() == true) {
-            $msg = 'No changes made. You are only allowed read-only access to this demo-site.';
+            $msg = JText::_('LIB_YIREO_CONTROLLER_DEMO_NO_ACTION');
             $link = 'index.php?option=com_magebridge&view=config';
             $this->setRedirect( $link, $msg );
             return false;
