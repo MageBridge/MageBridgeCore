@@ -39,7 +39,7 @@ class Yireo_MageBridge_Helper_Product extends Mage_Core_Helper_Abstract
 
         // Set the custom size
         if(!empty($arguments['custom_image_size'])) {
-            $product->setCustomImageSize($arguments['custom_image_size']);
+            $product->setCustomImageSize((int)$arguments['custom_image_size']);
         }
 
         // Get the debug-array of this object
