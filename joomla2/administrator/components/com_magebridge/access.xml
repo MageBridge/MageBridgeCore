@@ -14,5 +14,6 @@
 		<action name="com_magebridge.update" title="COM_MAGEBRIDGE_JACTION_UPDATE" description="COM_MAGEBRIDGE_JACTION_UPDATE_DESC" />
 		<action name="com_magebridge.demo_ro" title="COM_MAGEBRIDGE_JACTION_DEMO_RO" description="COM_MAGEBRIDGE_JACTION_DEMO_RO_DESC" />
 		<action name="com_magebridge.demo_rw" title="COM_MAGEBRIDGE_JACTION_DEMO_RW" description="COM_MAGEBRIDGE_JACTION_DEMO_RW_DESC" />
+		<action name="com_magebridge.config.website" title="COM_MAGEBRIDGE_JACTION_CONFIG_WEBSITE" description="COM_MAGEBRIDGE_JACTION_CONFIG_WEBSITE_DESC" />
 	</section>
 </access>

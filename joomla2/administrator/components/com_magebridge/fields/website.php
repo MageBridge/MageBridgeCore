@@ -37,6 +37,15 @@ class JFormFieldWebsite extends JFormFieldAbstract
         $fieldName = $name;
         $value = $this->value;
 
+        // Check for access
+        $access = (string)$this->element['access'];
+        if(!empty($access)) {
+            $user = JFactory::getUser();
+            if ($user->authorise($access) == false) {
+                return '<input type="text" name="'.$fieldName.'" value="'.$value.'" disabled="disabled" />';
+            }
+        }
+
         // Only build a dropdown when the API-widgets are enabled
         if (MagebridgeModelConfig::load('api_widgets') == true) {
 
