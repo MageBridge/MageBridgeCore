@@ -203,6 +203,22 @@ function MagebridgeParseRoute($segments)
     $root_item = MageBridgeUrlHelper::getRootItem();
     $root_item_id = ($root_item && $root_item->id > 0) ? $root_item->id : false;
 
+    // Fix the segments when Root Menu-Item is enforced
+    if(MageBridgeUrlHelper::enforceRootMenu()) {
+        $current_item = $root_item;
+        $current_path = JURI::getInstance()->toString(array('path'));
+        $current_segments = explode('/', preg_replace('/^\//', '', $current_path));
+        $root_path = JRoute::_($root_item->link.'&Itemid='.$root_item->id);
+        $root_segments = explode('/', preg_replace('/^\//', '', $root_path));
+
+        $segments = array();
+        foreach($current_segments as $current_index => $current_segment) {
+            if(isset($root_segments[$current_index]) && $root_segments[$current_index] == $current_segment) continue;
+            if(empty($current_segment)) continue;
+            $segments[] = $current_segment;
+        }
+    }
+
     // Parse the segments
     if (!empty($segments)) {
 
