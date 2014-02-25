@@ -29,10 +29,17 @@ class modMageBridgeMenuHelper extends MageBridgeModuleHelper
         static $arguments = array();
         $id = md5(var_export($params, true));
         if (!isset($arguments[$id])) {
-            $arguments[$id] = array();
+
+            $arguments[$id] = array(
+                'count' => (int)$params->get('count', 0),
+                'levels' => (int)$params->get('levels', 1),
+                'startlevel' => (int)$params->get('startlevel', 1),
+            );
+
             if ($params->get('include_product_count') == 1) {
                 $arguments[$id]['include_product_count'] = 1;
             }
+
             if (empty($arguments[$id])) $arguments[$id] = null;
         }
 
@@ -105,7 +112,7 @@ class modMageBridgeMenuHelper extends MageBridgeModuleHelper
      * @param int $endLevel
      * @return mixed
      */
-    static public function parseTree($tree, $startLevel = 0, $endLevel = 99)
+    static public function parseTree($tree, $startLevel = 1, $endLevel = 99)
     {
         $current_category_id = modMageBridgeMenuHelper::getCurrentCategoryId();
         $current_category_path = modMageBridgeMenuHelper::getCurrentCategoryPath();
@@ -139,16 +146,14 @@ class modMageBridgeMenuHelper extends MageBridgeModuleHelper
                 }
 
                 // Remove items from the wrong end-level
-                if ($item['level'] >= $endLevel) {
+                if ($item['level'] > $endLevel) {
                     unset($tree[$index]);
                     continue;
                 }
 
                 // Handle HTML-entities in the title
                 if (isset($item['name'])) {
-                    // @todo
                     $item['name'] = htmlspecialchars($item['name']);
-                    //$item['name'] = '['.$item['level'].'='.$startLevel.'] '.htmlspecialchars($item['name']);
                 }
 
                 // Parse the children-tree

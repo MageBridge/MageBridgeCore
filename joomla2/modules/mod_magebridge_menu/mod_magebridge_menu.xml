@@ -25,8 +25,8 @@
 	<config>
 		<fields name="params">
 			<fieldset name="basic" addfieldpath="/administrator/components/com_magebridge/fields">
-		        <field name="root" type="mcategory" default="0" return="id" allow_root="1" label="MOD_MAGEBRIDGE_MENU_ROOT" description="MOD_MAGEBRIDGE_MENU_ROOT_DESC" />
-        		<field name="levels" type="list" default="1" label="MOD_MAGEBRIDGE_MENU_LEVELS" description="MOD_MAGEBRIDGE_MENU_LEVELS_DESC">
+		        <field name="root" type="mcategory" default="0" return="id" allow_root="1" label="MOD_MAGEBRIDGE_MENU_FIELD_ROOT" description="MOD_MAGEBRIDGE_MENU_FIELD_ROOT_DESC" />
+        		<field name="levels" type="list" default="1" label="MOD_MAGEBRIDGE_MENU_FIELD_LEVELS" description="MOD_MAGEBRIDGE_MENU_FIELD_LEVELS_DESC">
 		        	<option value="1">1</option>
         			<option value="2">2</option>
 		        	<option value="3">3</option>
@@ -47,8 +47,7 @@
         			<option value="18">18</option>
 		        	<option value="19">19</option>
         		</field>
-				<field name="startlevel" type="list" label="MOD_MAGEBRIDGE_MENU_STARTLEVEL" description="MOD_MAGEBRIDGE_MENU_STARTLEVEL_DESC">
-		        	<option value="0">0</option>
+				<field name="startlevel" type="list" default="1" label="MOD_MAGEBRIDGE_MENU_FIELD_STARTLEVEL" description="MOD_MAGEBRIDGE_MENU_FIELD_STARTLEVEL_DESC">
 		        	<option value="1">1</option>
         			<option value="2">2</option>
 		        	<option value="3">3</option>
@@ -71,20 +70,21 @@
                 </field>
            	</fieldset>
 			<fieldset name="styling" label="MOD_MAGEBRIDGE_MENU_FIELDSET_STYLING">
-        		<field name="css_level" type="list" default="0" label="MOD_MAGEBRIDGE_MENU_CSS_LEVEL" description="MOD_MAGEBRIDGE_MENU_CSS_LEVEL_DESC">
+        		<field name="css_level" type="list" default="0" label="MOD_MAGEBRIDGE_MENU_FIELD_CSS_LEVEL" description="MOD_MAGEBRIDGE_MENU_FIELD_CSS_LEVEL_DESC">
 		        	<option value="1">JYES</option>
         			<option value="0">JNO</option>
         		</field>
-        		<field name="css_firstlast" type="list" default="0" label="MOD_MAGEBRIDGE_MENU_CSS_FIRSTLAST" description="MOD_MAGEBRIDGE_MENU_CSS_FIRSTLAST_DESC">
+        		<field name="css_firstlast" type="list" default="0" label="MOD_MAGEBRIDGE_MENU_FIELD_CSS_FIRSTLAST" description="MOD_MAGEBRIDGE_MENU_FIELD_CSS_FIRSTLAST_DESC">
 		        	<option value="1">JYES</option>
         			<option value="0">JNO</option>
 		        </field>
-        		<field name="css_evenodd" type="list" default="0" label="MOD_MAGEBRIDGE_MENU_CSS_EVENODD" description="MOD_MAGEBRIDGE_MENU_CSS_EVENODD_DESC">
+        		<field name="css_evenodd" type="list" default="0" label="MOD_MAGEBRIDGE_MENU_FIELD_CSS_EVENODD" description="MOD_MAGEBRIDGE_MENU_FIELD_CSS_EVENODD_DESC">
 		        	<option value="1">JYES</option>
         			<option value="0">JNO</option>
 		        </field>
            	</fieldset>
 			<fieldset name="advanced">
+        		<field name="count" type="text" default="0" label="MOD_MAGEBRIDGE_MENU_FIELD_COUNT" description="MOD_MAGEBRIDGE_MENU_FIELD_COUNT_DESC" />
 				<field name="layout" type="modulelayout" label="JFIELD_ALT_LAYOUT_LABEL" description="JFIELD_ALT_MODULE_LAYOUT_DESC" />
         		<field name="moduleclass_sfx" type="text" default="" label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL" description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
         		<field name="cache" type="list" default="1" label="COM_MODULES_FIELD_CACHING_LABEL" description="COM_MODULES_FIELD_CACHING_DESC">

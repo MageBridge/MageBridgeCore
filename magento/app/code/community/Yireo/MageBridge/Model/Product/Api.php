@@ -237,7 +237,7 @@ class Yireo_MageBridge_Model_Product_Api extends Mage_Catalog_Model_Api_Resource
         }
 
         // Add a list limit
-        if(isset($arguments['count'])) {
+        if(!empty($arguments['count'])) {
             $collection->setPageSize($arguments['count']);
         }
 

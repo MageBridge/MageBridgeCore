@@ -121,7 +121,7 @@ class Yireo_MageBridge_Model_Category_Api extends Mage_Catalog_Model_Api_Resourc
         }
 
         // Get the collection
-        $collection = $this->_getCollection($arguments, $storeId);
+        $collection = $this->_getCollection($arguments, $storeId, $root);
 
         // Add the collection to this tree-structure
         $tree->addCollectionData($collection, true);
@@ -143,7 +143,7 @@ class Yireo_MageBridge_Model_Category_Api extends Mage_Catalog_Model_Api_Resourc
      * @param int $storeId
      * @return int
      */
-    protected function _getCollection($arguments, $storeId = null)
+    protected function _getCollection($arguments, $storeId = null, $root = null)
     {
         // Get the collection
         $collection = Mage::getModel('catalog/category')->getCollection();
@@ -164,7 +164,13 @@ class Yireo_MageBridge_Model_Category_Api extends Mage_Catalog_Model_Api_Resourc
             ->addAttributeToSelect('is_active')
             ->addAttributeToSelect('include_in_menu')
             ->addAttributeToSelect('image')
+            ->addAttributeToSelect('level')
         ;
+
+        // Sanity check
+        if(!empty($root)) {
+            $collection->addAttributeToFilter('path', array('like' => $root->getData('path').'/%'));
+        }
 
         // Filter only active categories
         if(isset($arguments['active'])) {
@@ -181,6 +187,21 @@ class Yireo_MageBridge_Model_Category_Api extends Mage_Catalog_Model_Api_Resourc
             } catch (Mage_Core_Exception $e) {
                 Mage::getSingleton('magebridge/debug')->error('Invalid search filter', $e->getMessage());
             }
+        }
+
+        // Add the level query
+        if(isset($arguments['levels']) && isset($arguments['startlevel'])) {
+            $rootLevel = ($root) ? $root->getLevel() : 0;
+            $startLevel = $rootLevel + $arguments['startlevel'];
+            $endLevel = $startLevel + $arguments['levels'];
+            $collection->addFieldToFilter('level', array('gteq' => $startLevel));
+            $collection->addFieldToFilter('level', array('lt' => $endLevel));
+        }
+
+        // Add a list limit
+        if(isset($arguments['count'])) {
+            $collection->setCurPage(1);
+            $collection->setPageSize((int)$arguments['count']);
         }
 
         // Fetch the products of this category

@@ -19,17 +19,15 @@ require_once dirname(__FILE__).'/helper.php';
 // Read the parameters
 $root = $params->get('root', 0);
 $levels = $params->get('levels', 2);
-$startlevel = $params->get('startlevel', 0);
+$startLevel = $params->get('startlevel', 1);
+if($startLevel < 1) $startLevel = 1;
+$endLevel = $startLevel + $levels - 1;
 
 // Call the helper
 $catalog_tree = modMageBridgeMenuHelper::build($params);
 
-// Determine the appropriate settings
+// Load the catalog-tree
+$rootLevel = (!empty($catalog_tree['level'])) ? $catalog_tree['level'] : 0;
 $catalog_tree = modMageBridgeMenuHelper::setRoot($catalog_tree, $root);
-if (!empty($catalog_tree[0]['level'])) {
-    $levels = $catalog_tree[0]['level'] + $levels;
-    $startlevel = $catalog_tree[0]['level'] + $startlevel;
-}
-
-$catalog_tree = modMageBridgeMenuHelper::parseTree($catalog_tree, $startlevel, $levels);
+$catalog_tree = modMageBridgeMenuHelper::parseTree($catalog_tree, $rootLevel + $startLevel, $rootLevel + $endLevel);
 require(JModuleHelper::getLayoutPath('mod_magebridge_menu'));
