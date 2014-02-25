@@ -34,9 +34,9 @@ class MageBridgeViewLogs extends YireoViewList
         // Toolbar options
         $this->loadToolbarEdit = false;
         $this->loadToolbarDelete = false;
-        JToolBarHelper::custom('delete', 'delete', '', 'Truncate', false);
-        JToolBarHelper::custom('refresh', 'preview', '', 'Refresh', false);
-        JToolBarHelper::custom('export', 'archive', '', 'Export', false);
+        JToolBarHelper::custom('delete', 'delete', '', 'COM_MAGEBRIDGE_VIEW_LOGS_TOOLBAR_TRUNCATE', false);
+        JToolBarHelper::custom('refresh', 'preview', '', 'COM_MAGEBRIDGE_VIEW_LOGS_TOOLBAR_REFRESH', false);
+        JToolBarHelper::custom('export', 'archive', '', 'COM_MAGEBRIDGE_VIEW_LOGS_TOOLBAR_EXPORT', false);
 
         // Custom filters
         $this->lists['remote_addr'] = $this->selectRemoteAddress($this->getFilter('remote_addr'));

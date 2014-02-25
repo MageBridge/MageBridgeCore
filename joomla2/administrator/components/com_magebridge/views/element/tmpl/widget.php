@@ -16,12 +16,11 @@ defined('_JEXEC') or die('Restricted access');
 <table>
 <tr>
     <td align="left" width="100%">
-        <?php echo JText::_( 'Filter' ); ?>:
+        <?php echo JText::_('LIB_YIREO_VIEW_FILTER'); ?>:
         <input type="text" name="search" id="search" value="<?php echo $this->lists['search'];?>"
         class="text_area" onchange="document.adminForm.submit();" />
-        <button onclick="this.form.submit();"><?php echo JText::_( 'Go' ); ?></button>
-        <button onclick="document.getElementById('search').value='';this.form.submit();"><?php echo JText::_(
-        'Reset' ); ?></button>
+        <button onclick="this.form.submit();"><?php echo JText::_('LIB_YIREO_VIEW_SEARCH'); ?></button>
+        <button onclick="document.getElementById('search').value='';this.form.submit();"><?php echo JText::_('LIB_YIREO_VIEW_RESET'); ?></button>
     </td>
 </tr>
 </table>
@@ -29,16 +28,16 @@ defined('_JEXEC') or die('Restricted access');
 <thead>
     <tr>
         <th width="30">
-            <?php echo JText::_( 'Num' ); ?>
+            <?php echo JText::_('JNUM'); ?>
         </th>
         <th class="title" width="300">
-            <?php echo JText::_( 'Name' ); ?>
+            <?php echo JText::_('LIB_YIREO_TABLE_FIELDNAME_NAME'); ?>
         </th>
         <th class="title">
-            <?php echo JText::_( 'Type' ); ?>
+            <?php echo JText::_('LIB_YIREO_TABLE_FIELDNAME_TYPE'); ?>
         </th>
         <th class="title">
-            <?php echo JText::_( 'ID' ); ?>
+            <?php echo JText::_('LIB_YIREO_TABLE_FIELDNAME_ID'); ?>
         </th>
     </tr>
 </thead>
@@ -86,7 +85,7 @@ if (!empty($this->widgets)) {
 } else {
     ?>
     <tr>
-        <td colspan="5"><?php echo JText::_('No widgets found'); ?></td>
+        <td colspan="5"><?php echo JText::_('LIB_YIREO_VIEW_LIST_NO_ITEMS'); ?></td>
     </tr>
     <?php
 }

@@ -18,15 +18,15 @@ defined('_JEXEC') or die('Restricted access');
 <table width="100%">
 <tr>
     <td align="left" width="60%">
-        <?php echo JText::_( 'Filter' ); ?>:
+        <?php echo JText::_('LIB_YIREO_VIEW_FILTER'); ?>:
         <input type="text" name="search" id="search" value="<?php echo $this->lists['search'];?>"
         class="text_area" onchange="document.adminForm.submit();" />
-        <button onclick="this.form.submit();"><?php echo JText::_('Go'); ?></button>
-        <button onclick="document.getElementById('search').value='';this.form.submit();"><?php echo JText::_('Reset'); ?></button>
+        <button onclick="this.form.submit();"><?php echo JText::_('LIB_YIREO_VIEW_SEARCH'); ?></button>
+        <button onclick="document.getElementById('search').value='';this.form.submit();"><?php echo JText::_('LIB_YIREO_VIEW_RESET'); ?></button>
     </td>
     <td align="right" width="40%">
         <?php $js = "window.parent.jSelectProduct('', '', '".JRequest::getVar('object')."');"; ?>
-        <button onclick="<?php echo $js; ?>"><?php echo JText::_('No product'); ?></button>
+        <button onclick="<?php echo $js; ?>"><?php echo JText::_('COM_MAGEBRIDGE_NO_PRODUCT'); ?></button>
     </td>
 </tr>
 </table>
@@ -34,22 +34,22 @@ defined('_JEXEC') or die('Restricted access');
 <thead>
     <tr>
         <th width="30">
-            <?php echo JText::_( 'Num' ); ?>
+            <?php echo JText::_('JNUM'); ?>
         </th>
         <th class="title" width="300">
-            <?php echo JText::_( 'Title' ); ?>
+            <?php echo JText::_('LIB_YIREO_TABLE_FIELDNAME_TITLE'); ?>
         </th>
         <th class="title" width="100">
-            <?php echo JText::_( 'SKU' ); ?>
+            <?php echo JText::_('COM_MAGEBRIDGE_VIEW_ELEMENT_SKU'); ?>
         </th>
         <th class="title">
-            <?php echo JText::_( 'URL key' ); ?>
+            <?php echo JText::_('COM_MAGEBRIDGE_VIEW_ELEMENT_URL_KEY'); ?>
         </th>
         <th class="title">
-            <?php echo JText::_( 'Active' ); ?>
+            <?php echo JText::_('JACTIVE'); ?>
         </th>
         <th width="30">
-            <?php echo JText::_( 'ID' ); ?>
+            <?php echo JText::_('LIB_YIREO_TABLE_FIELDNAME_ID'); ?>
         </th>
     </tr>
 </thead>
@@ -118,7 +118,7 @@ if (!empty($this->products)) {
                 </a>
             </td>
             <td>
-                <?php echo ((isset($product['status']) && $product['status'] == 1) ? JText::_('Yes') : JText::_('No')); ?>
+                <?php echo ((isset($product['status']) && $product['status'] == 1) ? JText::_('JYES') : JText::_('JNO')); ?>
             </td>
             <td>
                 <a style="cursor: pointer;" onclick="<?php echo $jsDefault; ?>">
@@ -132,7 +132,7 @@ if (!empty($this->products)) {
 } else {
     ?>
     <tr>
-        <td colspan="6"><?php echo JText::_('No products found'); ?></td>
+        <td colspan="6"><?php echo JText::_('LIB_YIREO_VIEW_LIST_NO_ITEMS'); ?></td>
     </tr>
     <?php
 }
