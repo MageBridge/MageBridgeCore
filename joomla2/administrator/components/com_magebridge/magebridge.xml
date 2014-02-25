@@ -83,7 +83,6 @@
             <filename>script.magebridge.php</filename>
             <filename>view.php</filename>
             <folder>controllers</folder>
-            <folder>elements</folder>
             <folder>fields</folder>
             <folder>helpers</folder>
             <folder>libraries</folder>

@@ -37,7 +37,11 @@ $hasOrdering = ($table->getDefaultOrderBy()) ? true : false;
                 <?php echo JText::_('LIB_YIREO_VIEW_NUM'); ?>
             </th>
             <th width="20">
-                <input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->items ); ?>);" />
+                <?php if(YireoHelper::isJoomla25()): ?>
+                    <input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->items ); ?>);" />
+                <?php else: ?>
+                    <?php echo JHtml::_('grid.checkall'); ?>
+                <?php endif; ?>
             </th>
             <?php echo $this->loadTemplate('thead'); ?>
             <?php if($hasState) : ?>
@@ -61,6 +65,7 @@ $hasOrdering = ($table->getDefaultOrderBy()) ? true : false;
         <tr>
             <td colspan="100">
                 <?php echo $this->pagination->getListFooter(); ?>
+                <?php echo $this->loadTemplate('limit'); ?>
             </td>
         </tr>
         <?php echo $this->loadTemplate('legend'); ?>

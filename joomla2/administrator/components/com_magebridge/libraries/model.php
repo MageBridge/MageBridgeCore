@@ -348,12 +348,7 @@ class YireoModel extends YireoAbstractModel
     public function initLimit($limit = null) 
     {
         if (is_numeric($limit) == false) {
-            $limit = $this->application->getUserStateFromRequest( 'global.list.limit', 'limit', $this->application->getCfg('list_limit'), 'int' );
-        }
-
-        if ($limit == 0) {
-            $limit = $this->application->getCfg('list_limit');
-            $this->application->setUserState('limit', $limit);
+            $limit = $this->getFilter('list_limit', $this->application->getCfg('list_limit')); 
         }
         $this->setState('limit', $limit);
     }
