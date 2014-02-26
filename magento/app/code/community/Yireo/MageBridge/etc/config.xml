@@ -14,7 +14,7 @@
 
     <modules>
         <Yireo_MageBridge>
-            <version>${version}</version>
+            <version>1.8.5087</version>
         </Yireo_MageBridge>
     </modules>
 
