@@ -524,7 +524,6 @@ class MageBridgeModelBridge
 
             // If this is a MageBridge page, use it only if its not a customer-page, or homepage, or checkout-page
             } else if (preg_match('/\/customer\/account\//', JURI::current()) == false && 
-                preg_match('/\/checkout\/cart\//', JURI::current()) == false &&
                 $this->isAjax() == false &&
                 JURI::current() != $this->getJoomlaBridgeUrl()) {
                 $referer = JURI::getInstance()->toString();
@@ -559,7 +558,6 @@ class MageBridgeModelBridge
             preg_match('/\/persistent\/index/', JURI::current()) == false && 
             preg_match('/\/review\/product\/post/', JURI::current()) == false && 
             preg_match('/\/remove\/item/', JURI::current()) == false && 
-            preg_match('/\/checkout\/cart/', JURI::current()) == false && 
             preg_match('/\/newsletter\/subscriber/', JURI::current()) == false && 
             $this->isAjax() == false &&
             JURI::current() != $this->getJoomlaBridgeUrl()) {
