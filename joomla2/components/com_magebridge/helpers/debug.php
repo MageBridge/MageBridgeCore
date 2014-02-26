@@ -37,6 +37,7 @@ class MageBridgeDebugHelper
             $debug = MageBridgeModelDebug::getInstance();
             $bridge = MageBridgeModelBridge::getInstance();
             $register = MageBridgeModelRegister::getInstance();
+            $original_request = MageBridgeUrlHelper::getOriginalRequest();
             $request = MageBridgeUrlHelper::getRequest();
 
             // Debug the MageBridge request
@@ -52,6 +53,7 @@ class MageBridgeDebugHelper
 
                 JError::raiseNotice( 'notice', $menu_message);
                 JError::raiseNotice( 'notice', JText::sprintf( 'Page request: %s', (!empty($request)) ? $request : '[empty]'));
+                JError::raiseNotice( 'notice', JText::sprintf( 'Original request: %s', $bridge->getSessionData('request')));
                 JError::raiseNotice( 'notice', JText::sprintf( 'Received request: %s', $bridge->getSessionData('request')));
                 JError::raiseNotice( 'notice', JText::sprintf( 'Received referer: %s', $bridge->getSessionData('referer')));
                 JError::raiseNotice( 'notice', JText::sprintf( 'Current referer: %s', $bridge->getHttpReferer()));

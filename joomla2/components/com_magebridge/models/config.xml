@@ -37,7 +37,7 @@
         <fieldset name="bridge" label="COM_MAGEBRIDGE_MODEL_CONFIG_FIELDSET_BRIDGE">
 		    <field type="spacer" name="bridge_website" class="fieldgroup" />
 		    <field name="backend" type="backend" />
-		    <field name="website" type="website" />
+		    <field name="website" type="website" access="com_magebridge.config.website" />
 
 		    <field type="spacer" name="bridge_ssl" class="fieldgroup" />
 		    <field name="enforce_ssl" type="list">
@@ -67,7 +67,7 @@
 		    <field name="enable_auth_frontend" type="boolean" />
 
 		    <field type="spacer" name="user_import" class="fieldgroup" />
-		    <field name="users_website_id" type="website" />
+		    <field name="users_website_id" type="website" access="com_magebridge.config.website" />
 		    <field name="users_group_id" type="customergroup" />
         </fieldset>
     

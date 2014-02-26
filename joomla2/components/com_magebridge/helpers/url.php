@@ -23,6 +23,11 @@ class MageBridgeUrlHelper
     public static $request = null;
 
     /*
+     * Static variable for the original Magento request
+     */
+    public static $original_request = null;
+
+    /*
      * Helper-method to reset the current Magento request
      *
      * @param string $request
@@ -34,6 +39,21 @@ class MageBridgeUrlHelper
         if (!empty($request)) {
             self::$request = $request;
         }
+
+        if (!empty($request) && empty(self::$original_request)) {
+            self::$original_request = $request;
+        }
+    }
+
+    /*
+     * Helper-method to determine the current Magento request
+     *
+     * @param string $force_request
+     * @return string
+     */
+    static public function getOriginalRequest()
+    {
+        return self::$original_request;
     }
 
     /*

@@ -80,6 +80,9 @@ class MageBridgeConnectorStore extends MageBridgeConnector
         // Get the connectors
         $connectors = $this->getConnectors();
 
+        // Import the plugins
+        JPluginHelper::importPlugin('magebridgestore');
+
         // Try to match a condition with one of the connectors
         foreach ($conditions as $condition) {
             foreach ($connectors as $connector) {
