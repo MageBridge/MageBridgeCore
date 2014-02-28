@@ -77,28 +77,58 @@ class MageBridgeConnectorStore extends MageBridgeConnector
             return null;
         }
 
-        // Get the connectors
-        $connectors = $this->getConnectors();
-
         // Import the plugins
         JPluginHelper::importPlugin('magebridgestore');
 
         // Try to match a condition with one of the connectors
         foreach ($conditions as $condition) {
-            foreach ($connectors as $connector) {
-                if ($condition->connector == $connector->name) {
-                    if ($connector->checkCondition($condition->connector_value) == TRUE) {
+
+            // Extract the parameters and make sure there's something to do
+            $actions = YireoHelper::toRegistry($condition->actions)->toArray();
+
+            // Detect the deprecated connector-architecture
+            if(!empty($condition->connector) && !empty($condition->connector_value)) {
+                JFactory::getApplication()->triggerEvent('onMageBridgeProductConvertField', array($condition, &$actions));
+            }
+
+            // With empty actions, there is nothing to do
+            if(empty($actions)) {
+                continue;
+            }
+
+            // Loop through the plugins and validate the stored actions
+		    $plugins = JPluginHelper::getPlugin('magebridgestore');
+            foreach($plugins as $plugin) {
+			    $className = 'plg' . $plugin->type . $plugin->name;
+    			if (class_exists($className)) {
+				    $plugin = new $className($this, (array) $plugin);
+
+                    // Validate the stored actions
+                    if($plugin->onMageBridgeValidate($actions)) {
+
+                        // Return the store-configuration of this condition
                         $type = ($condition->type == 'storeview') ? 'store' : 'group';
                         return array(
                             'type' => $type,
                             'name' => $condition->name,
                         );
                     }
-                }
+			    }
             }
         }
 
         return null;
+    }
+
+	/**
+	 * Attach an observer object
+	 *
+	 * @param   object  $observer  An observer object to attach
+	 * @return  void
+	 */
+	public function attach($observer)
+	{
+        // Dummy method to allow for calling JPluginHelper::getPlugin()
     }
 
     /*
