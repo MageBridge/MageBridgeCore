@@ -19,7 +19,7 @@ jimport('joomla.installer.helper');
 /*
  * MageBridge Update model
  */
-class MagebridgeModelUpdate extends YireoAbstractModel
+class MagebridgeModelUpdate extends YireoCommonModel
 {
     /*
      * Method to upgrade all registered packages at once

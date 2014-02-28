@@ -15,7 +15,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 /*
  * MageBridge Check model
  */
-class MagebridgeModelCheck extends YireoAbstractModel
+class MagebridgeModelCheck extends YireoCommonModel
 {
     const CHECK_OK = 'ok';
     const CHECK_WARNING = 'warning';

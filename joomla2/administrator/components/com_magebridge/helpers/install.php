@@ -81,6 +81,7 @@ class MageBridgeInstallHelper
             "ALTER TABLE `#__magebridge_urls` ADD UNIQUE `published` ( `published`)",
             "ALTER TABLE `#__magebridge_products` ADD `actions` TEXT NOT NULL AFTER `connector_value`",
             "DELETE FROM `#__magebridge_connectors` WHERE `type` = 'product'",
+            "ALTER TABLE `#__magebridge_stores` ADD `actions` TEXT NOT NULL AFTER `connector_value`",
         );
 
         // Perform the update queries

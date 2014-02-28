@@ -1,8 +1,8 @@
 /*
- * Joomla! component MageBridge
+ * Yireo Library for Joomla!
  *
  * @author Yireo (info@yireo.com)
- * @package MageBridge
+ * @package Yireo
  * @copyright Copyright 2014
  * @link http://www.yireo.com
  */
@@ -12,7 +12,7 @@ fieldset.adminform {
     background-color: #f1f1f1;
 }
 
-fieldset.adminform td.key, div.control-label label {
+fieldset.adminform td.key {
     background-color: #dfdfdf;
     padding: 5px;
     line-height: 16px;
@@ -45,16 +45,6 @@ fieldset.adminform span.input-span {
     float:left;
 }
 
-div.current div.control-group div.controls {
-    padding-top: 10px;
-    padding-left: 10px;
+dd.notice pre {
+    white-space: pre-line;
 }
-
-div.current div.control-group div.controls label {
-    display: inline;
-    clear: none;
-    min-width: auto;
-    padding-left: 5px;
-    padding-right: 5px;
-}
-

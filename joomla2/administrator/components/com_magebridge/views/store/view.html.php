@@ -71,6 +71,7 @@ class MageBridgeViewStore extends YireoViewForm
         $this->setTitle(JText::_('COM_MAGEBRIDGE_VIEW_STORE_DEFAULT_STORE'));
 
         // Override the normal toolbar
+        JToolBarHelper::cancel();
         JToolBarHelper::save();
         JToolBarHelper::apply();
 
@@ -107,16 +108,38 @@ class MageBridgeViewStore extends YireoViewForm
         // Fetch this item
         $this->fetchItem();
 
-        // Override the normal toolbar
-        JToolBarHelper::save();
-        JToolBarHelper::apply();
-
         // Build extra lists
         $this->lists['store'] = $this->getFieldStore($this->item->type, $this->item->name);
+
+        // Initialize the form-file
+        $file = JPATH_ADMINISTRATOR.'/components/com_magebridge/models/store.xml';
+
+        // Prepare the params-form
+        $params = YireoHelper::toRegistry($this->item->params)->toArray();
+        $params_form = JForm::getInstance('params', $file);
+        $params_form->bind(array('params' => $params));
+	    $this->assignRef('params_form', $params_form);
+
+        // Prepare the actions-form
+        $actions = YireoHelper::toRegistry($this->item->actions)->toArray();
+        $actions_form = JForm::getInstance('actions', $file);
+        JPluginHelper::importPlugin('magebridgestore');
+        JFactory::getApplication()->triggerEvent('onMageBridgeStorePrepareForm', array(&$actions_form, (array)$this->item));
+        $actions_form->bind(array('actions' => $actions));
+	    $this->assignRef('actions_form', $actions_form);
 
         // Connectors
         $connectors = MageBridgeConnectorStore::getInstance()->getConnectors();
 		$this->assignRef('connectors', $connectors);
+
+        // Check for a previous connector-value
+        if(!empty($this->item->connector)) {
+            $plugin = JPluginHelper::getPlugin('magebridgestore', $this->item->connector);
+            if(empty($plugin)) {
+                $plugin_warning = JText::sprintf('COM_MAGEBRIDGE_STORE_PLUGIN_WARNING', $this->item->connector);
+                JError::raiseWarning(500, $plugin_warning);
+            }
+        }
 
 		parent::display($tpl);
 	}

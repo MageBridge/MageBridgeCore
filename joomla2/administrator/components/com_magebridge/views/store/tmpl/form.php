@@ -72,38 +72,14 @@ defined('_JEXEC') or die('Restricted access');
     </fieldset>
 
     <fieldset class="adminform">
-        <legend><?php echo JText::_('COM_MAGEBRIDGE_VIEW_STORE_FIELDSET_RELATION'); ?></legend>
-        <table class="admintable">
-        <tbody>
-        <?php if (!empty($this->connectors)) { ?>
-        <?php foreach ($this->connectors as $connector) { ?>
-        <?php if ($connector->isVisible() == false) continue; ?>
-        <?php $current = ($connector->name == $this->item->connector) ? true : false; ?>
-        <?php $value = ($current) ? $this->item->connector_value : null; ?>
-        <tr>
-            <td width="100" align="right" valign="top" class="key">
-                <label for="connector<?php echo $connector->name; ?>">
-                    <?php $checked = ($current) ? 'checked' : ''; ?>
-                    <input type="radio" name="connector" value="<?php echo $connector->name; ?>" id="connector-radio-<?php echo $connector->name; ?>" <?php echo $checked; ?>/>
-                </label>
-            </td>
-            <td>
-                <label for="connector-radio-<?php echo $connector->name; ?>">
-                <strong><?php echo $connector->title; ?></strong><p/>
-                <?php echo $connector->getFormField($value); ?>
-                </label>
-            </td>
-        </tr>
-        <?php } ?>
-        <?php } else { ?>
-        <tr>    
-            <td>
-                <?php echo JText::_('COM_MAGEBRIDGE_VIEW_STORE_NO_PLUGINS'); ?>
-            </td>
-        </tr>
-        <?php } ?>
-        </tbody>
-        </table>
+        <legend><?php echo JText::_('COM_MAGEBRIDGE_VIEW_STORE_FIELDSET_ACTIONS'); ?></legend>
+        <?php echo $this->loadTemplate('actions'); ?>
+    </fieldset>
+</td>
+<td width="50%" valign="top">
+    <fieldset class="adminform">
+        <legend><?php echo JText::_('JPARAMS'); ?></legend>
+        <?php echo $this->loadTemplate('params'); ?>
     </fieldset>
 </td>
 </tr>

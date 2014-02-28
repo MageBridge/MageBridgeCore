@@ -15,7 +15,7 @@ defined('_JEXEC') or die();
 /*
  * MageBridge Users model
  */
-class MagebridgeModelUsers extends YireoAbstractModel
+class MagebridgeModelUsers extends YireoCommonModel
 {
     /**
      * Data array
