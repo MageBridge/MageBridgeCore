@@ -2,7 +2,9 @@
 <form>
     <fields name="actions">
         <fieldset name="actions">
-            <field name="joomla_language" label="PLG_MAGEBRIDGESTORE_JOOMLA_FIELD_JOOMLA_LANGUAGE" type="language" />
+            <field name="joomla_language" label="PLG_MAGEBRIDGESTORE_JOOMLA_FIELD_JOOMLA_LANGUAGE" type="language">
+                <option value=""></option>
+            </field>
         </fieldset>
     </fields>
 </form>

@@ -3,7 +3,9 @@
     <fields name="actions">
         <fieldset name="actions">
             <field name="nooku_language" label="PLG_MAGEBRIDGESTORE_NOOKU_FIELD_NOOKU_LANGUAGE" type="sql" 
-                query="SELECT `name` AS `title`, `iso_code` AS `value` FROM `#__nooku_languages`" />
+                query="SELECT `name` AS `title`, `iso_code` AS `value` FROM `#__nooku_languages`">
+                <option value=""></option>
+            </field>
         </fieldset>
     </fields>
 </form>

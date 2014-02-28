@@ -43,12 +43,12 @@ function selectPackages(type) {
 <thead>
     <tr>
         <th width="20">
-            &nbsp;
+            <?php echo JText::_('JNUM'); ?>
         </th>
-        <th width="20%"> 
+        <th>
             <?php echo JText::_('COM_MAGEBRIDGE_VIEW_UPDATE_EXTENSION'); ?>
         </th>
-        <th width="30%">
+        <th>
             <?php echo JText::_('COM_MAGEBRIDGE_VIEW_UPDATE_DESCRIPTION'); ?>
         </th>
         <th width="110"> 
@@ -103,7 +103,7 @@ foreach ($this->data as $package) {
         $app = null;
     }
     ?>
-    <tr class="row <?php echo 'row'.$k; ?>" id="package_<?php echo $i; ?>">
+    <tr class="<?php echo 'row'.$k; ?>" id="package_<?php echo $i; ?>">
         <td>
             <?php echo $checked; ?>
         </td>
