@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <fields name="actions">
+        <fieldset name="actions" addfieldpath="/administrator/components/com_magebridge/fields">
+            <field name="joomfish_language" label="PLG_MAGEBRIDGESTORE_JOOMFISH_FIELD_JOOMFISH_LANGUAGE" type="sql" 
+                query="SELECT `title`,`shortcode` AS `value` FROM #__languages" />
+        </fieldset>
+    </fields>
+</form>
