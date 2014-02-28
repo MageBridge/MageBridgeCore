@@ -33,42 +33,14 @@ if(YireoHelper::isJoomla25()) {
  *
  * @package Yireo
  */
-class YireoModel extends YireoAbstractModel
+class YireoCommonModel extends YireoAbstractModel
 {
-    /**
-     * Indicator if this is a model for multiple or single entries
+    /*
+     * Boolean to skip table-detection
      *
      * @protected int
      */
-    protected $_single = null;
-
-    /**
-     * Boolean to allow for caching
-     *
-     * @protected int
-     */
-    protected $_cache = false;
-
-    /**
-     * Boolean to allow for debugging
-     *
-     * @protected int
-     */
-    protected $_debug = false;
-
-    /**
-     * Boolean to allow for filtering
-     *
-     * @protected int
-     */
-    protected $_allow_filter = true;
-
-    /**
-     * Boolean to allow for checking out
-     *
-     * @protected int
-     */
-    protected $_checkout = true;
+    protected $_skip_table = true;
 
     /**
      * Database table object
@@ -111,6 +83,73 @@ class YireoModel extends YireoAbstractModel
      * @protected array
      */
     protected $_data = null;
+
+    /**
+     * Override the default method to allow for skipping table creation
+     *
+     * @access public
+     * @subpackage Yireo
+     * @param string $name
+     * @param string $prefix
+     * @param array $options
+     * @return mixed
+     */
+    public function getTable($name = '', $prefix = 'Table', $options = array())
+    {
+        if ($this->_skip_table == true) return null;
+        if (empty($name)) $name = $this->_tbl_alias;
+        return parent::getTable($name, $prefix, $options);
+    }
+}
+
+/**
+ * Yireo Model 
+ *
+ * @package Yireo
+ */
+class YireoModel extends YireoCommonModel
+{
+    /**
+     * Indicator if this is a model for multiple or single entries
+     *
+     * @protected int
+     */
+    protected $_single = null;
+
+    /**
+     * Boolean to allow for caching
+     *
+     * @protected int
+     */
+    protected $_cache = false;
+
+    /**
+     * Boolean to allow for debugging
+     *
+     * @protected int
+     */
+    protected $_debug = false;
+
+    /**
+     * Boolean to allow for filtering
+     *
+     * @protected int
+     */
+    protected $_allow_filter = true;
+
+    /**
+     * Boolean to allow for checking out
+     *
+     * @protected int
+     */
+    protected $_checkout = true;
+
+    /*
+     * Boolean to skip table-detection
+     *
+     * @protected int
+     */
+    protected $_skip_table = false;
 
     /**
      * Category total
@@ -236,7 +275,7 @@ class YireoModel extends YireoAbstractModel
         $this->_entity = $tableAlias;
 
         // Detect the orderby-default
-        $this->_orderby_default = $this->_tbl->getDefaultOrderBy();
+        if(empty($this->_orderby_default)) $this->_orderby_default = $this->_tbl->getDefaultOrderBy();
         if(empty($this->_orderby_title)) {
             if ($this->_tbl->hasField('title')) $this->_orderby_title = 'title';
             if ($this->_tbl->hasField('name')) $this->_orderby_title = 'name';
@@ -1413,22 +1452,6 @@ class YireoModel extends YireoAbstractModel
         if (!empty($params)) {
             $this->params = $params;
         }
-    }
-
-    /**
-     * Override the default method to make sure we always get the right table
-     *
-     * @access public
-     * @subpackage Yireo
-     * @param string $name
-     * @param string $prefix
-     * @param array $options
-     * @return mixed
-     */
-    public function getTable($name = '', $prefix = 'Table', $options = array())
-    {
-        if (empty($name)) $name = $this->_tbl_alias;
-        return parent::getTable($name, $prefix, $options);
     }
 
     /**

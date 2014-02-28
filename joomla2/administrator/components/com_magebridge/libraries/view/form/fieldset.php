@@ -14,6 +14,8 @@ defined('_JEXEC') or die('Restricted access');
 
 $form = $this->form;
 if(!empty($form)):
+$fieldsetCount = $form->getFieldset($fieldset);
+if(!empty($fieldsetCount)):
 ?>
 <fieldset class="adminform">
 <legend><?php echo JText::_('LIB_YIREO_VIEW_FORM_FIELDSET_'.$fieldset); ?></legend>
@@ -25,6 +27,7 @@ if(!empty($form)):
 </div>
 <?php endforeach; ?>
 </fieldset>
+<?php endif; ?>
 <?php else: ?>
 <p>No form loaded</p>
 <?php endif; ?>

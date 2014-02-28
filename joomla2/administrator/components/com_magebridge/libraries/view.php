@@ -268,10 +268,6 @@ class YireoCommonView extends YireoAbstractView
         jimport('joomla.filesystem.path');
         $template = JPath::find($this->templatePaths, $file);
 
-        //if($_SERVER['REMOTE_ADDR'] == '84.86.237.157') {
-        //    print_r($this->templatePaths);
-        //}
-
         // If this template is empty, try to use alternatives
         if(empty($template) && $file == 'default.php') {
             $file = 'form.php'; 
@@ -313,7 +309,6 @@ class YireoCommonView extends YireoAbstractView
         }
         else {
             return null;
-            //return JText::_('LIB_YIREO_NO_TEMPLATE');
         }
     }
 }
@@ -381,6 +376,10 @@ class YireoView extends YireoCommonView
                 $this->_single = true;
             }
         }
+
+        // Insert the model & table
+        $this->_model = $this->getModel();
+        if(!empty($this->_model)) $this->_table = $this->_model->getTable();
 
         // Add some backend-elements
         if ($this->application->isAdmin()) {

@@ -62,7 +62,16 @@ class YireoViewForm extends YireoView
     public function __construct()
     {
         // Call the parent constructor
-        return parent::__construct();
+        $rt = parent::__construct();
+
+        // Detect the editor field
+        if (empty($this->_editor_field)) {
+            if($this->_table->hasField('body')) $this->_editor_field = 'body';
+            if($this->_table->hasField('description')) $this->_editor_field = 'description';
+            if($this->_table->hasField('text')) $this->_editor_field = 'text';
+        }
+
+        return $rt;
     }
 
     /*

@@ -72,10 +72,8 @@ class YireoViewList extends YireoView
         // Automatically fetch items, total and pagination - and assign them to the template
         $this->fetchItems();
 
-        // Load model and table
-        $model = $this->getModel();
-        $primaryKey = $model->getPrimaryKey();
-        $table = $model->getTable();
+        // Fetch the primary key
+        $primaryKey = $this->_model->getPrimaryKey();
 
         // Parse the items a bit more
         if (!empty($this->items)) {
@@ -95,7 +93,7 @@ class YireoViewList extends YireoView
         }
 
         // Initialize the toolbar
-        if ($table->getStateField() != '') {
+        if ($this->_table->getStateField() != '') {
             JToolBarHelper::publishList();
             JToolBarHelper::unpublishList();
         }
@@ -115,8 +113,8 @@ class YireoViewList extends YireoView
         // Insert extra fields
         $fields = array();
         $fields['primary_field'] = $primaryKey;
-        $fields['ordering_field'] = $model->getOrderByDefault();
-        $fields['state_field'] = $table->getStateField();
+        $fields['ordering_field'] = $this->_model->getOrderByDefault();
+        $fields['state_field'] = $this->_table->getStateField();
         $this->assignRef('fields', $fields);
 
         // Add extra variables
@@ -219,14 +217,13 @@ class YireoViewList extends YireoView
 
             // Import variables
             $user = JFactory::getUser();
-            $table = $this->getModel()->getTable();
 
             // Create dummy publish_up and publish_down variables if not set
             if(!isset($item->publish_up)) $item->publish_up = null;
             if(!isset($item->publish_down)) $item->publish_down = null;
 
             // Fetch the state-field
-            $stateField = $table->getStateField();
+            $stateField = $this->_table->getStateField();
             if(!empty($stateField)) {
                 $canChange = $user->authorise('core.edit.state', $this->_option.'.item.'.$item->id);
                 $published = JHtml::_('jgrid.published', $item->$stateField, $i, '', $canChange, 'cb', $item->publish_up, $item->publish_down);
@@ -251,12 +248,7 @@ class YireoViewList extends YireoView
 
         // Import variables
         $user = JFactory::getUser();
-        $table = $this->getModel()->getTable();
 
-        if(YireoHelper::isJoomla15()) {
-            return $table->isCheckedOut($user->get('id'), $item->checked_out);
-        } else {
-            return $table->isCheckedOut($user->get('id'), $item->checked_out);
-        }
+        return $this->_table->isCheckedOut($user->get('id'), $item->checked_out);
     }
 }
