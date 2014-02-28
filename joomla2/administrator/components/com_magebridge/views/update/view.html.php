@@ -43,16 +43,16 @@ class MageBridgeViewUpdate extends YireoView
 
         // Filters - type
         $options = array( 
-            array('value' => '', 'text' => '- Extension Type -' ),
-            array('value' => 'module', 'text' => 'Modules (all)'),
-            array('value' => 'module-site', 'text' => 'Modules (site)'),
-            array('value' => 'module-admin', 'text' => 'Modules (admin)'),
-            array('value' => 'plugin', 'text' => 'Plugins (all)'),
-            array('value' => 'plugin-other', 'text' => 'Plugins (other)'),
-            array('value' => 'plugin-magebridgeproduct', 'text' => 'Plugins (product)'),
-            array('value' => 'plugin-magebridgestore', 'text' => 'Plugins (store)'),
-            array('value' => 'plugin-magebridgeprofile', 'text' => 'Plugins (profile)'),
-            array('value' => 'plugin-magebridgenewsletter', 'text' => 'Plugins (newsletter)'),
+            array('value' => '', 'text' => JText::_('COM_MAGEBRIDGE_VIEW_UPDATE_FILTER_TYPE_NONE')),
+            array('value' => 'module', 'text' => JText::_('COM_MAGEBRIDGE_VIEW_UPDATE_FILTER_TYPE_MODULE')),
+            array('value' => 'module-site', 'text' => JText::_('COM_MAGEBRIDGE_VIEW_UPDATE_FILTER_TYPE_MODULE_SITE')),
+            array('value' => 'module-admin', 'text' => JText::_('COM_MAGEBRIDGE_VIEW_UPDATE_FILTER_TYPE_MODULE_ADMIN')),
+            array('value' => 'plugin', 'text' => JText::_('COM_MAGEBRIDGE_VIEW_UPDATE_FILTER_TYPE_PLUGIN')),
+            array('value' => 'plugin-other', 'text' => JText::_('COM_MAGEBRIDGE_VIEW_UPDATE_FILTER_TYPE_PLUGIN_OTHER')),
+            array('value' => 'plugin-magebridgeproduct', 'text' => JText::_('COM_MAGEBRIDGE_VIEW_UPDATE_FILTER_TYPE_PLUGIN_PRODUCT')),
+            array('value' => 'plugin-magebridgestore', 'text' => JText::_('COM_MAGEBRIDGE_VIEW_UPDATE_FILTER_TYPE_PLUGIN_STORE')),
+            array('value' => 'plugin-magebridgeprofile', 'text' => JText::_('COM_MAGEBRIDGE_VIEW_UPDATE_FILTER_TYPE_PLUGIN_PROFILE')),
+            array('value' => 'plugin-magebridgenewsletter', 'text' => JText::_('COM_MAGEBRIDGE_VIEW_UPDATE_FILTER_TYPE_PLUGIN_NEWSLETTER')),
         );
         $filter_type = $this->getFilter('type');
         $javascript = 'onchange="document.adminForm.submit();"';
@@ -106,7 +106,9 @@ class MageBridgeViewUpdate extends YireoView
             // Skip this entry for version detection
             if (empty($extension['version']) || empty($extension['current_version'])) continue;
 
-            if ($extension['current_version'] != $extension['version']) {
+            if (!empty($extension['current_version'])) {
+                $update = MAGEBRIDGE_UPDATE_NOTNEEDED;
+            } elseif ($extension['current_version'] != $extension['version']) {
                 $update = MAGEBRIDGE_UPDATE_AVAILABLE;
                 break;
             } else {
@@ -121,7 +123,7 @@ class MageBridgeViewUpdate extends YireoView
         }
 
         if ($update == MAGEBRIDGE_UPDATE_AVAILABLE) {
-            JError::raiseNotice( 'UPDATE', 'There are new updates available' );
+            JError::raiseNotice( 'UPDATE', JText::_('COM_MAGEBRIDGE_VIEW_UPDATE_NEW_VERSIONS'));
         }
 
         $this->assignRef('data', $data);

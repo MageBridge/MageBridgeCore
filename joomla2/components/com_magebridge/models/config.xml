@@ -127,6 +127,7 @@
 			    <option value="profiler">COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_DEBUG_LEVEL_OPTION_PROFILER</option>
 	    	</field>
 		    <field name="debug_log" type="list">
+			    <option value="">JNONE</option>
 			    <option value="db">COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_DEBUG_LOG_OPTION_DB</option>
 			    <option value="file">COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_DEBUG_LOG_OPTION_FILE</option>
 			    <option value="both">COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_DEBUG_LOG_OPTION_BOTH</option>

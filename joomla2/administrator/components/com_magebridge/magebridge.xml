@@ -39,10 +39,6 @@
         <folder>libraries</folder>
         <folder>models</folder>
         <folder>rewrite</folder>
-        <folder>rewrite-16</folder>
-        <folder>rewrite-17</folder>
-        <folder>rewrite-25</folder>
-        <folder>rewrite-30</folder>
         <folder>sef_ext</folder>
         <folder>views</folder>
     </files>
