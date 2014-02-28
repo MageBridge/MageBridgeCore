@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <fields name="actions">
+        <fieldset name="actions">
+        </fieldset>
+    </fields>
+    <fields name="params">
+        <fieldset name="params">
+        </fieldset>
+    </fields>
+</form>
