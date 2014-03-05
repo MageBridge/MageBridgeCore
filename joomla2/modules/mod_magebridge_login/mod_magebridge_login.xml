@@ -10,13 +10,13 @@
     <version>1.8.5097</version>
     <description>MOD_MAGEBRIDGE_LOGIN</description>
 
-    <files>
+    <files folder="site">
         <filename module="mod_magebridge_login">mod_magebridge_login.php</filename>
         <filename>index.html</filename>
         <folder>tmpl</folder>
     </files>
 
-    <languages>
+    <languages folder="site/language">
         <language tag="en-GB">en-GB.mod_magebridge_login.ini</language>
         <language tag="en-GB">en-GB.mod_magebridge_login.sys.ini</language>
     </languages>
