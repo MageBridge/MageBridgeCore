@@ -114,17 +114,7 @@ class YireoHelperView
             return false;
         }
 
-        if (YireoHelper::isJoomla15()) {
-            JHtml::_('behavior.mootools');
-            $script = "<script type=\"text/javascript\">\n"
-                . "window.addEvent('domready', function(){\n"
-                . "    var MBajax = new Ajax( '".$url."', {onSuccess: function(r){\n"
-                . "        $('".$div."').innerHTML = r;\n"
-                . "    }});\n"
-                . "    MBajax.request();\n"
-                . "});\n"
-                . "</script>";
-        } elseif (YireoHelper::isJoomla25()) {
+        if (YireoHelper::isJoomla25()) {
             JHtml::_('behavior.mootools');
             $script = "<script type=\"text/javascript\">\n"
                 . "window.addEvent('domready', function(){\n"

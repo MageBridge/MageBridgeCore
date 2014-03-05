@@ -69,12 +69,12 @@ td.value span.sublabel {
     line-height: 28px;
 }
 
-td.key input {
-    float:right !important;
+td.key {
+    width: 20%;
 }
 
-td.value input[type="text"] {
-    padding: 2px;
+td.key input {
+    float:right !important;
 }
 
 #editcell input, textarea {

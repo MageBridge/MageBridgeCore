@@ -47,6 +47,9 @@ class MagebridgeModelProduct extends YireoModel
             $data['label'] = $data['sku'];
         }
 
+        $data['connector'] = '';
+        $data['connector_value'] = '';
+
         return parent::store($data);
     }
 }

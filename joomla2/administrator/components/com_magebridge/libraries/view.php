@@ -727,14 +727,10 @@ class YireoView extends YireoCommonView
                 . "            if (result == '') {\n"
                 . "                alert('Empty result');\n"
                 . "            } else {\n"
-                . "                if (type == 'input') {\n"
-                . "                    jQuery(element_id).value = result;\n"
-                . "                } else {\n"
-                . "                    jQuery(element_id).innerHTML = result;\n"
-                . "                }\n"
+                . "                 jQuery('#' + element_id).val(result);\n"
                 . "            }\n"
                 . "        }\n"
-                . "    }).send();\n"
+                . "    });\n"
                 . "}\n"
                 . "</script>";
         }

@@ -52,13 +52,25 @@ class JFormFieldProduct extends JFormFieldAbstract
             $title = htmlspecialchars($title, ENT_QUOTES, 'UTF-8');
             $link = 'index.php?option=com_magebridge&amp;view=element&amp;tmpl=component&amp;ajax=1&amp;type=product&amp;object='.$name.'&amp;return='.$returnType.'&amp;current='.$value;
 
-		    $html = '<div style="float: left;">';
-            $html .= '<input type="text" id="'.$name.'" name="'.$name.'" value="'.$title.'" />';
-            $html .= '</div>';
-		    $html .= '<div class="button2-left"><div class="blank">';
-            $html .= '<a class="modal btn" title="'.JText::_('JSELECT').'"  href="'.$link.'" rel="{handler: \'iframe\', size: {x:800, y:450}}">'.JText::_('JSELECT').'</a>';
-            $html .= '</div></div>'."\n";
+            // HTML for Joomla! 2.5
+            $html = array();
+            if(YireoHelper::isJoomla25()) {
+		        $html[] = '<div style="float: left;">';
+                $html[] = '<input type="text" id="'.$name.'" name="'.$name.'" value="'.$title.'" />';
+                $html[] = '</div>';
+		        $html[] = '<div class="button2-left"><div class="blank">';
+                $html[] = '<a class="modal btn" title="'.JText::_('JSELECT').'"  href="'.$link.'" rel="{handler: \'iframe\', size: {x:800, y:450}}">'.JText::_('JSELECT').'</a>';
+                $html[] = '</div></div>'."\n";
+        
+            // HTML for other Joomla!
+            } else {
+                $html[] = '<span class="input-append">';
+                $html[] = '<input type="text" class="input-medium" id="'.$name.'" name="'.$name.'" value="'.$title.'" size="35" />';
+                $html[] = '<a class="modal btn" href="'.$link.'" rel="{handler: \'iframe\', size: {x: 800, y: 450}}"><i class="icon-file"></i> '.JText::_('JSELECT').'</a>';
+                $html[] = '</span>';
+            }
 
+            $html = implode("\n", $html);
             return $html;
         }
         

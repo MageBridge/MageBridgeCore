@@ -18,7 +18,7 @@ defined('_JEXEC') or die('Restricted access');
 <td width="50%" valign="top">
     <fieldset class="adminform">
         <legend><?php echo JText::_('LIB_YIREO_TABLE_FIELDNAME_LABEL'); ?></legend>
-        <table class="admintable">
+        <table class="admintable" width="100%">
         <tbody>
         <tr>
             <td width="100" align="right" class="key">
@@ -36,7 +36,7 @@ defined('_JEXEC') or die('Restricted access');
 
     <fieldset class="adminform">
         <legend><?php echo JText::_('COM_MAGEBRIDGE_VIEW_PRODUCT_FIELDSET_RELATION'); ?></legend>
-        <table class="admintable">
+        <table class="admintable" width="100%">
         <tbody>
         <tr>
             <td width="100" align="right" class="key">

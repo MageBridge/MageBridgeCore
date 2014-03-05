@@ -65,7 +65,7 @@ class YireoViewForm extends YireoView
         $rt = parent::__construct();
 
         // Detect the editor field
-        if (empty($this->_editor_field)) {
+        if (empty($this->_editor_field) && !empty($this->_table)) {
             if($this->_table->hasField('body')) $this->_editor_field = 'body';
             if($this->_table->hasField('description')) $this->_editor_field = 'description';
             if($this->_table->hasField('text')) $this->_editor_field = 'text';

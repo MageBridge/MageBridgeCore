@@ -501,12 +501,14 @@ class plgSystemMageBridge extends JPlugin
         }
 
         // Add some items to the whitelist
-        $whitelist[] = 'media/system/js/calendar.js';
-        $whitelist[] = 'media/system/js/calendar-setup.js';
-        $whitelist[] = '/com_jce/';
-        $whitelist[] = '/footools.js';
-        $whitelist[] = 'www.googleadservices.com';
-        $whitelist[] = 'media/jui/js';
+        if($disable_js_all == false && $disable_js_jquery == false) {
+            $whitelist[] = 'media/system/js/calendar.js';
+            $whitelist[] = 'media/system/js/calendar-setup.js';
+            $whitelist[] = '/com_jce/';
+            $whitelist[] = '/footools.js';
+            $whitelist[] = 'www.googleadservices.com';
+            $whitelist[] = 'media/jui/js';
+        }
 
         // Load the blacklist
         $blacklist = JFactory::getConfig()->get('magebridge.script.blacklist');

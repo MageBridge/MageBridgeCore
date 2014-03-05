@@ -175,6 +175,7 @@ class MageBridgeModelProxy
                     $current_url = MageBridgeUrlHelper::getRequest();
                     if (!empty($direct_output_url) && strstr($current_url, $direct_output_url)) {
                         MageBridgeModelDebug::getInstance()->trace( 'Detecting non-bridge output through MageBridge configuration', $direct_output_url );
+                        header('Content-Encoding: none');
                         print $raw;
                         return $application->close();
                     }
@@ -210,6 +211,7 @@ class MageBridgeModelProxy
                     }
 
                     // Output the raw content
+                    header('Content-Encoding: none');
                     print $raw;
 
                     MageBridgeModelDebug::getInstance()->warning( "Non-bridge output from Magento" );

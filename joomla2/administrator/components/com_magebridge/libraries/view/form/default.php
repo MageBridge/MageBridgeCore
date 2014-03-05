@@ -29,7 +29,6 @@ jimport('joomla.utilities.utility');
 </div>
 <div class="row-fluid">
     <div class="span12">
-        <?php echo $this->loadTemplate('editor'); ?>
         <?php echo $this->loadTemplate('fieldset', array('fieldset' => 'editor')); ?>
     </div>
 </div>
