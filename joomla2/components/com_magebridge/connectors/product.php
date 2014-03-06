@@ -52,7 +52,6 @@ class MageBridgeConnectorProduct extends MageBridgeConnector
     {
         // Get the conditions
         $conditions = $this->getConditions($sku);
-        print_r($conditions);exit;
         if (empty($conditions)) {
             return null;
         }
