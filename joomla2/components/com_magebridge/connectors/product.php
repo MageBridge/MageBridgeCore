@@ -52,6 +52,7 @@ class MageBridgeConnectorProduct extends MageBridgeConnector
     {
         // Get the conditions
         $conditions = $this->getConditions($sku);
+        print_r($conditions);exit;
         if (empty($conditions)) {
             return null;
         }
@@ -167,44 +168,62 @@ class MageBridgeConnectorProduct extends MageBridgeConnector
         $conditions = array();
         if (!empty($rows)) {
             foreach ($rows as $row) {
-
-                // Match the filter ALL
-                if (strtoupper($row->sku) == 'ALL') {
+                if($this->matchSku($sku, $row->sku) == true) {
                     $conditions[] = $row;
-
-                // A direct match of the SKU
-                } else if ($row->sku == $sku) {
-                    $conditions[] = $row;
-
-                // A listing of matches
-                } else if (strstr($row->sku, ',')) {
-                    $ss = explode(',', $row->sku);
-                    foreach ($ss as $s) {
-                        if (trim($s) == $sku) {
-                            $conditions[] = $row;
-                        }
-                        break;
-                    }
-
-                // Simple simulation of LIKE-statement
-                } else if (strstr($row->sku, '%')) {
-                    $s = str_replace('%', '', $row->sku);
-
-                    // Start with %
-                    if (preg_match('/^\%/', $row->sku)) {
-                        if (substr($sku, strlen($sku) - strlen($s)) == $s) {
-                            $conditions[] = $row;
-                        }
-                    // End with %
-                    } else if (preg_match('/\%$/', $row->sku)) {
-                        if (substr($sku, 0, strlen($s)) == $s) {
-                            $conditions[] = $row;
-                        }
-                    }
                 }
             }
         }
 
         return $conditions;
+    }
+
+    /*
+     * Method to get the current conditions
+     *
+     * @param string $sku
+     * @param string $rule
+     * @return boolean
+     */
+    protected function matchSku($sku, $rule)
+    {
+        $sku = trim($sku);
+        $rule = trim($rule);
+
+        // Comma-seperated listing of rules
+        if (strstr($rule, ',')) {
+            $subrules = explode(',', $rule);
+            foreach ($subrules as $subrule) {
+                $match = $this->matchSku($sku, $subrule);
+                if(!empty($match) && $match == true) {
+                    return true;
+                }
+            }
+
+        // Match the filter ALL
+        } elseif (strtoupper($rule) == 'ALL') {
+            return true;
+
+        // A direct match of the SKU
+        } else if ($rule == $sku) {
+            return true;
+
+        // Simple simulation of LIKE-statement
+        } else if (strstr($rule, '%')) {
+            $s = str_replace('%', '', $rule);
+
+            // Start with %
+            if (preg_match('/^\%/', $rule)) {
+                if (substr($sku, strlen($sku) - strlen($s)) == $s) {
+                    return true;
+                }
+            // End with %
+            } else if (preg_match('/\%$/', $rule)) {
+                if (substr($sku, 0, strlen($s)) == $s) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }
