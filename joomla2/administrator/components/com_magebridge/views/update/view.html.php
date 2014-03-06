@@ -101,18 +101,17 @@ class MageBridgeViewUpdate extends YireoView
 
         // Detect whether updates are available
         $update = MAGEBRIDGE_UPDATE_NOTAVAILABLE;
-        foreach ($data as $index => $extension) {
+        if (!empty($data)) {
+            $update = MAGEBRIDGE_UPDATE_NOTNEEDED;
+            foreach ($data as $index => $extension) {
 
-            // Skip this entry for version detection
-            if (empty($extension['version']) || empty($extension['current_version'])) continue;
+                // Skip this entry for version detection
+                if (empty($extension['version']) || empty($extension['current_version'])) continue;
 
-            if (!empty($extension['current_version'])) {
-                $update = MAGEBRIDGE_UPDATE_NOTNEEDED;
-            } elseif ($extension['current_version'] != $extension['version']) {
-                $update = MAGEBRIDGE_UPDATE_AVAILABLE;
-                break;
-            } else {
-                $update = MAGEBRIDGE_UPDATE_NOTNEEDED;
+                if ($extension['current_version'] != $extension['version']) {
+                    $update = MAGEBRIDGE_UPDATE_AVAILABLE;
+                    break;
+                }
             }
         }
 

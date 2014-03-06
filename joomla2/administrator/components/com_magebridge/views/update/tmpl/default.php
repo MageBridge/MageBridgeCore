@@ -131,8 +131,24 @@ foreach ($this->data as $package) {
         <td class="select">
             <?php echo ($package['current_version']) ? $package['current_version'] :  JText::_('COM_MAGEBRIDGE_VIEW_UPDATE_NOT_INSTALLED'); ?>
         </td>
-        <td class="select">
+        <?php 
+        $class = array('select');
+        if($package['available'] == 0) {
+            $class[] = 'error';
+        } elseif(empty($package['current_version'])) {
+            $class[] = '';
+        } elseif($package['version'] != $package['current_version']) {
+            $class[] = 'warning';
+        } else {
+            $class[] = 'notice';
+        }
+        ?>
+        <td class="<?php echo implode(' ', $class); ?>">
+            <?php if($package['available'] == 1) : ?>
             <?php echo ($package['version']) ? '<a href="'.$upgrade_url.'">'.$package['version'].'</a>' :  '&nbsp;'; ?>
+            <?php elseif(!empty($package['purchase_url'])): ?>
+            <?php echo '<a target="_new" href="'.$package['purchase_url'].'">'.JText::_('Buy now').'</a>'; ?>
+            <?php endif; ?>
         </td>
     </tr>
     <?php 

@@ -41,6 +41,11 @@ class MagebridgeModelUpdate extends YireoCommonModel
                 continue;
             }
 
+            // Skip packages that are not available
+            if ($package['available'] == 0) {
+                continue;
+            }
+
             // Update the package and add an error if something goes wrong
             if ($this->update($package['name']) == false) {
                 JError::raiseWarning('SOME_ERROR_CODE', JText::sprintf('COM_MAGEBRIDGE_MODEL_UPDATE_INSTALL_FAILED', $package['name']));

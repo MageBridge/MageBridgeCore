@@ -16,3 +16,23 @@ td.value {
     width: 300px;
 }
 
+td.error {
+    background-color: #f2dede !important;
+    border-color: #eed3d7;
+    color: #b94a48;
+}
+
+td.error a {
+    color: #b94a48;
+}
+
+td.warning {
+    background-color: #fbdda4 !important;
+}
+
+td.notice {
+    background-color: #dff0d8 !important;
+    border-color: #d6e9c6;
+    color: #468847;
+}
+
