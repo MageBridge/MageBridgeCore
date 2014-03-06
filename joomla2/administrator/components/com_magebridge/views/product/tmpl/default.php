@@ -70,10 +70,7 @@ defined('_JEXEC') or die('Restricted access');
         </table>
     </fieldset>
 
-    <fieldset class="adminform">
-        <legend><?php echo JText::_('COM_MAGEBRIDGE_VIEW_PRODUCT_FIELDSET_ACTIONS'); ?></legend>
-        <?php echo $this->loadTemplate('actions'); ?>
-    </fieldset>
+    <?php echo $this->loadTemplate('actions'); ?>
 </td>
 <td width="50%" valign="top">
     <fieldset class="adminform">
