@@ -936,6 +936,11 @@ class MageBridgeModelBridge
      */
     public function isOffline()
     {
+        // Set the bridge offline by using a flag
+        if(JRequest::getInt('offline', 0) == 1) {
+            return true;
+        }
+
         // Set the bridge offline when configured, except for specific IPs
         if (MagebridgeModelConfig::load('offline') == 1) {
             $ips = MagebridgeModelConfig::load('offline_exclude_ip');
