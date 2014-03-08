@@ -15,11 +15,37 @@
 class Yireo_MageBridge_Model_Block 
 {
     /*
+     * Initialize the controller
+     *
+     * @access public
+     * @param null
+     * @return mixed
+     */
+    public function init()
+    {
+        // Initialize the controller
+        try {
+            $controller = Mage::getSingleton('magebridge/core')->getController();
+
+            // Apply the MageBridge XML-handle if needed
+            if(Mage::getSingleton('magebridge/core')->getMetaData('app') == 1) {
+                $controller->getAction()->getLayout()->getUpdate()->addHandle('magebridge_backend');
+            }
+
+        } catch(Exception $e) {
+            Mage::getSingleton('magebridge/debug')->error('Failed to load controller: '.$e->getMessage());
+            return false;
+        }
+
+        return $controller;
+    }
+
+    /*
      * Get the block
      *
      * @access public
      * @param string $block_name
-     * @return string
+     * @return mixed
      */
     public function getBlock($block_name = '')
     {
@@ -37,17 +63,9 @@ class Yireo_MageBridge_Model_Block
 
         Mage::getSingleton('magebridge/debug')->notice('Building block "'.$block_name.'"');
 
-        // Initialize the controller
-        try {
-            $controller = Mage::getSingleton('magebridge/core')->getController();
-
-            // Apply the MageBridge XML-handle if needed
-            if(Mage::getSingleton('magebridge/core')->getMetaData('app') == 1) {
-                $controller->getAction()->getLayout()->getUpdate()->addHandle('magebridge_backend');
-            }
-
-        } catch(Exception $e) {
-            Mage::getSingleton('magebridge/debug')->error('Failed to load controller: '.$e->getMessage());
+        // Initialize the front controller
+        $controller = $this->init();
+        if($controller == false) {
             return false;
         }
 
@@ -63,6 +81,48 @@ class Yireo_MageBridge_Model_Block
         // General check if the block is empty
         if(empty($block)) {
             Mage::getSingleton('magebridge/debug')->warning('Empty block '.$block_name);
+            return null;
+        }
+
+        return $block;
+    }
+
+    /*
+     * Get the block by type
+     *
+     * @access public
+     * @param string $type
+     * @param string $template
+     * @return mixed
+     */
+    public function getBlockByType($type, $template = null)
+    {
+        // Fail if there is block_name set 
+        if(empty($block_name)) {
+            Mage::getSingleton('magebridge/debug')->warning('Empty block-name');
+            return null;
+        }
+
+        Mage::getSingleton('magebridge/debug')->notice('Building block "'.$block_name.'"');
+
+        // Initialize the front controller
+        $controller = $this->init();
+        if($controller == false) {
+            return false;
+        }
+
+        // Initialize the block
+        try {
+            $block = $this->getLayout()->createBlock($type);
+            if(!empty($template)) $block->setTemplate($template);
+            $instances[$block_name] = $block;
+        } catch(Exception $e) {
+            Mage::getSingleton('magebridge/debug')->error('Failed to get block: type '.$type.': '.$e->getMessage());
+        }
+    
+        // General check if the block is empty
+        if(empty($block)) {
+            Mage::getSingleton('magebridge/debug')->warning('Empty block with type '.$type);
             return null;
         }
 

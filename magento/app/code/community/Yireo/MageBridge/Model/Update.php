@@ -155,7 +155,6 @@ class Yireo_MageBridge_Model_Update extends Mage_Core_Model_Abstract
         if(class_exists('ZipArchive')) {
             $zip = new ZipArchive();
             if($zip->open($tmpfile) === true) {
-                $zip->extractTo($rootDir);
                 $rt = $zip->extractTo($rootDir);
                 $zip->close();
 
