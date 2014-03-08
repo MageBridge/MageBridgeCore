@@ -34,7 +34,8 @@
 		        	<option value="product_tag_list">Product Tags</option>
         			<option value="customer_account_navigation">Customer Account Navigation</option>
 		        	<option value="cart_sidebar">Cart: Sidebar</option>
-		        	<option value="right.newsletter">Newsletter: Subscription</option>
+		        	<option value="right.newsletter">Newsletter: Subscription (right)</option>
+		        	<option value="left.newsletter">Newsletter: Subscription (left)</option>
         			<option value="right.reports.product.viewed">Reports: Recently viewed products</option>
 		        	<option value="right.reports.product.compared">Reports: Product compared</option>
             		<option value="seo.searchterm">Search: Popular Search terms</option>
