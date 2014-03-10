@@ -26,6 +26,11 @@ class MageBridgePluginProfile extends MageBridgePlugin
     const CONVERT_TO_JOOMLA = 1;
     const CONVERT_TO_MAGENTO = 2;
 
+    /*
+     * Short name of this plugin
+     */
+    protected $pluginName = null;
+
     /**
      * Constructor
      *
@@ -61,7 +66,7 @@ class MageBridgePluginProfile extends MageBridgePlugin
     public function convertField($field, $type = self::CONVERT_TO_JOOMLA) 
     {
         // Stop if we don't have a proper name set
-        if (empty($this->name)) {
+        if (empty($this->pluginName)) {
             return null;
         }
 
@@ -91,8 +96,8 @@ class MageBridgePluginProfile extends MageBridgePlugin
     {
         // Determine the conversion-file
         $params = $this->getParams();
-        $custom = $this->getPath($this->name.'_'.$params->get('config_file', 'default').'.php');
-        $default = $this->getPath($this->name . '_default.php');
+        $custom = $this->getPath($params->get('file', 'map').'.php');
+        $default = $this->getPath('map.php');
 
         if ($custom == true) {
             return $custom;
@@ -116,6 +121,7 @@ class MageBridgePluginProfile extends MageBridgePlugin
 
             // Determine the conversion-file
             $config_file = $this->getConfigFile();
+            MageBridgeModelDebug::getInstance()->trace('Config file', $config_file);
 
             // If the conversion-file can't be read, use an empty conversion array
             if ($config_file == false) {
@@ -136,9 +142,9 @@ class MageBridgePluginProfile extends MageBridgePlugin
      * @param string $filename
      * @return string
      */
-    protected function _getPath($type, $filename)
+    protected function getPath($filename)
     {
-        $path = JPATH_SITE.'/components/com_magebridge/connectors/'.$type.'/'.$filename;
+        $path = JPATH_SITE.'/plugins/magebridgeprofile/'.$this->pluginName.'/'.$filename;
         if (file_exists($path) && is_file($path)) {
             return $path;
         } else {
