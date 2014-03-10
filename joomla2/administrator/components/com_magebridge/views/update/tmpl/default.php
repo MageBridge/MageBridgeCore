@@ -48,12 +48,6 @@ function selectPackages(type) {
         <th>
             <?php echo JText::_('COM_MAGEBRIDGE_VIEW_UPDATE_EXTENSION'); ?>
         </th>
-        <th>
-            <?php echo JText::_('COM_MAGEBRIDGE_VIEW_UPDATE_DESCRIPTION'); ?>
-        </th>
-        <th width="110"> 
-            <?php echo JText::_('COM_MAGEBRIDGE_VIEW_UPDATE_APPLICATION'); ?>
-        </th>
         <th width="200"> 
             <?php echo JText::_('COM_MAGEBRIDGE_VIEW_UPDATE_SYSTEM_NAME'); ?>
         </th>
@@ -108,13 +102,9 @@ foreach ($this->data as $package) {
             <?php echo $checked; ?>
         </td>
         <td class="select">
-            <?php echo $package['title']; ?>
-        </td>
-        <td class="select">
+            <strong><?php echo $package['title']; ?></strong><br/>
+            <?php if(!empty($app)) echo '['.$app.']' ; ?>
             <?php echo $package['description']; ?>
-        </td>
-        <td class="select">
-            <?php echo $app; ?>
         </td>
         <td class="select">
             <?php echo $package['name']; ?>
