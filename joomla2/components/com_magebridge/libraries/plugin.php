@@ -38,4 +38,9 @@ class MageBridgePlugin extends JPlugin
             return false;
         }
     }
+    
+    public function getParams()
+    {
+        return $this->params;
+    }
 }

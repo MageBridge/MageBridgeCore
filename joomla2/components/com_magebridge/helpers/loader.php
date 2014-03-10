@@ -62,6 +62,7 @@ class MageBridge_Autoload
             'MageBridgePluginProduct' => JPATH_SITE.'/components/com_magebridge/libraries/plugin/product.php',
             'MageBridgePluginStore' => JPATH_SITE.'/components/com_magebridge/libraries/plugin/store.php',
             'MageBridgePluginMagento' => JPATH_SITE.'/components/com_magebridge/libraries/plugin/magento.php',
+            'MageBridgePluginProfile' => JPATH_SITE.'/components/com_magebridge/libraries/plugin/profile.php',
             'MageBridgeHelper' => JPATH_SITE.'/components/com_magebridge/helpers/helper.php',
             'MageBridgeUrlHelper' => JPATH_SITE.'/components/com_magebridge/helpers/url.php',
             'MageBridgeStoreHelper' => JPATH_SITE.'/components/com_magebridge/helpers/store.php',

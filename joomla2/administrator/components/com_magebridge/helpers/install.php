@@ -39,6 +39,8 @@ class MageBridgeInstallHelper
             JPATH_SITE.'/components/com_magebridge/images',
             JPATH_SITE.'/components/com_magebridge/js',
             JPATH_SITE.'/components/com_magebridge/connectors/product',
+            JPATH_SITE.'/components/com_magebridge/connectors/store',
+            JPATH_SITE.'/components/com_magebridge/connectors/profile',
         );
 
         // Remove obsolete folders

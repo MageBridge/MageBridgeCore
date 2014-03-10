@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<form>
-    <fields name="params">
-        <fieldset name="params">
-            <field name="config_file" label="Configuration" type="text" default="default" />
-        </fieldset>
-    </fields>
-</form>

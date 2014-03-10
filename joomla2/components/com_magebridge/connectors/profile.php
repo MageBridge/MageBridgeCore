@@ -64,13 +64,9 @@ class MageBridgeConnectorProfile extends MageBridgeConnector
             }
         }
 
-        // Run the right method for each connector
-        $connectors = $this->getConnectors();
-        if (!empty($connectors)) {
-            foreach ($connectors as $connector) {
-                $connector->onSave($user, $customer);
-            }
-        }
+        // Import the plugins
+        JPluginHelper::importPlugin('magebridgeprofile');
+        JFactory::getApplication()->triggerEvent('onMageBridgeProfileSave', array($user, $customer));
     }
 
     /*
@@ -81,22 +77,21 @@ class MageBridgeConnectorProfile extends MageBridgeConnector
      */
     public function modifyUserFields($user)
     {
-        $connectors = $this->getConnectors();
-        if (!empty($connectors)) {
-            foreach ($connectors as $connector) {
-                if (isset($user['joomla_id'])) {
-                    $user_id = $user['joomla_id'];
-                } else if (isset($user['id'])) {
-                    $user_id = $user['id'];
-                } else {
-                    $user_id = null;
-                }
-
-                if ($user_id > 0) {
-                    $user = $connector->modifyFields($user_id, $user);
-                }
-            }
+        if (isset($user['joomla_id'])) {
+            $user_id = $user['joomla_id'];
+        } else if (isset($user['id'])) {
+            $user_id = $user['id'];
+        } else {
+            $user_id = null;
         }
+
+        if (!$user_id > 0) {
+            return $user;
+        }
+
+        // Import the plugins
+        JPluginHelper::importPlugin('magebridgeprofile');
+        JFactory::getApplication()->triggerEvent('onMageBridgeProfileModifyFields', array($user_id, &$user));
 
         return $user;
     }
