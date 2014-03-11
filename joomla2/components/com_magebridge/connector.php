@@ -55,28 +55,7 @@ class MageBridgeConnector
      */
     protected function _getConnectors($type = null)
     {
-        static $connectors = array();
-        if(!isset($connectors[$type])) {
-            $db = JFactory::getDBO();
-            $query = "SELECT * FROM #__magebridge_connectors WHERE `published`=1 AND `type`='".$type."' ORDER BY `ordering`";
-            $db->setQuery($query);
-            $rows = $db->loadObjectList();
-            if (!empty($rows)) {
-                foreach ($rows as $index => $row) {
-
-                    $connector = self::_getConnectorObject($type, $row);
-                    if (!empty($connector) && $connector != false && $connector->isEnabled() != false) { 
-                        $rows[$index] = $connector;
-                    } else {
-                        unset($rows[$index]);
-                    }
-
-                }
-            }
-            $connectors[$type] = $rows;
-        }
-
-        return $connectors[$type];
+        return array();
     }
 
     /*
@@ -88,12 +67,7 @@ class MageBridgeConnector
      */
     protected function _getConnector($type = null, $name = null)
     {
-        $db = JFactory::getDBO();
-        $query = "SELECT * FROM #__magebridge_connectors WHERE `published`=1 AND `type`='".$type."' AND `name`=".$db->Quote($name);
-        $db->setQuery($query);
-        $connector = $db->loadObject();
-        $connector = self::_getConnectorObject($type, $connector);
-        return $connector;
+        return (object)null;
     }
 
     /*

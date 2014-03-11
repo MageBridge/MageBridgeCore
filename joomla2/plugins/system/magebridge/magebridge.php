@@ -742,10 +742,13 @@ class plgSystemMageBridge extends JPlugin
 
         // Check whether some request is in the queue
         $tasks = $session->get('com_magebridge.task_queue');
+
+        /*
+        // @todo: Remove deprecated code
         if (!empty($tasks) && is_array($tasks)) {
             foreach ($tasks as $task) {
 
-                if ($task == 'cbsync') {
+                if ($task == 'cbsync' || $task == 'jomsocialsync') {
                     $cb = MageBridgeConnectorProfile::getInstance()->getConnector('cb');
                     $cb->synchronize(JFactory::getUser()->id);
                 }
@@ -780,6 +783,7 @@ class plgSystemMageBridge extends JPlugin
                 $tasks[] = 'jomsocialsync';
             }
         }
+        */
 
         // Save the task queue in the session
         $session->set('com_magebridge.task_queue', $tasks);

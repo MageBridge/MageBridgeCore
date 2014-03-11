@@ -160,6 +160,8 @@ class plgCommunityMageBridge extends CApplications
      */
     private function getTab() 
     {
+        /*
+        // @todo: Remove deprecated code
         $connector = MageBridgeConnectorProfile::getInstance()->getConnector('jomsocial');
         $tab = array();
         if (!empty($connector)) {
@@ -170,6 +172,7 @@ class plgCommunityMageBridge extends CApplications
         }
 
         return $tab;
+        */
     }
 
     /*
