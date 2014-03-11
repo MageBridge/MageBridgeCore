@@ -17,11 +17,11 @@ defined('_JEXEC') or die('Restricted access');
     <div class="head">
         <h4><?php echo JText::_('MOD_MAGEBRIDGE_NEWSLETTER_NEWSLETTER'); ?><a name="newsletter-box"></a></h4>
     </div>
-    <form action="<?php echo $form_url; ?>" method="post" id="newsletter-validate-detail">
+    <form action="<?php echo $form_url; ?>" method="post" id="newsletter-validate-detail" class="form-validate">
     <fieldset class="content">
         <legend><?php echo JText::_('MOD_MAGEBRIDGE_NEWSLETTER_NEWSLETTER'); ?></legend>
         <label for="newsletter"><?php echo JText::_('MOD_MAGEBRIDGE_NEWSLETTER_SIGNUP'); ?>:</label>
-        <input name="email" type="text" id="newsletter" class="required-entry validate-email input-text" value="<?php echo $user->email; ?>" />
+        <input name="email" type="email" id="newsletter" class="required-entry validate-email input-text" value="<?php echo $user->email; ?>" required />
         <input type="submit" class="form-button-alt" value="<?php echo JText::_('MOD_MAGEBRIDGE_NEWSLETTER_SUBSCRIBE'); ?>"/>
     </fieldset>
     <input type="hidden" name="uenc" value="<?php echo $redirect_url;?>" />
