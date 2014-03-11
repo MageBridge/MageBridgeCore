@@ -90,16 +90,6 @@ class MagebridgeModelStore extends YireoModel
             return false;
         }
 
-        if (!empty($data['connector'])) {
-            $connector = MageBridgeConnectorStore::getConnector($data['connector']);
-            if ($connector == false) {
-                $this->setError(JText::_('COM_MAGEBRIDGE_MODEL_STORE_CONNECTOR_FAILED'));
-                return false;
-            }
-
-            $data['connector_value'] = $connector->getFormPost($data);
-        }
-
         if (empty($data['label'])) {
             $data['label'] = $data['title'];
         }

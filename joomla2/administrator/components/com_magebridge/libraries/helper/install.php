@@ -28,8 +28,14 @@ class YireoHelperInstall
         if(!empty($files)) {
             foreach($files as $file) {
                 if(file_exists($file)) {
-                    jimport('joomla.filesystem.file'); 
-                    JFile::delete($file);
+                    if(is_file($file)) {
+                        jimport('joomla.filesystem.file'); 
+                        JFile::delete($file);
+                    }
+                    if(is_dir($file)) {
+                        jimport('joomla.filesystem.folder'); 
+                        JFolder::delete($file);
+                    }
                 }
             }
         }

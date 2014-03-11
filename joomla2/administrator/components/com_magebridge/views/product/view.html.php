@@ -54,10 +54,6 @@ class MageBridgeViewProduct extends MageBridgeView
         // Build the fields
         $this->lists['product'] = MageBridgeFormHelper::getField('product', 'sku', $this->item->sku, null);
 
-        // Deperated
-        $connectors = MageBridgeConnectorProduct::getInstance()->getConnectors();
-		$this->assignRef('connectors', $connectors);
-
         // Check for a previous connector-value
         if(!empty($this->item->connector)) {
             $plugin = JPluginHelper::getPlugin('magebridgeproduct', $this->item->connector);

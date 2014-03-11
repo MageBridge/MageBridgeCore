@@ -6,7 +6,6 @@
 		<action name="com_magebridge.check" title="COM_MAGEBRIDGE_JACTION_CHECK" description="COM_MAGEBRIDGE_JACTION_CHECK_DESC" />
 		<action name="com_magebridge.stores" title="COM_MAGEBRIDGE_JACTION_STORES" description="COM_MAGEBRIDGE_JACTION_STORES_DESC" />
 		<action name="com_magebridge.products" title="COM_MAGEBRIDGE_JACTION_PRODUCTS" description="COM_MAGEBRIDGE_JACTION_PRODUCTS_DESC" />
-		<action name="com_magebridge.connectors" title="COM_MAGEBRIDGE_JACTION_CONNECTORS" description="COM_MAGEBRIDGE_JACTION_CONNECTORS_DESC" />
 		<action name="com_magebridge.urls" title="COM_MAGEBRIDGE_JACTION_URLS" description="COM_MAGEBRIDGE_JACTION_URLS_DESC" />
 		<action name="com_magebridge.users" title="COM_MAGEBRIDGE_JACTION_USERS" description="COM_MAGEBRIDGE_JACTION_USERS_DESC" />
         <action name="com_magebridge.usergroups" title="COM_MAGEBRIDGE_JACTION_USERGROUPS" description="COM_MAGEBRIDGE_JACTION_USERGROUPS_DESC" />

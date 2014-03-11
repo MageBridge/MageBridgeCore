@@ -31,74 +31,51 @@ class MageBridgeAclHelper
         $user = JFactory::getUser();
         if (empty($view)) $view = JRequest::getCmd('view');
 
-        // Check the ACLs for Joomla! 1.5
-        if (MageBridgeHelper::isJoomla15()) {
+        switch($view) {
+            case 'config':
+                $authorise = 'com_magebridge.config';
+                break;
+            case 'check':
+                $authorise = 'com_magebridge.check';
+                break;
+            case 'stores':
+            case 'store':
+                $authorise = 'com_magebridge.stores';
+                break;
+            case 'products':
+            case 'product':
+                $authorise = 'com_magebridge.products';
+                break;
+            case 'urls':
+            case 'url':
+                $authorise = 'com_magebridge.urls';
+                break;
+            case 'users':
+            case 'user':
+                $authorise = 'com_magebridge.users';
+                break;
+            case 'usergroups':
+            case 'usergroup':
+                $authorise = 'com_magebridge.usergroups';
+                break;
+            case 'logs':
+            case 'log':
+                $authorise = 'com_magebridge.logs';
+                break;
+            case 'update':
+                $authorise = 'com_magebridge.update';
+                break;
+            default:
+                $authorise = 'core.manage';
+        }
 
-            // Determine whether the current view is protected
-            $allowed_views = array('home', 'products', 'product', 'connectors', 'urls', 'url', 'users', 'check', 'logs');
-            if (empty($view) || in_array($view, $allowed_views)) {
-                return true;
+        if ($user->authorise($authorise, 'com_magebridge') == false && $user->authorise('com_magebridge.demo_ro', 'com_magebridge') == false) {
+            if ($user->authorise('core.manage', 'com_magebridge')) {
+                if ($redirect) $application->redirect('index.php?option=com_magebridge', JText::_('ALERTNOTAUTH'));
+            } else {
+                if ($redirect) $application->redirect('index.php', JText::_('ALERTNOTAUTH'));
             }
-
-            // Check the privileges for remaining views
-            if (!$user->authorize('com_magebridge', 'manage')) {
-                if ($redirect) $application->redirect( 'index.php?option=com_magebridge', JText::_('ALERTNOTAUTH'), 'error' );
-                return false;
-            }
-
-        // Check the ACLs for Joomla! 1.6 or later
-        } else {
-
-            switch($view) {
-                case 'config':
-                    $authorise = 'com_magebridge.config';
-                    break;
-                case 'check':
-                    $authorise = 'com_magebridge.check';
-                    break;
-                case 'stores':
-                case 'store':
-                    $authorise = 'com_magebridge.stores';
-                    break;
-                case 'products':
-                case 'product':
-                    $authorise = 'com_magebridge.products';
-                    break;
-                case 'connectors':
-                case 'connector':
-                    $authorise = 'com_magebridge.connectors';
-                    break;
-                case 'urls':
-                case 'url':
-                    $authorise = 'com_magebridge.urls';
-                    break;
-                case 'users':
-                case 'user':
-                    $authorise = 'com_magebridge.users';
-                    break;
-                case 'usergroups':
-                case 'usergroup':
-                    $authorise = 'com_magebridge.usergroups';
-                    break;
-                case 'logs':
-                case 'log':
-                    $authorise = 'com_magebridge.logs';
-                    break;
-                case 'update':
-                    $authorise = 'com_magebridge.update';
-                    break;
-                default:
-                    $authorise = 'core.manage';
-            }
-
-            if ($user->authorise($authorise, 'com_magebridge') == false && $user->authorise('com_magebridge.demo_ro', 'com_magebridge') == false) {
-                if ($user->authorise('core.manage', 'com_magebridge')) {
-                    if ($redirect) $application->redirect('index.php?option=com_magebridge', JText::_('ALERTNOTAUTH'));
-                } else {
-                    if ($redirect) $application->redirect('index.php', JText::_('ALERTNOTAUTH'));
-                }
-                return false;
-            }
+            return false;
         }
 
         return true;

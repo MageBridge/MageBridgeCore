@@ -164,9 +164,6 @@ class MageBridgeController extends YireoController
         // Upgrade the database tables
         $helper->updateQueries();
 
-        // Install new connectors
-        $helper->installConnectors();
-
         // Redirect
         $link = 'index.php?option=com_magebridge&view=update';
         $this->setRedirect($link);
@@ -189,11 +186,8 @@ class MageBridgeController extends YireoController
         // Upgrade the database tables
         $helper->updateQueries();
 
-        // Install new connectors
-        $helper->installConnectors();
-
-        // Clean files
-        $helper->cleanFiles();
+        // Run the helper to remove obsolete files
+        YireoHelperInstall::remove();
 
         // Redirect
         $link = 'index.php?option=com_magebridge&view=update';

@@ -62,9 +62,8 @@ class MagebridgeModelUpdate extends YireoCommonModel
             }
         }
 
-        // Run the helper for post-install tasks
-        $helper = new MageBridgeInstallHelper();
-        $helper->cleanFiles();
+        // Run the helper to remove obsolete files
+        YireoHelperInstall::remove();
 
         // Simple notices as feedback
         JError::raiseNotice('SOME_ERROR_CODE', JText::sprintf('COM_MAGEBRIDGE_MODEL_UPDATE_INSTALL_SUCCESS', $count));

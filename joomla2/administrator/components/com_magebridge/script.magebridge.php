@@ -82,12 +82,6 @@ if(class_exists('com_magebridgeInstallerScript') == false) {
                 return true;
             }
 
-            // Initialize the helper
-            $helper = new MageBridgeInstallHelper();
-
-            // Install new connectors
-            $helper->installConnectors();
-
             // Done
             return true;
         }

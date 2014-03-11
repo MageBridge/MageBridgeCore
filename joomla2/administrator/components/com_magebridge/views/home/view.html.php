@@ -32,7 +32,6 @@ class MageBridgeViewHome extends YireoViewHome
         $icons[] = $this->icon( 'config', 'COM_MAGEBRIDGE_VIEW_CONFIG', 'config.png');
         $icons[] = $this->icon( 'stores', 'COM_MAGEBRIDGE_VIEW_STORES', 'store.png');
         $icons[] = $this->icon( 'products', 'COM_MAGEBRIDGE_VIEW_PRODUCTS', 'product.png');
-        $icons[] = $this->icon( 'connectors', 'COM_MAGEBRIDGE_VIEW_CONNECTORS', 'connect.png');
         $icons[] = $this->icon( 'users', 'COM_MAGEBRIDGE_VIEW_USERS', 'user.png');
         $icons[] = $this->icon( 'check', 'COM_MAGEBRIDGE_VIEW_CHECK', 'cpanel.png');
         $icons[] = $this->icon( 'logs', 'COM_MAGEBRIDGE_VIEW_LOGS', 'info.png');

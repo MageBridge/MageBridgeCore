@@ -5,21 +5,7 @@ CREATE TABLE IF NOT EXISTS `#__magebridge_config` (
     PRIMARY KEY  (`id`)
 ) DEFAULT CHARSET=utf8;
 
-CREATE TABLE IF NOT EXISTS `#__magebridge_connectors` (
-    `id` int(11) NOT NULL auto_increment,
-    `title` varchar(255) NOT NULL,
-    `name` varchar(255) NOT NULL,
-    `type` varchar(255) NOT NULL,
-    `filename` varchar(255) NOT NULL,
-    `access` tinyint(3) NOT NULL default '0',
-    `ordering` int(11) NOT NULL default '0',
-    `published` tinyint(3) NOT NULL default '0',
-    `iscore` tinyint(3) NOT NULL default '0',
-    `checked_out` int(11) NOT NULL default '0',
-    `checked_out_time` datetime NOT NULL default '0000-00-00 00:00:00',
-    `params` text NOT NULL,
-    PRIMARY KEY  (`id`)
-) DEFAULT CHARSET=utf8;
+DROP TABLE IF EXISTS `#__magebridge_connectors`;
 
 DROP TABLE IF EXISTS `#__magebridge_log`;
 

@@ -128,10 +128,6 @@ class MageBridgeViewStore extends YireoViewForm
         $actions_form->bind(array('actions' => $actions));
 	    $this->assignRef('actions_form', $actions_form);
 
-        // Connectors
-        $connectors = MageBridgeConnectorStore::getInstance()->getConnectors();
-		$this->assignRef('connectors', $connectors);
-
         // Check for a previous connector-value
         if(!empty($this->item->connector)) {
             $plugin = JPluginHelper::getPlugin('magebridgestore', $this->item->connector);

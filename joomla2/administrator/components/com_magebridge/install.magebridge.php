@@ -24,14 +24,8 @@ function com_install()
     $application = JFactory::getApplication();
     $db = JFactory::getDBO();
 
-    // Remove obsolete files
-    $helper->cleanFiles();
-
     // Upgrade the database tables
     $helper->updateQueries();
-
-    // Install new connectors
-    $helper->installConnectors();
 
     // Done
     return true;

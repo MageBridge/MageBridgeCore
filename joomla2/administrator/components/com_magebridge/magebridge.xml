@@ -62,7 +62,6 @@
             <menu link="option=com_magebridge&amp;view=stores">COM_MAGEBRIDGE_VIEW_STORES</menu>
             <menu link="option=com_magebridge&amp;view=products">COM_MAGEBRIDGE_VIEW_PRODUCTS</menu>
             <menu link="option=com_magebridge&amp;view=usergroups">COM_MAGEBRIDGE_VIEW_USERGROUPS</menu>
-            <menu link="option=com_magebridge&amp;view=connectors">COM_MAGEBRIDGE_VIEW_CONNECTORS</menu>
             <menu link="option=com_magebridge&amp;view=urls">COM_MAGEBRIDGE_VIEW_URLS</menu>
             <menu link="option=com_magebridge&amp;view=users">COM_MAGEBRIDGE_VIEW_USERS</menu>
             <menu link="option=com_magebridge&amp;view=check">COM_MAGEBRIDGE_VIEW_CHECK</menu>
