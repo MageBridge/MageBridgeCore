@@ -18,6 +18,9 @@ jimport( 'joomla.plugin.plugin' );
 // Load the base adapter.
 require_once JPATH_ADMINISTRATOR.'/components/com_finder/helpers/indexer/adapter.php';
 
+// Import the MageBridge autoloader
+include_once JPATH_SITE.'/components/com_magebridge/helpers/loader.php';
+
 /**
  * MageBridge Finder Plugin
  */
@@ -91,7 +94,11 @@ class plgFinderMageBridge extends FinderIndexerAdapter
 		//$item->addTaxonomy('Language', $item->language);
 
 		// Index the item.
-		FinderIndexer::index($item);
+        if(YireoHelper::isJoomla25()) {
+		    FinderIndexer::index($item);
+        } else {
+    		$this->indexer->index($item);
+        }
     }
 
     /**
@@ -206,6 +213,7 @@ class plgFinderMageBridge extends FinderIndexerAdapter
         $register = MageBridge::getRegister();
 
         // Register this API-request
+        $arguments = array();
         $id = $register->add('api', 'magebridge_product.count', $arguments);
 
         // Build the bridge
