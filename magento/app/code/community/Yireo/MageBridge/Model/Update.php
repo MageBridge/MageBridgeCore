@@ -112,6 +112,14 @@ class Yireo_MageBridge_Model_Update extends Mage_Core_Model_Abstract
         // Check for the file
         $tmpdir = Mage::getConfig()->getOptions()->getTmpDir();
         $tmpfile = $tmpdir.DS.'Yireo_MageBridge_patch.zip';
+
+        // Make sure it does not contain just an error
+        if(is_readable($tmpfile)) {
+            $tmpcontents = file_get_contents($tmpfile);
+            if(strstr($tmpcontents, 'Download denied')) {
+                @unlink($tmpfile);
+            }
+        }
         
         // If the file is not there, download it
         if(is_readable($tmpfile) == false) {
