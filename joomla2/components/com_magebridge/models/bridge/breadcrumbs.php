@@ -106,16 +106,21 @@ class MageBridgeModelBridgeBreadcrumbs extends MageBridgeModelBridgeSegment
             $root_pathway_item->link = preg_replace('/\/$/', '', JURI::base()).JRoute::_($rootItem->link);
 
             // Scan the current items to see whether there is a match or not
-            $match = false;
+            $homeMatch = false;
             foreach($pathway_items as $pathway_item) {
                 if($pathway_item->link == $root_pathway_item->link || strstr($pathway_item->link, $root_pathway_item->link)) {
-                    $match = true;
+                    $homeMatch = true;
                     break;
                 }
             }
 
+            // If this root item is the homepage, skip it also
+            if(!empty($rootItem->home) && $rootItem->home == 1) {
+                $homeMatch = true;
+            }
+
             // Only add the root, if there is no match yet
-            if(!empty($root_pathway_item) && $match == false) {
+            if(!empty($root_pathway_item) && $homeMatch == false) {
                 $pathway_items[] = $root_pathway_item;
             }
 
