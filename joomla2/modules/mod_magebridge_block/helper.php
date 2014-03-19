@@ -28,10 +28,31 @@ class modMageBridgeBlockHelper
     {
         // Get the block name
         $blockName = modMageBridgeBlockHelper::blockName($params);
+        $arguments = array();
+        
+        // Parse the templates
+        $blockTemplate = trim($params->get('block_template'));
+        $blockType = trim($params->get('block_type'));
+        $blockArguments = trim($params->get('block_arguments'));
+        if(!empty($blockTemplate)) $arguments['template'] = $blockTemplate;
+        if(!empty($blockType)) $arguments['type'] = $blockType;
+        if(!empty($blockArguments)) {
+            $blockArguments = explode("\n", $blockArguments);
+            foreach($blockArguments as $blockArgumentIndex => $blockArgument) {
+                $blockArgument = explode('=', $blockArgument);
+                if(!empty($blockArgument[1])) {
+                    $blockArguments[$blockArgument[0]] = $blockArgument[1];
+                    unset($blockArguments[$blockArgumentIndex]);
+                }
+            }
+            if(!empty($blockArguments)) {
+                $arguments['arguments'] = $blockArguments;
+            }
+        }
 
         // Initialize the register 
         $register = array();
-        $register[] = array('block', $blockName);
+        $register[] = array('block', $blockName, $arguments);
 
         if ($params->get('load_css', 1) == 1 || $params->get('load_js', 1) == 1) {
             $register[] = array('headers');
@@ -116,6 +137,13 @@ class modMageBridgeBlockHelper
         if (empty($block)) {
             $block = $params->get('block', $block);
         }
+
+        if (empty($block)) {
+            $blockTemplate = trim($params->get('block_template'));
+            $blockType = trim($params->get('block_type'));
+            $block = $blockType.$blockTemplate;
+        }
+
         return $block;
     }
 }
