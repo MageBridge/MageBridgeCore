@@ -138,9 +138,9 @@ class YireoViewList extends YireoView
     public function toggle($name, $value, $ajax = false, $id = 0)
     {
         if ($value == 1 || !empty($value)) {
-            $img = 'tick.png';
+            $img = 'toggle_1.png';
         } else {
-            $img = 'publish_x.png';
+            $img = 'toggle_0.png';
         }
 
         if ($ajax == false) {

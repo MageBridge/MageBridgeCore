@@ -876,6 +876,7 @@ class YireoView extends YireoCommonView
     {
         $paths = array(
             '/media/'.$this->_option.'/images/'.$name,
+            '/media/lib_yireo/images/'.$name,
             '/images/'.$name,
         );
 

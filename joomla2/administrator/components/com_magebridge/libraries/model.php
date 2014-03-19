@@ -480,6 +480,9 @@ class YireoModel extends YireoCommonModel
 
                     $data->metadata = $this->getMetadata();
                     $this->_data = $data;
+
+                } else {
+                    $data = (object)null;
                 }
 
                 // Check to see if the data is published
@@ -1147,7 +1150,9 @@ class YireoModel extends YireoCommonModel
         if (!empty($this->_search) && !empty($search)) {
             $where_search = array();
             foreach ($this->_search as $column) {
-                $where_search[] = "`".$this->_tbl_alias."`.`$column` LIKE '%$search%'";
+                if(strstr($column, '.') == false && strstr($column, '`') == false) $column = "`".$column."`";
+                if(strstr($column, '.') == false) $column = "`".$this->_tbl_alias."`.".$column;
+                $where_search[] = "$column LIKE '%$search%'";
             }
         }
 
