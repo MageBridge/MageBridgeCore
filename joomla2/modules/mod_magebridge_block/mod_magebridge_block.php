@@ -20,7 +20,7 @@ $layout = $params->get('layout', 'default');
 
 // Call the helper
 require_once (dirname(__FILE__).'/helper.php');
-$blockName = modMageBridgeBlockHelper::blockName($params);
+$blockName = modMageBridgeBlockHelper::getBlockName($params);
 
 // Build the block
 if ($layout == 'ajax') {

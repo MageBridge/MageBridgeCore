@@ -27,29 +27,9 @@ class modMageBridgeBlockHelper
     static public function register($params = null)
     {
         // Get the block name
-        $blockName = modMageBridgeBlockHelper::blockName($params);
-        $arguments = array();
+        $blockName = modMageBridgeBlockHelper::getBlockName($params);
+        $arguments = modMageBridgeBlockHelper::getArguments($params);
         
-        // Parse the templates
-        $blockTemplate = trim($params->get('block_template'));
-        $blockType = trim($params->get('block_type'));
-        $blockArguments = trim($params->get('block_arguments'));
-        if(!empty($blockTemplate)) $arguments['template'] = $blockTemplate;
-        if(!empty($blockType)) $arguments['type'] = $blockType;
-        if(!empty($blockArguments)) {
-            $blockArguments = explode("\n", $blockArguments);
-            foreach($blockArguments as $blockArgumentIndex => $blockArgument) {
-                $blockArgument = explode('=', $blockArgument);
-                if(!empty($blockArgument[1])) {
-                    $blockArguments[$blockArgument[0]] = $blockArgument[1];
-                    unset($blockArguments[$blockArgumentIndex]);
-                }
-            }
-            if(!empty($blockArguments)) {
-                $arguments['arguments'] = $blockArguments;
-            }
-        }
-
         // Initialize the register 
         $register = array();
         $register[] = array('block', $blockName, $arguments);
@@ -70,7 +50,7 @@ class modMageBridgeBlockHelper
     static public function ajaxbuild($params = null)
     {
         // Get the block name
-        $blockName = modMageBridgeBlockHelper::blockName($params);
+        $blockName = modMageBridgeBlockHelper::getBlockName($params);
 
         // Include the MageBridge bridge
         $bridge = MageBridgeModelBridge::getInstance();
@@ -101,7 +81,8 @@ class modMageBridgeBlockHelper
     static public function build($params = null)
     {
         // Get the block name
-        $blockName = modMageBridgeBlockHelper::blockName($params);
+        $blockName = modMageBridgeBlockHelper::getBlockName($params);
+        $arguments = modMageBridgeBlockHelper::getArguments($params);
 
         // Include the MageBridge bridge
         $bridge = MageBridgeModelBridge::getInstance();
@@ -118,10 +99,42 @@ class modMageBridgeBlockHelper
 
         // Get the block
         MageBridgeModelDebug::getInstance()->notice('Bridge called for block "'.$blockName.'"');
-        $block = $bridge->getBlock($blockName);
+        $block = $bridge->getBlock($blockName, $arguments);
 
         // Return the output
         return $block;
+    }
+
+    /*
+     * Helper-method to construct the blocks arguments
+     * 
+     * @access public
+     * @param JParameter $params
+     * @return array
+     */
+    static public function getArguments($params)
+    {
+        // Parse the templates
+        $blockTemplate = trim($params->get('block_template'));
+        $blockType = trim($params->get('block_type'));
+        $blockArguments = trim($params->get('block_arguments'));
+        if(!empty($blockTemplate)) $arguments['template'] = $blockTemplate;
+        if(!empty($blockType)) $arguments['type'] = $blockType;
+        if(!empty($blockArguments)) {
+            $blockArguments = explode("\n", $blockArguments);
+            foreach($blockArguments as $blockArgumentIndex => $blockArgument) {
+                $blockArgument = explode('=', $blockArgument);
+                if(!empty($blockArgument[1])) {
+                    $blockArguments[$blockArgument[0]] = $blockArgument[1];
+                    unset($blockArguments[$blockArgumentIndex]);
+                }
+            }
+            if(!empty($blockArguments)) {
+                $arguments['arguments'] = $blockArguments;
+            }
+        }
+
+        return $arguments;
     }
 
     /*
@@ -131,7 +144,7 @@ class modMageBridgeBlockHelper
      * @param JParameter $params
      * @return string
      */
-    static public function blockName($params)
+    static public function getBlockName($params)
     {
         $block = trim($params->get('custom'));
         if (empty($block)) {

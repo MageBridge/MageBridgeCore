@@ -91,19 +91,19 @@ class Yireo_MageBridge_Model_Block
      * Get the block by type
      *
      * @access public
-     * @param string $type
-     * @param string $template
+     * @param string $block_name
+     * @param string $block_type
      * @return mixed
      */
-    public function getBlockByType($type, $template = null)
+    public function getBlockByType($block_name = '', $block_type = '')
     {
-        // Fail if there is block_name set 
-        if(empty($block_name)) {
-            Mage::getSingleton('magebridge/debug')->warning('Empty block-name');
+        // Fail if there is block_type set 
+        if(empty($block_type)) {
+            Mage::getSingleton('magebridge/debug')->warning('Empty block-type');
             return null;
         }
 
-        Mage::getSingleton('magebridge/debug')->notice('Building block "'.$block_name.'"');
+        Mage::getSingleton('magebridge/debug')->notice('Building block of type "'.$block_type.'"');
 
         // Initialize the front controller
         $controller = $this->init();
@@ -113,8 +113,7 @@ class Yireo_MageBridge_Model_Block
 
         // Initialize the block
         try {
-            $block = $this->getLayout()->createBlock($type);
-            if(!empty($template)) $block->setTemplate($template);
+            $block = $controller->getAction()->getLayout()->createBlock($block_type);
             $instances[$block_name] = $block;
         } catch(Exception $e) {
             Mage::getSingleton('magebridge/debug')->error('Failed to get block: type '.$type.': '.$e->getMessage());
@@ -150,11 +149,6 @@ class Yireo_MageBridge_Model_Block
         if(empty($response) || !is_string($response)) {
             return null;
         }
-
-        // Compress the output a bit
-        //$search = array('/\>[^\S ]+/s', '/[^\S ]+\</s');
-        //$replace = array('>', '<');
-        //$response = preg_replace($search, $replace, $response);
 
         // Prepare the response for the bridge
         $response = Mage::helper('magebridge/encryption')->base64_encode($response);
@@ -199,15 +193,39 @@ class Yireo_MageBridge_Model_Block
     {
         // Get the block-object
         if(!is_object($block_name)) {
-            $block = $this->getBlock($block_name);
+            $block_type = (isset($arguments['type'])) ? $arguments['type'] : null;
+            if(!empty($block_type)) {
+                $block = $this->getBlockByType($block_name, $block_type);
+            } else {
+                $block = $this->getBlock($block_name);
+            }
         } else {
             $block = $block_name;
-        }        
-
+        }
+        
         // Return null if there is no block
         if(empty($block)) {
             return null;
         }
+
+        // Set the template
+        $block_template = (isset($arguments['template'])) ? $arguments['template'] : null;
+        if(!empty($block_template)) {   
+            $block->setTemplate($block_template);
+        }
+
+        // Set the arguments
+        if(!empty($arguments['arguments']) && is_array($arguments['arguments'])) {
+            foreach($arguments['arguments'] as $argumentName => $argumentValue) {
+                $block->setData($argumentName, $argumentValue);
+            }
+        }
+
+        /*if($block_name == 'newsletter/subscribenewsletter/subscribe.phtml') {
+            echo $block_name;
+            echo $block->toHtml();
+            exit;
+        }*/
 
         // Throw the event "controller_action_layout_render_before"
         if(Mage::registry('mb_controller_action_layout_render_before') == false) {
