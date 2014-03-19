@@ -31,11 +31,13 @@
                     <html_breadcrumbs>Yireo_MageBridge_Block_Breadcrumbs</html_breadcrumbs>
                 </rewrite>
             </page>
+
             <core>
                 <rewrite>
                     <text_list>Yireo_MageBridge_Block_TextList</text_list>
                 </rewrite>
             </core>
+
             <checkout>
                 <rewrite>
                     <onepage_success>Yireo_MageBridge_Block_Rewrite_Checkout_Onepage_Success</onepage_success>
@@ -81,11 +83,13 @@
                     <message_collection>Yireo_MageBridge_Model_Rewrite_Message_Collection</message_collection>
                 </rewrite>
             </core>
+
             <customer>
                 <rewrite>
                     <customer>Yireo_MageBridge_Model_Rewrite_Customer</customer>
                 </rewrite>
             </customer>
+
             <adminhtml>
                 <rewrite>
                     <url>Yireo_MageBridge_Model_Rewrite_Adminhtml_Url</url>

@@ -15,7 +15,7 @@
          <cms>
             <children>
                 <magebridge translate="title" module="magebridge">
-                    <title>MageBridge settings</title>
+                    <title>MageBridge</title>
                     <action>adminhtml/magebridge/index</action>
                 </magebridge>
             </children>
