@@ -114,12 +114,19 @@ class modMageBridgeBlockHelper
      */
     static public function getArguments($params)
     {
-        // Parse the templates
+        // Initial array
+        $arguments = array();
+
+        // Fetch parameters
         $blockTemplate = trim($params->get('block_template'));
         $blockType = trim($params->get('block_type'));
         $blockArguments = trim($params->get('block_arguments'));
+
+        // Parse the parameters
         if(!empty($blockTemplate)) $arguments['template'] = $blockTemplate;
         if(!empty($blockType)) $arguments['type'] = $blockType;
+
+        // Parse INI-style arguments into array
         if(!empty($blockArguments)) {
             $blockArguments = explode("\n", $blockArguments);
             foreach($blockArguments as $blockArgumentIndex => $blockArgument) {
