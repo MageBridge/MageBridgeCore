@@ -147,6 +147,8 @@ class Yireo_MageBridge_Model_Category_Api extends Mage_Catalog_Model_Api_Resourc
     {
         // Get the collection
         $collection = Mage::getModel('catalog/category')->getCollection();
+        $collection->addAttributeToSort('path', 'ASC');
+        $collection->addAttributeToSort('position', 'ASC');
 
         // Set the store
         if(!empty($storeId)) {

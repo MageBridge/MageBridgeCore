@@ -13,6 +13,25 @@
 <config>
     <api>
         <resources>
+            <magebridge_attribute translate="title" module="magebridge">
+                <model>magebridge/attribute_api</model>
+                <title>Attributes Api</title>
+                <acl>magebridge/attribute</acl>
+                <methods>
+                    <attributesets translate="title" module="magebridge">
+                        <title>List of attributesets</title>
+                        <method>getAttributeSets</method>
+                    </attributesets>
+                    <attributegroups translate="title" module="magebridge">
+                        <title>List of attributegroups</title>
+                        <method>getAttributeGroups</method>
+                    </attributegroups>
+                    <attributes translate="title" module="magebridge">
+                        <title>List of attributes</title>
+                        <method>getAttributes</method>
+                    </attributes>
+                </methods>
+            </magebridge_attribute>
             <magebridge_websites translate="title" module="magebridge">
                 <model>magebridge/websites_api</model>
                 <title>Websites Api</title>
@@ -228,6 +247,10 @@
                 <magebridge translate="title" module="magebridge">
                     <sort_order>9</sort_order>
                     <title>MageBridge</title>
+                    <attribute translate="title" module="magebridge">
+                        <sort_order>1</sort_order>
+                        <title>Get Attribute Information</title>
+                    </attribute>
                     <websites translate="title" module="magebridge">
                         <sort_order>1</sort_order>
                         <title>Get Websites</title>
