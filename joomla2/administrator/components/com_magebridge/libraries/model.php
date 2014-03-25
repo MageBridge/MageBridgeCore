@@ -42,6 +42,13 @@ class YireoCommonModel extends YireoAbstractModel
      */
     protected $_skip_table = true;
 
+    /*
+     * Boolean to allow forms in the frontend
+     *
+     * @protected int
+     */
+    protected $_frontend_form = false;
+
     /**
      * Database table object
      *
@@ -1361,13 +1368,21 @@ class YireoModel extends YireoCommonModel
      */
     public function getForm($data = array(), $loadData = true)
     {
-        // Do not continue if this is not a backend singular view
-        if ($this->application->isAdmin() == false || $this->isSingular() == false) {
+        // Do not continue if this is not the right backend
+        if ($this->application->isAdmin() == false && $this->_frontend_form == false) {
+            return false;
+        }
+
+        // Do not continue if this is not a singular view
+        if ($this->isSingular() == false) {
             return false;
         }
 
         // Read the form from XML
         $xmlFile = JPATH_ADMINISTRATOR.'/components/'.$this->_option.'/models/'.$this->_entity.'.xml';
+        if (!file_exists($xmlFile)) {
+            $xmlFile = JPATH_SITE.'/components/'.$this->_option.'/models/'.$this->_entity.'.xml';
+        }
 
         if (!file_exists($xmlFile)) {
             return false;
@@ -1681,7 +1696,9 @@ class YireoModel extends YireoCommonModel
     protected function getOption()
     {
         $classParts = explode('Model', get_class($this));
-        $comPart = (!empty($classParts[0])) ? strtolower($classParts[0]) : null;
+        $comPart = (!empty($classParts[0])) ? $classParts[0] : null;
+        $comPart = preg_replace('/([A-Z])/', '_\\1', $comPart);
+        $comPart = strtolower(preg_replace('/^_/', '', $comPart));
         $option = (!empty($comPart) && $comPart != 'yireo') ? 'com_'.$comPart : JRequest::getCmd('option');
         return $option;
     }

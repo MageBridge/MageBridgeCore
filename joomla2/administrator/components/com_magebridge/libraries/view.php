@@ -798,6 +798,7 @@ class YireoView extends YireoCommonView
 
             $classPrefix = ucfirst(preg_replace('/^com_/', '', $this->_option)).'Model';
             $classPrefix = preg_replace('/[^A-Z0-9_]/i', '', $classPrefix);
+            $classPrefix = str_replace(' ', '', ucwords(str_replace('_', ' ', $classPrefix)));
 
             if (YireoHelper::isJoomla25()) {
                 $model = JModel::getInstance($name, $classPrefix, array());

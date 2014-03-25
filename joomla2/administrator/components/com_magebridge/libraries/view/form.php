@@ -92,6 +92,7 @@ class YireoViewForm extends YireoView
         // Automatically fetch the item and assign it to the layout
         $this->fetchItem();
 
+        if ($this->prepare_display == true) $this->prepareDisplay();
         parent::display($tpl);
     }
 
