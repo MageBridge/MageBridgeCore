@@ -25,11 +25,13 @@ class Yireo_MageBridge_Model_Attribute_Api extends Mage_Api_Model_Resource_Abstr
     {
         $entityType = Mage::getModel('catalog/product')->getResource()->getTypeId();
         $collection = Mage::getResourceModel('eav/entity_attribute_set_collection')->setEntityTypeFilter($entityType);
+        $defaultId = (int)Mage::getModel('catalog/product')->getResource()->getEntityType()->getDefaultAttributeSetId();
 
         $res = array();
         foreach ($collection as $item) {
             $data['value'] = $item->getId();
             $data['label'] = $item->getAttributeSetName();
+            $data['default'] = ($item->getId() == $defaultId) ? 1 : 0;
             $res[] = $data;
         }
 
@@ -69,8 +71,9 @@ class Yireo_MageBridge_Model_Attribute_Api extends Mage_Api_Model_Resource_Abstr
         $attributesetId = 0;
         if(!empty($data['attributeset_id'])) {
             $attributesetId = (int)$data['attributeset_id'];
+        } elseif(!empty($data['default'])) {
+            $attributesetId = (int)Mage::getModel('catalog/product')->getResource()->getEntityType()->getDefaultAttributeSetId();
         }
-            Mage::getSingleton('magebridge/debug')->trace('Argument', $attributesetId);
 
         $attributeGroups = $this->getAttributeGroups();
         $attributes = Mage::getResourceModel('catalog/product_attribute_collection');
