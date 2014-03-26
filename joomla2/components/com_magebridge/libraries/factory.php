@@ -189,7 +189,7 @@ class MageBridge
             }
         }
     
-        return JRoute::_('index.php?option=com_magebridge&view=root&request='.$request);
+        return MageBridgeUrlHelper::route($request);
     }
 
     /*
