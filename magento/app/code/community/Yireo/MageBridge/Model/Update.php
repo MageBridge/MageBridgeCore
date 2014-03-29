@@ -96,6 +96,9 @@ class Yireo_MageBridge_Model_Update extends Mage_Core_Model_Abstract
      */
     public function doUpgrade()
     {
+        // File format
+        $format = 'zip'; // @todo: tgz
+        
         // Set the umask as for index.php
         $indexPermissions = substr(sprintf('%o', fileperms(Mage::getBaseDir().DS.'index.php')), -4);
         @chmod(Mage::getBaseDir().DS.'js'.DS.'index.php', $indexPermissions);
@@ -104,14 +107,21 @@ class Yireo_MageBridge_Model_Update extends Mage_Core_Model_Abstract
         @umask($umask);
 
         // Simple check for ZIP-support
-        if(!class_exists('ZipArchive')) {
-            $msg = 'WARNING: PHP-class ZipArchive is missing. PECL-extension zip 1.1.0 or higher is needed.';
+        if($format == 'zip' && !class_exists('ZipArchive') && !class_exists('PharData')) {
+            $msg = 'WARNING: PHP-classes ZipArchive and PharData are missing. Updates might fail.';
+            Mage::getSingleton('adminhtml/session')->addError($msg);
+        }
+
+        // Simple check for TAR-support
+        if($format == 'tgz' && !class_exists('PharData')) {
+            $msg = 'WARNING: PHP-class PharData is missing.';
             Mage::getSingleton('adminhtml/session')->addError($msg);
         }
 
         // Check for the file
         $tmpdir = Mage::getConfig()->getOptions()->getTmpDir();
-        $tmpfile = $tmpdir.DS.'Yireo_MageBridge_patch.zip';
+        if($format == 'tgz') $tmpfile = $tmpdir.DS.'Yireo_MageBridge_patch.tgz';
+        if($format == 'zip') $tmpfile = $tmpdir.DS.'Yireo_MageBridge_patch.zip';
 
         // Make sure it does not contain just an error
         if(is_readable($tmpfile)) {
@@ -132,7 +142,9 @@ class Yireo_MageBridge_Model_Update extends Mage_Core_Model_Abstract
             }
 
             // Construct the download-URL
-            $download_url = $this->getApiLink(array('resource' => 'download', 'request' => 'Yireo_MageBridge_patch.zip'));
+            if($format == 'tgz') $download_file = 'Yireo_MageBridge_patch.tgz';
+            if($format == 'zip') $download_file = 'Yireo_MageBridge_patch.zip';
+            $download_url = $this->getApiLink(array('resource' => 'download', 'request' => $download_file));
 
             // Get the remote data
             $data = $this->_getRemote($download_url);
@@ -159,12 +171,34 @@ class Yireo_MageBridge_Model_Update extends Mage_Core_Model_Abstract
         // Set the root-directory
         $rootDir = Mage::getBaseDir();
 
-        // Try to extract ZIP-archive using ZIP-class
-        if(class_exists('ZipArchive')) {
-            $zip = new ZipArchive();
-            if($zip->open($tmpfile) === true) {
+        // ZIP-format
+        if($format == 'zip') {
+
+            // Try to extract ZIP-archive using ZipArchive
+            if(class_exists('ZipArchive')) {
+                $zip = new ZipArchive();
+                if($zip->open($tmpfile) === true) {
+                    $rt = $zip->extractTo($rootDir);
+                    $zip->close();
+
+                    if($rt == false) {
+                        $msg = 'ERROR: Failed to extract ZIP in '.$rootDir;
+                        Mage::getSingleton('adminhtml/session')->addError($msg);
+                        return $msg;
+                    }
+
+                    @unlink($tmpfile);
+
+                } else {
+                    $msg = 'ERROR: Unable to open ZIP '.$tmpfile;
+                    Mage::getSingleton('adminhtml/session')->addError($msg);
+                    return $msg;
+                }
+
+            // Try to extract ZIP-archive using PharData
+            } elseif(class_exists('PharData')) {
+                $zip = new PharData($tmpfile);
                 $rt = $zip->extractTo($rootDir);
-                $zip->close();
 
                 if($rt == false) {
                     $msg = 'ERROR: Failed to extract ZIP in '.$rootDir;
@@ -174,22 +208,48 @@ class Yireo_MageBridge_Model_Update extends Mage_Core_Model_Abstract
 
                 @unlink($tmpfile);
 
+            // Try to extra ZIP-archive using exec-function (assuming unzip is installed)
+            } elseif(function_exists('exec')) {
+                @exec('unzip -o '.$tmpfile.' -d '.$rootDir);
+                @unlink($tmpfile);
+
+            // Failed to extract ZIP-archive
             } else {
-                $msg = 'ERROR: Unable to open ZIP '.$tmpfile;
+                $msg = 'ERROR: Failed to extract the ZIP-archive';
                 Mage::getSingleton('adminhtml/session')->addError($msg);
                 return $msg;
             }
 
-        // Try to extra ZIP-archive using exec-function (assuming unzip is installed)
-        } elseif(function_exists('exec')) {
-            @exec('unzip -o '.$tmpfile.' -d '.$rootDir);
-            @unlink($tmpfile);
+        // TGZ-format
+        } elseif($format == 'tgz') {
 
-        // Failed to extract ZIP-archive
-        } else {
-            $msg = 'ERROR: Failed to extract the upgrade-archive';
-            Mage::getSingleton('adminhtml/session')->addError($msg);
-            return $msg;
+            // Try to extract TAR-archive using TGZ-class
+            if(class_exists('PharData')) {
+                $tgz = new PharData($tmpfile);
+                $tgz->decompress(); 
+
+                $tar = new PharData(preg_replace('/\.(tar.gz|tgz)$/', '.tar', $tmpfile));
+                $rt = $tar->extractTo($rootDir);
+
+                if($rt == false) {
+                    $msg = 'ERROR: Failed to extract TGZ in '.$rootDir;
+                    Mage::getSingleton('adminhtml/session')->addError($msg);
+                    return $msg;
+                }
+
+                @unlink($tmpfile);
+
+            // Try to extra TGZ-archive using exec-function (assuming tar is installed)
+            } elseif(function_exists('exec')) {
+                @exec('tar -xzf '.$tmpfile.' -C '.$rootDir);
+                @unlink($tmpfile);
+
+            // Failed to extract TGZ-archive
+            } else {
+                $msg = 'ERROR: Failed to extract the TGZ-archive';
+                Mage::getSingleton('adminhtml/session')->addError($msg);
+                return $msg;
+            }
         }
 
         // Remove obsolete files
