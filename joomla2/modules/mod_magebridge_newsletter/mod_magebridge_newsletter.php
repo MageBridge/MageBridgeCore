@@ -12,6 +12,9 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+// Import the MageBridge autoloader
+require_once JPATH_SITE.'/components/com_magebridge/helpers/loader.php';
+
 // Read the parameters
 $layout = $params->get('layout', 'default');
 
