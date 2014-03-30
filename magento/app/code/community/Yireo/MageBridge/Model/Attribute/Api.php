@@ -47,7 +47,9 @@ class Yireo_MageBridge_Model_Attribute_Api extends Mage_Api_Model_Resource_Abstr
      */
     public function getAttributeGroups()
     {
-        $collection = Mage::getResourceModel('eav/entity_attribute_group_collection')->load();
+        $collection = Mage::getModel('eav/entity_attribute_group')->getCollection()
+            ->setOrder('sort_order', 'ASC')
+        ;
 
         foreach ($collection as $item) {
             $data['value'] = $item->getId();
