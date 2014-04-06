@@ -547,6 +547,12 @@ class MageBridgeUrlHelper
         $link_to_magento = MagebridgeModelConfig::load('link_to_magento');
         if ($link_to_magento == 1) {
             $bridge = MageBridge::getBridge();
+            $app = JFactory::getApplication();
+            if ((boolean)$app->getCfg('sef_suffix') == true) {
+                if(preg_match('/\/$/', $request) == false) {
+                    $request .= '.html';
+                }
+            }
             return $bridge->getMagentoUrl().$request;
         }
 
