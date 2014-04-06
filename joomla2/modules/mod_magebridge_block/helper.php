@@ -141,6 +141,7 @@ class modMageBridgeBlockHelper
             }
         }
 
+        if(empty($arguments)) return null;
         return $arguments;
     }
 
