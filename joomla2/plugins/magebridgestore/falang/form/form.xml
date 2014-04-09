@@ -3,7 +3,7 @@
     <fields name="actions">
         <fieldset name="actions">
             <field name="falang_language" label="PLG_MAGEBRIDGESTORE_FALANG_FIELD_FALANG_LANGUAGE" type="sql" 
-                query="SELECT `title`,`shortcode` AS `value` FROM #__languages">
+                query="SELECT `title`,`lang_code` AS `value` FROM #__languages" value_field="title">
                 <option value=""></option>
             </field>
         </fieldset>
