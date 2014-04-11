@@ -17,7 +17,9 @@ if (strlen($message) > 100) {
 }
 ?>
 <td>
-    <?php echo html_entity_decode($message); ?>
+    <span title="<?php echo htmlentities($item->message); ?>">
+        <?php echo htmlspecialchars($message); ?>
+    </span>
 </td>
 <td>
     <?php echo $this->printType($item->type); ?>

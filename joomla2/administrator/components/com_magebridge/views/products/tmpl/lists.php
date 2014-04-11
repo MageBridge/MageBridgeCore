@@ -12,4 +12,3 @@
 defined('_JEXEC') or die('Restricted access');
 ?>
 <?php echo $this->lists['state']; ?>
-<?php echo $this->lists['connector']; ?>
