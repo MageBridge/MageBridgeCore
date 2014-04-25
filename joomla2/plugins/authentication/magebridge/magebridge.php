@@ -203,10 +203,16 @@ class plgAuthenticationMageBridge extends JPlugin
     private function isEnabled()
     {
         if (class_exists('MageBridgeModelBridge')) {
-            if (MageBridgeModelBridge::getInstance()->isOffline() == false) {
-                return true;
+            if (MageBridgeModelBridge::getInstance()->isOffline()) {
+                return false;
+
+            } elseif (MageBridge::isApiPage() == true) {
+                return false;
             }
+
+            return true;
         }
+
         return false;
     }
 }
