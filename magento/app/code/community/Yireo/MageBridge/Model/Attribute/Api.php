@@ -54,6 +54,7 @@ class Yireo_MageBridge_Model_Attribute_Api extends Mage_Api_Model_Resource_Abstr
         foreach ($collection as $item) {
             $data['value'] = $item->getId();
             $data['label'] = $item->getAttributeGroupName();
+            $data['order'] = $item->getSortOrder();
             $data['set'] = $item->getAttributeSetId();
             $res[] = $data;
         }
@@ -101,12 +102,14 @@ class Yireo_MageBridge_Model_Attribute_Api extends Mage_Api_Model_Resource_Abstr
             $data['position'] = $attribute->getPosition();
             $data['group_value'] = null;
             $data['group_label'] = null;
+            $data['group_order'] = null;
 
             $groupId = $attribute->getAttributeGroupId();
             foreach($attributeGroups as $attributeGroup) {
                 if($attributeGroup['value'] == $groupId) {
                     $data['group_value'] = $attributeGroup['value'];
                     $data['group_label'] = $attributeGroup['label'];
+                    $data['group_order'] = $attributeGroup['order'];
                     break;
                 }
             }
@@ -115,6 +118,7 @@ class Yireo_MageBridge_Model_Attribute_Api extends Mage_Api_Model_Resource_Abstr
             foreach ( $attribute->getSource()->getAllOptions(true, true) as $option){
                 $data['options'][$option['value']] = $option['label'];
             }
+
 
             $res[] = $data;
         }
