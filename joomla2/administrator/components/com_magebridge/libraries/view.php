@@ -24,7 +24,7 @@ require_once dirname(__FILE__).'/loader.php';
  *
  * @package Yireo
  */
-if(YireoHelper::isJoomla25()) {
+if(YireoHelper::isJoomla25() || YireoHelper::isJoomla15()) {
     jimport('joomla.application.component.view');
     class YireoAbstractView extends JView {}
 } else {
@@ -790,7 +790,7 @@ class YireoView extends YireoCommonView
 
         if (empty($model)) {
             jimport('joomla.application.component.model');
-            if (YireoHelper::isJoomla25()) {
+            if (YireoHelper::isJoomla25() || YireoHelper::isJoomla15()) {
                 JModel::addIncludePath(JPATH_ADMINISTRATOR.'/components/'.$this->_option.'/models');
             } else {
                 JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR.'/components/'.$this->_option.'/models');
@@ -800,7 +800,7 @@ class YireoView extends YireoCommonView
             $classPrefix = preg_replace('/[^A-Z0-9_]/i', '', $classPrefix);
             $classPrefix = str_replace(' ', '', ucwords(str_replace('_', ' ', $classPrefix)));
 
-            if (YireoHelper::isJoomla25()) {
+            if (YireoHelper::isJoomla25() || YireoHelper::isJoomla15()) {
                 $model = JModel::getInstance($name, $classPrefix, array());
             } else {
                 $model = JModelLegacy::getInstance($name, $classPrefix, array());

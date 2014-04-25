@@ -21,7 +21,7 @@ require_once dirname(__FILE__).'/loader.php';
  *
  * @package Yireo
  */
-if(YireoHelper::isJoomla25()) {
+if(YireoHelper::isJoomla25() || YireoHelper::isJoomla15()) {
     jimport('joomla.application.component.model');
     class YireoAbstractModel extends JModel {}
 } else {

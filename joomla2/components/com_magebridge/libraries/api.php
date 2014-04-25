@@ -29,6 +29,27 @@ class MageBridgeApi
     }
 
     /* 
+     * Login method
+     *
+     * @param array $params
+     * @return bool
+     */
+    public function login($params = array())
+    {
+        $credentials = array(
+            'username' => $params[0],
+            'password' => $params[1],
+        );
+        $app = JFactory::getApplication();
+        $rt = $app->login($credentials);
+        
+        if($rt == true) { 
+            return array('email' => $params[0]);
+        }
+        return false;
+    }
+
+    /* 
      * Event method
      *
      * @param array $params
