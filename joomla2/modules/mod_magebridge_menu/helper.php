@@ -202,6 +202,8 @@ class modMageBridgeMenuHelper extends MageBridgeModuleHelper
             } elseif (in_array($item['entity_id'], $current_category_path)) {
                 $class[] = 'active';
             }
+            $class[] = 'category-'.$item['entity_id'];
+            $class[] = 'category-'.$item['url_key'];
         }
 
         if (isset($item['children_count']) && $item['children_count'] > 0) {
