@@ -24,6 +24,7 @@ class Yireo_MageBridge_Block_Settings extends Mage_Core_Block_Template
     public function _construct()
     {
         parent::_construct();
+        $this->setData('area','adminhtml');
         $this->setTemplate('magebridge/settings.phtml');
     }
 

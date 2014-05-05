@@ -13,30 +13,42 @@
 defined('_JEXEC') or die('Restricted access');
 
 $form = $this->form;
-if(!empty($form)):
-$fieldsetCount = $form->getFieldset($fieldset);
-if(!empty($fieldsetCount)):
-if(empty($legend)) $legend = JText::_('LIB_YIREO_VIEW_FORM_FIELDSET_'.$fieldset);
+$fieldsetObject = (object)null;
+foreach($form->getFieldsets() as $fieldsetCode => $fieldsetObject) {
+    if($fieldset == $fieldsetCode) {
+        break;
+    }
+}
+
 ?>
-<fieldset class="adminform">
-<legend><?php echo $legend; ?></legend>
-<?php foreach($form->getFieldset($fieldset) as $field): ?>
-<?php if($fieldset == 'editor'): ?>
-<div class="row-fluid">
-    <div class="span12">
-        <?php echo $field->label; ?>
-        <?php echo $field->input; ?>
-    </div>
-</div>
+<?php if(!empty($form)): ?>
+    <?php if(!empty($fieldset)): ?>
+        <?php if(empty($legend)) $legend = JText::_('LIB_YIREO_VIEW_FORM_FIELDSET_'.$fieldset); ?>
+        <fieldset class="adminform">
+            <legend><?php echo $legend; ?></legend>
+
+            <?php if(!empty($fieldsetObject->description)) : ?>
+                <div class="fieldset-description"><?php echo $fieldsetObject->description; ?></div>
+            <?php endif; ?>
+
+            <?php foreach($form->getFieldset($fieldset) as $field): ?>
+                <?php if($fieldset == 'editor'): ?>
+                    <div class="row-fluid">
+                        <div class="span12">
+                            <?php echo $field->label; ?>
+                            <?php echo $field->input; ?>
+                        </div>
+                    </div>
+
+                <?php else: ?>
+                    <div class="row-fluid">
+                        <div class="span4"><?php echo $field->label; ?></div>
+                        <div class="span8"><?php echo $field->input; ?></div>
+                    </div>
+                <?php endif; ?>
+            <?php endforeach; ?>
+        </fieldset>
+    <?php endif; ?>
 <?php else: ?>
-<div class="row-fluid">
-    <div class="span4"><?php echo $field->label; ?></div>
-    <div class="span8"><?php echo $field->input; ?></div>
-</div>
-<?php endif; ?>
-<?php endforeach; ?>
-</fieldset>
-<?php endif; ?>
-<?php else: ?>
-<p>No form loaded</p>
+    <p>No form loaded</p>
 <?php endif; ?>

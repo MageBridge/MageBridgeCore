@@ -23,8 +23,7 @@ class Yireo_MageBridge_Model_Attribute_Api extends Mage_Api_Model_Resource_Abstr
      */
     public function getAttributeSets()
     {
-        $entityType = Mage::getModel('catalog/product')->getResource()->getTypeId();
-        $collection = Mage::getResourceModel('eav/entity_attribute_set_collection')->setEntityTypeFilter($entityType);
+        $collection = $this->_getAttributeSets();
         $defaultId = (int)Mage::getModel('catalog/product')->getResource()->getEntityType()->getDefaultAttributeSetId();
 
         $res = array();
@@ -52,10 +51,15 @@ class Yireo_MageBridge_Model_Attribute_Api extends Mage_Api_Model_Resource_Abstr
         ;
 
         foreach ($collection as $item) {
+            $attributeSet = $this->_getAttributeSet($item->getAttributeSetId());
+            if($attributeSet->getEntityTypeId() < 1) continue;
+
             $data['value'] = $item->getId();
             $data['label'] = $item->getAttributeGroupName();
             $data['order'] = $item->getSortOrder();
-            $data['set'] = $item->getAttributeSetId();
+            $data['attributeset_id'] = $item->getAttributeSetId();
+            $data['attributeset_name'] = $attributeSet->getAttributeSetName();
+            $data['attributeset_type_id'] = $attributeSet->getEntityTypeId();
             $res[] = $data;
         }
 
@@ -124,5 +128,40 @@ class Yireo_MageBridge_Model_Attribute_Api extends Mage_Api_Model_Resource_Abstr
         }
 
         return $res;
+    }
+
+    /**
+     * Retrieve collection of attribute sets
+     *
+     * @access protected
+     * @param null
+     * @return array
+     */
+    protected function _getAttributeSets()
+    {
+        if(empty($this->_attributeSetCollection)) {
+            $entityType = Mage::getModel('catalog/product')->getResource()->getTypeId();
+            $this->_attributeSetCollection = Mage::getResourceModel('eav/entity_attribute_set_collection')
+                ->setEntityTypeFilter($entityType);
+        }
+        return $this->_attributeSetCollection;
+    }
+
+    /**
+     * Retrieve a specific attributeset
+     *
+     * @access protected
+     * @param null
+     * @return array
+     */
+    protected function _getAttributeSet($attributeSetId)
+    {
+        $collection = $this->_getAttributeSets();
+        foreach($collection as $item) {
+            if($item->getAttributeSetId() == $attributeSetId) {
+                return $item;
+            }
+        }
+        return Mage::getModel('eav/entity_attribute_set');
     }
 }

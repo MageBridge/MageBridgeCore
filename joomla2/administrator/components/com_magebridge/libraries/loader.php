@@ -39,6 +39,7 @@ if(!function_exists('YireoLibraryLoader')) {
                 $filename = 'dispatcher';
                 break;
             case 'YireoModel':
+            case 'YireoCommonModel':
             case 'YireoAbstractModel':
                 $filename = 'model';
                 break;

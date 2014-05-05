@@ -243,6 +243,13 @@ class YireoModel extends YireoCommonModel
     protected $_orderby_title = null;
 
     /**
+     * List of fields to autoconvert into column-seperated fields
+     *
+     * @protected array
+     */
+    protected $_columnFields = array();
+
+    /**
      * Enable the limit in the query (or in the data-array)
      *
      * @protected string
@@ -285,6 +292,7 @@ class YireoModel extends YireoCommonModel
         if(empty($this->_orderby_default)) $this->_orderby_default = $this->_tbl->getDefaultOrderBy();
         if(empty($this->_orderby_title)) {
             if ($this->_tbl->hasField('title')) $this->_orderby_title = 'title';
+            if ($this->_tbl->hasField('label')) $this->_orderby_title = 'label';
             if ($this->_tbl->hasField('name')) $this->_orderby_title = 'name';
         }
 
@@ -476,6 +484,15 @@ class YireoModel extends YireoCommonModel
 
                 if (!empty($data)) {
 
+                    // Prepare the column-fields
+                    if(!empty($this->_columnFields)) {
+                        foreach($this->_columnFields as $columnField) {
+                            if(!empty($data->$columnField) && !is_array($data->$columnField)) {
+                                $data->$columnField = explode('|', $data->$columnField);
+                            }
+                        }
+                    }
+
                     // Allow to modify the data
                     if (method_exists($this, 'onDataLoad')) {
                         $data = $this->onDataLoad($data);
@@ -552,6 +569,15 @@ class YireoModel extends YireoCommonModel
                             if ($this->user->authorise($action, $itemAsset) == false) {
                                 unset($data[$index]);
                                 continue;
+                            }
+                        }
+
+                        // Prepare the column-fields
+                        if(!empty($this->_columnFields)) {
+                            foreach($this->_columnFields as $columnField) {
+                                if(!empty($item->$columnField) && !is_array($item->$columnField)) {
+                                    $item->$columnField = explode('|', $item->$columnField);
+                                }
                             }
                         }
 
@@ -822,6 +848,15 @@ class YireoModel extends YireoCommonModel
             if (isset($data['params']['modified_by'])) unset( $data['params']['modified_by'] );
         }
 
+        // Prepare the column-fields
+        if(!empty($this->_columnFields)) {
+            foreach($this->_columnFields as $columnField) {
+                if(!empty($data[$columnField]) && is_array($data[$columnField])) {
+                    $data[$columnField] = implode('|', $data[$columnField]);
+                }
+            }
+        }
+
         // Bind the form fields to the table
         if (!$this->_tbl->bind($data)) {
             $this->setError($this->_db->getErrorMsg());
@@ -1037,9 +1072,9 @@ class YireoModel extends YireoCommonModel
         if (empty($query)) {
 
             // Skip certain fields in frontend
-            $skipFrontendFields = array('locked', 'published', 'published_up', 'published_down',
-                'checked_out', 'checked_out_time', 'created', 'created_by', 'created_by_alias', 
-                'modified', 'modified_by', 'modified_by_alias', 'ordering');
+            $skipFrontendFields = array(
+                'locked', 'published', 'published_up', 'published_down', 'checked_out', 'checked_out_time'
+            );
 
             // Build the fields-string to avoid a *
             $fields = $this->_tbl->getDatabaseFields();
