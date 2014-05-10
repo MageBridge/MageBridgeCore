@@ -455,12 +455,6 @@
                 <continue_shopping_to_previous>1</continue_shopping_to_previous>
                 <direct_output>magebridge/output/test4</direct_output>
             </settings>
-            <theme>
-                <product_image_class>lightbox</product_image_class>
-                <product_image_rel>lightbox</product_image_rel>
-                <product_image_size>250</product_image_size>
-                <product_thumb_size>56</product_thumb_size>
-            </theme>
         </magebridge>
     </default>
 

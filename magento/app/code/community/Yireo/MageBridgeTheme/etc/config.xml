@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * MageBridge
+ *
+ * @author Yireo
+ * @package MageBridgeTheme
+ * @copyright Copyright 2014
+ * @license Open Source License
+ * @link http://www.yireo.com
+ */
+-->
+<config>
+
+    <modules>
+        <Yireo_MageBridgeTheme>
+            <version>1.9.5171</version>
+        </Yireo_MageBridgeTheme>
+    </modules>
+
+    <global>
+        <helpers>
+            <magebridgetheme>
+                <class>Yireo_MageBridgeTheme_Helper</class>
+            </magebridgetheme>
+        </helpers>
+    </global>
+
+    <adminhtml>
+        <translate>
+            <modules>
+                <Yireo_MageBridgeTheme>
+                    <files>
+                        <default>Yireo_MageBridgeTheme.csv</default>
+                    </files>
+                </Yireo_MageBridgeTheme>
+            </modules>
+        </translate>
+        <acl>
+            <resources>
+                <admin>
+                    <children>
+                        <system>
+                            <children>
+                                <config>
+                                    <children>
+                                        <magebridge translate="title" module="magebridge">
+                                            <title>MageBridge advanced options</title>
+                                        </magebridge>
+                                    </children>
+                                </config>
+                            </children>
+                        </system>
+                    </children>
+                </admin>
+            </resources>
+        </acl>
+    </adminhtml>
+
+    <frontend>
+        <layout>
+            <updates>
+                <magebridge>
+                    <file>magebridge.xml</file>
+                </magebridge>
+            </updates>
+        </layout>
+    </frontend>
+
+    <default>
+        <magebridge>
+            <theme>
+                <product_image_class>lightbox</product_image_class>
+                <product_image_rel>lightbox</product_image_rel>
+                <product_image_size>250</product_image_size>
+                <product_thumb_size>56</product_thumb_size>
+            </theme>
+        </magebridge>
+    </default>
+
+</config>

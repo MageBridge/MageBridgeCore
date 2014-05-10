@@ -21,76 +21,10 @@
             <show_in_website>1</show_in_website>
             <show_in_store>1</show_in_store>
             <groups>
-                <theme translate="label">
-                    <label>MageBridge Theme</label>
+                <settings translate="label">
+                    <label>MageBridge Core Options</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>1</sort_order>
-                    <show_in_default>1</show_in_default>
-                    <show_in_website>1</show_in_website>
-                    <show_in_store>1</show_in_store>
-                    <fields>
-                        <product_image_class translate="label">
-                            <label>Product View: Image Class</label>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>1</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <comment><![CDATA[
-                                Class-attribute of anchor-tag<br/>
-                                Example: lightbox<br/>
-                                Resulting HTML: &lt;a ... class="lightbox"&gt;
-                            ]]></comment>
-                        </product_image_class>
-                        <product_image_rel translate="label">
-                            <label>Product View: Relation</label>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>2</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <comment><![CDATA[
-                                Relation-attribute of anchor-tag<br/>
-                                Example: lightbox<br/>
-                                Resulting HTML: &lt;a ... rel="lightbox"&gt;
-                            ]]></comment>
-                        </product_image_rel>
-                        <product_image_size translate="label">
-                            <label>Product View: Image Size</label>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>3</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <validate>validate-number</validate>
-                            <comment>Size in pixels of primary image</comment>
-                        </product_image_size>
-                        <product_thumb_size translate="label">
-                            <label>Product View: Thumbnail Size</label>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>4</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <validate>validate-number</validate>
-                            <comment>Size in pixels of gallery thumbnails</comment>
-                        </product_thumb_size>
-                        <product_image_max_size translate="label">
-                            <label>Product View: Image Maximum Size</label>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>5</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <validate>validate-number</validate>
-                            <comment>Maximum size for popup image</comment>
-                        </product_image_max_size>
-                    </fields>
-                </theme>
-                <settings translate="label">
-                    <label>System Options</label>
-                    <frontend_type>text</frontend_type>
-                    <sort_order>2</sort_order>
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>

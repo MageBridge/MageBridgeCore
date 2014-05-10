@@ -1,15 +1,15 @@
 <?php
 /**
- * MageBridge
+ * MageBridgeTheme
  *
  * @author Yireo
- * @package MageBridge
+ * @package MageBridgeTheme
  * @copyright Copyright 2014
  * @license Open Source License
  * @link http://www.yireo.com
  */
 
-class Yireo_MageBridge_Helper_Theme extends Mage_Core_Helper_Abstract
+class Yireo_MageBridgeTheme_Helper_Theme extends Mage_Core_Helper_Abstract
 {
     /*
      * Helper-method to get the setting "magebridge/theme/product_image_class"

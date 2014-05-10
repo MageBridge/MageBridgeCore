@@ -19,15 +19,15 @@ $_product = $this->getProduct();
 $_helper = $this->helper('catalog/output');
 $_label = $this->htmlEscape($this->getImageLabel());
 
-$_image_class = Mage::helper('magebridge/theme')->getProductImageClass();
-$_image_rel = Mage::helper('magebridge/theme')->getProductImageRelation();
-$_image_size = Mage::helper('magebridge/theme')->getProductImageSize();
+$_image_class = Mage::helper('magebridgetheme/theme')->getProductImageClass();
+$_image_rel = Mage::helper('magebridgetheme/theme')->getProductImageRelation();
+$_image_size = Mage::helper('magebridgetheme/theme')->getProductImageSize();
 
-$_image_max_size = Mage::helper('magebridge/theme')->getProductImageMaxSize();
+$_image_max_size = Mage::helper('magebridgetheme/theme')->getProductImageMaxSize();
 $_image_destination = $this->helper('catalog/image')->init($_product, 'image');
 if($_image_max_size > 0) $_image_destination = $_image_destination->resize($_image_max_size);
 
-$_thumb_size = Mage::helper('magebridge/theme')->getProductThumbSize();
+$_thumb_size = Mage::helper('magebridgetheme/theme')->getProductThumbSize();
 $_thumb_height = $_thumb_size;
 $_thumb_width = $_thumb_size;
 ?>
