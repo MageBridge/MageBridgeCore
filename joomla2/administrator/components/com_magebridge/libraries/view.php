@@ -218,7 +218,7 @@ class YireoCommonView extends YireoAbstractView
     public function loadTemplate($file = null, $variables = array())
     {
         // Define version-specific folder
-        if (YireoHelper::isJoomla25() == true) {
+        if (YireoHelper::isJoomla25() == true && YireoHelper::hasBootstrap() == false) {
             $versionFolder = 'joomla25';
         } else {
             $versionFolder = 'joomla35';

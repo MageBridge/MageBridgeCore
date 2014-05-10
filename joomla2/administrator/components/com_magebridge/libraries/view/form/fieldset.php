@@ -32,7 +32,8 @@ foreach($form->getFieldsets() as $fieldsetCode => $fieldsetObject) {
             <?php endif; ?>
 
             <?php foreach($form->getFieldset($fieldset) as $field): ?>
-                <?php if($fieldset == 'editor'): ?>
+                <?php $fieldType = strtolower((string)$field->type); ?>
+                <?php if($fieldset == 'editor' || in_array($fieldType, array('textarea', 'editor'))): ?>
                     <div class="row-fluid">
                         <div class="span12">
                             <?php echo $field->label; ?>

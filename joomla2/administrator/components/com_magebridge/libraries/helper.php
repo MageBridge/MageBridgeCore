@@ -223,6 +223,47 @@ class YireoHelper
     }
 
     /*
+     * Add in Bootstrap
+     *
+     * @access public
+     * @subpackage Yireo
+     * @param null
+     * @return null
+     */
+    static public function bootstrap()
+    {
+        if (self::isJoomla25()) {
+
+            // Check if bootstrap is loaded already
+            $application = JFactory::getApplication();
+            if(method_exists($application, 'set')) $application->set('bootstrap', true);
+
+            $document = JFactory::getDocument();
+            $document->addStyleSheet('//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css');
+            $document->addStyleSheet('//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js');
+        } else {
+          JHtml::_('bootstrap.framework');
+        }
+    }
+
+    /*
+     * Method to check whether Bootstrap is used
+     *
+     * @access public
+     * @subpackage Yireo
+     * @param null
+     * @return boolean
+     */
+    static public function hasBootstrap()
+    {
+        $application = JFactory::getApplication();
+        if (method_exists($application, 'get') && $application->get('bootstrap') == true) {
+            return true;
+        }
+        return false;
+    }
+
+    /*
      * Add in jQuery
      *
      * @access public

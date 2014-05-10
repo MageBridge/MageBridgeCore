@@ -78,6 +78,13 @@ class YireoCommonModel extends YireoAbstractModel
     protected $_tbl_key = null;
 
     /**
+     * Flag to automatically set the table class prefix
+     *
+     * @protected boolean
+     */
+    protected $_tbl_prefix_auto = false;
+
+    /**
      * Unique id
      *
      * @protected int
@@ -105,6 +112,7 @@ class YireoCommonModel extends YireoAbstractModel
     {
         if ($this->_skip_table == true) return null;
         if (empty($name)) $name = $this->_tbl_alias;
+        if (!empty($this->_tbl_prefix)) $prefix = $this->_tbl_prefix;
         return parent::getTable($name, $prefix, $options);
     }
 }
@@ -273,14 +281,25 @@ class YireoModel extends YireoCommonModel
      */
     public function __construct($tableAlias = null)
     {
-        // Call the parent constructor
-        parent::__construct();
-
         // Import use full variables from JFactory
         $this->application = JFactory::getApplication();
         $this->user = JFactory::getUser();
 
+        // Create the option-namespace
+        $classParts = explode('Model', get_class($this));
+        $this->_view = (!empty($classParts[1])) ? strtolower($classParts[1]) : JRequest::getCmd('view');
+        $this->_option = $this->getOption();
+        $this->_option_id = $this->_option.'_'.$this->_view.'_';
+        if ($this->application->isSite()) $this->_option_id .= JRequest::getInt('Itemid').'_';
+        $this->_component = preg_replace('/^com_/', '', $this->_option);
+        $this->_component = preg_replace('/[^A-Z0-9_]/i', '', $this->_component);
+        $this->_component = str_replace(' ', '', ucwords(str_replace('_', ' ', $this->_component)));
+
+        // Call the parent constructor
+        parent::__construct();
+
         // Set the database variables
+        if($this->_tbl_prefix_auto == true) $this->_tbl_prefix = $this->_component.'Table';
         // @todo: Set this in a metadata array 
         $this->_tbl_alias = $tableAlias;
         $this->_tbl = $this->getTable($tableAlias);
@@ -302,13 +321,6 @@ class YireoModel extends YireoCommonModel
         } else {
             $this->_checkout = false;
         }
-
-        // Create the option-namespace
-        $classParts = explode('Model', get_class($this));
-        $this->_view = (!empty($classParts[1])) ? strtolower($classParts[1]) : JRequest::getCmd('view');
-        $this->_option = $this->getOption();
-        $this->_option_id = $this->_option.'_'.$this->_view.'_';
-        if ($this->application->isSite()) $this->_option_id .= JRequest::getInt('Itemid').'_';
 
         // Set the parameters for the frontend
         if (empty($this->params)) {
