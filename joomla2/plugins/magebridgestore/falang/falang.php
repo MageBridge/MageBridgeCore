@@ -48,20 +48,19 @@ class plgMageBridgeStoreFalang extends MageBridgePluginStore
 
         // Fetch the languages
         $languages = FalangManager::getInstance()->getActiveLanguages();
+        $language_code = JRequest::getCmd('lang');
         if (!empty($languages)) {
             foreach ($languages as $l) {
                 if ($language->getTag() == $l->code || $language->getTag() == $l->lang_code) {
-                    if (!empty($l->shortcode)) {
-                        $language_code = $l->shortcode;
-                        break;
-                    } else if (!empty($l->sef)) {
-                        $language_code = $l->sef;
-                        break;
+                    if (!empty($l->lang_code) && $l->lang_code == $actions['falang_language']) {
+                        return true;
+                    } elseif (!empty($l->shortcode) && $l->shortcode == $actions['falang_language']) {
+                        return true;
+                    } elseif (!empty($l->sef) && $l->sef == $actions['falang_language']) {
+                        return true;
                     }
                 }
             }
-        } else {
-            $language_code = JRequest::getCmd('lang');
         }
 
         // Check if the condition applies
