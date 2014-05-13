@@ -37,7 +37,7 @@ class MageBridgeInstallHelper
             "UPDATE `#__plugins` SET `ordering`='99' WHERE `element`='magebridge' AND `folder`='user'",
             "DELETE FROM `#__magebridge_config` WHERE `name`=''",
             "ALTER TABLE `#__magebridge_log` ADD `session` VARCHAR( 50 ) NOT NULL AFTER  `http_agent`",
-            "ALTER TABLE `#__magebridge_urls` ADD UNIQUE `published` ( `published`)",
+            "ALTER TABLE `#__magebridge_urls` DROP INDEX published",
             "ALTER TABLE `#__magebridge_products` ADD `actions` TEXT NOT NULL AFTER `connector_value`",
             "ALTER TABLE `#__magebridge_stores` ADD `actions` TEXT NOT NULL AFTER `connector_value`",
             "DELETE FROM `#__magebridge_connectors`",
