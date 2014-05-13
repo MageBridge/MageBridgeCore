@@ -269,6 +269,9 @@ class MageBridge
             $_COOKIE['frontend'] = null;
         }
 
+        // Set the SID paramater
+        $_GET['SID'] = session_id();
+
         return true;
     }
 
