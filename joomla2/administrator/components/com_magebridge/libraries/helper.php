@@ -189,13 +189,16 @@ class YireoHelper
             return $params;
         }
 
+        if (is_string($params)) $params = trim($params);
+
         if (self::isJoomla15()) {
             jimport('joomla.html.parameter');
             $params = @new JParameter($params, $file);
         } else {
             jimport('joomla.registry.registry');
             $registry = @new JRegistry();
-            if(!empty($params)) $registry->loadString($params);
+            if(!empty($params) && is_string($params)) $registry->loadString($params);
+            if(!empty($params) && is_array($params)) $registry->loadArray($params);
 
             $fileContents = @file_get_contents($file);
             if(preg_match('/\.xml$/', $fileContents)) {

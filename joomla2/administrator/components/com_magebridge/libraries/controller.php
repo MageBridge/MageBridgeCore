@@ -856,6 +856,12 @@ class YireoController extends YireoCommonController
         // Construct the URL
         $link = 'index.php?option='.$option.'&view='.$view ;
 
+        // Add a modal flag
+        if (JRequest::getInt('modal') == 1) {
+            $variables['modal'] = 1;
+            $variables['tmpl'] = 'component';
+        }
+
         // Add the extra variables to the URL if needed
         if (!empty( $variables )) {
             foreach ( $variables as $name => $value ) {

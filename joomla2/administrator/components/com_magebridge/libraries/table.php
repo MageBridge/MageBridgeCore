@@ -36,6 +36,13 @@ class YireoTable extends JTable
     protected $_fields = array();
 
     /**
+     * List of default values for database fields
+     *
+     * @protected array
+     */
+    protected $_defaults = array();
+
+    /**
      * List of required fields that can not be left empty 
      *
      * @protected array
