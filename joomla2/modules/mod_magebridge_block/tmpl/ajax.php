@@ -1,6 +1,6 @@
 <?php
 /**
- * Joomla! module MageBridge: Shopping Cart
+ * Joomla! module MageBridge: Block
  *
  * @author Yireo (info@yireo.com)
  * @package MageBridge
