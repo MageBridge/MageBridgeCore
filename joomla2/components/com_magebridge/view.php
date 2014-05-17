@@ -33,12 +33,15 @@ class MageBridgeView extends YireoAbstractView
      */
     public function display($tpl = null)
     {
+        // Add debugging
+        MageBridgeDebugHelper::addDebug();
+
         // Build the block
         $block = $this->build();
         if (!empty($block)) {
             $this->block = $this->addFixes($block);
         }
-
+    
         // Asign this block to the template
         $this->assignRef('block', $this->block);
 
