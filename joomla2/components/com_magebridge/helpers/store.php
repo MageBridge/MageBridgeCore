@@ -85,6 +85,7 @@ class MageBridgeStoreHelper
 
         // Check if the current Menu-Item has something to say about this
         $store = MageBridgeHelper::getParams()->get('store');
+        $website = MageBridgeHelper::getParams()->get('website');
         if (!empty($store) && $store = explode(':', $store)) {
             if ($store[0] == 'v') {
                 $this->app_type = 'store';
@@ -100,6 +101,12 @@ class MageBridgeStoreHelper
                 $application->setUserState('magebridge.store.name', $this->app_value);
                 return;
             }
+        } elseif(!empty($website)) {
+            $this->app_type = 'website';
+            $this->app_value = $website;
+            $application->setUserState('magebridge.store.type', $this->app_type);
+            $application->setUserState('magebridge.store.name', $this->app_value);
+            return;
         }
 
         // Check whether the GET-connector is enabled
