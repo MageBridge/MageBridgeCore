@@ -120,7 +120,7 @@
         <fieldset name="debugging" label="COM_MAGEBRIDGE_MODEL_CONFIG_FIELDSET_DEBUGGING">
 		    <field type="spacer" name="debugging" class="fieldgroup" />
 		    <field name="debug" type="boolean" />
-		    <field name="debug_ip" type="textarea" />
+		    <field name="debug_ip" type="ip" />
 		    <field name="debug_level" type="list">
 			    <option value="all">COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_DEBUG_LEVEL_OPTION_ALL</option>
 			    <option value="error">COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_DEBUG_LEVEL_OPTION_ERROR</option>
