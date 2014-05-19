@@ -1,0 +1,56 @@
+<?php
+/*
+ * Joomla! component MageBridge
+ *
+ * @author Yireo (info@yireo.com)
+ * @package MageBridge
+ * @copyright Copyright 2014
+ * @license GNU Public License
+ * @link http://www.yireo.com
+ */
+
+// Check to ensure this file is included in Joomla!
+defined('JPATH_BASE') or die();
+
+// Import the MageBridge autoloader
+require_once JPATH_SITE.'/components/com_magebridge/helpers/loader.php';
+
+/*
+ * Form Field-class for adding an IP
+ */
+class JFormFieldIp extends JFormFieldAbstract
+{
+    /*
+     * Form field type
+     */
+    public $type = 'IP address';
+
+    /*
+     * Method to get the HTML of this element
+     *
+     * @param null
+     * @return string
+     */
+	protected function getInput()
+	{
+        $name = $this->name;
+        $fieldName = $name;
+        $value = $this->value;
+        $id = str_replace(']', '', str_replace('[', '_', $name));
+
+        $html = null;
+        $html .= '<div class="controls">';
+        $html .= '<textarea type="text" id="'.$id.'" name="'.$name.'" '
+            . 'rows="5" cols="40" maxlength="255">'
+            . $value
+            . '</textarea>';
+        $html .= '</div>';
+        $html .= '<button class="btn" onclick="insertIp(\''.$_SERVER['REMOTE_ADDR'].'\'); return false;">'
+            . JText::_('COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_DEBUG_IP')
+            . '</button>';
+        $html .= '<script>function insertIp(ip) {'
+            . ' jQuery(\'#'.$id.'\').val(ip);'
+            . '}</script>';
+        return $html;
+    }
+}
