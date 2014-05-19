@@ -110,8 +110,8 @@ class MageBridgeStoreHelper
         }
 
         // Check whether the GET-connector is enabled
-        $get_connector = MageBridgeConnectorStore::getInstance()->getConnector('get');
-        if (!empty($get_connector)) {
+        jimport( 'joomla.plugin.helper' );
+        if (JPluginHelper::isEnabled('magebridgestore', 'get')) {
 
             // Check for GET-variables __store
             $store = $application->getUserState('___store');
@@ -131,7 +131,7 @@ class MageBridgeStoreHelper
             }
         }
 
-        // Determine the current store using MageBridge Store Connectors
+        // Determine the current store using MageBridge Store Plugins
         if ($application->isSite()) {
             $store = MageBridgeConnectorStore::getInstance()->getStore();
             if (!empty($store)) {
