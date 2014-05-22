@@ -88,6 +88,11 @@ class Yireo_MageBridge_Model_Core
             return false;
         }
 
+        // Optionally disable form_key security
+        if(Mage::getStoreConfig('magebridge/setting/disable_form_key') == 1) {
+            Mage::app()->getRequest()->setParam('form_key', Mage::getSingleton('core/session')->getFormKey());
+        }
+
         // Set the magebridge-URLs
         $this->setConfig();
 

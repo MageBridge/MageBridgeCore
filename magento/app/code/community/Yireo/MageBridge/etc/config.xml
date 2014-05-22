@@ -454,6 +454,7 @@
                 <encryption_key></encryption_key>
                 <continue_shopping_to_previous>1</continue_shopping_to_previous>
                 <direct_output>magebridge/output/test4</direct_output>
+                <disable_form_key>1</disable_form_key>
             </settings>
         </magebridge>
     </default>
