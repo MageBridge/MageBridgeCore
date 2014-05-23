@@ -32,7 +32,7 @@ class MageBridgeViewRoot extends MageBridgeView
         $this->setBlock('content');
 
         // Build the bridge right away, because we need data from Magento
-        $this->build();
+        $block = $this->build();
 
         // Determine which template to display
         if (MageBridgeTemplateHelper::isProductPage()) {
@@ -44,7 +44,7 @@ class MageBridgeViewRoot extends MageBridgeView
         // Output component-only pages
         $bridge = MageBridge::getBridge();
         if ($bridge->isAjax()) {
-            print $this->block;
+            print $block;
             JFactory::getApplication()->close();
         }
 
