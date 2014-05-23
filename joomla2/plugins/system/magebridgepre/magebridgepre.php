@@ -21,17 +21,6 @@ jimport( 'joomla.plugin.plugin' );
 class plgSystemMageBridgePre extends JPlugin
 {
     /**
-     * Event onAfterLoad
-     *
-     * @access public
-     * @param null
-     * @return null
-     */
-    public function onAfterLoad()
-    {
-    }
-
-    /**
      * Event onAfterInitialise
      *
      * @access public
@@ -130,14 +119,7 @@ class plgSystemMageBridgePre extends JPlugin
      */
     private function getParams()
     {
-        if (!MageBridgeHelper::isJoomla15()) {
-            return $this->params;
-        } else {
-            jimport('joomla.html.parameter');
-            $plugin = JPluginHelper::getPlugin('system', 'magebridgepre');
-            $params = new JParameter($plugin->params);
-            return $params;
-        }
+        return $this->params;
     }
 
     /**
