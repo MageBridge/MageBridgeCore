@@ -416,6 +416,7 @@ class MageBridgeModelBridgeHeaders extends MageBridgeModelBridgeSegment
                     } else {
 
                         if (!preg_match('/^http/', $item['path'])) $item['path'] = $bridge->getMagentoUrl().$item['path'];
+                        $item['path'] = $this->convertUrl($item['path']);
                         $tag = '<script type="text/javascript" src="'.$item['path'].'"></script>'."\n";
                         $jstags[] = $tag;
                     }
@@ -502,6 +503,7 @@ class MageBridgeModelBridgeHeaders extends MageBridgeModelBridgeSegment
      */
     private function addScript($url)
     {
+        $url = $this->convertUrl($url);
         $html = '<script type="text/javascript" src="'.$url.'"></script>';
         $document = JFactory::getDocument();
         $document->addCustomTag($html);
@@ -541,9 +543,8 @@ class MageBridgeModelBridgeHeaders extends MageBridgeModelBridgeSegment
     {
         // Load Prototype through Google API
         if (MagebridgeModelConfig::load('use_google_api') == 1) {
-            $prefix = (JURI::getInstance()->isSSL()) ? 'https' : 'http';
-            $this->addScript($prefix.'://ajax.googleapis.com/ajax/libs/prototype/1.6.0.3/prototype.js');
-            $this->addScript($prefix.'://ajax.googleapis.com/ajax/libs/scriptaculous/1.8.2/scriptaculous.js');
+            $this->addScript('http://ajax.googleapis.com/ajax/libs/prototype/1.6.0.3/prototype.js');
+            $this->addScript('http://ajax.googleapis.com/ajax/libs/scriptaculous/1.8.2/scriptaculous.js');
             return true;
 
         // Load Protoaculous
@@ -558,5 +559,19 @@ class MageBridgeModelBridgeHeaders extends MageBridgeModelBridgeSegment
         }
 
         return false;
+    }
+
+    /*
+     * Guarantee a script or stylesheet loaded through SSL is also loaded through SSL
+     * 
+     * @param null
+     * @return bool
+     */
+    public function convertUrl($url)
+    {
+        if(JURI::getInstance()->isSSL()) {
+            $url = str_replace('http://', 'https://', $url);
+        }
+        return $url;
     }
 }
