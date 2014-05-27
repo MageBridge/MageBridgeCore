@@ -25,7 +25,7 @@ require_once (dirname(__FILE__).'/helper.php');
 // Build the block
 if ($layout != 'ajax') {
     $data = modMageBridgeCartHelper::build($params);
-    if (empty($data)) return false;
+    if ($layout != 'native' && empty($data)) return false;
 }
 
 // Include the layout-file
