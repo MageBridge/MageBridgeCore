@@ -29,7 +29,9 @@ class modMageBridgeCartHelper
         // Initialize the register 
         $register = array();
 
-        if ($params->get('layout') == 'native') {
+        $layout = $params->get('layout');
+        $layout = preg_replace('/^([^\:]+):/', '', $layout);
+        if ($layout == 'native') {
             $register[] = array('api', 'magebridge_session.checkout');
         } else {
             $register[] = array('block', 'cart_sidebar');
@@ -64,7 +66,9 @@ class modMageBridgeCartHelper
             $bridge->setHeaders('js');
         }
 
-        if ($params->get('layout') == 'native') {
+        $layout = $params->get('layout', 'default');
+        $layout = preg_replace('/^([^\:]+):/', '', $layout);
+        if ($layout) {
             return $bridge->getAPI('magebridge_session.checkout');
         } else {
             return $bridge->getBlock('cart_sidebar');

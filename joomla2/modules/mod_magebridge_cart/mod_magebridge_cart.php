@@ -17,6 +17,7 @@ require_once JPATH_SITE.'/components/com_magebridge/helpers/loader.php';
 
 // Read the parameters
 $layout = $params->get('layout', 'default');
+$layout = preg_replace('/^([^\:]+):/', '', $layout);
 if ($layout == 'block') $layout = 'default';
 
 // Call the helper
@@ -29,4 +30,4 @@ if ($layout != 'ajax') {
 }
 
 // Include the layout-file
-require(JModuleHelper::getLayoutPath('mod_magebridge_cart', $layout));
+require(JModuleHelper::getLayoutPath('mod_magebridge_cart', $params->get('layout', 'default')));
