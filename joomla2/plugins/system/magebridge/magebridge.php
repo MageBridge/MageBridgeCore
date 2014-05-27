@@ -501,13 +501,14 @@ class plgSystemMageBridge extends JPlugin
         }
 
         // Add some items to the whitelist
-        if($disable_js_all == false && $disable_js_jquery == false) {
+        if($disable_js_jquery == false) {
             $whitelist[] = 'media/system/js/calendar.js';
             $whitelist[] = 'media/system/js/calendar-setup.js';
             $whitelist[] = '/com_jce/';
             $whitelist[] = '/footools.js';
             $whitelist[] = 'www.googleadservices.com';
             $whitelist[] = 'media/jui/js';
+            $whitelist[] = 'protostar/js/template.js';
         }
 
         // Load the blacklist
