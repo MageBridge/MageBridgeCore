@@ -218,6 +218,8 @@ class Yireo_MageBridge_Model_Core
                     // Set the main URL
                     $urls['web/unsecure/base_link_url'] = $this->getMageBridgeSefUrl();
                     $urls['web/secure/base_link_url'] = $this->getMageBridgeSefUrl();
+                    $urls['web/unsecure/base_link_url'] = $this->getMageBridgeSefUrl();
+                    $urls['web/secure/base_link_url'] = $this->getMageBridgeSefUrl();
 
                     // Correct HTTP and HTTPS URLs in all URLs
                     $has_ssl = Mage::getSingleton('magebridge/core')->getMetaData('has_ssl');
