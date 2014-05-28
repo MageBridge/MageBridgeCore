@@ -12,11 +12,9 @@
     <fields name="params">
         <fieldset name="basic">
         </fieldset>
-        <fieldset name="advanced" addfieldpath="/administrator/components/com_magebridge/fields">
-			<field name="store" type="store" default="" label="Magento store" description="Use this to overwrite the Magento store-scope" />
-		</fieldset>
-        <fieldset name="experimental" label="COM_MAGEBRIDGE_ROOT_VIEW_FIELDSET_EXPERIMENTAL" addfieldpath="/administrator/components/com_magebridge/fields">
-			<field name="website" type="website" default="" label="Magento website" description="Use this to overwrite the Magento store-scope" />
+        <fieldset name="scope" label="COM_MAGEBRIDGE_VIEW_FIELDSET_SCOPE" addfieldpath="/administrator/components/com_magebridge/fields">
+			<field name="store" type="store" default="" label="COM_MAGEBRIDGE_VIEW_FIELD_STORE" description="COM_MAGEBRIDGE_VIEW_FIELD_STORE_DESC" />
+			<field name="website" type="website" default="" label="COM_MAGEBRIDGE_VIEW_FIELD_WEBSITE" description="COM_MAGEBRIDGE_VIEW_FIELD_WEBSITE_DESC" />
         </fieldset>
     </fields>
 </metadata>
