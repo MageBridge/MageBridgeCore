@@ -65,6 +65,7 @@
 		    <field name="realname_with_space" type="boolean" />
 		    <field name="enable_auth_backend" type="boolean" />
 		    <field name="enable_auth_frontend" type="boolean" />
+		    <field name="customer_pages" type="textarea" access="com_magebridge.config.website" />
 
 		    <field type="spacer" name="user_import" class="fieldgroup" />
 		    <field name="users_website_id" type="website" access="com_magebridge.config.website" />

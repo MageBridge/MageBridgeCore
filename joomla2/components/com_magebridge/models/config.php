@@ -106,6 +106,7 @@ class MagebridgeModelConfig extends YireoAbstractModel
             'preload_all_modules' => 0,
             'enforce_rootmenu' => 0,
             'customer_group' => '',
+            'customer_pages' => '',
             'usergroup' => '',
             'enable_sso' => 0,
             'enable_usersync' => 1,

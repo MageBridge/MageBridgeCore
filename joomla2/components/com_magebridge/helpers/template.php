@@ -360,6 +360,15 @@ class MageBridgeTemplateHelper
             ) {
             return true;
         }
+
+        $customer_pages = trim(MagebridgeModelConfig::load('customer_pages'));
+        if(!empty($customer_pages)) {
+            $customer_pages = explode("\n", $customer_pages);
+            foreach($customer_pages as $customer_page) {
+                if(self::isPage($customer_page)) return true;
+            }
+        }
+
         return false;
     }
 
