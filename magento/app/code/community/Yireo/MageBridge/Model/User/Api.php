@@ -34,7 +34,7 @@ class Yireo_MageBridge_Model_User_Api extends Mage_Api_Model_Resource_Abstract
             return false;
         }
 
-        //Mage::getSingleton('magebridge/debug')->trace('User data from Joomla!', $data);
+        Mage::getSingleton('magebridge/debug')->trace('User data from Joomla!', $data);
 
         try {
             // Initialize the session
@@ -68,6 +68,14 @@ class Yireo_MageBridge_Model_User_Api extends Mage_Api_Model_Resource_Abstract
                     // Call the method to set the new value
                     $customer->$method($value);
                 }
+            }
+
+            // Support for MageBridge First Last plugin
+            if(!empty($data['magebridgefirstlast']['firstname'])) {
+                $customer->setFirstname($data['magebridgefirstlast']['firstname']);
+            }
+            if(!empty($data['magebridgefirstlast']['lastname'])) {
+                $customer->setLastname($data['magebridgefirstlast']['lastname']);
             }
 
             // Set required entries
