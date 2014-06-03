@@ -237,7 +237,8 @@ class MageBridgeHelper
         // Clean-up left-overs
         $content = str_replace('?___SID=U', '', $content);
         $content = str_replace('?___SID=S', '', $content);
-        $content = preg_replace('/\?SID=([a-zA-Z0-9\-\_]{12,42})/', '', $content);
+        $content = preg_replace('/\?SID=([a-zA-Z0-9\-\_]{12,42})/', '?', $content);
+        $content = str_replace('?&amp;', '?', $content);
 
         // Remove all __store information
         if (MagebridgeModelConfig::load('filter_store_from_url') == 1) {
