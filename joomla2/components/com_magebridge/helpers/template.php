@@ -349,7 +349,15 @@ class MageBridgeTemplateHelper
      */
     static public function isCustomerPage()
     {
-        if (self::isPage('customer/*') || self::isPage('sales/*')) {
+        if (self::isPage('customer/*') 
+            || self::isPage('sales/*')
+            || self::isPage('review/customer/*')
+            || self::isPage('tag/customer/*')
+            || self::isPage('wishlist/*')
+            || self::isPage('oauth/customer_token/*')
+            || self::isPage('newsletter/manage/*')
+            || self::isPage('downloadable/customer/*')
+            ) {
             return true;
         }
         return false;
