@@ -13,6 +13,7 @@
 	<files>
 		<filename plugin="magebridgefirstlast">magebridgefirstlast.php</filename>
 		<filename>index.html</filename>
+		<folder>form</folder>
 	</files>
 
 	<languages>
