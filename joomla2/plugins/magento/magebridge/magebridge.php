@@ -228,6 +228,12 @@ class plgMagentoMageBridge extends JPlugin
             // Include the username
             $data['username'] = $this->getUsername($user, $customer);
 
+            // Set the firstname and lastname
+            $data['magebridgefirstlast'] = array(
+                'firstname' => $customer['firstname'],
+                'lastname' => $customer['lastname'],
+            );
+
             // Include the password
             if (!empty($customer['password'])) {
                 $data['password'] = $customer['password'];
@@ -489,7 +495,7 @@ class plgMagentoMageBridge extends JPlugin
             return $user->get('name');
         }
         
-        if (isset($customer['firstname']) && isset($customer['firstname'])) {
+        if (isset($customer['firstname']) && isset($customer['lastname'])) {
             return $customer['firstname'].' '.$customer['lastname'];
         } else if (isset($customer['name'])) {
             return $customer['name'];
