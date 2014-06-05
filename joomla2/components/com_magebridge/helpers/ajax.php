@@ -71,27 +71,11 @@ class MageBridgeAjaxHelper
                 . "});\n"
             ;
 
-        // Load MooTools (Joomla!)
-        } else if (MageBridgeHelper::isJoomla15()) {
-            JHTML::_('behavior.mootools');
-            $script = "window.addEvent('domready', function(){\n"
-                . "    var MBajax = new Ajax( '".$url."', {onSuccess: function(r){\n"
-                . "        $('".$element."').innerHTML = r;\n"
-                . "    }});\n"
-                . "    MBajax.request();\n"
-                . "});\n"
-            ;
-
-        // Load MooTools (Joomla! 1.6)
+        // Load jQuery ourselves
         } else {
-            JHTML::_('behavior.mootools');
-            $script = "window.addEvent('domready', function(){\n"
-                . "    var MBajax = new Request({\n"
-                . "        url: '".$url."', \n"
-                . "        onComplete: function(r){\n"
-                . "            $('".$element."').innerHTML = r;\n"
-                . "        }\n"
-                . "    }).send();\n"
+            YireoHelper::jquery();
+            $script = "jQuery(document).ready(function(){\n"
+                . "    jQuery('#".$element."').load('".$url."');"
                 . "});\n"
             ;
         }
