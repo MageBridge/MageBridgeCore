@@ -243,10 +243,14 @@ class YireoHelper
 
             $document = JFactory::getDocument();
             $document->addStyleSheet('//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css');
-            $document->addStyleSheet('//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js');
+            $document->addStyleSheet('/media/'.JRequest::getCmd('option').'/css/backend-bootstrap-j25.css');
+            $document->addScript('//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js');
+
         } else {
           JHtml::_('bootstrap.framework');
         }
+
+        self::jquery();
     }
 
     /*

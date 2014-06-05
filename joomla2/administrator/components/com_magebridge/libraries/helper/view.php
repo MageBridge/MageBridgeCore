@@ -114,35 +114,22 @@ class YireoHelperView
             return false;
         }
 
-        if (YireoHelper::isJoomla25()) {
-            JHtml::_('behavior.mootools');
-            $script = "<script type=\"text/javascript\">\n"
-                . "window.addEvent('domready', function(){\n"
-                . "    var MBajax = new Request({\n"
-                . "        url: '".$url."', \n"
-                . "        onComplete: function(r){\n"
-                . "            $('".$div."').innerHTML = r;\n"
-                . "        }\n"
-                . "    }).send();\n"
-                . "});\n"
-                . "</script>";
-        } else {
-            $script = "<script type=\"text/javascript\">\n"
-                . "jQuery(document).ready(function() {\n"
-                . "    var MBajax = jQuery.ajax({\n"
-                . "        url: '".$url."', \n"
-                . "        method: 'get', \n"
-                . "        success: function(result){\n"
-                . "            if (result == '') {\n"
-                . "                alert('Empty result');\n"
-                . "            } else {\n"
-                . "                jQuery('#".$div."').html(result);\n"
-                . "            }\n"
-                . "        }\n"
-                . "    });\n"
-                . "});\n"
-                . "</script>";
-        }
+        YireoHelper::jquery();
+        $script = "<script type=\"text/javascript\">\n"
+            . "jQuery(document).ready(function() {\n"
+            . "    var MBajax = jQuery.ajax({\n"
+            . "        url: '".$url."', \n"
+            . "        method: 'get', \n"
+            . "        success: function(result){\n"
+            . "            if (result == '') {\n"
+            . "                alert('Empty result');\n"
+            . "            } else {\n"
+            . "                jQuery('#".$div."').html(result);\n"
+            . "            }\n"
+            . "        }\n"
+            . "    });\n"
+            . "});\n"
+            . "</script>";
 
         $document->addCustomTag( $script );
     }
