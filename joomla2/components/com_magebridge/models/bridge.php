@@ -508,33 +508,23 @@ class MageBridgeModelBridge
      */
     public function storeHttpReferer()
     {
+        // Singleton method
         static $stored = false;
-        if ($stored == false) {
-            $stored = true;
-
-            $referer = null;
-
-            // If this is a non-MageBridge page, use it
-            if (JRequest::getCmd('option') != 'com_magebridge') {
-                $referer = JURI::getInstance()->toString();
-
-            // If this is a MageBridge page, try to match the "referer" URL-parameter
-            } else if (preg_match('/(uenc|referer)\/([a-zA-Z0-9\_\-]+)/', JURI::current(), $match)) {
-                $referer = base64_decode($match[2]);
-
-            // If this is a MageBridge page, use it only if its not a customer-page, or homepage, or checkout-page
-            } else if (preg_match('/\/customer\/account\//', JURI::current()) == false && 
-                $this->isAjax() == false &&
-                JURI::current() != $this->getJoomlaBridgeUrl()) {
-                $referer = JURI::getInstance()->toString();
-            }
-
-            if (!empty($referer)) {
-                $session = JFactory::getSession();
-                $session->set('magebridge.http_referer', $referer);
-                $this->_http_referer = $referer;
-            }
+        if ($stored == true) {
+            return;
         }
+        $stored = true;
+
+        // Fetch the current referer
+        $referer = $this->getHttpReferer();
+        if (!empty($referer)) {
+
+            $session = JFactory::getSession();
+            $session->set('magebridge.http_referer', $referer);
+
+            $this->_http_referer = $referer;
+        }
+        return;
     }
 
     /*
@@ -546,12 +536,17 @@ class MageBridgeModelBridge
      */
     public function getHttpReferer()
     {
-        if (preg_match('/\/(uenc|referer)\/([a-zA-Z0-9\,]+)/', JURI::current(), $match)) {
-            $this->_http_referer = MageBridgeEncryptionHelper::base64_decode($match[2]);
+        // If this is a non-MageBridge page, use it
+        if (JRequest::getCmd('option') != 'com_magebridge') {
+            $referer = JURI::getInstance()->toString();
+
+        // If the referer is set on the URL, use it also
+        } elseif (preg_match('/\/(uenc|referer)\/([a-zA-Z0-9\,\_\-]+)/', JURI::current(), $match)) {
+            $referer = MageBridgeEncryptionHelper::base64_decode($match[2]);
 
         // If this is the MageBridge page checkout/cart/updatePost, return to the checkout
         } else if (preg_match('/\/checkout\/cart\/([a-zA-Z0-9]+)Post/', JURI::current()) == true) {
-            $this->_http_referer = MageBridgeUrlHelper::route('checkout/cart');
+            $referer = MageBridgeUrlHelper::route('checkout/cart');
 
         // If this is a MageBridge page, use it only if its not a customer-page, or homepage
         } else if (preg_match('/\/customer\/account\//', JURI::current()) == false && 
@@ -559,19 +554,26 @@ class MageBridgeModelBridge
             preg_match('/\/review\/product\/post/', JURI::current()) == false && 
             preg_match('/\/remove\/item/', JURI::current()) == false && 
             preg_match('/\/newsletter\/subscriber/', JURI::current()) == false && 
+            preg_match('/\/checkout\/cart/', JURI::current()) == false && 
             $this->isAjax() == false &&
             JURI::current() != $this->getJoomlaBridgeUrl()) {
-            $this->_http_referer = JURI::getInstance()->toString();
+            $referer = JURI::getInstance()->toString();
+        }
 
-        } else if (empty($this->_http_referer)) {
+        // Load the stored referer from the session
+        if (empty($referer)) {
             $session = JFactory::getSession();
-            $this->_http_referer = $session->get('magebridge.http_referer');
+            $referer = $session->get('magebridge.http_referer');
         }
 
-        if (empty($this->_http_referer) && isset($_SERVER['HTTP_REFERER'])) {
-            $this->_http_referer = $_SERVER['HTTP_REFERER'];
+        // Use the default referer
+        if (empty($this->_http_referer)) {
+            if (isset($_SERVER['HTTP_REFERER']) && $_SERVER['HTTP_REFERER'] != JURI::current()) {
+                $referer = $_SERVER['HTTP_REFERER'];
+            }
         }
 
+        $this->_http_referer = $referer;
         return $this->_http_referer;
     }
 
