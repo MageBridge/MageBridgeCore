@@ -98,14 +98,10 @@ class Yireo_MageBridge_Model_Update extends Mage_Core_Model_Abstract
     {
         // File format
         $format = 'zip'; // @todo: tgz
-        
-        // Set the umask as for index.php
-        $indexPermissions = substr(sprintf('%o', fileperms(Mage::getBaseDir().DS.'index.php')), -4);
-        @chmod(Mage::getBaseDir().DS.'js'.DS.'index.php', $indexPermissions);
-        $umask = 666 - (int)$indexPermissions;
-        $umask = str_pad($umask, 4, '0', STR_PAD_LEFT);
-        @umask($umask);
 
+        // Set the umask
+        $this->setFilesUmask();
+        
         // Simple check for ZIP-support
         if($format == 'zip' && !class_exists('ZipArchive') && !class_exists('PharData')) {
             $msg = 'WARNING: PHP-classes ZipArchive and PharData are missing. Updates might fail.';
@@ -267,6 +263,23 @@ class Yireo_MageBridge_Model_Update extends Mage_Core_Model_Abstract
         // Finalize with a notice
         Mage::getSingleton('adminhtml/session')->addSuccess('MageBridge has been upgraded');
         return null;
+    }
+
+    /*
+     * Method to set the umask on files
+     *
+     * @access public
+     * @param null
+     * @return string
+     */
+    public function setFilesUmask()
+    {
+        // Set the umask as for index.php
+        $indexPermissions = substr(sprintf('%o', fileperms(Mage::getBaseDir().DS.'index.php')), -4);
+        @chmod(Mage::getBaseDir().DS.'js'.DS.'index.php', octdec($indexPermissions));
+        $umask = 666 - (int)$indexPermissions;
+        $umask = str_pad($umask, 4, '0', STR_PAD_LEFT);
+        @umask($umask);
     }
 
     /*
