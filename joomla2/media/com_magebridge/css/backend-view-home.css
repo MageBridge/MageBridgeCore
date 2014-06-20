@@ -7,45 +7,18 @@
  * @link http://www.yireo.com/
  */
 
-div.shadedbox {
-    margin-right: 20px;
-    margin-bottom: 10px;
-    padding: 10px;
-    border:1px solid #DADADA;
-    -webkit-border-radius: 6px;
-    -moz-border-radius: 6px;
-    border-radius: 6px;
-    background: #ffffff;
-    background: -moz-radial-gradient(center, ellipse cover,  #ffffff 50%, #e5e5e5 87%);
-    background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(50%,#ffffff), color-stop(87%,#e5e5e5));
-    background: -webkit-radial-gradient(center, ellipse cover,  #ffffff 50%,#e5e5e5 87%);
-    background: -o-radial-gradient(center, ellipse cover,  #ffffff 50%,#e5e5e5 87%);
-    background: -ms-radial-gradient(center, ellipse cover,  #ffffff 50%,#e5e5e5 87%);
-    background: radial-gradient(ellipse at center,  #ffffff 50%,#e5e5e5 87%);
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#e5e5e5',GradientType=1 );
-}
-
 div.version {
     padding: 20px;
 }
 
-div#yireo-logo {
-    position: relative;
-    text-align: center;
-    margin-top: 20px;
-    height: 100px;
-}
-
 div#yireo-logo img {
-    position: absolute;
-    top: 20px;
-    left: 20px;
+    display: inline;
 }
 
 div#yireo-logo h3 {
-    text-align: center; 
-    padding-top: 25px;
-    font-size:180%; 
+    display: inline;
+    padding-left: 15px;
+    font-size: 180%; 
     color:#888; 
     font-family:'Open Sans'; 
     font-weight:300;

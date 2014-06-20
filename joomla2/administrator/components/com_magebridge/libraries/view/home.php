@@ -42,7 +42,10 @@ class YireoViewHome extends YireoView
 
         // Call the parent constructor
         parent::__construct();
-            
+
+        // Load bootstrap
+        YireoHelper::bootstrap();
+ 
         // Initialize the toolbar
         if (file_exists(JPATH_COMPONENT.'/config.xml')) {
             if(YireoHelper::isJoomla15() || JFactory::getUser()->authorise('core.admin')) {

@@ -13,29 +13,17 @@
 defined('_JEXEC') or die('Restricted access');
 ?>
 <form method="post" name="adminForm" id="adminForm">
-<table id="adminform" width="100%">
-<tr>
-<td width="60%" valign="top">
-
-<div id="cpanel">
-<?php echo $this->loadTemplate('cpanel'); ?>
-</div>
-<div id="yireo-logo" class="shadedbox">
-    <a href="http://www.yireo.com/" target="_new"><img src="../media/<?php echo JRequest::getCmd('option'); ?>/images/yireo.png" align="left" /></a>
-    <h3><?php echo JText::_('LIB_YIREO_VIEW_HOME_SLOGAN'); ?></h3>
-</div>
-<div class="details">
-    <p> 
+<div class="row-fluid">
+    <div class="span7">
+        <?php echo $this->loadTemplate('cpanel'); ?>
+        <?php echo $this->loadTemplate('logo'); ?>
         <?php echo $this->loadTemplate('details'); ?>
-    </p>
+    </div>
+    <div class="span5">
+        <?php echo $this->loadTemplate('ads'); ?>
+    </div>
 </div>
 
-</td>
-<td width="40%" valign="top" style="margin-top:0; padding:0">
-<?php echo $this->loadTemplate('ads'); ?>
-</td>
-</tr>
-</table>
 <input type="hidden" name="option" value="<?php echo $this->_option; ?>" />
 <input type="hidden" name="task" value="" />
 <?php echo JHTML::_( 'form.token' ); ?>

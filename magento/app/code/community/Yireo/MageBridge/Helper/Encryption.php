@@ -57,10 +57,33 @@ class Yireo_MageBridge_Helper_Encryption extends Mage_Core_Helper_Abstract
         $random = str_shuffle('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz');
         $key = Mage::helper('magebridge/encryption')->getSaltedKey($random);
 
-        // Generate the mcrypt encryption
-        $iv = substr($key, 0,mcrypt_get_iv_size (MCRYPT_CAST_256,MCRYPT_MODE_CFB));
-        $encrypted = mcrypt_cfb (MCRYPT_CAST_256, $key, $data, MCRYPT_ENCRYPT, $iv);
-        $encoded = Mage::helper('magebridge/encryption')->base64_encode($encrypted);
+        // PHP 5.5 version
+        if(version_compare(PHP_VERSION, '5.5.0') >= 0) {
+
+            try {
+                $td = mcrypt_module_open(MCRYPT_CAST_256, '', 'ecb', '');
+                $iv = mcrypt_create_iv(mcrypt_enc_get_iv_size($td), MCRYPT_RAND);
+                mcrypt_generic_init($td, $key, $iv);
+                $encrypted = mcrypt_generic($td, $data);
+                $encoded = Mage::helper('magebridge/encryption')->base64_encode($encrypted);
+
+            } catch(Exception $e) {
+                Mage::getSingleton('magebridge/debug')->error("Error while decrypting: ".$e->getMessage());
+                return null;
+            }
+
+        } else {
+
+            try {
+                $iv = substr($key, 0, mcrypt_get_iv_size(MCRYPT_CAST_256, MCRYPT_MODE_CFB));
+                $encrypted = @mcrypt_cfb(MCRYPT_CAST_256, $key, $data, MCRYPT_ENCRYPT, $iv);
+                $encoded = Mage::helper('magebridge/encryption')->base64_encode($encrypted);
+
+            } catch(Exception $e) {
+                Mage::getSingleton('magebridge/debug')->error("Error while decrypting: ".$e->getMessage());
+                return null;
+            }
+        }
 
         return $encoded.'|=|'.$random;
     }
@@ -94,13 +117,16 @@ class Yireo_MageBridge_Helper_Encryption extends Mage_Core_Helper_Abstract
         if(isset($array[0]) && isset($array[1])) {
             $encrypted = Mage::helper('magebridge/encryption')->base64_decode($array[0]);
             $key = Mage::helper('magebridge/encryption')->getSaltedKey($array[1]);
-            $iv = substr($key, 0,mcrypt_get_iv_size (MCRYPT_CAST_256,MCRYPT_MODE_CFB));
         } else {
             return null;
         }
 
         try {
-            $decrypted = mcrypt_cfb (MCRYPT_CAST_256, $key, $encrypted, MCRYPT_DECRYPT, $iv);
+
+            $td = mcrypt_module_open(MCRYPT_CAST_256, '', 'ecb', '');
+            $iv = substr($key, 0, mcrypt_get_iv_size(MCRYPT_CAST_256,MCRYPT_MODE_CFB));
+            mcrypt_generic_init($td, $key, $iv);
+            $decrypted = mdecrypt_generic($td, $encrypted);
             $decrypted = trim($decrypted);
             return $decrypted;
 

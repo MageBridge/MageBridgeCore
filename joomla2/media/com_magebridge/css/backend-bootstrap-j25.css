@@ -44,3 +44,27 @@ div.controls fieldset.btn-group.radio label {
 div.control-group label.radio input[type="radio"] {
     margin-right: 10px;
 }
+
+div.well {
+    background-color: #fefefe;
+}
+
+div#toolbar li.button a.modal {
+    position: relative;
+    width: auto;
+    background: none;
+    border: none;
+    box-shadow: none;
+    float: right;
+    top: auto;
+    margin-right: 10px;
+}
+
+ul#menu li.node a {
+    width: auto !important;
+    height: auto;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+    background-image: none;
+}

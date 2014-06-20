@@ -86,10 +86,17 @@ class MageBridgeEncryptionHelper
         $random = str_shuffle('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz');
         $key = MageBridgeEncryptionHelper::getSaltedKey($random);
 
-        // Generate the mcrypt encryption
-        $iv = substr($key, 0, mcrypt_get_iv_size(MCRYPT_CAST_256, MCRYPT_MODE_CFB));
-        $encrypted = mcrypt_cfb(MCRYPT_CAST_256, $key, $data, MCRYPT_ENCRYPT, $iv);
-        $encoded = MageBridgeEncryptionHelper::base64_encode($encrypted);
+        try {
+            $td = mcrypt_module_open(MCRYPT_CAST_256, '', 'ecb', '');
+            $iv = mcrypt_create_iv(mcrypt_enc_get_iv_size($td), MCRYPT_RAND);
+            mcrypt_generic_init($td, $key, $iv);
+            $encrypted = mcrypt_generic($td, $data);
+            $encoded = MageBridgeEncryptionHelper::base64_encode($encrypted);
+
+        } catch(Exception $e) {
+            Mage::getSingleton('magebridge/debug')->error("Error while decrypting: ".$e->getMessage());
+            return null;
+        }
 
         return $encoded.'|=|'.$random;
     }
@@ -117,16 +124,36 @@ class MageBridgeEncryptionHelper
         $array = explode( '|=|', $data);
         $encrypted = MageBridgeEncryptionHelper::base64_decode($array[0], true);
         $key = MageBridgeEncryptionHelper::getSaltedKey($array[1]);
-        $iv = substr($key, 0, mcrypt_get_iv_size(MCRYPT_CAST_256,MCRYPT_MODE_CFB));
 
-        try {
-            $decrypted = mcrypt_cfb(MCRYPT_CAST_256, $key, $encrypted, MCRYPT_DECRYPT, $iv);
-            $decrypted = trim($decrypted);
-            return $decrypted;
+        // PHP 5.5 version
+        if(version_compare(PHP_VERSION, '5.5.0') >= 0) {
 
-        } catch(Exception $e) {
-            Mage::getSingleton('magebridge/debug')->error("Error while decrypting: ".$e->getMessage());
-            return null;
+            try {
+
+                $td = mcrypt_module_open(MCRYPT_CAST_256, '', 'ecb', '');
+                $iv = substr($key, 0, mcrypt_get_iv_size(MCRYPT_CAST_256,MCRYPT_MODE_CFB));
+                mcrypt_generic_init($td, $key, $iv);
+                $decrypted = mdecrypt_generic($td, $encrypted);
+                $decrypted = trim($decrypted);
+                return $decrypted;
+
+            } catch(Exception $e) {
+                Mage::getSingleton('magebridge/debug')->error("Error while decrypting: ".$e->getMessage());
+                return null;
+            }
+
+        } else {
+
+            try {
+                $iv = substr($key, 0, mcrypt_get_iv_size(MCRYPT_CAST_256,MCRYPT_MODE_CFB));
+                $decrypted = @mcrypt_cfb(MCRYPT_CAST_256, $key, $encrypted, MCRYPT_DECRYPT, $iv);
+                $decrypted = trim($decrypted);
+                return $decrypted;
+
+            } catch(Exception $e) {
+                Mage::getSingleton('magebridge/debug')->error("Error while decrypting: ".$e->getMessage());
+                return null;
+            }
         }
     }
 }

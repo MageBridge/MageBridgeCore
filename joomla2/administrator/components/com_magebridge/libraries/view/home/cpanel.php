@@ -12,6 +12,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 ?>
+<div id="cpanel">
 <?php foreach ($this->icons as $icon) { ?>
 <div style="float:left">
     <div class="icon">
@@ -19,4 +20,5 @@ defined('_JEXEC') or die('Restricted access');
     </div>
 </div>
 <?php } ?>
-<div style="clear:both;" />
+</div>
+<div style="clear:both;"></div>

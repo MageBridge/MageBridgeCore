@@ -183,6 +183,8 @@ class Yireo_MageBridge_MagebridgeController extends Mage_Adminhtml_Controller_Ac
             Mage::getModel('adminhtml/session')->addError('Magento Compiler is enabled. Disable it before making any changes to your site');
         }
 
+        Mage::getModel('magebridge/update')->setFilesUmask();
+
         $this->_initAction()
             ->_addContent($this->getLayout()->createBlock('magebridge/updates'))
             ->renderLayout();

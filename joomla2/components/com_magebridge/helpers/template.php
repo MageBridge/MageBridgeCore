@@ -572,9 +572,7 @@ class MageBridgeTemplateHelper
             }
         }
 
-        $str = 'return '.implode(' ', $words).';';
-
-        return eval($str);
+        return (int)array_sum($words);
     }
 
     /*
