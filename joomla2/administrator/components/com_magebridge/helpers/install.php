@@ -41,6 +41,7 @@ class MageBridgeInstallHelper
             "ALTER TABLE `#__magebridge_products` ADD `actions` TEXT NOT NULL AFTER `connector_value`",
             "ALTER TABLE `#__magebridge_stores` ADD `actions` TEXT NOT NULL AFTER `connector_value`",
             "DELETE FROM `#__magebridge_connectors`",
+            "ALTER TABLE `#__magebridge_usergroups` ADD `label` VARCHAR( 255 ) NOT NULL AFTER  `id`",
         );
 
         // Perform the update queries

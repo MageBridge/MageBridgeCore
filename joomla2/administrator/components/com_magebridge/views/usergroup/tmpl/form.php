@@ -51,6 +51,16 @@ defined('_JEXEC') or die('Restricted access');
         <tbody>
         <tr>
             <td width="100" align="right" class="key">
+                <label for="label">
+                    <?php echo JText::_('LIB_YIREO_TABLE_FIELDNAME_LABEL'); ?>:
+                </label>
+            </td>
+            <td>
+                <input type="text" name="label" value="<?php echo $this->item->label; ?>" size="30" />
+            </td>
+        </tr>
+        <tr>
+            <td width="100" align="right" class="key">
                 <label for="description">
                     <?php echo JText::_('LIB_YIREO_TABLE_FIELDNAME_DESCRIPTION'); ?>:
                 </label>

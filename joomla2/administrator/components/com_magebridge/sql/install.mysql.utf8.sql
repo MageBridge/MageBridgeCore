@@ -57,34 +57,35 @@ CREATE TABLE IF NOT EXISTS `#__magebridge_stores` (
 ) DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `#__magebridge_urls` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `source` varchar(255) NOT NULL,
-  `source_type` tinyint(2) NOT NULL,
-  `destination` varchar(255) NOT NULL,
-  `description` varchar(255) NOT NULL,
-  `access` tinyint(3) NOT NULL DEFAULT '0',
-  `ordering` int(11) NOT NULL DEFAULT '0',
-  `published` tinyint(1) NOT NULL,
-  `checked_out` int(11) NOT NULL DEFAULT '0',
-  `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `params` text NOT NULL,
-  PRIMARY KEY (`id`)
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `source` varchar(255) NOT NULL,
+    `source_type` tinyint(2) NOT NULL,
+    `destination` varchar(255) NOT NULL,
+    `description` varchar(255) NOT NULL,
+    `access` tinyint(3) NOT NULL DEFAULT '0',
+    `ordering` int(11) NOT NULL DEFAULT '0',
+    `published` tinyint(1) NOT NULL,
+    `checked_out` int(11) NOT NULL DEFAULT '0',
+    `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+    `params` text NOT NULL,
+    PRIMARY KEY (`id`)
 ) DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `#__magebridge_products_log` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) NOT NULL,
-  `sku` varchar(255) NOT NULL DEFAULT '',
-  `create_date` int(11) NOT NULL DEFAULT '0',
-  `expire_date` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `user_id` int(11) NOT NULL,
+    `sku` varchar(255) NOT NULL DEFAULT '',
+    `create_date` int(11) NOT NULL DEFAULT '0',
+    `expire_date` int(11) NOT NULL DEFAULT '0',
+    PRIMARY KEY (`id`)
 ) DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `#__magebridge_usergroups` (
     `id` int(11) NOT NULL auto_increment,
+    `label` varchar(255) NOT NULL,
+    `description` varchar(255) NOT NULL,
     `joomla_group` int(11) NOT NULL default '0',
     `magento_group` int(11) NOT NULL default '0',
-    `description` varchar(255) NOT NULL,
     `ordering` int(11) NOT NULL default '0',
     `published` tinyint(3) NOT NULL default '0',
     `checked_out` int(11) NOT NULL default '0',
