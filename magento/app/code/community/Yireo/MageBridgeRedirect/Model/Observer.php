@@ -20,6 +20,7 @@ class Yireo_MageBridgeRedirect_Model_Observer
     public function controllerActionPredispatch($observer)
     {
         $controller = $observer->getEvent()->getControllerAction();
+        $module = Mage::app()->getRequest()->getModuleName();
         $currentUrl = Mage::app()->getRequest()->getOriginalPathInfo();
 
         // Check if this is a bridge-request
@@ -29,13 +30,18 @@ class Yireo_MageBridgeRedirect_Model_Observer
         
         // Check whether redirection is enabled
         if(Mage::helper('magebridgeredirect')->enabled() == false) {
-            return false;
+            return $this;
+        }
+
+        // Skip certain modules
+        if(in_array($module, array('api'))) {
+            return $this;
         }
 
         // Fetch the MageBridge Root
         $magebridgeRootUrl = Mage::helper('magebridgeredirect')->getMageBridgeRoot();
         if(empty($magebridgeRootUrl)) {
-            return false;
+            return $this;
         }
 
         // Parse request URI
