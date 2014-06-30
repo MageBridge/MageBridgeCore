@@ -21,13 +21,14 @@ require_once JPATH_SITE.'/components/com_magebridge/helpers/loader.php';
 class plgMageBridgeStoreExample extends MageBridgePluginStore
 {
     /**
-     * Event "onMageBridgeLoadStore"
+     * Event "onMageBridgeValidate"
      * 
      * @access public
      * @param array $actions
+     * @param object $condition
      * @return bool
      */
-    public function onMageBridgeLoadStore($actions = null)
+    public function onMageBridgeValidate($actions = null, $condition = null)
     {
         // Make sure this plugin is enabled
         if ($this->isEnabled() == false) {

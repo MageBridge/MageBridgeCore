@@ -29,9 +29,10 @@ class plgMageBridgeStoreJoomla extends MageBridgePluginStore
      * 
      * @access public
      * @param array $actions
+     * @param object $condition
      * @return bool
      */
-    public function onMageBridgeValidate($actions = null)
+    public function onMageBridgeValidate($actions = null, $condition = null)
     {
         // Make sure this plugin is enabled
         if ($this->isEnabled() == false) {

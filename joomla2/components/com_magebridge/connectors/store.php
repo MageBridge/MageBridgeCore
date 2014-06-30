@@ -57,7 +57,7 @@ class MageBridgeConnectorStore extends MageBridgeConnector
     }
 
     /*
-     * Method to get the current store 
+     * Method to get the current store definition
      *
      * @param null
      * @return array
@@ -79,6 +79,7 @@ class MageBridgeConnectorStore extends MageBridgeConnector
 
         // Import the plugins
         JPluginHelper::importPlugin('magebridgestore');
+		$plugins = JPluginHelper::getPlugin('magebridgestore');
 
         // Try to match a condition with one of the connectors
         foreach ($conditions as $condition) {
@@ -97,20 +98,25 @@ class MageBridgeConnectorStore extends MageBridgeConnector
             }
 
             // Loop through the plugins and validate the stored actions
-		    $plugins = JPluginHelper::getPlugin('magebridgestore');
             foreach($plugins as $plugin) {
 			    $className = 'plg' . $plugin->type . $plugin->name;
     			if (class_exists($className)) {
 				    $plugin = new $className($this, (array) $plugin);
 
                     // Validate the stored actions
-                    if($plugin->onMageBridgeValidate($actions)) {
+                    if($rt = $plugin->onMageBridgeValidate($actions, $condition)) {
+
+                        // Construct the condition parameters
+                        $name = $condition->name;
+                        $type = ($condition->type == 'storeview') ? 'store' : 'group';
+
+                        // Check for the return value
+                        if(is_array($rt)) return $rt;
 
                         // Return the store-configuration of this condition
-                        $type = ($condition->type == 'storeview') ? 'store' : 'group';
                         return array(
                             'type' => $type,
-                            'name' => $condition->name,
+                            'name' => $name,
                         );
                     }
 			    }
