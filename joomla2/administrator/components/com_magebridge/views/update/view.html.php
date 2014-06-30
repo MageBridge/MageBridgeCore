@@ -58,6 +58,9 @@ class MageBridgeViewUpdate extends YireoView
         $javascript = 'onchange="document.adminForm.submit();"';
         $this->lists['type'] = JHTML::_('select.genericlist', $options, 'filter_type', $javascript, 'value', 'text', $filter_type );
 
+        // Filters - search
+        $filter_search = $this->getFilter('search');
+
         // Toolbar options
         JToolBarHelper::custom('home', 'back', '', 'LIB_YIREO_VIEW_TOOLBAR_HOME', false);
         JToolBarHelper::custom('refresh', 'preview.png', 'preview_f2.png', 'LIB_YIREO_VIEW_TOOLBAR_REFRESH', false);
@@ -71,28 +74,48 @@ class MageBridgeViewUpdate extends YireoView
         $data = MageBridgeUpdateHelper::getData();
 
         // Add filtering
-        if(!empty($filter_type)) {
-            $type = explode('-', $filter_type);
+        if(!empty($filter_type) || !empty($filter_search)) {
+
+            if(!empty($filter_type)) $filter_type = explode('-', $filter_type);
+
             foreach ($data as $index => $extension) {
-                if(count($type) == 1) {
-                    if($extension['type'] != $type[0]) {
+
+                if (!empty($filter_search)) {
+                    if (!stristr($extension['name'], $filter_search) && !stristr($extension['title'], $filter_search)
+                        && !stristr($extension['description'], $filter_search)) {
                         unset($data[$index]);
+                        continue;
                     }
-                } else {
-                    if($type[0] == 'module') {
-                        if($extension['type'] != 'module') {
+                }
+
+                if (!empty($filter_type)) {
+                    if (count($filter_type) == 1) {
+                        if ($extension['type'] != $filter_type[0]) {
                             unset($data[$index]);
-                        } elseif($extension['type'] != $type[0] || $extension['app'] != $type[1]) {
-                            unset($data[$index]);
+                            continue;
                         }
-                    } elseif($type[0] == 'plugin') {
-                        if($extension['type'] != 'plugin') {
-                            unset($data[$index]);
-                        } elseif($type[1] == 'other' && in_array($extension['group'], 
-                            array('magebridgeproduct', 'magebridgenewsletter', 'magebridgestore', 'magebridgeprofile'))) {
-                            unset($data[$index]);
-                        } elseif($type[1] != 'other' && $extension['group'] != $type[1]) {
-                            unset($data[$index]);
+                    } else {
+                        if ($filter_type[0] == 'module') {
+                            if ($extension['type'] != 'module') {
+                                unset($data[$index]);
+                                continue;
+                            } elseif ($extension['type'] != $filter_type[0] || $extension['app'] != $filter_type[1]) {
+                                unset($data[$index]);
+                                continue;
+                            }
+                        } elseif ($filter_type[0] == 'plugin') {
+                            if ($extension['type'] != 'plugin') {
+                                unset($data[$index]);
+                                continue;
+                            } elseif ($filter_type[1] == 'other' && in_array($extension['group'],
+                                    array('magebridgeproduct', 'magebridgenewsletter', 'magebridgestore', 'magebridgeprofile'))
+                            ) {
+                                unset($data[$index]);
+                                continue;
+                            } elseif ($filter_type[1] != 'other' && $extension['group'] != $filter_type[1]) {
+                                unset($data[$index]);
+                                continue;
+                            }
                         }
                     }
                 }
@@ -127,6 +150,8 @@ class MageBridgeViewUpdate extends YireoView
 
         $this->assignRef('data', $data);
         $this->assignRef('update', $update);
+        $this->assignRef('search', $filter_search);
+
 		parent::display($tpl);
 	}
 }

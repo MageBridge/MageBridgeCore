@@ -444,7 +444,7 @@ class MageBridgeHelper
      */
     static public function isJoomla35()
     {
-        return self::isJoomlaVersion(array('3.0', '3.1', '3.2', '3.5'));
+        return self::isJoomlaVersion(array('3.0', '3.1', '3.2', '3.3', '3.4', '3.5'));
     }
 
     /*
