@@ -90,8 +90,14 @@ class Yireo_MageBridge_Block_Check extends Mage_Core_Block_Template
         $store = Mage::app()->getStore(Mage::getModel('magebridge/core')->getStore());
 
         $license = Mage::helper('magebridge')->getLicenseKey();
-        $result = (empty($license) || strlen($license) < 20) ? self::CHECK_ERROR : self::CHECK_OK;
-        $this->addResult('conf', 'Support key', $result, "You'll need a proper support-key to communicate with Joomla!");
+        if(empty($license) || strlen($license) < 20) {
+            $result = self::CHECK_ERROR;
+            $description = "You don't have a valid support-key to communicate with Joomla! yet";
+        } else {
+            $result = self::CHECK_OK;
+            $description = "Your support-key is configured to communicate with Joomla!";
+        }
+        $this->addResult('conf', 'Support key', $result, $description);
 
         $api_url = Mage::getStoreConfig('magebridge/settings/api_url');
         $result = (!empty($api_url)) ? self::CHECK_OK : self::CHECK_WARNING;
@@ -106,6 +112,29 @@ class Yireo_MageBridge_Block_Check extends Mage_Core_Block_Template
         $homepage = Mage::getModel('cms/page')->load(Mage::getStoreConfig('web/default/cms_home_page'), 'identifier');
         $result = (empty($homepage) || !$homepage->getId() > 0) ? self::CHECK_WARNING : self::CHECK_OK;
         $this->addResult('conf', 'Magento homepage', $result, 'An empty Magento homepage might cause strange results.');
+
+        $global_base_url_unsecure = Mage::getStoreConfig('web/unsecure/base_url');
+        $global_base_url_secure = Mage::getStoreConfig('web/secure/base_url');
+        $override_global_base_url_unsecure = false;
+        $override_global_base_url_secure = false;
+        $websites = Mage::getModel('core/website')->getCollection();
+        $description = 'System Configuration needs to have the MageBridge Root Menu-Item URL listed for the Website-scope';
+
+        foreach($websites as $website ) {
+            $store = $website->getDefaultStore();
+            $base_url_unsecure = Mage::getStoreConfig('web/unsecure/base_url', $store);
+            if($global_base_url_unsecure != $base_url_unsecure) {
+                $override_global_base_url_unsecure = true;
+            }
+
+            $base_url_secure = Mage::getStoreConfig('web/secure/base_url', $store);
+            if($global_base_url_secure != $base_url_secure) {
+                $override_global_base_url_secure = true;
+            }
+        }
+
+        $result = ($override_global_base_url_unsecure == false && $override_global_base_url_secure == false) ? self::CHECK_ERROR : self::CHECK_OK;
+        $this->addResult('conf', 'Joomla! unsecure URLs', $result, $description);
 
         $result = (version_compare(phpversion(), '5.2.8', '>=')) ? self::CHECK_OK : self::CHECK_ERROR;
         $this->addResult('system', 'PHP version', $result, "PHP version 5.2.8 or higher is needed. A latest PHP version is always recommended.");
