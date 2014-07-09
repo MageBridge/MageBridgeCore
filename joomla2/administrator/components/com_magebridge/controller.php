@@ -154,8 +154,13 @@ class MageBridgeController extends YireoController
         $model = $this->getModel('update');
         $model->updateAll($packages);
 
-        // Clean the cache
+        // Clean the MageBridge cache
         $cache = JFactory::getCache('com_magebridge.admin');
+        $cache->clean();
+
+        // Clean the Joomla! plugins cache
+        $options = array('defaultgroup' => 'com_plugins', 'cachebase' => JPATH_ADMINISTRATOR.'/cache');
+        $cache = JCache::getInstance('callback', $options);
         $cache->clean();
 
         // Initialize the helper
@@ -188,6 +193,11 @@ class MageBridgeController extends YireoController
 
         // Run the helper to remove obsolete files
         YireoHelperInstall::remove();
+
+        // Clean the Joomla! plugins cache
+        $options = array('defaultgroup' => 'com_plugins', 'cachebase' => JPATH_ADMINISTRATOR.'/cache');
+        $cache = JCache::getInstance('callback', $options);
+        $cache->clean();
 
         // Redirect
         $link = 'index.php?option=com_magebridge&view=update';
