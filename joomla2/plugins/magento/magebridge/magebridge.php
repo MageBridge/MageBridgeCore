@@ -251,18 +251,15 @@ class plgMagentoMageBridge extends JPlugin
             }
 
             // Add the usergroup ID to this user (based upon groups configured in #__magebridge_usergroups)
-            $customer['usergroup'] = MageBridgeUserHelper::getJoomlaGroupIds($customer);
+            $usergroups = (is_array($user->groups)) ? $user->groups : array();
+            $customer['usergroup'] = MageBridgeUserHelper::getJoomlaGroupIds($customer, $usergroups);
             MageBridgeModelDebug::getInstance()->trace("Customer group", $customer['usergroup']);
             if (!empty($customer['usergroup'])) {
-                if (is_array($user->groups)) {
-                    $user->groups = array_merge($user->groups, $customer['usergroup']);
-                } else {
-                    $user->groups = array($customer['usergroup']);
-                }
+                $user->groups = $customer['usergroup'];
             }
 
             // If this user did not exist yet, create it
-            if ($this->getParams()->get('autocreate', 1) == 1 && ($user == false || $user->id == 0)) {
+            if ($this->params->get('autocreate', 1) == 1 && ($user == false || $user->id == 0)) {
 
                 $user = $this->getUser()->create($data, true);
                 if (is_object($user) && $user->id > 0) {
@@ -433,25 +430,6 @@ class plgMagentoMageBridge extends JPlugin
     private function getParam($name = null)
     {
         return MagebridgeModelConfig::load($name);
-    }
-
-    /**
-     * Load the parameters
-     * 
-     * @access private
-     * @param null
-     * @return JParameter
-     */
-    private function getParams()
-    {
-        if (!MageBridgeHelper::isJoomla15()) {
-            return $this->params;
-        } else {
-            jimport('joomla.html.parameter');
-            $plugin = JPluginHelper::getPlugin('magento', 'magebridge');
-            $params = new JParameter($plugin->params);
-            return $params;
-        }
     }
 
     /**

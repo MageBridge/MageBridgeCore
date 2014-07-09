@@ -107,37 +107,47 @@ class MageBridgeUserHelper
      * @param null
      * @return array
      */
-    static public function getJoomlaGroupIds($customer)
+    static public function getJoomlaGroupIds($customer, $current_groups = array())
     {
         if (!isset($customer['group_id'])) return array();
 
         static $rows = null;
         if (!is_array($rows)) {
             $db = JFactory::getDBO();
-            $db->setQuery('SELECT * FROM #__magebridge_usergroups WHERE `published`=1 ORDER BY `ordering`');
+            $query = 'SELECT `magento_group`,`joomla_group`,`params` '
+                . ' FROM #__magebridge_usergroups WHERE `published`=1 ORDER BY `ordering`';
+            $db->setQuery($query);
             $rows = $db->loadObjectList();
         }
 
         if (!empty($rows)) {
             foreach ($rows as $row) {
                 if ($row->magento_group == $customer['group_id']) {
-                    $groups = array($row->joomla_group);
+                    $override_existing = false;
+                    $new_groups = array($row->joomla_group);
                     if(!empty($row->params)) {
                         $params = YireoHelper::toRegistry($row->params);
+                        $override_existing = (bool)$params->get('override_existing');
+
                         $extra_groups = $params->get('usergroup');
                         if(!empty($extra_groups)) {
                             foreach($extra_groups as $extra_group) {
-                                $groups[] = $extra_group;
+                                $new_groups[] = $extra_group;
                             }
                         }
-                        $groups = array_unique($groups);
+                        $new_groups = array_unique($new_groups);
                     }
-                    return $groups;
+
+                    if($override_existing == true) {
+                        return $new_groups;
+                    } else {
+                        return array_merge($current_groups, $new_groups);
+                    }
                 }
             }
         }
 
-        return array();
+        return $current_groups;
     }
 
     /*

@@ -36,25 +36,6 @@ class plgMagebridgeMagebridge extends JPlugin
     }
 
     /**
-     * Load the parameters
-     * 
-     * @access private
-     * @param null
-     * @return JParameter
-     */
-    private function getParams()
-    {
-        if (!MageBridgeHelper::isJoomla15()) {
-            return $this->params;
-        } else {
-            jimport('joomla.html.parameter');
-            $plugin = JPluginHelper::getPlugin('magento', 'magebridge');
-            $params = new JParameter($plugin->params);
-            return $params;
-        }
-    }
-
-    /**
      * Event onBeforeDisplayBlock
      *
      * @access public
