@@ -34,6 +34,9 @@ class MageBridgeViewCommon extends MageBridgeView
         // Add CSS
         JHTML::stylesheet('media/com_magebridge/css/backend-elements.css');
 
+        // Load jQuery
+        YireoHelper::jquery();
+
         $current = JRequest::getVar('current');
         $object = JRequest::getVar('object');
 
