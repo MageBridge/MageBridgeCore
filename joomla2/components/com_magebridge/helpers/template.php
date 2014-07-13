@@ -653,26 +653,12 @@ class MageBridgeTemplateHelper
         switch($type) {
             case 'jquery':
 
-                // Load jQuery using the framework (Joomla! 3.0 and higher)
-                if(YireoHelper::isJoomla15() == false && YireoHelper::isJoomla25() == false) {
-                    return JHtml::_('jquery.framework');
-                }
-
-                // Check if jQuery is loaded already
-                if (method_exists($application, 'get') && $application->get('jquery') == true) {
-                    return;
-                }
-
                 // Load jQuery through the Google API
                 if (MagebridgeModelConfig::load('use_google_api') == 1) {
                     $prefix = (JURI::getInstance()->isSSL()) ? 'https' : 'http';
-                    //if (JFactory::getApplication()->get('google') == true) {
-                        //google.load("jquery", "1.8.1");
-                    //} else {
-                        $document->addScript($prefix.'://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js');
-                    //}
+                    $document->addScript($prefix.'://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js');
                 } else {
-                    self::load('js', 'jquery/jquery-1.8.1.min.js');
+                    YireoHelper::jquery();
                 }
 
                 // Set the flag that jQuery has been loaded
