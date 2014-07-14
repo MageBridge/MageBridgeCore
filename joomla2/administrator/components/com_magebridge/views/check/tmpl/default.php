@@ -24,6 +24,10 @@ defined('_JEXEC') or die('Restricted access');
             <td class="result"><?php echo JText::sprintf('COM_MAGEBRIDGE_CHECK_BROWSE_TEST_DESC', 'index.php?option=com_magebridge&view=check&layout=browser'); ?></td>
         </tr>
         <tr>
+            <td class="key"><?php echo JText::_('COM_MAGEBRIDGE_CHECK_PRODUCT_TEST'); ?></td>
+            <td class="result"><?php echo JText::sprintf('COM_MAGEBRIDGE_CHECK_PRODUCT_TEST_DESC', 'index.php?option=com_magebridge&view=check&layout=product'); ?></td>
+        </tr>
+        <tr>
             <td class="key"><?php echo JText::_('COM_MAGEBRIDGE_CHECK_MAGENTO_CHECK'); ?></td>
             <td class="result"><?php echo JText::_('COM_MAGEBRIDGE_CHECK_MAGENTO_CHECK_DESC'); ?></td>
         </tr>

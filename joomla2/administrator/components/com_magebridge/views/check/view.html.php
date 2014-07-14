@@ -41,7 +41,10 @@ class MageBridgeViewCheck extends YireoView
         if (JRequest::getCmd('layout') == 'browser') {
             $this->displayBrowser($tpl);
 
-        } else if (JRequest::getCmd('layout') == 'result') {
+        } elseif (JRequest::getCmd('layout') == 'product') {
+            $this->displayProduct($tpl);
+
+        } elseif (JRequest::getCmd('layout') == 'result') {
             $this->displayResult($tpl);
 
         } else {
@@ -68,6 +71,22 @@ class MageBridgeViewCheck extends YireoView
         $checks = $this->get('checks');
         $this->assignRef('checks', $checks);
         parent::display($tpl);
+    }
+
+    /*
+     * Display method
+     *
+     * @param string $tpl
+     * @return null
+     */
+    public function displayProduct($tpl)
+    {
+        // Initalize common elements
+        MageBridgeViewHelper::initialize('Product Relation Test');
+
+        JToolBarHelper::custom('test', 'preview.png', 'preview_f2.png', 'Test', false);
+
+        parent::display('product');
     }
 
     /*
@@ -116,17 +135,28 @@ class MageBridgeViewCheck extends YireoView
             die('ERROR: Failed to open a connection to host "'.$host.'" on port 80. Perhaps a firewall is in the way?');
         }
 
+        // Fetch content through the proxy
+        $responses = array();
+
+        // Fetch various responses
+        $responses[] = $this->fetchContent('Basic bridge connection succeeded', $url, array('mbtest' => 1));
+        $responses[] = $this->fetchContent('API authentication succeeded', $url, array('mbauthtest' => 1));
+        echo implode('<br/>', $responses);
+        exit;
+    }
+
+    protected function fetchContent($label, $url, $params)
+    {
         // Initialize the proxy
         $proxy = MageBridgeModelProxy::getInstance();
         $proxy->setAllowRedirects(false);
-        $content = $proxy->getRemote($url, array('mbtest' => '1'), 'post');
+        $content = $proxy->getRemote($url, $params, 'post');
 
         // Detect proxy errors
         $proxy_error = $proxy->getProxyError();
         if (!empty($proxy_error)) {
             die('ERROR: Proxy error: '.$proxy_error);
         }
-
 
         // Detect the HTTP status
         $http_status = $proxy->getHttpStatus();
@@ -144,8 +174,8 @@ class MageBridgeViewCheck extends YireoView
 
             $data = json_decode($content, true);
             if (!empty($data)) {
-                if (array_key_exists('mbtest', $data)) {
-                    die('SUCCESS: Magento-side of the bridge is available');
+                if (array_key_exists('meta', $data)) {
+                    return 'SUCCESS: '.$label;
                 }
                 die('ERROR: JSON response contains unknown data: '.var_export($data, true));
 

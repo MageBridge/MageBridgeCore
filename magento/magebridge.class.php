@@ -352,6 +352,20 @@ class MageBridge
             exit;
         }
 
+        // Handle authentication tests
+        if(Mage::app()->getRequest()->getQuery('mbauthtest') == 1) {
+            $bridge->setMetaData('state', 'test');
+            $bridge->setMetaData('extra', 'get');
+            print $bridge->output(false);
+            exit;
+
+        } elseif(Mage::app()->getRequest()->getPost('mbauthtest') == 1) {
+            $bridge->setMetaData('state', 'test');
+            $bridge->setMetaData('extra', 'post');
+            print $bridge->output(false);
+            exit;
+        }
+
         // Check if there's any output already set (for instance JSON, AJAX, XML, PDF) and output it right away
         if($bridge->preoutput() == true) {
             session_write_close();
