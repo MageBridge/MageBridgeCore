@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <form>
-    <fields name="basic" addfieldpath="/administrator/components/com_magebridge/fields/">
+    <fields addfieldpath="/administrator/components/com_magebridge/fields/">
         <fieldset name="basic">
 		    <field name="user_id" type="user" label="COM_MAGEBRIDGE_CHECK_PRODUCT_USER_ID" description="COM_MAGEBRIDGE_CHECK_PRODUCT_USER_ID_DESC" />
 		    <field name="product_sku" type="product" default="" return="sku" label="COM_MAGEBRIDGE_CHECK_PRODUCT_PRODUCT_SKU" description="COM_MAGEBRIDGE_CHECK_PRODUCT_PRODUCT_SKU_DESC" />

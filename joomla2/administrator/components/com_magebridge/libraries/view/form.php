@@ -47,11 +47,6 @@ class YireoViewForm extends YireoView
     protected $_editor_field = null;
 
     /*
-     * Default task
-     */
-    protected $_task = null;
-
-    /*
      * Main constructor method
      *
      * @access public

@@ -7,7 +7,7 @@
  * @copyright Copyright 2014
  * @license GNU Public License
  * @link http://www.yireo.com/
- * @version 0.6.0
+ * @version 0.6.1
  */
 
 // Check to ensure this file is included in Joomla!
@@ -52,6 +52,11 @@ class YireoCommonView extends YireoAbstractView
      * Identifier of the library-view
      */
     protected $_viewParent = 'default';
+
+    /*
+     * Default task
+     */
+    protected $_task = null;
 
     /*
      * Main constructor method
@@ -118,6 +123,51 @@ class YireoCommonView extends YireoAbstractView
             JToolBarHelper::title($component_title.': '.$title, 'generic.png');
         }
         return;
+    }
+
+    /*
+     * Helper-method to set the page title
+     *
+     * @access protected
+     * @subpackage Yireo
+     * @param string $title
+     * @return null
+     */
+    protected function setMenu()
+    {
+        $menuitems = YireoHelper::getData('menu');
+        if (!empty($menuitems)) {
+            foreach ($menuitems as $view => $title) {
+            
+                if (strstr($view, '|')) {
+                    $v = explode('|', $view);
+                    $view = $v[0]; 
+                    $layout = $v[1];
+                } else {
+                    $layout = null;
+                }
+
+                $titleLabel = strtoupper($this->_option).'_VIEW_'.strtoupper($title);
+                
+                if (is_dir(JPATH_COMPONENT.'/views/'.$view)) {
+
+                    if ($this->_view == $view && JRequest::getCmd('layout') == $layout) {
+                        $active = true;
+                    } else if ($this->_view == $view && empty($layout)) {
+                        $active = true;
+                    } else {
+                        $active = false;
+                    }
+
+                    $url = 'index.php?option='.$this->_option.'&view='.$view;
+                    if ($layout) $url .= '&layout='.$layout;
+                    JSubMenuHelper::addEntry(JText::_($titleLabel), $url, $active);
+
+                } else if (preg_match('/option=/', $view)) {
+                    JSubMenuHelper::addEntry(JText::_($titleLabel), 'index.php?'.$view, false);
+                }   
+            }
+        }
     }
 
     /*
@@ -262,16 +312,30 @@ class YireoCommonView extends YireoAbstractView
             $this->addNewTemplatePath(JPATH_ADMINISTRATOR.'/components/'.$this->_option.'/libraries/view/'.$this->_viewParent, false);
         }
 
-        // Find the template-file
+        // Default file
         if (empty($file)) $file = 'default.php';
+        $templatePaths = $this->templatePaths;
+
+        // Deal with any subfolders (not recommended, but still possible)
+        if (strstr($file, '/')) {
+            $fileParts = explode('/', $file);
+            $file = array_pop($fileParts);
+            foreach($templatePaths as $templatePathIndex => $templatePath) {
+                foreach($fileParts as $filePart) {
+                    $templatePaths[$templatePathIndex] = $templatePath.'/'.$filePart;
+                }
+            }
+        }
+
+        // Find the template-file
         if (!preg_match('/\.php$/', $file)) $file = $file.'.php';
         jimport('joomla.filesystem.path');
-        $template = JPath::find($this->templatePaths, $file);
+        $template = JPath::find($templatePaths, $file);
 
         // If this template is empty, try to use alternatives
         if(empty($template) && $file == 'default.php') {
             $file = 'form.php'; 
-            $template = JPath::find($this->templatePaths, $file);
+            $template = JPath::find($templatePaths, $file);
         }
 
         $output = null;
@@ -475,51 +539,6 @@ class YireoView extends YireoCommonView
     }
 
     /*
-     * Helper-method to set the page title
-     *
-     * @access protected
-     * @subpackage Yireo
-     * @param string $title
-     * @return null
-     */
-    protected function setMenu()
-    {
-        $menuitems = YireoHelper::getData('menu');
-        if (!empty($menuitems)) {
-            foreach ($menuitems as $view => $title) {
-            
-                if (strstr($view, '|')) {
-                    $v = explode('|', $view);
-                    $view = $v[0]; 
-                    $layout = $v[1];
-                } else {
-                    $layout = null;
-                }
-
-                $titleLabel = strtoupper($this->_option).'_VIEW_'.strtoupper($title);
-                
-                if (is_dir(JPATH_COMPONENT.'/views/'.$view)) {
-
-                    if ($this->_view == $view && JRequest::getCmd('layout') == $layout) {
-                        $active = true;
-                    } else if ($this->_view == $view && empty($layout)) {
-                        $active = true;
-                    } else {
-                        $active = false;
-                    }
-
-                    $url = 'index.php?option='.$this->_option.'&view='.$view;
-                    if ($layout) $url .= '&layout='.$layout;
-                    JSubMenuHelper::addEntry(JText::_($titleLabel), $url, $active);
-
-                } else if (preg_match('/option=/', $view)) {
-                    JSubMenuHelper::addEntry(JText::_($titleLabel), 'index.php?'.$view, false);
-                }   
-            }
-        }
-    }
-
-    /*
      * Helper-method to set a specific filter
      *
      * @access public
@@ -599,9 +618,9 @@ class YireoView extends YireoCommonView
         if (empty($this->model)) return null;
 
         // Determine if this is a new item or not
-        $primary_key = $this->model->getPrimaryKey();
-        $this->item = $this->model->getData();
-        $this->item->isNew = ($this->item->$primary_key < 1);
+        $primary_key = (method_exists('getPrimaryKey', $this->model)) ? $this->model->getPrimaryKey() : 'id';
+        $this->item = (method_exists('getData', $this->model)) ? $this->model->getData() : (object)null;
+        $this->item->isNew = (isset($this->item->$primary_key) && $this->item->$primary_key < 1);
 
         // Override in case of copying
         if (JRequest::getCmd('task') == 'copy') {
@@ -616,13 +635,13 @@ class YireoView extends YireoCommonView
             if ($this->application->isAdmin()) {
 
                 // Fail if checked-out not by current user
-                if ($this->model->isCheckedOut( $this->user->get('id'))) {
+                if (method_exists('isCheckedOut', $this->model) && $this->model->isCheckedOut( $this->user->get('id'))) {
                     $msg = JText::sprintf('LIB_YIREO_MODEL_CHECKED_OUT', $this->item->title);
                     $this->application->redirect( 'index.php?option='.$this->_option, $msg );
                 }
 
                 // Checkout older items
-                if ($this->item->isNew == false) {
+                if ($this->item->isNew == false && method_exists('checkout', $this->model)) {
                     $this->model->checkout($this->user->get('id'));
                 }
             }
@@ -664,7 +683,7 @@ class YireoView extends YireoCommonView
             $this->lists['access'] = null;
         }
 
-        $ordering = $this->model->getOrderByDefault();
+        $ordering = (method_exists('getOrderByDefault', $this->model)) ? $this->model->getOrderByDefault() : null;
         if ($this->application->isAdmin() && !empty($ordering) && $ordering == 'ordering') {
             $this->lists['ordering'] = JHTML::_('list.ordering', 'ordering', $this->model->getOrderingQuery(), $this->item->ordering);
         } else {

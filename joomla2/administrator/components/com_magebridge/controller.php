@@ -241,7 +241,7 @@ class MageBridgeController extends YireoController
     }
 
     /*
-     * Method 
+     * Method to export logs to CSV
      *
      * @param null
      * @return null
@@ -260,6 +260,46 @@ class MageBridgeController extends YireoController
 
         // Otherwise display by default
         $this->display();
+    }
+
+    /*
+     * Method to simulate a product purchase
+     *
+     * @param null
+     * @return null
+     */
+    public function check_product()
+    {
+        // Validate whether this task is allowed
+        if ($this->_validate() == false) return false;
+
+        // POST values
+        $user_id = JRequest::getInt('user_id');
+        $product_sku = JRequest::getString('product_sku');
+        $count = JRequest::getInt('count');
+        $status = JRequest::getCmd('order_status');
+
+        // Validation checks
+        if(!$user_id > 0) {
+            $msgType = 'error';
+            $msg = JText::_('COM_MAGEBRIDGE_CHECK_PRODUCT_POST_ERROR_NO_USER');
+
+        } elseif(empty($product_sku)) {
+            $msgType = 'error';
+            $msg = JText::_('COM_MAGEBRIDGE_CHECK_PRODUCT_POST_ERROR_NO_PRODUCT');
+
+        // Run the relations
+        } else {
+            $user = JFactory::getUser();
+            $user->load($user_id);
+            MageBridgeConnectorProduct::getInstance()->runOnPurchase($product_sku, $count, $user, $status);
+        
+            $msgType = 'success';
+            $msg = JText::_('COM_MAGEBRIDGE_CHECK_PRODUCT_POST_SUCCESS');
+        }
+        
+        $link = 'index.php?option=com_magebridge&view=check&layout=product';
+        $this->setRedirect($link, $msg, $msgType);
     }
 
     /*

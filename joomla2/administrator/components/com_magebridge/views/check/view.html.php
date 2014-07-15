@@ -13,7 +13,7 @@
 defined('_JEXEC') or die();
 
 // Require the parent view
-require_once JPATH_COMPONENT.'/view.php';
+require_once JPATH_COMPONENT.'/libraries/view/form.php';
 
 /**
  * HTML View class 
@@ -81,10 +81,18 @@ class MageBridgeViewCheck extends YireoView
      */
     public function displayProduct($tpl)
     {
-        // Initalize common elements
-        MageBridgeViewHelper::initialize('Product Relation Test');
+        // Load the form if it's there
+        $this->getModel()->setFormName('check_product');
+        $this->_viewParent = 'form';
+        $form = $this->get('Form');
+        if(!empty($form)) {
+            $this->assignRef('form', $form);
+        }
 
-        JToolBarHelper::custom('test', 'preview.png', 'preview_f2.png', 'Test', false);
+        // Initalize common elements
+        MageBridgeViewHelper::initialize('PRODUCT_RELATION_TEST');
+
+        JToolBarHelper::custom('check_product', 'preview.png', 'preview_f2.png', 'Run', false);
 
         parent::display('product');
     }

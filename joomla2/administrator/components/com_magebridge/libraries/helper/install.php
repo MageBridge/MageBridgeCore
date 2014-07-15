@@ -95,6 +95,12 @@ class YireoHelperInstall
         // Clean up the installation
         @JInstallerHelper::cleanupInstall($package['packagefile'], $package['extractdir']);
         JError::raiseNotice('SOME_ERROR_CODE', JText::sprintf('LIB_YIREO_HELPER_INSTALL_EXTENSION_SUCCESS', $label));
+
+        // Clean the Joomla! plugins cache
+        $options = array('defaultgroup' => 'com_plugins', 'cachebase' => JPATH_ADMINISTRATOR.'/cache');
+        $cache = JCache::getInstance('callback', $options);
+        $cache->clean();
+
         return true;
     }
 
@@ -186,6 +192,11 @@ class YireoHelperInstall
         } catch(Exception $e) {
             JError::raiseWarning('SOME_ERROR_CODE', JText::sprintf('LIB_YIREO_HELPER_INSTALL_ENABLE_PLUGIN_FAIL', $label));
         }
+
+        // Clean the Joomla! plugins cache
+        $options = array('defaultgroup' => 'com_plugins', 'cachebase' => JPATH_ADMINISTRATOR.'/cache');
+        $cache = JCache::getInstance('callback', $options);
+        $cache->clean();
 
         return true;
     }

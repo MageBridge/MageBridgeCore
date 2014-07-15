@@ -18,6 +18,7 @@ require_once dirname(__FILE__).'/loader.php';
 
 /**
  * Yireo Abstract Model
+ * Parent class to easily maintain backwards compatibility
  *
  * @package Yireo
  */
@@ -30,6 +31,7 @@ if(YireoHelper::isJoomla25() || YireoHelper::isJoomla15()) {
 
 /**
  * Yireo Model 
+ * Parent class for models that need additional features without JTable functionality
  *
  * @package Yireo
  */
@@ -48,6 +50,13 @@ class YireoCommonModel extends YireoAbstractModel
      * @protected int
      */
     protected $_frontend_form = false;
+
+    /**
+     * Name of the XML-file containing the JForm definitions (if any)
+     *
+     * @protected int
+     */
+    protected $_form_name = null;
 
     /**
      * Database table object
@@ -99,6 +108,109 @@ class YireoCommonModel extends YireoAbstractModel
     protected $_data = null;
 
     /**
+     * Constructor
+     *
+     * @access public
+     * @subpackage Yireo
+     * @param string $tableAlias
+     * @return null
+     */
+    public function __construct($tableAlias = null)
+    {
+        // Import use full variables from JFactory
+        $this->application = JFactory::getApplication();
+        $this->user = JFactory::getUser();
+
+        // Create the option-namespace
+        $classParts = explode('Model', get_class($this));
+        $this->_view = (!empty($classParts[1])) ? strtolower($classParts[1]) : JRequest::getCmd('view');
+        $this->_option = $this->getOption();
+        $this->_option_id = $this->_option.'_'.$this->_view.'_';
+        if ($this->application->isSite()) $this->_option_id .= JRequest::getInt('Itemid').'_';
+
+        $this->_component = preg_replace('/^com_/', '', $this->_option);
+        $this->_component = preg_replace('/[^A-Z0-9_]/i', '', $this->_component);
+        $this->_component = str_replace(' ', '', ucwords(str_replace('_', ' ', $this->_component)));
+
+        // Call the parent constructor
+        $rt = parent::__construct();
+        return $rt;
+    }
+
+    /**
+     * Method to get data
+     *
+     * @access public
+     * @subpackage Yireo
+     * @param null
+     * @return array
+     */
+    public function getData($forceNew = false)
+    {
+        return array();
+    }
+
+    /**
+     * Method to get a XML-based form
+     *
+     * @access public
+     * @subpackage Yireo
+     * @param array $data
+     * @param bool $loadData
+     * @return mixed
+     */
+    public function getForm($data = array(), $loadData = true)
+    {
+        // Do not continue if this is not the right backend
+        if ($this->application->isAdmin() == false && $this->_frontend_form == false) {
+            return false;
+        }
+
+        // Do not continue if this is not a singular view
+        if (method_exists('isSingular', $this) && $this->isSingular() == false) {
+            return false;
+        }
+
+        // Read the form from XML
+        $xmlFile = JPATH_ADMINISTRATOR.'/components/'.$this->_option.'/models/'.$this->_form_name.'.xml';
+        if (!file_exists($xmlFile)) {
+            $xmlFile = JPATH_SITE.'/components/'.$this->_option.'/models/'.$this->_form_name.'.xml';
+        }
+
+        if (!file_exists($xmlFile)) {
+            return false;
+        }
+
+        // Construct the form-object
+        jimport('joomla.form.form');
+        $form = JForm::getInstance('item', $xmlFile);
+        if (empty($form)) {
+            return false;
+        }
+
+        // Bind the data
+        $data = $this->getData();
+        $form->bind(array('item' => $data));
+
+        // Insert the params-data if set
+        if (!empty($data->params)) {
+            $params = $data->params;
+            if (is_string($params)) $params = YireoHelper::toRegistry($params)->toArray();
+            $form->bind(array('params' => $params));
+        }
+
+        return $form;
+    }
+
+    /* 
+     * Helper method to override the name of the form
+     */
+    public function setFormName($form_name)
+    {
+        $this->_form_name = $form_name;
+    }
+
+    /**
      * Override the default method to allow for skipping table creation
      *
      * @access public
@@ -115,10 +227,29 @@ class YireoCommonModel extends YireoAbstractModel
         if (!empty($this->_tbl_prefix)) $prefix = $this->_tbl_prefix;
         return parent::getTable($name, $prefix, $options);
     }
+
+    /**
+     * Method to determine the component-name
+     *
+     * @access protected
+     * @subpackage Yireo
+     * @param null
+     * @return string
+     */
+    protected function getOption()
+    {
+        $classParts = explode('Model', get_class($this));
+        $comPart = (!empty($classParts[0])) ? $classParts[0] : null;
+        $comPart = preg_replace('/([A-Z])/', '_\\1', $comPart);
+        $comPart = strtolower(preg_replace('/^_/', '', $comPart));
+        $option = (!empty($comPart) && $comPart != 'yireo') ? 'com_'.$comPart : JRequest::getCmd('option');
+        return $option;
+    }
 }
 
 /**
  * Yireo Model 
+ * Parent class for models that use the full-blown MVC pattern
  *
  * @package Yireo
  */
@@ -281,31 +412,20 @@ class YireoModel extends YireoCommonModel
      */
     public function __construct($tableAlias = null)
     {
-        // Import use full variables from JFactory
-        $this->application = JFactory::getApplication();
-        $this->user = JFactory::getUser();
-
-        // Create the option-namespace
-        $classParts = explode('Model', get_class($this));
-        $this->_view = (!empty($classParts[1])) ? strtolower($classParts[1]) : JRequest::getCmd('view');
-        $this->_option = $this->getOption();
-        $this->_option_id = $this->_option.'_'.$this->_view.'_';
-        if ($this->application->isSite()) $this->_option_id .= JRequest::getInt('Itemid').'_';
-        $this->_component = preg_replace('/^com_/', '', $this->_option);
-        $this->_component = preg_replace('/[^A-Z0-9_]/i', '', $this->_component);
-        $this->_component = str_replace(' ', '', ucwords(str_replace('_', ' ', $this->_component)));
-
         // Call the parent constructor
-        parent::__construct();
+        $rt = parent::__construct();
 
         // Set the database variables
         if($this->_tbl_prefix_auto == true) $this->_tbl_prefix = $this->_component.'Table';
         // @todo: Set this in a metadata array 
         $this->_tbl_alias = $tableAlias;
         $this->_tbl = $this->getTable($tableAlias);
-        $this->_tbl_name = $this->_tbl->getTableName();
-        $this->_tbl_key = $this->_tbl->getKeyName();
+        if($this->_tbl) {
+            $this->_tbl_name = $this->_tbl->getTableName();
+            $this->_tbl_key = $this->_tbl->getKeyName();
+        }
         $this->_entity = $tableAlias;
+        $this->_form_name = $tableAlias;
 
         // Detect the orderby-default
         if(empty($this->_orderby_default)) $this->_orderby_default = $this->_tbl->getDefaultOrderBy();
@@ -373,6 +493,8 @@ class YireoModel extends YireoCommonModel
             $this->addOrderby('{tableAlias}.'.$this->_orderby_default);
 
         }
+
+        return $rt;
     }
 
     /**
@@ -869,7 +991,7 @@ class YireoModel extends YireoCommonModel
             }
         }
 
-        // Bind the form fields to the table
+        // Bind the fields to the table
         if (!$this->_tbl->bind($data)) {
             $this->setError($this->_db->getErrorMsg());
             $this->saveTmpSession($data);
@@ -1405,58 +1527,6 @@ class YireoModel extends YireoCommonModel
     }
 
     /**
-     * Method to get a XML-based form
-     *
-     * @access public
-     * @subpackage Yireo
-     * @param array $data
-     * @param bool $loadData
-     * @return mixed
-     */
-    public function getForm($data = array(), $loadData = true)
-    {
-        // Do not continue if this is not the right backend
-        if ($this->application->isAdmin() == false && $this->_frontend_form == false) {
-            return false;
-        }
-
-        // Do not continue if this is not a singular view
-        if ($this->isSingular() == false) {
-            return false;
-        }
-
-        // Read the form from XML
-        $xmlFile = JPATH_ADMINISTRATOR.'/components/'.$this->_option.'/models/'.$this->_entity.'.xml';
-        if (!file_exists($xmlFile)) {
-            $xmlFile = JPATH_SITE.'/components/'.$this->_option.'/models/'.$this->_entity.'.xml';
-        }
-
-        if (!file_exists($xmlFile)) {
-            return false;
-        }
-
-        // Construct the form-object
-        jimport('joomla.form.form');
-        $form = JForm::getInstance('item', $xmlFile);
-        if (empty($form)) {
-            return false;
-        }
-
-        // Bind the data
-        $data = $this->getData();
-        $form->bind(array('item' => $data));
-
-        // Insert the params-data if set
-        if (!empty($data->params)) {
-            $params = $data->params;
-            if (is_string($params)) $params = YireoHelper::toRegistry($params)->toArray();
-            $form->bind(array('params' => $params));
-        }
-
-        return $form;
-    }
-
-    /**
      * Check whether this record can be edited
      *
      * @access protected
@@ -1730,23 +1800,5 @@ class YireoModel extends YireoCommonModel
         return array(
             'table' => $this->_entity,
         );
-    }
-
-    /**
-     * Method to determine the component-name
-     *
-     * @access protected
-     * @subpackage Yireo
-     * @param null
-     * @return string
-     */
-    protected function getOption()
-    {
-        $classParts = explode('Model', get_class($this));
-        $comPart = (!empty($classParts[0])) ? $classParts[0] : null;
-        $comPart = preg_replace('/([A-Z])/', '_\\1', $comPart);
-        $comPart = strtolower(preg_replace('/^_/', '', $comPart));
-        $option = (!empty($comPart) && $comPart != 'yireo') ? 'com_'.$comPart : JRequest::getCmd('option');
-        return $option;
     }
 }
