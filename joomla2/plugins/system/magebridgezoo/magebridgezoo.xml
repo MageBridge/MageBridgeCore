@@ -2,7 +2,7 @@
 <extension version="2.5" type="plugin" group="system" method="upgrade">
     <name>PLG_SYSTEM_MAGEBRIDGEZOO</name>
     <author>Yireo</author>
-    <creationDate>June 2014</creationDate>
+    <creationDate>July 2014</creationDate>
     <copyright>Copyright (C) 2014 Yireo.com. All rights reserved.</copyright>
     <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
     <authorEmail>info@yireo.com</authorEmail>
