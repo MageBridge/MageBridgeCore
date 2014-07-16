@@ -284,7 +284,13 @@ class MageBridge
      */
     public function isValidSession($session_id)
     {
+        $forbidden = array('deleted');
         $session_id = trim($session_id);
+
+        if(in_array($session_id, $forbidden)) {
+            return false;
+        }
+
         if(empty($session_id) || !preg_match('/^([a-zA-Z0-9\-\_\,]{10,100})$/', $session_id)) {
             return false;
         }
