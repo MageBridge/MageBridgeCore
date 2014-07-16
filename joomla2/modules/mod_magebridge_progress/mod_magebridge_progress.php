@@ -19,6 +19,9 @@ require_once JPATH_SITE.'/components/com_magebridge/helpers/loader.php';
 require_once (dirname(__FILE__).'/helper.php');
 $data = modMageBridgeProgressHelper::build($params);
 
+// Abort when there is no data
+if(empty($data)) return;
+
 // Include the layout-file
 $layout = $params->get('layout', 'default');
 require(JModuleHelper::getLayoutPath('mod_magebridge_progress', $layout));
