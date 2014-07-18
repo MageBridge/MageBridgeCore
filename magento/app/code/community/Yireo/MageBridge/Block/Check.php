@@ -106,6 +106,9 @@ class Yireo_MageBridge_Block_Check extends Mage_Core_Block_Template
         $result = ($store->getConfig('web/url/redirect_to_base') != '0') ? self::CHECK_ERROR : self::CHECK_OK;
         $this->addResult('conf', 'Redirect to Base', $result, 'The Magento setting "Redirect To Base" needs to be set to "No".');
 
+        $result = ($store->getConfig('web/seo/use_rewrites') == '0') ? self::CHECK_ERROR : self::CHECK_OK;
+        $this->addResult('conf', 'Use Rewrites', $result, 'The Magento setting "Use Rewrites" needs to be set to "Yes".');
+
         $result = ($store->getConfig('web/url/use_store') != '0') ? self::CHECK_WARNING : self::CHECK_OK;
         $this->addResult('conf', 'Add store-code to URL', $result, 'The Magento setting "Add store-code to URL" needs to be set to "No" in most cases.');
 
