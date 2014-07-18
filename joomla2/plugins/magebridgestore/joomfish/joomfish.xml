@@ -2,12 +2,12 @@
 <extension version="2.5" type="plugin" group="magebridgestore" method="upgrade">
 	<name>PLG_MAGEBRIDGESTORE_JOOMFISH</name>
 	<author>Yireo</author>
-	<creationDate>June 2014</creationDate>
+	<creationDate>July 2014</creationDate>
 	<copyright>Copyright (C) 2014 Yireo.com. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<authorEmail>info@yireo.com</authorEmail>
 	<authorUrl>www.yireo.com</authorUrl>
-	<version>1.9.5219</version>
+	<version>1.9.5221</version>
 	<description>PLG_MAGEBRIDGESTORE_JOOMFISH_DESC</description>
 
 	<files>
