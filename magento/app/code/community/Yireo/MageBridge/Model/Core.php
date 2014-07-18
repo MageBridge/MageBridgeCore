@@ -190,17 +190,17 @@ class Yireo_MageBridge_Model_Core
                     // Collect the unmodified original URLs from the Configuration
                     $urls = array();
                     $urls['web/unsecure/base_url'] = $store->getConfig('web/unsecure/base_url');
-                    $urls['web/unsecure/base_link_url'] = $store->getConfig('web/unsecure/base_url');
+                    $urls['web/unsecure/base_link_url'] = $store->getConfig('web/unsecure/base_link_url');
                     $urls['web/unsecure/base_media_url'] = $store->getConfig('web/unsecure/base_media_url');
                     $urls['web/unsecure/base_skin_url'] = $store->getConfig('web/unsecure/base_skin_url');
                     $urls['web/unsecure/base_js_url'] = $store->getConfig('web/unsecure/base_js_url');
                     $urls['web/secure/base_url'] = $store->getConfig('web/secure/base_url');
-                    $urls['web/secure/base_link_url'] = $store->getConfig('web/secure/base_url');
+                    $urls['web/secure/base_link_url'] = $store->getConfig('web/secure/base_link_url');
                     $urls['web/secure/base_media_url'] = $store->getConfig('web/secure/base_media_url');
                     $urls['web/secure/base_skin_url'] = $store->getConfig('web/secure/base_skin_url');
                     $urls['web/secure/base_js_url'] = $store->getConfig('web/secure/base_js_url');
 
-                    // Store the unmodified URLs in the registry
+                    // Store the unmodified URLs in the registry for later reference
                     if(Mage::registry('original_urls') == null) {
                         Mage::register('original_urls', $urls);
                     }
@@ -215,9 +215,9 @@ class Yireo_MageBridge_Model_Core
                     }
                     */
 
-                    // Set the main URL
-                    $urls['web/unsecure/base_link_url'] = $this->getMageBridgeSefUrl();
-                    $urls['web/secure/base_link_url'] = $this->getMageBridgeSefUrl();
+                    // Set the main URL to Joomla! instead of Magento
+                    $urls['web/unsecure/base_url'] = $this->getMageBridgeSefUrl();
+                    $urls['web/secure/base_url'] = $this->getMageBridgeSefUrl();
                     $urls['web/unsecure/base_link_url'] = $this->getMageBridgeSefUrl();
                     $urls['web/secure/base_link_url'] = $this->getMageBridgeSefUrl();
 
