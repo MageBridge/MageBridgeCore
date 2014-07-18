@@ -618,8 +618,8 @@ class YireoView extends YireoCommonView
         if (empty($this->model)) return null;
 
         // Determine if this is a new item or not
-        $primary_key = (method_exists('getPrimaryKey', $this->model)) ? $this->model->getPrimaryKey() : 'id';
-        $this->item = (method_exists('getData', $this->model)) ? $this->model->getData() : (object)null;
+        $primary_key = (method_exists($this->model, 'getPrimaryKey')) ? $this->model->getPrimaryKey() : 'id';
+        $this->item = (method_exists($this->model, 'getData')) ? $this->model->getData() : (object)null;
         $this->item->isNew = (isset($this->item->$primary_key) && $this->item->$primary_key < 1);
 
         // Override in case of copying
@@ -635,13 +635,13 @@ class YireoView extends YireoCommonView
             if ($this->application->isAdmin()) {
 
                 // Fail if checked-out not by current user
-                if (method_exists('isCheckedOut', $this->model) && $this->model->isCheckedOut( $this->user->get('id'))) {
+                if (method_exists($this->model, 'isCheckedOut') && $this->model->isCheckedOut( $this->user->get('id'))) {
                     $msg = JText::sprintf('LIB_YIREO_MODEL_CHECKED_OUT', $this->item->title);
                     $this->application->redirect( 'index.php?option='.$this->_option, $msg );
                 }
 
                 // Checkout older items
-                if ($this->item->isNew == false && method_exists('checkout', $this->model)) {
+                if ($this->item->isNew == false && method_exists($this->model, 'checkout')) {
                     $this->model->checkout($this->user->get('id'));
                 }
             }
@@ -683,7 +683,7 @@ class YireoView extends YireoCommonView
             $this->lists['access'] = null;
         }
 
-        $ordering = (method_exists('getOrderByDefault', $this->model)) ? $this->model->getOrderByDefault() : null;
+        $ordering = (method_exists($this->model, 'getOrderByDefault')) ? $this->model->getOrderByDefault() : null;
         if ($this->application->isAdmin() && !empty($ordering) && $ordering == 'ordering') {
             $this->lists['ordering'] = JHTML::_('list.ordering', 'ordering', $this->model->getOrderingQuery(), $this->item->ordering);
         } else {

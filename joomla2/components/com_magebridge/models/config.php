@@ -54,6 +54,8 @@ class MagebridgeModelConfig extends YireoAbstractModel
             'http_password' => '',
             'http_authtype' => CURLAUTH_ANY,
             'enforce_ssl' => 0,
+            'ssl_version' => 0,
+            'ssl_ciphers' => null,
             'basedir' => '',
             'offline' => 0,
             'offline_message' => 'The webshop is currently not available. Please come back again later.',

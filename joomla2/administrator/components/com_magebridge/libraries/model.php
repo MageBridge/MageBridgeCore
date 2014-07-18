@@ -167,7 +167,7 @@ class YireoCommonModel extends YireoAbstractModel
         }
 
         // Do not continue if this is not a singular view
-        if (method_exists('isSingular', $this) && $this->isSingular() == false) {
+        if (method_exists($this, 'isSingular') && $this->isSingular() == false) {
             return false;
         }
 
