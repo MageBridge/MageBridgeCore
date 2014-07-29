@@ -7,19 +7,19 @@
  * @link http://www.yireo.com
  */
 
-fieldset.adminform {
+form#adminForm {
     border: 1px solid #dfdfdf !important;
     background-color: #f1f1f1;
 }
 
-fieldset.adminform td.key {
+form#adminForm td.key {
     background-color: #dfdfdf;
     padding: 5px;
     line-height: 16px;
     text-align: right;
 }
 
-fieldset.adminform td.value label {
+form#adminForm td.value label {
     float: left;
     clear: none;
     min-width: 15px;
@@ -31,20 +31,41 @@ fieldset.adminform td.value label {
     display: inline;
 }
 
-fieldset.adminform td.value select {
+form#adminForm td.value select {
     clear: both;
 }
 
-fieldset.adminform td.value {
+form#adminForm td.value {
     width: 400px !important;
 }
 
-fieldset.adminform span.input-span {
+form#adminForm span.input-span {
     line-height: 250%;
     font-size: 80%;
     float:left;
 }
 
+form#adminForm div.control-label {
+    width: auto;
+    padding-right: 5px;
+    float: left;
+}
+
+form#adminForm div.controls {
+    margin-left: 300px;
+}
+
+form#adminForm div.controls input[type=radio] {
+    float: none;
+}
+
+form#adminForm div.controls label {
+    display: inline;
+    float: none;
+    padding-right: 10px;
+}
+
 dd.notice pre {
     white-space: pre-line;
 }
+
