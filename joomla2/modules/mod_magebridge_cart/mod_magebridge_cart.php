@@ -30,4 +30,4 @@ if ($layout != 'ajax') {
 }
 
 // Include the layout-file
-require(JModuleHelper::getLayoutPath('mod_magebridge_cart', $params->get('layout', 'default')));
+require(JModuleHelper::getLayoutPath('mod_magebridge_cart', $layout));

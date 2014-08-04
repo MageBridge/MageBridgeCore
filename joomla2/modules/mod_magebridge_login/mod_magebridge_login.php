@@ -19,6 +19,9 @@ require_once JPATH_SITE.'/components/com_magebridge/helpers/loader.php';
 $user = JFactory::getUser();
 $type = (!$user->get('guest')) ? 'logout_link' : 'login_link';
 
+// Read the parameters
+$layout = $params->get('layout', 'default');
+
 switch($params->get($type)) {
     case 'current':
         $return_url = JFactory::getURI()->toString();
@@ -79,4 +82,4 @@ $component_url = JRoute::_('index.php');
 // Include the template-helper
 $magebridge = new MageBridgeTemplateHelper();
 
-require(JModuleHelper::getLayoutPath('mod_magebridge_login'));
+require(JModuleHelper::getLayoutPath('mod_magebridge_login', $layout));
