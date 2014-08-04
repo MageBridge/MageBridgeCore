@@ -48,6 +48,7 @@ class JFormFieldScripts extends JFormFieldAbstract
                 $size = (count($options) > 10) ? 10 : count($options);
                 array_unshift( $options, array( 'value' => '', 'label' => '- '.JText::_('None').' -'));
                 return JHTML::_('select.genericlist', $options, $name.'[]', 'multiple="multiple" size="'.$size.'"', 'value', 'label', $current_options);
+
             } else {
                 MageBridgeModelDebug::getInstance()->warning( 'Unable to obtain MageBridge API Widget "scripts": '.var_export($options, true));
             }

@@ -53,12 +53,11 @@ class JFormFieldDisablejs extends JFormFieldAbstract
 
         $html = null;
         $html .= JHTML::_('select.radiolist', $options, 'disable_js_all', 'class="btn-group"', 'value', 'text', $current);
-        $html .= '<div class="controls">';
+        $html .= '<br/><br/>';
         $html .= '<textarea type="text" id="disable_js_custom" name="disable_js_custom" '.$disabled
             . 'rows="5" cols="40" maxlength="255">'
             . MagebridgeModelConfig::load('disable_js_custom')
             . '</textarea>';
-        $html .= '</div>';
         return $html;
     }
 }

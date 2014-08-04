@@ -29,9 +29,8 @@ input {
     padding: 2px;
 }
 
-div.control-label label {
-    min-width: 300px;
-    width: 300px !important;
+div.controls div.controls {
+    margin-left: 0;
 }
 
 span.fieldgroup label {

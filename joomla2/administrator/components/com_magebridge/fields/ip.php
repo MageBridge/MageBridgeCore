@@ -39,12 +39,10 @@ class JFormFieldIp extends JFormFieldAbstract
         $id = str_replace(']', '', str_replace('[', '_', $name));
 
         $html = null;
-        $html .= '<div class="controls">';
         $html .= '<textarea type="text" id="'.$id.'" name="'.$name.'" '
             . 'rows="5" cols="40" maxlength="255">'
             . $value
             . '</textarea>';
-        $html .= '</div>';
         $html .= '<button class="btn" onclick="insertIp(\''.$_SERVER['REMOTE_ADDR'].'\'); return false;">'
             . JText::_('COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_DEBUG_IP')
             . '</button>';

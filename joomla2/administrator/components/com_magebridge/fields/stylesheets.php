@@ -53,9 +53,8 @@ class JFormFieldStylesheets extends JFormFieldAbstract
 
         $html = '';
         $html .= self::getRadioHTML();
-        $html .= '<div class="controls">';
+        $html .= '<br/><br/>';
         $html .= self::getSelectHTML($options);
-        $html .= '</div>';
         return $html;
     }
 
