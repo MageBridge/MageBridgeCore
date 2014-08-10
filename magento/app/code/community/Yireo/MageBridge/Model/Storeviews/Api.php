@@ -59,9 +59,11 @@ class Yireo_MageBridge_Model_Storeviews_Api extends Mage_Api_Model_Resource_Abst
 
             foreach($views as $view) {
                 if($view->getGroupId() == $group->getGroupId()) {
+                    $locale = Mage::getStoreConfig('general/locale/code', $view);
                     $child = array(
                         'value' => $view->getData('code'),
                         'label' => $view->getData('name'),
+                        'locale' => $locale,
                     );
                     $data['childs'][] = $child;
                 }
