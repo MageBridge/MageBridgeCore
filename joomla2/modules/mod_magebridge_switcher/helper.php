@@ -107,6 +107,13 @@ class modMageBridgeSwitcherHelper
         return JHTML::_('select.genericlist', $options, 'magebridge_store', $attribs, 'value', 'label', $currentValue);
     }
 
+    /*
+     * Return a list of Root Menu Items associated with the current Root Menu Item
+     * 
+     * @access public
+     * @param null
+     * @return array
+     */
     static public function getRootItemAssociations()
     {
         $app = JFactory::getApplication();
@@ -124,6 +131,13 @@ class modMageBridgeSwitcherHelper
         return $associations;
     }
 
+    /*
+     * Return the Root Menu Item ID per language
+     * 
+     * @access public
+     * @param string $language
+     * @return int
+     */
     static public function getRootItemIdByLanguage($language)
     {
         $app = JFactory::getApplication();
@@ -152,28 +166,43 @@ class modMageBridgeSwitcherHelper
      */
     static public function getLanguages($stores, $params = null)
     {
+        // Base variables
         $languages = array();
         $currentName = (MageBridgeStoreHelper::getInstance()->getAppType() == 'store') ? MageBridgeStoreHelper::getInstance()->getAppValue() : null;
-        $currentValue = null;
-                        
+        $storeUrls = MageBridgeModelBridge::getInstance()->getMageConfig('store_urls');
+
+        // Generic Joomla! variables
         $app = JFactory::getApplication();
 
+        // Loop through the stores
         if (!empty($stores) && is_array($stores)) {
             foreach ($stores as $group) {
 
+                // Skip everything that does not belong to the current Website
                 if ($group['website'] != MageBridgeModelConfig::load('website')) {
                     continue;
                 }
 
+                // Loop through the Store Views
                 if (!empty($group['childs'])) {
                     foreach ($group['childs'] as $child) {
 
-                        $request = JRequest::getString('request'); // @todo: Make this dynamic per Magento Store View
+                        // Determine the Magento request per Store View
+                        $storeCode = $child['value'];
+                        if(isset($storeUrls[$storeCode])) {
+                            $request = $storeUrls[$storeCode];
+
+                        // Use the original request
+                        } else {
+                            $request = JRequest::getString('request');
+                        }
+
+                        // Construct the Store View URL
                         $itemId = self::getRootItemIdByLanguage($child['locale']);
                         $url = 'index.php?option=com_magebridge&view=root&lang='.$child['value'].'&Itemid='.$itemId.'&request='.$request;
                         $url = JRoute::_($url);
 
-                        if ($child['value'] == $currentName) $currentValue = $url;
+                        // Add this entry to the list
                         $languages[] = array(
                             'url' => $url,
                             'code' => $child['value'],
