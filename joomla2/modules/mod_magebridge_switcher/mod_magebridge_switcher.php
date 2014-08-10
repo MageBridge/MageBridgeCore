@@ -22,6 +22,12 @@ $layout = preg_replace('/^_:/', '', $layout);
 // Call the helper
 require_once (dirname(__FILE__).'/helper.php');
 
+// If this is not a MageBridge page, exit
+$option = JFactory::getApplication()->input->getCmd('option');
+if ($option != 'com_magebridge') {
+    return;
+}
+
 // Fetch the API data
 $stores = modMageBridgeSwitcherHelper::build($params);
 if (empty($stores)) return false;
@@ -32,6 +38,8 @@ $redirect_url = JFactory::getURI()->toString();
 // Build HTML elements
 if ($layout == 'language') {
     $select = modMageBridgeSwitcherHelper::getStoreSelect($stores, $params);
+} elseif ($layout == 'flags') {
+    $languages = modMageBridgeSwitcherHelper::getLanguages($stores, $params);
 } else {
     $select = modMageBridgeSwitcherHelper::getFullSelect($stores, $params);
 }

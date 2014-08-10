@@ -103,7 +103,88 @@ class modMageBridgeSwitcherHelper
         }
     
         array_unshift( $options, array( 'value' => '', 'label' => '-- Select --'));
-        return JHTML::_('select.genericlist', $options, 'magebridge_store', 'onChange="document.forms[\'mbswitcher\'].submit();"', 'value', 'label', $currentValue);
+        $attribs = 'onChange="document.forms[\'mbswitcher\'].submit();"';
+        return JHTML::_('select.genericlist', $options, 'magebridge_store', $attribs, 'value', 'label', $currentValue);
+    }
+
+    static public function getRootItemAssociations()
+    {
+        $app = JFactory::getApplication();
+        $assoc = JLanguageAssociations::isEnabled();
+        if($assoc == false) {
+            return false;
+        }
+
+        $root_item = MageBridgeUrlHelper::getRootItem();
+        if($root_item == false) {
+            return false;
+        }
+
+        $associations = MenusHelper::getAssociations($root_item->id);
+        return $associations;
+    }
+
+    static public function getRootItemIdByLanguage($language)
+    {
+        $app = JFactory::getApplication();
+        $currentItemId = $app->input->getInt('Itemid');
+
+        $rootItemAssociations = self::getRootItemAssociations();
+        if(empty($rootItemAssociations)) {
+            return $currentItemId;
+        }
+
+        foreach($rootItemAssociations as $rootItemLanguage => $rootItemId) {
+            if($language == $rootItemLanguage) return $rootItemId;
+            if($language == str_replace('-', '_', $rootItemLanguage)) return $rootItemId;
+        }
+
+        return $currentItemId;
+    }
+
+    /*
+     * Return a list of store languages
+     * 
+     * @access public
+     * @param array $stores
+     * @param JParameter $params
+     * @return string
+     */
+    static public function getLanguages($stores, $params = null)
+    {
+        $languages = array();
+        $currentName = (MageBridgeStoreHelper::getInstance()->getAppType() == 'store') ? MageBridgeStoreHelper::getInstance()->getAppValue() : null;
+        $currentValue = null;
+                        
+        $app = JFactory::getApplication();
+
+        if (!empty($stores) && is_array($stores)) {
+            foreach ($stores as $group) {
+
+                if ($group['website'] != MageBridgeModelConfig::load('website')) {
+                    continue;
+                }
+
+                if (!empty($group['childs'])) {
+                    foreach ($group['childs'] as $child) {
+
+                        $request = JRequest::getString('request'); // @todo: Make this dynamic per Magento Store View
+                        $itemId = self::getRootItemIdByLanguage($child['locale']);
+                        $url = 'index.php?option=com_magebridge&view=root&lang='.$child['value'].'&Itemid='.$itemId.'&request='.$request;
+                        $url = JRoute::_($url);
+
+                        if ($child['value'] == $currentName) $currentValue = $url;
+                        $languages[] = array(
+                            'url' => $url,
+                            'code' => $child['value'],
+                            'label' => $child['label'],
+                        );
+                    }
+                }
+            }
+        }
+
+        return $languages;
     }
 
     /*
