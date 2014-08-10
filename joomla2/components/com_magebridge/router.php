@@ -26,7 +26,7 @@ function MagebridgeBuildRoute(&$query)
     }
 
     // Initialize some parts
-	$segments = array();
+    $segments = array();
     $Itemid = isset($query['Itemid']) ? $query['Itemid'] : 0;
     $orig_Itemid = $Itemid;
 
@@ -72,8 +72,15 @@ function MagebridgeBuildRoute(&$query)
     }
 
     // Fetch the Root-Item
-    $root_item = MageBridgeUrlHelper::getRootItem();
-    $root_item_id = ($root_item && $root_item->id > 0) ? $root_item->id : false;
+    $query_option = (isset($query['option'])) ? $query['option'] : null;
+    $query_view = (isset($query['view'])) ? $query['view'] : null;
+    if($query_option == 'com_magebridge' && $query_view == 'root') {
+        $root_item = false;
+        $root_item_id = false;
+    } else {
+        $root_item = MageBridgeUrlHelper::getRootItem();
+        $root_item_id = ($root_item && $root_item->id > 0) ? $root_item->id : false;
+    }
 
     // Set a default empty view
     if (!isset($query['view'])) {
@@ -86,7 +93,7 @@ function MagebridgeBuildRoute(&$query)
     }
 
     // If there is a root-item (and therefor "use_rootmenu" is enabled), see if we need to replace the current URL with the root-items URL
-    if ($root_item_id) {
+    if ($root_item_id > 0) {
 
         // If there is a root-view or when "enforce_rootmenu" is enabled, reset the Itemid to the Root Menu-Item
         if ($query['view'] == 'root' || MageBridgeUrlHelper::enforceRootMenu()) {
@@ -170,7 +177,7 @@ function MagebridgeBuildRoute(&$query)
     }
 
     // Return the segments
-	return $segments;
+    return $segments;
 }
 
 /*
