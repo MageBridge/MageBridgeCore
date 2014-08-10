@@ -678,6 +678,11 @@ class Yireo_MageBridge_Model_Core
      */
     public function getMageConfig()
     {
+        // Fetch current information
+        $currentCategoryId = Mage::helper('magebridge/core')->getCurrentCategoryId();
+        $currentCategoryPath = Mage::helper('magebridge/core')->getCurrentCategoryPath();
+        $currentProductId = Mage::helper('magebridge/core')->getCurrentProductId();
+
         // Construct extra data
         $store = Mage::app()->getStore($this->getStore());
         $data = array(
@@ -697,14 +702,33 @@ class Yireo_MageBridge_Model_Core
             'form_key' => Mage::getSingleton('core/session')->getFormKey(),
             'root_template' => $this->getRootTemplate(),
             'root_category' => Mage::app()->getStore($this->getStore())->getRootCategoryId(),
-            'current_category_id' => Mage::helper('magebridge/core')->getCurrentCategoryId(),
-            'current_category_path' => Mage::helper('magebridge/core')->getCurrentCategoryPath(),
-            'current_product_id' => Mage::helper('magebridge/core')->getCurrentProductId(),
+            'current_category_id' => $currentCategoryId,
+            'current_category_path' => $currentCategoryPath,
+            'current_product_id' => $currentProductId,
             'referer' => Mage::app()->getRequest()->getServer('HTTP_REFERER'),
             'request' => $this->getRequestUrl(),
+            'store_urls' => array(),
             'handles' => array(),
         );
 
+        // Add store URLs for current page
+        $stores = Mage::app()->getStores();
+        foreach($stores as $store) {
+            $code = $store->getCode();
+
+            // Product URL
+            if($currentProductId > 0) {
+                $url = Mage::getModel('catalog/product')->setStoreId($store->getId())->load($currentProductId)->getUrlPath();
+                $data['store_urls'][$code] = $url;
+
+            // Category URL
+            } elseif($currentCategoryId > 0) {
+                $url = Mage::getModel('catalog/category')->setStoreId($store->getId())->load($currentCategoryId)->getUrlPath();
+                $data['store_urls'][$code] = $url;
+            }
+        }
+
+        // Add available handles
         $controller = Mage::getSingleton('magebridge/core')->getController();
         $handles = $controller->getAction()->getLayout()->getUpdate()->getHandles();
         if(!empty($handles)) {
