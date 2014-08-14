@@ -149,7 +149,9 @@ class MageBridgeModelBridge
     {
         $url = MageBridgeModelBridge::getMagentoUrl();
         if (!empty($url)) {
-            return $url.'index.php/'.MagebridgeModelConfig::load('backend').'/'.$path;
+            $path = preg_replace('/^\//', '', $path);
+            $url = $url.'index.php/'.MagebridgeModelConfig::load('backend').'/'.$path;
+            return $url;
         } else {
             return null;
         }

@@ -54,9 +54,19 @@ class MageBridgeController extends YireoAbstractController
         }
 
         // Check for a logout action and perform a logout in Joomla! first
-        if (MageBridgeUrlHelper::getRequest() == 'customer/account/logout') {
+        $request = MageBridgeUrlHelper::getRequest();
+        if ($request == 'customer/account/logout') {
             $session = JFactory::getSession();
             $session->destroy();
+        }
+
+        // Check for an admin request
+        $backend = MageBridgeModelConfig::load('backend');
+        if (!empty($backend) && substr($request, 0, strlen($backend)) === $backend) {
+            $request = str_replace($backend, '', $request);
+            $url = MageBridgeModelBridge::getInstance()->getMagentoAdminUrl($request);
+            $this->setRedirect($url);
+            return;
         }
 
         // Redirect if the layout is not supported by the view
