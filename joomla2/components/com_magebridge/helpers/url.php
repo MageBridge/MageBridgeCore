@@ -269,7 +269,7 @@ class MageBridgeUrlHelper
     static public function getRootItem()
     {
         // Return false, if Root Menu-Item usage is disabled
-        if (MagebridgeModelConfig::load('use_rootmenu') == false) {
+        if(self::enableRootMenu() == false) {
             return false;
         }
 
@@ -566,7 +566,7 @@ class MageBridgeUrlHelper
         }
 
         $url = 'index.php?option=com_magebridge&view=root&request='.$request;
-        if(JRequest::getCmd('option') == 'com_magebridge') {
+        if(self::enableRootMenu()) {
             $url .= '&Itemid='.self::getItemId();
         }
 
