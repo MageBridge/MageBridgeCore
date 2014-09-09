@@ -818,6 +818,11 @@ class plgSystemMageBridge extends JPlugin
             return false;
         }
 
+        // Check the Menu-Item settings
+        $menu = JFactory::getApplication()->getMenu();
+        $active = $menu->getActive();
+        $secureMenuItem = ($active->params->get('secure', 0) == 1) ? true : false;
+
         // Check if SSL should be forced
         if ($uri->isSSL() == false && $this->getParam('enable_ssl_redirect', 1) == 1) {
 
@@ -833,16 +838,33 @@ class plgSystemMageBridge extends JPlugin
                 $redirect = true;
 
             // Set the redirect for MageBridge only
-            } else if ($enforce_ssl == 2 && JRequest::getCmd('option') == 'com_magebridge') {
+            } else if ($enforce_ssl == 2) {
 
-                // Prevent redirection when doing Single Sign On
-                if (JRequest::getCmd('task') != 'login') {
-                    $redirect = true;
+                // MageBridge links
+                if (JRequest::getCmd('option') == 'com_magebridge') {
+
+                    // Prevent redirection when doing Single Sign On
+                    if (JRequest::getCmd('task') != 'login') {
+                        $redirect = true;
+                    }
+
+                // non-MageBridge links
+                } else {
+                    if ($secureMenuItem == 1) {
+                        $redirect = true;
+                    }
                 }
 
             // Set the redirect for specific MageBridge pages which should be served through SSL
-            } else if ($enforce_ssl == 3 && JRequest::getCmd('option') == 'com_magebridge') {
-                $redirect = (MageBridgeUrlHelper::isSSLPage()) ? true : false;
+            } else if ($enforce_ssl == 3) {
+
+                if (JRequest::getCmd('option') == 'com_magebridge') {
+                    $redirect = (MageBridgeUrlHelper::isSSLPage()) ? true : false;
+                } else {
+                    if ($secureMenuItem == 1) {
+                        $redirect = true;
+                    }
+                }
             }
 
             // Redirect to SSL
@@ -868,12 +890,26 @@ class plgSystemMageBridge extends JPlugin
                 $redirect = false; 
 
             // Do redirect if SSL is set for the shop only
-            } else if ($enforce_ssl == 2 && !in_array(JRequest::getCmd('option'), $components)) {
-                $redirect = true;
+            } else if ($enforce_ssl == 2) {
+                
+                if (!in_array(JRequest::getCmd('option'), $components)) {
+                    $redirect = true;
+                    if ($secureMenuItem == 1) {
+                        $redirect = false;
+                    }
+                }
 
             // Set the redirect if SSL is only enabled for MageBridge
-            } else if ($enforce_ssl == 3 && JRequest::getCmd('option') == 'com_magebridge') {
-                $redirect = (MageBridgeUrlHelper::isSSLPage()) ? false : true;
+            } else if ($enforce_ssl == 3) {
+
+                if (JRequest::getCmd('option') == 'com_magebridge') {
+                    $redirect = (MageBridgeUrlHelper::isSSLPage()) ? false : true;
+                } else {
+                    $redirect = true;
+                    if ($secureMenuItem == 1) {
+                        $redirect = false;
+                    }
+                }
             }
 
             if ($redirect == true) {

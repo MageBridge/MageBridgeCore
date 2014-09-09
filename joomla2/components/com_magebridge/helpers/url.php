@@ -269,7 +269,7 @@ class MageBridgeUrlHelper
     static public function getRootItem()
     {
         // Return false, if Root Menu-Item usage is disabled
-        if(self::enableRootMenu() == false) {
+        if (MagebridgeModelConfig::load('use_rootmenu') == false) {
             return false;
         }
 
@@ -566,7 +566,7 @@ class MageBridgeUrlHelper
         }
 
         $url = 'index.php?option=com_magebridge&view=root&request='.$request;
-        if(self::enableRootMenu()) {
+        if(JRequest::getCmd('option') == 'com_magebridge') {
             $url .= '&Itemid='.self::getItemId();
         }
 
@@ -586,6 +586,13 @@ class MageBridgeUrlHelper
      */
     static public function isSSLPage($request = null)
     {
+        // Check current page
+        if(JRequest::getCmd('option') == 'com_magebridge' && JRequest::getCmd('view') == 'content') {
+            if(in_array(JRequest::getCmd('layout'), array('checkout', 'cart'))) {
+                return true;
+            }
+        }
+
         // Default pages to be served with SSL
         $pages = array(
             'checkout/*',
