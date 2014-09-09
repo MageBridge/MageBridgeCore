@@ -28,11 +28,7 @@ switch($params->get($type)) {
         break;
 
     case 'home':
-        if (MageBridgeHelper::isJoomla15()) {
-            $default = JSite::getMenu()->getDefault();
-        } else {
-            $default = JApplication::getMenu()->getDefault();
-        }
+        $default = JFactory::getApplication()->getMenu('site')->getDefault();
         $return_url = JFactory::getURI($default->link)->toString();
         break;
 
