@@ -762,6 +762,11 @@ class YireoModel extends YireoCommonModel
                     $this->_data = $data;
                 }
             }
+
+            // Allow to modify the data afterwards
+            if (method_exists($this, 'onDataLoadAfter')) {
+                $data = $this->onDataLoadAfter($data);
+            }
         }
 
         if ($this->isSingular() == false && $this->_limit_query == false && $this->getState('limit') > 0) {
