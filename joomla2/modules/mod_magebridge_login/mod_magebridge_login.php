@@ -29,7 +29,7 @@ switch($params->get($type)) {
 
     case 'home':
         $default = JFactory::getApplication()->getMenu('site')->getDefault();
-        $return_url = JFactory::getURI($default->link)->toString();
+        $return_url = JRoute::_('index.php?Itemid='.$default->id);
         break;
 
     case 'mbhome':
