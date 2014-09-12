@@ -179,7 +179,7 @@ class MageBridgeModelBridgeHeaders extends MageBridgeModelBridgeSegment
         if (!empty($headers['description'])) $document->setMetaData( 'description', htmlspecialchars($headers['description']));
         if (!empty($headers['robots'])) {
             $document->setMetaData( 'robots', htmlspecialchars($headers['robots']));
-            header('X-Robots-Tag: '.$headers['robots'], true);
+            @header('X-Robots-Tag: '.$headers['robots'], true);
         }
 
         // Add canonical tag
