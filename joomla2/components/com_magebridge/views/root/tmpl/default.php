@@ -13,7 +13,7 @@
 defined('_JEXEC') or die('Restricted access');
 ?>
 <?php if (!empty($this->block)) { ?>
-<div id="magebridge-content" class="magebridge-content">
+<div id="magebridge-content" class="<?php echo implode(' ', $this->content_class); ?>">
     <?php echo $this->block; ?>
 </div>
 <div style="clear:both"></div>

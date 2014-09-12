@@ -48,6 +48,19 @@ class MageBridgeViewRoot extends MageBridgeView
             JFactory::getApplication()->close();
         }
 
+        // Add controller information
+        $mageConfig = $bridge->getMageConfig();
+        $mageController = (isset($mageConfig['controller'])) ? $mageConfig['controller'] : null;
+        $mageAction = (isset($mageConfig['action'])) ? $mageConfig['action'] : null;
+        $this->assignRef('mage_controller', $mageController);
+        $this->assignRef('mage_action', $mageAction);
+
+        // Assemble the page class
+        $contentClass = array('magebridge-content');
+        if(!empty($mageController)) $contentClass[] = 'magebridge-'.$mageController;
+        if(!empty($mageAction)) $contentClass[] = 'magebridge-'.$mageController.'-'.$mageAction;
+        $this->assignRef('content_class', $contentClass);
+
         parent::display($tpl);
     }
 }
