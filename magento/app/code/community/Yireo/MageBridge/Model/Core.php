@@ -706,6 +706,8 @@ class Yireo_MageBridge_Model_Core
             'current_category_path' => $currentCategoryPath,
             'current_product_id' => $currentProductId,
             'referer' => Mage::app()->getRequest()->getServer('HTTP_REFERER'),
+            'controller' => Mage::app()->getRequest()->getControllerName(),
+            'action' => Mage::app()->getRequest()->getActionName(),
             'request' => $this->getRequestUrl(),
             'store_urls' => array(),
             'handles' => array(),
