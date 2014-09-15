@@ -62,6 +62,13 @@ class MageBridgeModelUser
         // If $result is empty, this user (with $user['email']) does not exist yet
         if (empty($result)) {
 
+            // Skip weird results
+            $mail = JFactory::getMailer();
+            if (!$mail->ValidateAddress($user['email']))
+            {
+                return null;
+            }
+
             // Construct a data-array for this user
             $data = array(
                 'name' => $user['name'],
@@ -103,20 +110,17 @@ class MageBridgeModelUser
             $table->bind($data);
             $table->store();
 
-            // Add Joomla! 2.5 or higher specific data
-            if (MageBridgeHelper::isJoomla15() == false) {
-        
-                if (isset($table->id) && $table->id > 0) {
+            // Add usergroups
+            if (isset($table->id) && $table->id > 0) {
 
-                    // Check whether the current user is part of any groups
-                    $db->setQuery('SELECT * FROM `#__user_usergroup_map` WHERE `user_id`='.$table->id);
-                    $rows = $db->loadObjectList();
-                    if (empty($rows)) {
-                        $group_id = MageBridgeUserHelper::getDefaultJoomlaGroupid();
-                        if (!empty($group_id)) {
-                            $db->setQuery('INSERT INTO `#__user_usergroup_map` SET `user_id`='.$table->id.', `group_id`='.$group_id);
-                            $db->query(); 
-                        }
+                // Check whether the current user is part of any groups
+                $db->setQuery('SELECT * FROM `#__user_usergroup_map` WHERE `user_id`='.$table->id);
+                $rows = $db->loadObjectList();
+                if (empty($rows)) {
+                    $group_id = MageBridgeUserHelper::getDefaultJoomlaGroupid();
+                    if (!empty($group_id)) {
+                        $db->setQuery('INSERT INTO `#__user_usergroup_map` SET `user_id`='.$table->id.', `group_id`='.$group_id);
+                        $db->query(); 
                     }
                 }
             }
