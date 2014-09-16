@@ -66,7 +66,7 @@ class MageBridgeModelUser
             $mail = JFactory::getMailer();
             if (!$mail->ValidateAddress($user['email']))
             {
-                return null;
+                return false;
             }
 
             // Construct a data-array for this user
@@ -498,11 +498,15 @@ class MageBridgeModelUser
                 'email' => $user_email,
             );
             $user = $this->create($data);
-            $changed = true;
+
+            if(is_object($user)) {
+                $changed = true;
+            }
         }
 
         // Do not fire the event when using the onepage-checkout
-        if (MageBridgeTemplateHelper::isPage('checkout/onepage') == true && MageBridgeTemplateHelper::isPage('checkout/onepage/success') == false) {
+        if (MageBridgeTemplateHelper::isPage('checkout/onepage') == true 
+            && MageBridgeTemplateHelper::isPage('checkout/onepage/success') == false) {
             $throw_event = false;
         }
 
