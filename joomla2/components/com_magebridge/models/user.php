@@ -435,8 +435,14 @@ class MageBridgeModelUser
             $row = $db->loadObject();
             if (!empty($row)) {
                 $user->load($user_id);
-                $changed = true;
+            } else {
+                return false;
             }
+        }
+
+        // Do not continue if IDs still do not match
+        if ($user_id > 0 && $user->id != $user_id) {
+            return false;
         }
 
         // Double-check whether the Joomla! email is different
