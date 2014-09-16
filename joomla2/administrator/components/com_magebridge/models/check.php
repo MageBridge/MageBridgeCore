@@ -287,11 +287,7 @@ class MagebridgeModelCheck extends YireoCommonModel
             $title = $plugin[2];
             $description = $plugin[3];
 
-            if (MageBridgeHelper::isJoomla15()) {
-                $result = (file_exists(JPATH_SITE.'/plugins/'.$group.'/'.$name.'.php')) ? self::CHECK_OK : self::CHECK_ERROR;
-            } else {
-                $result = (file_exists(JPATH_SITE.'/plugins/'.$group.'/'.$name.'/'.$name.'.php')) ? self::CHECK_OK : self::CHECK_ERROR;
-            }
+            $result = (file_exists(JPATH_SITE.'/plugins/'.$group.'/'.$name.'/'.$name.'.php')) ? self::CHECK_OK : self::CHECK_ERROR;
 
             if ($result == self::CHECK_ERROR) {
                 $description = JText::_('COM_MAGEBRIDGE_CHECK_PLUGIN_NOT_INSTALLED');
@@ -301,11 +297,7 @@ class MagebridgeModelCheck extends YireoCommonModel
 
                 $pluginObject = JPluginHelper::getPlugin($group, 'magebridge');
 
-                if (MageBridgeHelper::isJoomla15()) {
-                    $db->setQuery('SELECT id,published AS enabled FROM #__plugins WHERE `element`="magebridge" AND `folder`="'.$group.'" LIMIT 1');
-                } else {
-                    $db->setQuery('SELECT extension_id AS id,enabled FROM #__extensions WHERE `type`="plugin" AND `element`="magebridge" AND `folder`="'.$group.'" LIMIT 1');
-                }
+                $db->setQuery('SELECT extension_id AS id,enabled FROM #__extensions WHERE `type`="plugin" AND `element`="magebridge" AND `folder`="'.$group.'" LIMIT 1');
 
                 $row = $db->loadObject();
                 if (empty($row)) {

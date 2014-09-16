@@ -106,12 +106,7 @@ class MageBridgeViewUsers extends MageBridgeView
     */
     public function checkbox($item, $i)
     {
-        if (YireoHelper::isJoomla15()) {
-            $checkbox = JHTML::_('grid.checkedout', $item, $i);
-        } else {
-            $checkbox = JHtml::_('grid.id', $i, $item->id);
-        }
-
+        $checkbox = JHtml::_('grid.id', $i, $item->id);
         return $checkbox;
     }
 

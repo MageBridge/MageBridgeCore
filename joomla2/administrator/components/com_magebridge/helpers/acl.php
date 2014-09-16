@@ -90,10 +90,6 @@ class MageBridgeAclHelper
      */
     public static function isDemo()
     {
-        if (MageBridgeHelper::isJoomla15()) {
-            return false;
-        }
-
         $user = JFactory::getUser();
         if ($user->authorise('com_magebridge.demo_ro', 'com_magebridge') == true && $user->authorise('com_magebridge.demo_rw', 'com_magebridge') == false) {
             return true;

@@ -88,10 +88,9 @@ class plgMagentoMageBridge extends JPlugin
         // - entry_url = {URL}
         $options = array('disable_bridge' => true, 'action' => 'core.login.site');
 
-        // Call the Joomla! event "onLogoutUser"
-        $eventName = (MageBridgeHelper::isJoomla15()) ? 'onLogoutUser' : 'onUserLogout';
+        // Call the Joomla! event "onUserLogout"
         JPluginHelper::importPlugin('user');
-        JFactory::getApplication()->triggerEvent($eventName, array($customer, $options));
+        JFactory::getApplication()->triggerEvent('onUserLogout', array($customer, $options));
 
         return true;
     }
@@ -155,9 +154,6 @@ class plgMagentoMageBridge extends JPlugin
             $customer['username'] = $user->get('username');
         }
 
-        // Fix the ACL-records if needed
-        $this->getUser()->fixAcls($user);
-
         // Check for the right user-ID
         if ($user->id > 0) {
             $customer['id'] = $user->id;
@@ -203,9 +199,6 @@ class plgMagentoMageBridge extends JPlugin
         if (!isset($user) || !isset($user->id) || !$user->id > 0) {
             $user = $this->getUser()->loadByEmail($customer['email']);
         }
-
-        // Fix the ACL-records if needed
-        $this->getUser()->fixAcls($user);
 
         // Encrypt the user-password before continuing
         if (isset($customer['password'])) {

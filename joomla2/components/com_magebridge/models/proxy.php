@@ -579,7 +579,7 @@ class MageBridgeModelProxy
 
         // Handle the extra remember-me cookie
         $user = JFactory::getUser();
-        if($user->id > 0 && !empty($_COOKIE['persistent_shopping_cart']) && MageBridgeHelper::isJoomla15() == false) {
+        if($user->id > 0 && !empty($_COOKIE['persistent_shopping_cart'])) {
             $app = JFactory::getApplication();
 
             $password = $user->password_clear;

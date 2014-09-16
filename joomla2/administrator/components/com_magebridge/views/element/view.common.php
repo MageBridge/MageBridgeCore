@@ -123,17 +123,13 @@ class MageBridgeViewCommon extends MageBridgeView
 
         // Add a dropdown list for Store Views
         $current_store = $application->getUserStateFromRequest($option.'.store', 'store');
-        if (MageBridgeHelper::isJoomla15()) {
-            require_once JPATH_COMPONENT.'/elements/store.php';
-            $store = JElementStore::fetchElement('store', $current_store, null, null, 'onChange="document.adminForm.submit();return false;"');
-        } else {
-            require_once JPATH_COMPONENT.'/fields/store.php';
-            $class = 'JFormFieldStore';
-            $field = JFormHelper::loadFieldType('store');
-            $field->setName('store');
-            $field->setValue($current_store);
-            $store = $field->getHtmlInput();
-        }
+
+        require_once JPATH_COMPONENT.'/fields/store.php';
+        $class = 'JFormFieldStore';
+        $field = JFormHelper::loadFieldType('store');
+        $field->setName('store');
+        $field->setValue($current_store);
+        $store = $field->getHtmlInput();
         
         // Build the lists
         $lists = array();

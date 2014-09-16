@@ -191,22 +191,13 @@ class MageBridgeUrlHelper
             $menu = JFactory::getApplication()->getMenu('site');
 
             if (!empty($menu)) {
-                if (MageBridgeHelper::isJoomla15()) {
-                    $items = $menu->getItems('componentid', $component->id);
-                } else {
-                    $items = $menu->getItems('component_id', $component->id);
-                }
+                $items = $menu->getItems('component_id', $component->id);
             }
 
             // Remove those menu-items that are not authorised
             if ($only_authorised && !empty($items)) {
                 foreach ($items as $index => $item) {
-                    if (MageBridgeHelper::isJoomla15()) {
-                        $access = (JFactory::getUser()->guest == 0) ? 1 : 0;
-                        $authorised = $menu->authorize($item->id, $access);
-                    } else {
-                        $authorised = $menu->authorise($item->id);
-                    }
+                    $authorised = $menu->authorise($item->id);
 
                     if ($authorised == false) {
                         unset($items[$index]);

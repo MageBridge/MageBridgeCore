@@ -81,12 +81,6 @@ class MageBridgeModelUser
             $now = new JDate();
             $data['registerDate'] = (method_exists('JDate', 'toSql')) ? $now->toSql() : $now->toMySQL();
 
-            // Add Joomla! 1.5 specific data
-            if (MageBridgeHelper::isJoomla15()) {
-                $data['usertype'] = MageBridgeUserHelper::getDefaultJoomlaGroup();
-                $data['gid'] = MageBridgeUserHelper::getDefaultJoomlaGroupid();
-            }
-
             // Do not use empty passwords in the Joomla! user-record
             if ($empty_password == false) {
 
@@ -129,40 +123,6 @@ class MageBridgeModelUser
             return self::loadByEmail($user['email']);
         }
         return null;
-    }
-
-    /*
-     * Method to fix ACL-rules in Joomla! 1.5
-     *
-     * @param object $user
-     * @return bool
-     */
-    public function fixAcls($user = null)
-    {
-        if (MageBridgeHelper::isJoomla15() == false) return false;
-        if (empty($user) || !is_object($user)) return false;
-        if (empty($user->id) || $user->guest == 0) return false;
-        $user_id = $user->id;
-        
-        $db = JFactory::getDBO();
-        $db->setQuery('SELECT * FROM `#__core_acl_aro` WHERE `value`='.$user_id.' LIMIT 1');
-        $row = $db->loadObject();
-        if (empty($row)) {
-
-            $db->setQuery('INSERT INTO `#__core_acl_aro` SET `section_value`="users", `value`='.$user_id.', `name`="'.$user->name.'"');
-            $db->query();
-
-            $db->setQuery('SELECT * FROM `#__core_acl_aro` WHERE `value`='.$user_id.' LIMIT 1');
-            $row = $db->loadObject();
-
-            if (!empty($row)) {
-                $db->setQuery('INSERT INTO `#__core_acl_groups_aro_map` SET `group_id`="18", `section_value`="", `aro_id`='.(int)$row->id);
-                $db->query();
-            }
-
-            return true;
-        }
-        return false;
     }
 
     /*
@@ -492,11 +452,13 @@ class MageBridgeModelUser
 
         // If there is still no valid user, autocreate it
         if (!empty($user_email) && (empty($user) || empty($user->email))) {
+
             $data = array(
                 'name' => $user_email,
                 'username' => $user_email,
                 'email' => $user_email,
             );
+
             $user = $this->create($data);
 
             if(is_object($user)) {
@@ -526,13 +488,10 @@ class MageBridgeModelUser
             // Convert the user-object to an array
             $user = JArrayHelper::fromObject($user);
 
-            // Determine the event-name
-            $eventName = (MageBridgeHelper::isJoomla15()) ? 'onLoginUser' : 'onUserLogin';
-
             // Fire the event
-            MageBridgeModelDebug::getInstance()->notice( "Firing event ".$eventName );
+            MageBridgeModelDebug::getInstance()->notice('Firing event onUserLogin');
             JPluginHelper::importPlugin('user');
-            JFactory::getApplication()->triggerEvent($eventName, array($user, $options));
+            JFactory::getApplication()->triggerEvent('onUserLogin', array($user, $options));
         }
 
         return true;

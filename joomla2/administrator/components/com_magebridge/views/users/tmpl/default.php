@@ -44,11 +44,7 @@ $disabled_img = JHTML::image(JURI::base().'/images/check.png', JText::_('Enabled
                 <?php echo JText::_('Magento Name'); ?>
             </th>
             <th width="100" class="title">
-                <?php if (MageBridgeHelper::isJoomla15()) { ?>
-                    <?php echo JHTML::_('grid.sort',  'User Type', 'u.usertype', $this->lists['order_Dir'], $this->lists['order'] ); ?>
-                <?php } else { ?>
-                    <?php echo JText::_('User Type'); ?>
-                <?php } ?>
+                <?php echo JText::_('User Type'); ?>
             </th>
             <th width="40" class="title">
                 <?php echo JText::_('Password'); ?>
@@ -101,7 +97,7 @@ $disabled_img = JHTML::image(JURI::base().'/images/check.png', JText::_('Enabled
                     <?php echo $item->magento_name; ?>
                 </td>
                 <td>
-                    <?php echo (MageBridgeHelper::isJoomla15() ? $item->usertype : ''); ?>
+                    <?php echo ''; ?>
                 </td>
                 <td>
                     <?php echo ($item->password) ? '****': '[empty]' ; ?>

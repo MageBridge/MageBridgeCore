@@ -30,15 +30,9 @@ class MageBridgeUserHelper
             return $usergroup;
         }
 
-        if (MageBridgeHelper::isJoomla15()) {
-            $group = self::getDefaultJoomlaGroup();
-            $group_id = (int)JFactory::getACL()->get_group_id('', $group);
-            return $group_id;
-        } else {
-            $params = JComponentHelper::getParams('com_users');
-            $group_id = $params->get('new_usertype');
-            return $group_id;
-        }
+        $params = JComponentHelper::getParams('com_users');
+        $group_id = $params->get('new_usertype');
+        return $group_id;
     }
 
     /*
@@ -49,16 +43,6 @@ class MageBridgeUserHelper
      */
     static public function getDefaultJoomlaGroup()
     {
-        if (MageBridgeHelper::isJoomla15()) {
-            $usergroup = MageBridgeModelConfig::load('usergroup');
-            if (!empty($usergroup)) {
-                $usergroup_name = JFactory::getACL()->get_group_name($usergroup);
-                return $usergroup_name;
-            } else {
-                $conf = JComponentHelper::getParams('com_users');
-                return $conf->get('new_usertype', 'Registered');
-            }
-        }
         return null;
     }
 

@@ -87,7 +87,7 @@ class plgAuthenticationMageBridge extends JPlugin
         }
 
         // Lookup the email instead
-        if ($this->getParams()->get('lookup_email', 0) == 1) {
+        if ($this->params->get('lookup_email', 0) == 1) {
             $db = JFactory::getDbo();
             $db->setQuery("SELECT email FROM #__users WHERE username = ".$db->Quote($credentials['username']));
             $email = $db->loadResult();
@@ -148,25 +148,6 @@ class plgAuthenticationMageBridge extends JPlugin
     public function onAuthenticate( $credentials, $options, &$response )
     {
         return $this->onUserAuthenticate($credentials, $options, $response);
-    }
-
-    /**
-     * Return a MageBridge plugin parameters
-     * 
-     * @access private
-     * @param string $name
-     * @return mixed $value
-     */
-    private function getParams()
-    {
-        if (!MageBridgeHelper::isJoomla15()) {
-            return $this->params;
-        } else {
-            jimport('joomla.html.parameter');
-            $plugin = JPluginHelper::getPlugin('authentication', 'magebridge');
-            $params = new JParameter($plugin->params);
-            return $params;
-        }
     }
 
     /**

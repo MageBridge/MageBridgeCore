@@ -52,12 +52,6 @@ class MageBridgeViewHelper
      */
     static protected function addMenuItems()
     {
-        if (MageBridgeHelper::isJoomla15()) {
-            if(in_array(JRequest::getCmd('view'), array('home','check','update'))) {
-                return;
-            }
-        }
-
 		$menu = JToolBar::getInstance('submenu');
         if(method_exists($menu, 'getItems')) {
             $currentItems = $menu->getItems();

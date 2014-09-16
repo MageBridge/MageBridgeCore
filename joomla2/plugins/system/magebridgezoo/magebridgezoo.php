@@ -68,7 +68,7 @@ class plgSystemMageBridgeZoo extends JPlugin
                 $text = MageBridgeEncryptionHelper::base64_encode($body);
 
                 // Conditionally load CSS
-                if ($this->getParams()->get('load_css') == 1 || $this->getParams()->get('load_js') == 1) {
+                if ($this->params->get('load_css') == 1 || $this->params->get('load_js') == 1) {
                     $bridge->register('headers');
                 }
 
@@ -77,12 +77,12 @@ class plgSystemMageBridgeZoo extends JPlugin
                 $bridge->build();
             
                 // Load CSS if needed
-                if ($this->getParams()->get('load_css') == 1) {
+                if ($this->params->get('load_css') == 1) {
                     $bridge->setHeaders('css');
                 }
 
                 // Load JavaScript if needed
-                if ($this->getParams()->get('load_js') == 1) {
+                if ($this->params->get('load_js') == 1) {
                     $bridge->setHeaders('js');
                 }
 
@@ -108,24 +108,6 @@ class plgSystemMageBridgeZoo extends JPlugin
             if (!empty($body)) {
                 JResponse::setBody($body);
             }
-        }
-    }
-
-    /**
-     * Load the parameters
-     *
-     * @access private
-     * @param null
-     * @return JParameter
-     */
-    private function getParams()
-    {
-        if (MageBridgeHelper::isJoomla15()) {
-            $plugin = JPluginHelper::getPlugin('system', 'magebridgeyoo');
-            $params = new JParameter($plugin->params);
-            return $params;
-        } else {
-            return $this->params;
         }
     }
 

@@ -87,8 +87,7 @@ class plgSearchMageBridge extends JPlugin
         }
 
         // Load the plugin parameters
-        $params = $this->getParams();
-        $search_limit = $params->get('search_limit', 50);
+        $search_limit = $this->params->get('search_limit', 50);
 
         // Build the search array
         $search_options = array(
@@ -136,52 +135,6 @@ class plgSearchMageBridge extends JPlugin
         }
 
         return $objects;
-    }
-
-    /**
-     * Load the parameters
-     *
-     * @access private
-     * @param null
-     * @return JParameter
-     */
-    private function getParams()
-    {
-        if (!MageBridgeHelper::isJoomla15()) {
-            return $this->params;
-        } else {
-            jimport('joomla.html.parameter');
-            $plugin = JPluginHelper::getPlugin('search', 'magebridge');
-            $params = new JParameter($plugin->params);
-            return $params;
-        }
-    }
-
-    /**
-     * Joomla! 1.5 alias
-     *
-     * @access public
-     * @param null
-     * @return array
-     */
-    public function onSearchAreas()
-    {
-        return $this->onContentSearchAreas();
-    }
-
-    /**
-     * Joomla! 1.5 alias
-     *
-     * @access public
-     * @param string $text
-     * @param string $phrase
-     * @param string $ordering
-     * @param array $areas
-     * @return array
-     */
-    public function onSearch($text, $phrase = '', $ordering = '', $areas = null)
-    {
-        return $this->onContentSearch($text, $phrase, $ordering, $areas);
     }
 
     /**

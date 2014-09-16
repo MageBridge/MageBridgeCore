@@ -59,17 +59,10 @@ $forgotpassword_url = MageBridgeUrlHelper::route('customer/account/forgotpasswor
 $createnew_url = MageBridgeUrlHelper::route('customer/account/create');
 
 // Construct the component variables
-if (MageBridgeHelper::isJoomla15()) {
-    $component = 'com_user';
-    $password_field = 'passwd';
-    $task_login = 'login';
-    $task_logout = 'logout';
-} else {
-    $component = 'com_users';
-    $password_field = 'password';
-    $task_login = 'user.login';
-    $task_logout = 'user.logout';
-}
+$component = 'com_users';
+$password_field = 'password';
+$task_login = 'user.login';
+$task_logout = 'user.logout';
 
 // Construct the component URL
 $component_url = JRoute::_('index.php');

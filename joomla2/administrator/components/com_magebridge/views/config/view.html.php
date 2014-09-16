@@ -125,20 +125,12 @@ class MageBridgeViewConfig extends YireoCommonView
      */
     protected function getCustomField($type, $name)
     {
-        if (MageBridgeHelper::isJoomla15()) {
-            require_once JPATH_COMPONENT.'/elements/'.$type.'.php';
-            $fake = null;
-            $class = 'JElement'.ucfirst($type);
-            $object = new $class();
-            return $object->fetchElement($name, MagebridgeModelConfig::load($name), $fake, '');
-        } else {
-            require_once JPATH_COMPONENT.'/fields/'.$type.'.php';
-            jimport('joomla.form.helper');
-            $field = JFormHelper::loadFieldType($type);
-            $field->setName($name);
-            $field->setValue(MagebridgeModelConfig::load($name));
-            return $field->getHtmlInput();
-        }
+        require_once JPATH_COMPONENT.'/fields/'.$type.'.php';
+        jimport('joomla.form.helper');
+        $field = JFormHelper::loadFieldType($type);
+        $field->setName($name);
+        $field->setValue(MagebridgeModelConfig::load($name));
+        return $field->getHtmlInput();
     }
 
     /*

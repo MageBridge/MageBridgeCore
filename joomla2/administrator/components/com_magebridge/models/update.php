@@ -115,7 +115,7 @@ class MagebridgeModelUpdate extends YireoCommonModel
 
         // Construct the update URL 
         $extension_uri = $extension['name'];
-        $extension_uri .= (MageBridgeHelper::isJoomla15()) ? '_j15' : '_j25';
+        $extension_uri .= '_j25';
         $extension_uri .= '.'.MagebridgeModelConfig::load('update_format');
         $extension_url = $this->getUrl($extension_uri);
 

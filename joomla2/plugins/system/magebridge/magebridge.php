@@ -968,26 +968,7 @@ class plgSystemMageBridge extends JPlugin
      */
     private function getParam($name, $default = null)
     {
-        return $this->getParams()->get($name, $default);
-    }
-
-    /**
-     * Load the parameters
-     *
-     * @access private
-     * @param null
-     * @return JParameter
-     */
-    private function getParams()
-    {
-        if (!MageBridgeHelper::isJoomla15()) {
-            return $this->params;
-        } else {
-            jimport('joomla.html.parameter');
-            $plugin = JPluginHelper::getPlugin('system', 'magebridge');
-            $params = new JParameter($plugin->params);
-            return $params;
-        }
+        return $this->params->get($name, $default);
     }
 
     /**
