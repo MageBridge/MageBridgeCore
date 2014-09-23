@@ -548,6 +548,7 @@ class MageBridgeModelProxy
 
         // Loop through the matches
         if (!empty($matches)) {
+            $matchedCookies = array();
             foreach ($matches[0] as $index => $match) {
 
                 // Extract the cookie-information
@@ -557,6 +558,16 @@ class MageBridgeModelProxy
                 // Strip the meta-data from the cookie
                 if(preg_match('/^([^\;]+)\;(.*)/', $cookieValue, $cookieValueMatch)) {
                     $cookieValue = $cookieValueMatch[1];
+                }
+
+                // Trim the cookie
+                $cookieValue = trim($cookieValue);
+
+                // Check if the cookie was dealt with or not
+                if (in_array($cookieName.'='.$cookieValue, $matchedCookies)) {
+                    continue;
+                } else {
+                    $matchedCookies[] = $cookieName.'='.$cookieValue;
                 }
 
                 // Set the cookie
