@@ -821,7 +821,11 @@ class plgSystemMageBridge extends JPlugin
         // Check the Menu-Item settings
         $menu = JFactory::getApplication()->getMenu();
         $active = $menu->getActive();
-        $secureMenuItem = ($active->params->get('secure', 0) == 1) ? true : false;
+        if(!empty($active)) {
+            $secureMenuItem = ($active->params->get('secure', 0) == 1) ? true : false;
+        } else {
+            $secureMenuItem = false;
+        }
 
         // Check if SSL should be forced
         if ($uri->isSSL() == false && $this->getParam('enable_ssl_redirect', 1) == 1) {
