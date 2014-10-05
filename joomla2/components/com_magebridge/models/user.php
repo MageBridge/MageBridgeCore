@@ -51,6 +51,9 @@ class MageBridgeModelUser
         jimport('joomla.user.helper');
         jimport('joomla.application.component.helper');
 
+        // Import user plugins
+        JPluginHelper::importPlugin('user');
+
         // Get system variables
         $db = JFactory::getDBO();
 
@@ -61,13 +64,6 @@ class MageBridgeModelUser
 
         // If $result is empty, this user (with $user['email']) does not exist yet
         if (empty($result)) {
-
-            // Skip weird results
-            $mail = JFactory::getMailer();
-            if (!$mail->ValidateAddress($user['email']))
-            {
-                return false;
-            }
 
             // Construct a data-array for this user
             $data = array(
@@ -81,11 +77,21 @@ class MageBridgeModelUser
             $now = new JDate();
             $data['registerDate'] = (method_exists('JDate', 'toSql')) ? $now->toSql() : $now->toMySQL();
 
+            // Add Joomla! 1.5 specific data
+            if (MageBridgeHelper::isJoomla15()) {
+                $data['usertype'] = MageBridgeUserHelper::getDefaultJoomlaGroup();
+                $data['gid'] = MageBridgeUserHelper::getDefaultJoomlaGroupid();
+            }
+
             // Do not use empty passwords in the Joomla! user-record
             if ($empty_password == false) {
 
                 // Generate a new password if a password is not set
-                $pasword = (!is_string($user['password']) || empty($user['password'])) ? JUserHelper::genRandomPassword() : $user['password'];
+                if(!empty($user['password']) && is_string($user['password'])) {
+                    $password = $user['password'];
+                } else {
+                    $password = JUserHelper::genRandomPassword();
+                }
 
                 // Generate the encrypted password
                 $salt  = JUserHelper::genRandomPassword(32);
@@ -99,22 +105,41 @@ class MageBridgeModelUser
                 $data['password2'] = '';
             }
 
+            // Make sure MageBridge events stop
+            $data['disable_events'] = 1;
+
+            // Trigger the before-save event
+            MageBridgeModelDebug::getInstance()->notice('Firing event onUserBeforeSave');
+            JFactory::getApplication()->triggerEvent('onUserBeforeSave', array($data, true, $data));
+
             // Get the com_user table-class and use it to store the data to the database
             $table = JTable::getInstance('user', 'JTable');
             $table->bind($data);
-            $table->store();
+            $result = $table->store();
 
-            // Add usergroups
-            if (isset($table->id) && $table->id > 0) {
+            // Load the user
+            $newuser = $this->loadByEmail($user['email']);
+            $data['id'] = $newuser->id;
 
-                // Check whether the current user is part of any groups
-                $db->setQuery('SELECT * FROM `#__user_usergroup_map` WHERE `user_id`='.$table->id);
-                $rows = $db->loadObjectList();
-                if (empty($rows)) {
-                    $group_id = MageBridgeUserHelper::getDefaultJoomlaGroupid();
-                    if (!empty($group_id)) {
-                        $db->setQuery('INSERT INTO `#__user_usergroup_map` SET `user_id`='.$table->id.', `group_id`='.$group_id);
-                        $db->query(); 
+            // Trigger the after-save event
+            MageBridgeModelDebug::getInstance()->notice('Firing event onUserAfterSave');
+            MageBridgeModelDebug::getInstance()->trace('JISSE', $result);
+            JFactory::getApplication()->triggerEvent('onUserAfterSave', array($data, true, true, null));
+
+            // Add Joomla! 2.5 or higher specific data
+            if (MageBridgeHelper::isJoomla15() == false) {
+        
+                if (isset($table->id) && $table->id > 0) {
+
+                    // Check whether the current user is part of any groups
+                    $db->setQuery('SELECT * FROM `#__user_usergroup_map` WHERE `user_id`='.$table->id);
+                    $rows = $db->loadObjectList();
+                    if (empty($rows)) {
+                        $group_id = MageBridgeUserHelper::getDefaultJoomlaGroupid();
+                        if (!empty($group_id)) {
+                            $db->setQuery('INSERT INTO `#__user_usergroup_map` SET `user_id`='.$table->id.', `group_id`='.$group_id);
+                            $db->query(); 
+                        }
                     }
                 }
             }
@@ -126,6 +151,40 @@ class MageBridgeModelUser
     }
 
     /*
+     * Method to fix ACL-rules in Joomla! 1.5
+     *
+     * @param object $user
+     * @return bool
+     */
+    public function fixAcls($user = null)
+    {
+        if (MageBridgeHelper::isJoomla15() == false) return false;
+        if (empty($user) || !is_object($user)) return false;
+        if (empty($user->id) || $user->guest == 0) return false;
+        $user_id = $user->id;
+        
+        $db = JFactory::getDBO();
+        $db->setQuery('SELECT * FROM `#__core_acl_aro` WHERE `value`='.$user_id.' LIMIT 1');
+        $row = $db->loadObject();
+        if (empty($row)) {
+
+            $db->setQuery('INSERT INTO `#__core_acl_aro` SET `section_value`="users", `value`='.$user_id.', `name`="'.$user->name.'"');
+            $db->query();
+
+            $db->setQuery('SELECT * FROM `#__core_acl_aro` WHERE `value`='.$user_id.' LIMIT 1');
+            $row = $db->loadObject();
+
+            if (!empty($row)) {
+                $db->setQuery('INSERT INTO `#__core_acl_groups_aro_map` SET `group_id`="18", `section_value`="", `aro_id`='.(int)$row->id);
+                $db->query();
+            }
+
+            return true;
+        }
+        return false;
+    }
+
+    /*
      * Method to synchronize the user account with Magento
      *
      * @param array $user
@@ -133,6 +192,10 @@ class MageBridgeModelUser
      */
     public function synchronize($user)
     {
+        if(isset($user['disable_events']) && $user['disable_events'] == 1) {
+            return null;
+        }
+
         MageBridgeModelDebug::getInstance()->notice( "MageBridgeModelUser::synchronize() on user ".$user['email'] );
 
         // Use the email if no username is set
@@ -435,14 +498,8 @@ class MageBridgeModelUser
             $row = $db->loadObject();
             if (!empty($row)) {
                 $user->load($user_id);
-            } else {
-                return false;
+                $changed = true;
             }
-        }
-
-        // Do not continue if IDs still do not match
-        if ($user_id > 0 && $user->id != $user_id) {
-            return false;
         }
 
         // Double-check whether the Joomla! email is different
@@ -458,23 +515,17 @@ class MageBridgeModelUser
 
         // If there is still no valid user, autocreate it
         if (!empty($user_email) && (empty($user) || empty($user->email))) {
-
             $data = array(
                 'name' => $user_email,
                 'username' => $user_email,
                 'email' => $user_email,
             );
-
             $user = $this->create($data);
-
-            if(is_object($user)) {
-                $changed = true;
-            }
+            $changed = true;
         }
 
         // Do not fire the event when using the onepage-checkout
-        if (MageBridgeTemplateHelper::isPage('checkout/onepage') == true 
-            && MageBridgeTemplateHelper::isPage('checkout/onepage/success') == false) {
+        if (MageBridgeTemplateHelper::isPage('checkout/onepage') == true && MageBridgeTemplateHelper::isPage('checkout/onepage/success') == false) {
             $throw_event = false;
         }
 
@@ -494,10 +545,13 @@ class MageBridgeModelUser
             // Convert the user-object to an array
             $user = JArrayHelper::fromObject($user);
 
+            // Determine the event-name
+            $eventName = (MageBridgeHelper::isJoomla15()) ? 'onLoginUser' : 'onUserLogin';
+
             // Fire the event
-            MageBridgeModelDebug::getInstance()->notice('Firing event onUserLogin');
+            MageBridgeModelDebug::getInstance()->notice( "Firing event ".$eventName );
             JPluginHelper::importPlugin('user');
-            JFactory::getApplication()->triggerEvent('onUserLogin', array($user, $options));
+            JFactory::getApplication()->triggerEvent($eventName, array($user, $options));
         }
 
         return true;
