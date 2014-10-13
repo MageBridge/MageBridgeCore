@@ -2,12 +2,12 @@
 <extension type="module" version="2.5" client="site" method="upgrade">
 	<name>MOD_MAGEBRIDGE_NEWSLETTER</name>
 	<author>Yireo</author>
-	<creationDate>September 2014</creationDate>
+	<creationDate>October 2014</creationDate>
 	<copyright>Copyright (C) 2014 Yireo.com. All rights reserved.</copyright>
 	<license>GNU/GPL</license>
 	<authorEmail>development@yireo.com</authorEmail>
 	<authorUrl>www.yireo.com</authorUrl>
-	<version>1.9.5235</version>
+	<version>1.9.5241</version>
 	<description>MOD_MAGEBRIDGE_NEWSLETTER_DESC</description>
 
 	<files folder="site">
