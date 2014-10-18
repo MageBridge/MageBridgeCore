@@ -345,6 +345,7 @@ class MageBridge
 
         // Match the supportkey
         if($this->getMeta('supportkey') != $bridge->getLicenseKey() && $this->getMeta('license') != $bridge->getLicenseKey()) {
+            yireo_benchmark('MageBridge supportkey failed');
             $bridge->setMetaData('state', 'supportkey failed');
             $bridge->setMetaData('extra', $bridge->getLicenseKey());
             print $bridge->output(false);
@@ -353,6 +354,7 @@ class MageBridge
 
         // Authorize this request using the API credentials (set in the meta-data)
         if($this->authenticate() == false) {
+            yireo_benchmark('MageBridge authentication failed');
             $bridge->setMetaData('state', 'authentication failed');
             print $bridge->output(false);
             exit;

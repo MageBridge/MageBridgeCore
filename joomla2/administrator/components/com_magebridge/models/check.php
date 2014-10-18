@@ -153,6 +153,7 @@ class MagebridgeModelCheck extends YireoCommonModel
         $this->addResult('compatibility', 'PHP version', $result, JText::sprintf('COM_MAGEBRIDGE_CHECK_PHP_VERSION', '5.2.8'));
 
         $result = (version_compare(ini_get('memory_limit'), '31M', '>')) ? self::CHECK_OK : self::CHECK_ERROR;
+        if(ini_get('memory_limit') == -1) $result = self::CHECK_OK;
         $this->addResult('compatibility', 'PHP memory', $result, JText::sprintf('COM_MAGEBRIDGE_CHECK_PHP_MEMORY', '32Mb', ini_get('memory_limit')));
 
         $jversion = new JVersion();
