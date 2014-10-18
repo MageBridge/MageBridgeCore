@@ -184,6 +184,8 @@ class Yireo_MageBridge_MagebridgeController extends Mage_Adminhtml_Controller_Ac
         }
 
         Mage::getModel('magebridge/update')->setFilesUmask();
+        Mage::helper('magebridge/update')->renameConfigPaths();
+        Mage::getConfig()->removeCache();
 
         $this->_initAction()
             ->_addContent($this->getLayout()->createBlock('magebridge/updates'))
@@ -239,7 +241,7 @@ class Yireo_MageBridge_MagebridgeController extends Mage_Adminhtml_Controller_Ac
         if ($data = $this->getRequest()->getPost()) {
                 
             if(isset($data['license_key'])) {
-                Mage::getConfig()->saveConfig('magebridge/settings/license_key', trim($data['license_key']));
+                Mage::getConfig()->saveConfig('magebridge/hidden/support_key', trim($data['license_key']));
                 $page = 'adminhtml/magebridge/supportkey';
             }
 

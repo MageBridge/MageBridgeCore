@@ -79,7 +79,7 @@ function Yireo_MageBridge_ExceptionHandler($exception)
     Mage::logException($exception);
 
     // Print the error
-    if((bool)Mage::getStoreConfig('magebridge/settings/debug_print') == true) {
+    if((bool)Mage::getStoreConfig('magebridge/debug/print') == true) {
         die('<h1>PHP Exception:</h1><pre>'.$exception->getMessage().'</pre>');
     }
 
@@ -135,7 +135,7 @@ class Yireo_MageBridge_Model_Debug
         if(Mage::helper('magebridge')->isBridge()) {
             return (bool)Mage::getSingleton('magebridge/core')->getMetaData('debug');
         } else {
-            return (bool)Mage::getStoreConfig('magebridge/settings/debug_log');
+            return (bool)Mage::getStoreConfig('magebridge/debug/log');
         }
     }
 

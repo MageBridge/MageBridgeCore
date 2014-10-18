@@ -99,7 +99,7 @@ class Yireo_MageBridge_Block_Check extends Mage_Core_Block_Template
         }
         $this->addResult('conf', 'Support key', $result, $description);
 
-        $api_url = Mage::getStoreConfig('magebridge/settings/api_url');
+        $api_url = Mage::getStoreConfig('magebridge/joomla/api_url');
         $result = (!empty($api_url)) ? self::CHECK_OK : self::CHECK_WARNING;
         $this->addResult('conf', 'Joomla! API', $result, 'Once Joomla! accesses MageBridge, the API URL is automatically configured');
 

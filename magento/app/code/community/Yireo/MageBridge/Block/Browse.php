@@ -92,7 +92,7 @@ class Yireo_MageBridge_Block_Browse extends Mage_Core_Block_Template
                 break;
         }
 
-        $api_host = Mage::getStoreConfig('magebridge/settings/api_url', $store);
+        $api_host = Mage::getStoreConfig('magebridge/joomla/api_url', $store);
         $api_host = preg_replace('/index.php(.*)$/', '', $api_host);
         $api_host = preg_replace('/\/components\/magebridge(.*)$/', '', $api_host);
         $api_host = preg_replace('/\/component\/magebridge(.*)$/', '', $api_host);
@@ -101,9 +101,9 @@ class Yireo_MageBridge_Block_Browse extends Mage_Core_Block_Template
         $data = array(
             'scope_name' => $scope_name,
             'api_host' => $api_host,
-            'api_url' => Mage::getStoreConfig('magebridge/settings/api_url', $store),
-            'api_user' => Mage::getStoreConfig('magebridge/settings/api_user', $store),
-            'api_key' => Mage::getStoreConfig('magebridge/settings/api_key', $store),
+            'api_url' => Mage::getStoreConfig('magebridge/joomla/api_url', $store),
+            'api_user' => Mage::getStoreConfig('magebridge/joomla/api_user', $store),
+            'api_key' => Mage::getStoreConfig('magebridge/joomla/api_key', $store),
             'api_result' => $this->getApiResult($store),
         );
         return $data;

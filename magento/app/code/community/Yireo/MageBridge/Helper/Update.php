@@ -79,4 +79,55 @@ class Yireo_MageBridge_Helper_Update extends Mage_Core_Helper_Abstract
             @rmdir($directory);
         }
     }
+
+    /*
+     * Helper-method to rename obsolete sections to their new variant
+     *
+     * @access public
+     * @param null
+     * @return bool
+     */
+    public function renameConfigPaths()
+    {
+        $paths = array(
+            'settings/caching' => 'cache/caching',
+            'settings/caching_gzip' => 'cache/caching_gzip',
+            'settings/joomla_remotesso' => 'joomla/remotesso',
+            'settings/joomla_auth' => 'joomla/auth',
+            'settings/joomla_map' => 'joomla/map',
+            'settings/api_detect' => 'joomla/api_detect',
+            'settings/api_url' => 'joomla/api_url',
+            'settings/api_user' => 'joomla/api_user',
+            'settings/api_key' => 'joomla/api_key',
+            'settings/debug_print' => 'debug/print',
+            'settings/debug_log' => 'debug/log',
+            'settings/encryption' => 'joomla/encryption',
+            'settings/encryption_key' => 'joomla/encryption_key',
+            'settings/license_key' => 'hidden/support_key',
+        );
+
+        foreach($paths as $originalPath => $newPath) {
+            $this->renameConfigPath($originalPath, $newPath);
+        }
+    }
+
+    /*
+     * Helper-method to copy one configuration value to another path
+     *
+     * @access public
+     * @param string $originalPath
+     * @param string $newPath
+     * @return bool
+     */
+    public function renameConfigPath($originalPath, $newPath) 
+    {
+        $originalPath = 'magebridge/'.$originalPath;
+        $newPath = 'magebridge/'.$newPath;
+
+        $connection = Mage::getSingleton('core/resource')->getConnection('core_write');
+        $table = Mage::getSingleton('core/resource')->getTableName('core/config_data');
+
+        $query = 'UPDATE `'.$table.'` SET `path`="'.$newPath.'" WHERE `path` = "'.$originalPath.'"';
+        $connection->query($query);
+    }
 }

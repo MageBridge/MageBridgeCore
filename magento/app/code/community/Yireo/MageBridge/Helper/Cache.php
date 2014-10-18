@@ -21,7 +21,7 @@ class Yireo_MageBridge_Helper_Cache extends Mage_Core_Helper_Abstract
     public function enabled()
     {
         if(Mage::helper('magebridge')->isBridge() == false) return false;
-        return (bool)Mage::getStoreConfig('magebridge/settings/caching');
+        return (bool)Mage::getStoreConfig('magebridge/cache/caching');
     }
 
     /*

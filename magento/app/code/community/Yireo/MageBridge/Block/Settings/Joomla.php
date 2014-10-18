@@ -39,7 +39,7 @@ class Yireo_MageBridge_Block_Settings_Joomla extends Mage_Core_Block_Template
     {
         $connection = Mage::getSingleton('core/resource')->getConnection('core_read');
         $table = Mage::getSingleton('core/resource')->getTableName('core/config_data');
-        $query = 'SELECT * FROM `'.$table.'` WHERE path LIKE "magebridge/settings/api%";';
+        $query = 'SELECT * FROM `'.$table.'` WHERE path LIKE "magebridge/joomla/api%";';
         $rows = $connection->fetchAll($query);
 
         $details = array();
@@ -67,7 +67,7 @@ class Yireo_MageBridge_Block_Settings_Joomla extends Mage_Core_Block_Template
                     );
                 }
 
-                $path = preg_replace('/^magebridge\/settings\/(.*)$/', '$1', $row['path']);
+                $path = preg_replace('/^magebridge\/joomla\/(.*)$/', '$1', $row['path']);
                 $details[$key][$path] = $row['value'];
 
                 if(!empty($details[$key]['api_url'])) {
@@ -102,7 +102,7 @@ class Yireo_MageBridge_Block_Settings_Joomla extends Mage_Core_Block_Template
      */
     public function getApiUrl()
     {
-        return Mage::getStoreConfig('magebridge/settings/api_url');
+        return Mage::getStoreConfig('magebridge/joomla/api_url');
     }
 
     /*
@@ -114,7 +114,7 @@ class Yireo_MageBridge_Block_Settings_Joomla extends Mage_Core_Block_Template
      */
     public function getApiUser()
     {
-        return Mage::getStoreConfig('magebridge/settings/api_user');
+        return Mage::getStoreConfig('magebridge/joomla/api_user');
     }
 
     /*
@@ -126,7 +126,7 @@ class Yireo_MageBridge_Block_Settings_Joomla extends Mage_Core_Block_Template
      */
     public function getApiKey()
     {
-        return Mage::getStoreConfig('magebridge/settings/api_key');
+        return Mage::getStoreConfig('magebridge/joomla/api_key');
     }
 
     /*

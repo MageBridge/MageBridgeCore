@@ -381,9 +381,9 @@ class Yireo_MageBridge_Model_Core
 
         // Fetch the current value
         if($scope == 'default') {
-            $current_value = (string)Mage::getConfig()->getNode('magebridge/settings/'.$key, 'default');
+            $current_value = (string)Mage::getConfig()->getNode('magebridge/joomla/'.$key, 'default');
         } else {
-            $current_value = (string)Mage::getConfig()->getNode('magebridge/settings/'.$key, $scope, $scopeId);
+            $current_value = (string)Mage::getConfig()->getNode('magebridge/joomla/'.$key, $scope, $scopeId);
         }
         
         // Determine whether to save the current value
@@ -403,8 +403,8 @@ class Yireo_MageBridge_Model_Core
 
         // Save the value
         if($save == true) {
-            Mage::getSingleton('magebridge/debug')->notice('saveConfig: magebridge/settings/'.$key.' = '.$value.' ['.$scope.'/'.$scopeId.' ]');
-            Mage::getConfig()->saveConfig('magebridge/settings/'.$key, $value, $scope, $scopeId);
+            Mage::getSingleton('magebridge/debug')->notice('saveConfig: magebridge/joomla/'.$key.' = '.$value.' ['.$scope.'/'.$scopeId.' ]');
+            Mage::getConfig()->saveConfig('magebridge/joomla/'.$key, $value, $scope, $scopeId);
             return true;
         }
 
@@ -420,7 +420,7 @@ class Yireo_MageBridge_Model_Core
      */
     public function getApiUser()
     {
-        $api_user_id = Mage::getStoreConfig('magebridge/settings/api_user_id');
+        $api_user_id = Mage::getStoreConfig('magebridge/joomla/api_user_id');
 
         if(!$api_user_id > 0) {
             $collection = Mage::getResourceModel('api/user_collection');
@@ -1068,7 +1068,7 @@ class Yireo_MageBridge_Model_Core
      */
     public function getLicenseKey()
     {
-        return Mage::getStoreConfig('magebridge/settings/license_key');
+        return Mage::getStoreConfig('magebridge/hidden/support_key');
     }
 
     /*

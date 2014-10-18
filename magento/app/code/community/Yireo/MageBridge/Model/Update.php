@@ -346,7 +346,7 @@ class Yireo_MageBridge_Model_Update extends Mage_Core_Model_Abstract
      */
     public function getLicenseKey()
     {
-        return Mage::getStoreConfig('magebridge/settings/license_key');
+        return Mage::getStoreConfig('magebridge/hidden/support_key');
     }
 
     /*

@@ -23,7 +23,7 @@ class Yireo_MageBridge_Helper_Encryption extends Mage_Core_Helper_Abstract
      */
     public function getSaltedKey($string)
     {
-        $key = trim(Mage::getStoreConfig('magebridge/settings/encryption_key'));
+        $key = trim(Mage::getStoreConfig('magebridge/joomla/encryption_key'));
         if(empty($key)) $key = Mage::getSingleton('magebridge/core')->getLicenseKey();
         return md5($key.$string);
     }
@@ -49,7 +49,7 @@ class Yireo_MageBridge_Helper_Encryption extends Mage_Core_Helper_Abstract
         }
 
         // Disable encryption if configured
-        if((bool)Mage::getStoreConfig('magebridge/settings/encryption') == false) {
+        if((bool)Mage::getStoreConfig('magebridge/joomla/encryption') == false) {
             return $data;
         }
 

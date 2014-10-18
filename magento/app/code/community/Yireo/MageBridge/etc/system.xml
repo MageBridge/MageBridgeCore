@@ -21,10 +21,10 @@
             <show_in_website>1</show_in_website>
             <show_in_store>1</show_in_store>
             <groups>
-                <settings translate="label">
-                    <label>MageBridge Core Options</label>
+                <cache translate="label">
+                    <label>MageBridge Core - Caching</label>
                     <frontend_type>text</frontend_type>
-                    <sort_order>1</sort_order>
+                    <sort_order>3</sort_order>
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
@@ -55,6 +55,139 @@
                                 <strong>WARNING</strong>: Do NOT use with APC or memcache
                             ]]></comment>
                         </caching_gzip>
+                    </fields>
+                </cache>
+                <debug translate="label">
+                    <label>MageBridge Core - Debugging</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>2</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <log translate="label">
+                            <label>Debug Log</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Log debugging to MAGENTO/var/log/magebridge.log</comment>
+                        </log>
+                        <print translate="label">
+                            <label>Print errors</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Print all errors on screen when debugging</comment>
+                        </print>
+                    </fields>
+                </debug>
+                <joomla translate="label">
+                    <label>MageBridge Core - API</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>1</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <api_detect translate="label">
+                            <label>Joomla! API auto-detect</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment>Disable to manually configure API-details below</comment>
+                        </api_detect>
+                        <api_url translate="label">
+                            <label>Joomla! API URL</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </api_url>
+                        <api_user translate="label">
+                            <label>Joomla! API user</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>3</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </api_user>
+                        <api_key translate="label">
+                            <label>Joomla! API key</label>
+                            <frontend_type>password</frontend_type>
+                            <sort_order>4</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </api_key>
+                        <remotesso translate="label">
+                            <label>Remote SSO</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Perform remote SSO from within standalone Magento frontend</comment>
+                        </remotesso>
+                        <auth translate="label">
+                            <label>Remote Authentication</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>11</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Authenticate customers with Joomla! (JSON-RPC)</comment>
+                        </auth>
+                        <map translate="label">
+                            <label>User Map</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>12</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Maintain map of Magento customer-IDs vs Joomla! user-ID</comment>
+                        </map>
+                        <encryption translate="label">
+                            <label>Encryption</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment>Encrypt sensitive data using Mcrypt if SSL is not available</comment>
+                        </encryption>
+                        <encryption_key translate="label">
+                            <label>Encryption Key</label>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>21</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment>Encrypt-key (the same as in Joomla!)</comment>
+                        </encryption_key>
+                    </fields>
+                </joomla>
+                <settings translate="label">
+                    <label>MageBridge Core - Other Options</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>4</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
                         <preoutput_compare translate="label">
                             <label>Preoutput Compare Page</label>
                             <frontend_type>select</frontend_type>
@@ -97,36 +230,6 @@
                                 <strong>EXPERIMENTAL</strong>: This is for experts only
                             ]]></comment>
                         </bridge_all>
-                        <joomla_remotesso translate="label">
-                            <label>Joomla! Remote SSO</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <sort_order>7</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <comment>Perform remote SSO from within standalone Magento frontend</comment>
-                        </joomla_remotesso>
-                        <joomla_auth translate="label">
-                            <label>Joomla! Authentication</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <sort_order>7</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <comment>Authenticate customers with Joomla! (JSON-RPC)</comment>
-                        </joomla_auth>
-                        <joomla_map translate="label">
-                            <label>Joomla! User Map</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <sort_order>7</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <comment>Maintain map of Magento customer-IDs vs Joomla! user-ID</comment>
-                        </joomla_map>
                         <continue_shopping_to_previous translate="label">
                             <label>Continue Shopping to Previous</label>
                             <frontend_type>select</frontend_type>
@@ -156,26 +259,6 @@
                             <show_in_store>1</show_in_store>
                             <comment>Experimental feature; Default is yes;</comment>
                         </full_dispatch>
-                        <debug_print translate="label">
-                            <label>Print errors</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <sort_order>40</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <comment>Print all errors on screen when debugging</comment>
-                        </debug_print>
-                        <debug_log translate="label">
-                            <label>Debug Log</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <sort_order>40</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <comment>Log debugging to MAGENTO/var/log/magebridge.log</comment>
-                        </debug_log>
                         <disable_form_key translate="label">
                             <label>Disable Magento form_key</label>
                             <frontend_type>select</frontend_type>
@@ -186,59 +269,6 @@
                             <show_in_store>0</show_in_store>
                             <comment>Disable Magento anti-spoof form_key protection</comment>
                         </disable_form_key>
-                        <encryption translate="label">
-                            <label>Encryption</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <sort_order>41</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
-                            <comment>Encrypt sensitive data using Mcrypt if SSL is not available</comment>
-                        </encryption>
-                        <encryption_key translate="label">
-                            <label>Encryption Key</label>
-                            <frontend_type>textarea</frontend_type>
-                            <sort_order>41</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
-                            <comment>Encrypt-key (the same as in Joomla!)</comment>
-                        </encryption_key>
-                        <api_detect translate="label">
-                            <label>Joomla! API auto-detect</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <sort_order>50</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
-                            <comment>Disable to manually configure API-details below</comment>
-                        </api_detect>
-                        <api_url translate="label">
-                            <label>Joomla! API URL</label>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>51</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </api_url>
-                        <api_user translate="label">
-                            <label>Joomla! API user</label>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>52</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </api_user>
-                        <api_key translate="label">
-                            <label>Joomla! API key</label>
-                            <frontend_type>password</frontend_type>
-                            <sort_order>53</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </api_key>
                     </fields>
                 </settings>
             </groups>

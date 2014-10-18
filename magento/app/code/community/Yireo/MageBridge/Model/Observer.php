@@ -434,7 +434,7 @@ class Yireo_MageBridge_Model_Observer extends Mage_Core_Model_Abstract
             Mage::getModel('core/cookie')->delete('mb_postlogin', '/');
 
             // Check if remote SSO is enabled
-            if(Mage::getStoreConfig('magebridge/settings/joomla_remotesso') == 1) {
+            if(Mage::getStoreConfig('magebridge/joomla/remotesso') == 1) {
 
                 // Redirect to the Joomla! SSO URL
                 $arguments = array('controller' => 'sso', 'task' => 'login', 'token' => $mb_postlogin, 'redirect' => base64_encode($currentUrl));
@@ -461,7 +461,7 @@ class Yireo_MageBridge_Model_Observer extends Mage_Core_Model_Abstract
             }
 
             // Check if remote SSO is enabled
-            if(Mage::getStoreConfig('magebridge/settings/joomla_remotesso') == 1) {
+            if(Mage::getStoreConfig('magebridge/joomla/remotesso') == 1) {
 
                 // Set a cookie
                 Mage::getModel('core/cookie')->set('mb_remotelogout', 1, null, '/');

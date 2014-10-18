@@ -81,7 +81,7 @@ class Yireo_MageBridge_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function allowJoomlaAuth()
     {
-        $joomla_auth = Mage::getStoreConfig('magebridge/settings/joomla_auth');
+        $joomla_auth = Mage::getStoreConfig('magebridge/joomla/auth');
         if(empty($joomla_auth)) {
             return false;
         }
@@ -98,7 +98,7 @@ class Yireo_MageBridge_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function useJoomlaMap()
     {
-        $joomla_map = Mage::getStoreConfig('magebridge/settings/joomla_map');
+        $joomla_map = Mage::getStoreConfig('magebridge/joomla/map');
         if(empty($joomla_map)) {
             return false;
         }
@@ -115,7 +115,7 @@ class Yireo_MageBridge_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function getLicenseKey()
     {
-        return Mage::getStoreConfig('magebridge/settings/license_key');
+        return Mage::getStoreConfig('magebridge/hidden/support_key');
     }
 
     /*
@@ -127,7 +127,7 @@ class Yireo_MageBridge_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function useApiDetect()
     {
-        return (bool)Mage::getStoreConfig('magebridge/settings/api_detect', self::getStore());
+        return (bool)Mage::getStoreConfig('magebridge/joomla/api_detect', self::getStore());
     }
 
     /*
@@ -142,7 +142,7 @@ class Yireo_MageBridge_Helper_Data extends Mage_Core_Helper_Abstract
         if(empty($store)) $store = self::getStore();
         $apiUrl = Mage::getSingleton('magebridge/core')->getMetaData('api_url');
         if(empty($apiUrl)) {
-            $apiUrl = Mage::getStoreConfig('magebridge/settings/api_url', $store);
+            $apiUrl = Mage::getStoreConfig('magebridge/joomla/api_url', $store);
         } 
 
         if(is_array($arguments) && !empty($arguments)) {
@@ -169,7 +169,7 @@ class Yireo_MageBridge_Helper_Data extends Mage_Core_Helper_Abstract
     {
         $value = Mage::getSingleton('magebridge/core')->getMetaData('api_user');
         if(empty($value)) {
-            $value = Mage::getStoreConfig('magebridge/settings/api_user', self::getStore());
+            $value = Mage::getStoreConfig('magebridge/joomla/api_user', self::getStore());
         } 
         return $value;
     }
@@ -185,7 +185,7 @@ class Yireo_MageBridge_Helper_Data extends Mage_Core_Helper_Abstract
     {
         $value = Mage::getSingleton('magebridge/core')->getMetaData('api_key');
         if(empty($value)) {
-            $value = Mage::getStoreConfig('magebridge/settings/api_key', self::getStore());
+            $value = Mage::getStoreConfig('magebridge/joomla/api_key', self::getStore());
         } 
         return $value;
     }
@@ -254,7 +254,7 @@ class Yireo_MageBridge_Helper_Data extends Mage_Core_Helper_Abstract
     public function debug($message, $variable = null)
     {
         // Do not write anything to the log if disabled
-        if(Mage::getStoreConfig('magebridge/settings/debug_log') == 0) {
+        if(Mage::getStoreConfig('magebridge/debug/log') == 0) {
             return false;
         }
 
