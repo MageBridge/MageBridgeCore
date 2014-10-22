@@ -62,7 +62,10 @@ class Yireo_JoomlaApi_Model_Observer
         jimport('joomla.database.database');
 
         // Start the application
-        $mainframe = JFactory::getApplication('site');
-        $mainframe->initialise();
+        $startApp = false;
+        if($startApp) {
+            $app = JFactory::getApplication('site');
+            $app->initialise();
+        }
     }
 }
