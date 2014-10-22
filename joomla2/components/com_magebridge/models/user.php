@@ -46,6 +46,11 @@ class MageBridgeModelUser
      */
     public function create($user, $empty_password = false)
     {
+        // Check on the users email
+        if(empty($user['email']) || $this->isValidEmail($user['email']) == false) {
+            return false;
+        }
+
         // Import needed libraries
         jimport('joomla.utilities.date');
         jimport('joomla.user.helper');
@@ -76,12 +81,6 @@ class MageBridgeModelUser
             // Current date
             $now = new JDate();
             $data['registerDate'] = (method_exists('JDate', 'toSql')) ? $now->toSql() : $now->toMySQL();
-
-            // Add Joomla! 1.5 specific data
-            if (MageBridgeHelper::isJoomla15()) {
-                $data['usertype'] = MageBridgeUserHelper::getDefaultJoomlaGroup();
-                $data['gid'] = MageBridgeUserHelper::getDefaultJoomlaGroupid();
-            }
 
             // Do not use empty passwords in the Joomla! user-record
             if ($empty_password == false) {
@@ -126,20 +125,17 @@ class MageBridgeModelUser
             MageBridgeModelDebug::getInstance()->trace('JISSE', $result);
             JFactory::getApplication()->triggerEvent('onUserAfterSave', array($data, true, true, null));
 
-            // Add Joomla! 2.5 or higher specific data
-            if (MageBridgeHelper::isJoomla15() == false) {
-        
-                if (isset($table->id) && $table->id > 0) {
+            // Add additional data
+            if (isset($table->id) && $table->id > 0) {
 
-                    // Check whether the current user is part of any groups
-                    $db->setQuery('SELECT * FROM `#__user_usergroup_map` WHERE `user_id`='.$table->id);
-                    $rows = $db->loadObjectList();
-                    if (empty($rows)) {
-                        $group_id = MageBridgeUserHelper::getDefaultJoomlaGroupid();
-                        if (!empty($group_id)) {
-                            $db->setQuery('INSERT INTO `#__user_usergroup_map` SET `user_id`='.$table->id.', `group_id`='.$group_id);
-                            $db->query(); 
-                        }
+                // Check whether the current user is part of any groups
+                $db->setQuery('SELECT * FROM `#__user_usergroup_map` WHERE `user_id`='.$table->id);
+                $rows = $db->loadObjectList();
+                if (empty($rows)) {
+                    $group_id = MageBridgeUserHelper::getDefaultJoomlaGroupid();
+                    if (!empty($group_id)) {
+                        $db->setQuery('INSERT INTO `#__user_usergroup_map` SET `user_id`='.$table->id.', `group_id`='.$group_id);
+                        $db->query(); 
                     }
                 }
             }
@@ -153,34 +149,12 @@ class MageBridgeModelUser
     /*
      * Method to fix ACL-rules in Joomla! 1.5
      *
+     * @deprecated
      * @param object $user
      * @return bool
      */
     public function fixAcls($user = null)
     {
-        if (MageBridgeHelper::isJoomla15() == false) return false;
-        if (empty($user) || !is_object($user)) return false;
-        if (empty($user->id) || $user->guest == 0) return false;
-        $user_id = $user->id;
-        
-        $db = JFactory::getDBO();
-        $db->setQuery('SELECT * FROM `#__core_acl_aro` WHERE `value`='.$user_id.' LIMIT 1');
-        $row = $db->loadObject();
-        if (empty($row)) {
-
-            $db->setQuery('INSERT INTO `#__core_acl_aro` SET `section_value`="users", `value`='.$user_id.', `name`="'.$user->name.'"');
-            $db->query();
-
-            $db->setQuery('SELECT * FROM `#__core_acl_aro` WHERE `value`='.$user_id.' LIMIT 1');
-            $row = $db->loadObject();
-
-            if (!empty($row)) {
-                $db->setQuery('INSERT INTO `#__core_acl_groups_aro_map` SET `group_id`="18", `section_value`="", `aro_id`='.(int)$row->id);
-                $db->query();
-            }
-
-            return true;
-        }
         return false;
     }
 
@@ -192,6 +166,7 @@ class MageBridgeModelUser
      */
     public function synchronize($user)
     {
+        // Disable at user events
         if(isset($user['disable_events']) && $user['disable_events'] == 1) {
             return null;
         }
@@ -201,6 +176,11 @@ class MageBridgeModelUser
         // Use the email if no username is set
         if (empty($user['username'])) {
             $user['username'] = $user['email'];
+        }
+
+        // Check on the users email
+        if($this->isValidEmail($user['email']) == false) {
+            return false;
         }
 
         // Set the right ID
@@ -408,6 +388,11 @@ class MageBridgeModelUser
             return false;
         }
 
+        // Check on the email
+        if($this->isValidEmail($email) == false) {
+            return false;
+        }
+
         // Fetch the user-record for this email-address
         $db = JFactory::getDBO();
         $query = "SELECT id FROM #__users WHERE `email` = ".$db->Quote($email);
@@ -470,6 +455,11 @@ class MageBridgeModelUser
         // Bugfix for malformed email
         if(strstr($user_email, '%40')) {
             $user_email = urldecode($user_email);
+        }
+
+        // Check on the email
+        if($this->isValidEmail($user_email) == false) {
+            return false;
         }
 
         // Check if this is the frontend
@@ -545,15 +535,20 @@ class MageBridgeModelUser
             // Convert the user-object to an array
             $user = JArrayHelper::fromObject($user);
 
-            // Determine the event-name
-            $eventName = (MageBridgeHelper::isJoomla15()) ? 'onLoginUser' : 'onUserLogin';
-
             // Fire the event
-            MageBridgeModelDebug::getInstance()->notice( "Firing event ".$eventName );
+            MageBridgeModelDebug::getInstance()->notice('Firing event onUserLogin');
             JPluginHelper::importPlugin('user');
-            JFactory::getApplication()->triggerEvent($eventName, array($user, $options));
+            JFactory::getApplication()->triggerEvent('onUserLogin', array($user, $options));
         }
 
         return true;
+    }
+
+    public function isValidEmail($email)
+    {
+        if(JMailHelper::isEmailAddress($email)) {
+            return true;
+        }
+        return false;
     }
 }
