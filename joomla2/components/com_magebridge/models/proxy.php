@@ -171,8 +171,9 @@ class MageBridgeModelProxy
             // Check whether the current URL is listed for direct output
             $direct_output_urls = MageBridgeHelper::csvToArray(MagebridgeModelConfig::load('direct_output'));
             if (!empty($direct_output_urls)) {
+                $current_url = MageBridgeUrlHelper::getRequest();
                 foreach ($direct_output_urls as $direct_output_url) {
-                    $current_url = MageBridgeUrlHelper::getRequest();
+                    $direct_output_url = trim($direct_output_url);
                     if (!empty($direct_output_url) && strstr($current_url, $direct_output_url)) {
                         MageBridgeModelDebug::getInstance()->trace( 'Detecting non-bridge output through MageBridge configuration', $direct_output_url );
                         header('Content-Encoding: none');
