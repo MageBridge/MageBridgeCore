@@ -480,6 +480,7 @@ class Yireo_MageBridge_Model_Core
         $direct_output = Mage::helper('magebridge')->getDirectOutputUrls();
         if(!empty($direct_output)) {
             foreach($direct_output as $url) {
+                $url = trim($url);
                 if(strstr($this->getRequestUrl(), $url)) {
                     Mage::getSingleton('magebridge/core')->getController(false);
                     return true;
