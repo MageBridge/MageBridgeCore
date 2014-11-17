@@ -23,7 +23,15 @@ class Yireo_MageBridge_Model_Product_Api extends Mage_Catalog_Model_Api_Resource
      */
     public function search($options = array())
     {
-        $collection = Mage::getModel('magebridge/search')->getResult($options['text']);
+        // Extra the attributes to search for
+        if(!empty($options['search_fields'])) {
+            $searchFields = $options['search_fields'];
+        } else {
+            $searchFields = array('title', 'description');
+        }
+
+        // Fetch the search collection
+        $collection = Mage::getModel('magebridge/search')->getResult($options['text'], $searchFields);
 
         $result = array();
         if(empty($collection)) {

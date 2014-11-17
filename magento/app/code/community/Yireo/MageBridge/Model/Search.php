@@ -19,9 +19,10 @@ class Yireo_MageBridge_Model_Search extends Mage_Core_Model_Abstract
      *
      * @access public
      * @param string $text
+     * @param array $searchFields
      * @return array
      */
-    public function getResult($text)
+    public function getResult($text, $searchFields = array())
     {
         try {
             // Definitions
@@ -61,6 +62,7 @@ class Yireo_MageBridge_Model_Search extends Mage_Core_Model_Abstract
                 return;
             }
 
+            /*
             // Get the collection the good way (but this only works if Flat Catalog is disabled)
             // otherwise error "Call to undefined method Mage_Catalog_Model_Resource_Product_Flat::getEntityTablePrefix()"
             if(Mage::getStoreConfig('catalog/frontend/flat_catalog_product') == 0) {
@@ -88,6 +90,28 @@ class Yireo_MageBridge_Model_Search extends Mage_Core_Model_Abstract
                     ->where('search.store_id='.(int)$storeId)
                 ;
             }
+            */
+
+            $collection = Mage::getResourceModel('catalog/product_collection');
+            $collection->getSelect()->joinInner(
+                array('search_result' => $collection->getTable('catalogsearch/result')),
+                $collection->getConnection()->quoteInto(
+                    'search_result.product_id=e.entity_id AND search_result.query_id=?',
+                    $query->getId()
+                ),
+                array('relevance' => 'relevance')
+            );
+
+            $visibility = array(
+                Mage_Catalog_Model_Product_Visibility::VISIBILITY_IN_SEARCH,
+                Mage_Catalog_Model_Product_Visibility::VISIBILITY_BOTH,
+            );
+
+            $collection->addAttributeToFilter('visibility', $visibility);
+            $collection->setStore(Mage::app()->getStore());
+            $collection->addStoreFilter();
+            $collection->addMinimalPrice();
+            $collection->addTaxPercents();
 
             // Log the collection size with this query-result
             $collectionSize = $collection->getSize();
