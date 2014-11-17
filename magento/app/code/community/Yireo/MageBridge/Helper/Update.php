@@ -127,7 +127,19 @@ class Yireo_MageBridge_Helper_Update extends Mage_Core_Helper_Abstract
         $connection = Mage::getSingleton('core/resource')->getConnection('core_write');
         $table = Mage::getSingleton('core/resource')->getTableName('core/config_data');
 
-        $query = 'UPDATE `'.$table.'` SET `path`="'.$newPath.'" WHERE `path` = "'.$originalPath.'"';
-        $connection->query($query);
+        $query = 'SELECT * FROM `'.$table.'` WHERE `path` = "'.$originalPath.'"';
+        $newPathResults = $connection->fetchAll($query);
+
+        $query = 'SELECT * FROM `'.$table.'` WHERE `path` = "'.$newPath.'"';
+        $originalPathResults = $connection->fetchAll($query);
+
+        if(empty($newPathResults) && !empty($originalPathResults)) {
+            $query = 'UPDATE `'.$table.'` SET `path`="'.$newPath.'" WHERE `path` = "'.$originalPath.'"';
+            $connection->query($query);
+
+        } elseif(!empty($newPathResults) && !empty($originalPathResults)) {
+            $query = 'DELETE FROM `'.$table.'` WHERE `path` = "'.$originalPath.'"';
+            $connection->query($query);
+        }
     }
 }
