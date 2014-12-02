@@ -557,9 +557,9 @@ class MageBridgeUrlHelper
         }
 
         $url = 'index.php?option=com_magebridge&view=root&request='.$request;
-        if(JRequest::getCmd('option') == 'com_magebridge') {
+        //if(JRequest::getCmd('option') == 'com_magebridge') {
             $url .= '&Itemid='.self::getItemId();
-        }
+        //}
 
         if(!empty($arguments)) {
             $url .= '&'.http_build_query($arguments);

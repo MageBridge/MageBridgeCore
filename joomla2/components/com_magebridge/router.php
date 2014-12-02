@@ -74,7 +74,7 @@ function MagebridgeBuildRoute(&$query)
     // Fetch the Root-Item
     $query_option = (isset($query['option'])) ? $query['option'] : null;
     $query_view = (isset($query['view'])) ? $query['view'] : null;
-    if($query_option == 'com_magebridge' && $query_view == 'root') {
+    if($query_option == 'com_magebridge' && $query_view == 'root' && !empty($query['Itemid'])) {
         $root_item = false;
         $root_item_id = false;
     } else {
@@ -230,6 +230,7 @@ function MagebridgeParseRoute($segments)
     if (!empty($segments)) {
 
         $request = implode('/', $segments);
+        $request = preg_replace('/^component\/magebridge\//', '', $request);
         $vars['request'] = $request;
 
     } else {
