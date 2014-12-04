@@ -52,6 +52,8 @@ class Yireo_MageBridge_Model_Product_Api extends Mage_Catalog_Model_Api_Resource
                 'name'              => $product->getName(),
                 'description'       => $product->getDescription(),
                 'short_description' => $product->getShortDescription(),
+                'meta_description'  => $product->getMetaDescription(),
+                'meta_keyword'      => $product->getMetaKeyword(),
                 'label'             => htmlentities($product->getName()),
                 'author'            => $product->getAuthor(),
                 'url_key'           => $product->getUrlKey(),
@@ -71,6 +73,7 @@ class Yireo_MageBridge_Model_Product_Api extends Mage_Catalog_Model_Api_Resource
                 'special_price_raw' => $product->getSpecialPrice(),
                 'special_from_date' => $product->getSpecialFromDate(),
                 'special_to_date'   => $product->getSpecialToDate(),
+                'created_at'        => $product->getCreatedAt(),
                 'is_active'         => 1,
             );
 
