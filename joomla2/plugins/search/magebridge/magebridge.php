@@ -87,7 +87,23 @@ class plgSearchMageBridge extends JPlugin
         }
 
         // Load the plugin parameters
-        $search_limit = $this->params->get('search_limit', 50);
+        $search_limit = (int)$this->params->get('search_limit', 50);
+        $search_fields = trim($this->params->get('search_fields'));
+
+        // Determine the search fields
+        if(!empty($search_fields)) {
+            $search_field_values = explode(',', $search_fields);
+
+            $search_fields = array();
+            //$search_fields = array('title', 'description');
+            foreach($search_field_values as $search_field_value) {
+                $search_fields[] = trim($search_field_value);
+            }
+            array_unique($search_fields);
+
+        } else {
+            $search_fields = array('title', 'description');
+        }
 
         // Build the search array
         $search_options = array(
@@ -95,6 +111,7 @@ class plgSearchMageBridge extends JPlugin
             'website' => MagebridgeModelConfig::load('website'),
             'text' => $text,
             'search_limit' => $search_limit,
+            'search_fields' => $search_fields,
         );
 
         // Include the MageBridge register
@@ -106,7 +123,7 @@ class plgSearchMageBridge extends JPlugin
         $bridge = MageBridgeModelBridge::getInstance();
         $bridge->build(true);
 
-        // @todo: Include created/metadesc/metakey in results
+        // Get the results
         $results = $register->getDataById($segment_id);
 
         // Do not continue if the result is empty
@@ -123,9 +140,9 @@ class plgSearchMageBridge extends JPlugin
             $object->text = $result['description'];
             $url = preg_replace('/^(.*)index.php/', 'index.php', $result['url']);
             $object->href = $url;
-            $object->created = null;
-            $object->metadesc = null;
-            $object->metakey = null;
+            $object->created = $result['created_at'];
+            $object->metadesc = $result['meta_description'];
+            $object->metakey = $result['meta_keyword'];
             $object->section = null;
             $object->browsernav = 2;
             $object->thumbnail = $result['thumbnail'];
