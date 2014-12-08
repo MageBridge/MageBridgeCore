@@ -97,7 +97,7 @@ class Yireo_MageBridge_Model_Update extends Mage_Core_Model_Abstract
     public function doUpgrade()
     {
         // File format
-        $format = 'zip'; // @todo: tgz
+        $format = 'zip';
 
         // Set the umask
         $this->setFilesUmask();
