@@ -131,6 +131,7 @@ class Yireo_MageBridge_Helper_Product extends Mage_Core_Helper_Abstract
         // Construct other options
         $p['url_key'] = $product->getUrlKey();
         $p['parent_product_ids'] = Mage::getModel('catalog/product_type_configurable')->getParentIdsByChild($product->getId());
+        $p['store'] = $product->getStoreId();
 
         if(count($p['category_ids']) == 1 && empty($arguments['category_id'])) {
             $arguments['category_id'] = $p['category_ids'][0];

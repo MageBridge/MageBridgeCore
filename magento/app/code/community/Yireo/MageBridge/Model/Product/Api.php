@@ -110,9 +110,18 @@ class Yireo_MageBridge_Model_Product_Api extends Mage_Catalog_Model_Api_Resource
      */
     public function items($arguments = null)
     {
+        // Handle store codes
+        if(isset($arguments['store']) && is_string($arguments['store'])) {
+            $arguments['store'] = Mage::app()->getStore($arguments['store'])->getId();
+        }
+
+        if(!empty($arguments['store'])) {
+            $arguments['website'] = Mage::app()->getStore($arguments['store'])->getWebsite()->getId();
+        }
+
         // Initialize arguments with default values
-        if(!isset($arguments['website'])) $arguments['website'] = Mage::app()->getStore()->getWebsiteId();
-        if(!isset($arguments['store'])) $arguments['store'] = Mage::app()->getStore()->getStoreId();
+        if(empty($arguments['website'])) $arguments['website'] = Mage::app()->getStore()->getWebsiteId();
+        if(empty($arguments['store'])) $arguments['store'] = Mage::app()->getStore()->getStoreId();
 
         // Determine caching
         $caching = (bool)Mage::app()->useCache('collections');
@@ -167,8 +176,10 @@ class Yireo_MageBridge_Model_Product_Api extends Mage_Catalog_Model_Api_Resource
     protected function getCollection($arguments = null)
     {
         // Initialize arguments with default values
-        if(!isset($arguments['website'])) $arguments['website'] = Mage::app()->getStore()->getWebsiteId();
-        if(!isset($arguments['store'])) $arguments['store'] = Mage::app()->getStore()->getStoreId();
+        if(empty($arguments['website'])) $arguments['website'] = Mage::app()->getStore()->getWebsiteId();
+        if(empty($arguments['store'])) $arguments['store'] = Mage::app()->getStore()->getStoreId();
+
+        Mage::app()->setCurrentStore($arguments['store']); 
 
         // Set the visibility
         if(isset($arguments['visibility'])) {
@@ -186,9 +197,16 @@ class Yireo_MageBridge_Model_Product_Api extends Mage_Catalog_Model_Api_Resource
             ->addAttributeToFilter('visibility', $visibility)
             ->addAttributeToSelect('*')
             ->addFieldToFilter('status', 1)
-            ->addWebsiteFilter($arguments['website'])
-            ->addStoreFilter($arguments['store'])
         ;
+
+        if(!empty($arguments['website'])) {
+            $collection->addWebsiteFilter($arguments['website']);
+        }
+            
+        if(!empty($arguments['store'])) {
+            $collection->addStoreFilter($arguments['store']);
+            $collection->setStoreId($arguments['store']);
+        }
 
         // Add the minimal price
         if(!isset($arguments['minimal_price']) || $arguments['minimal_price'] == 1) {
