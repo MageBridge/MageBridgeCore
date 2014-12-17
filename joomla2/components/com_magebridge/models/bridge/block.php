@@ -106,14 +106,14 @@ class MageBridgeModelBridgeBlock extends MageBridgeModelBridgeSegment
             }
 
             // Once the plugins are imported, trigger the content-event
-            $dispatcher = JDispatcher::getInstance();
-            if (MageBridgeHelper::isJoomla15()) {
-                $item->params = YireoHelper::toRegistry();
-                $result = $dispatcher->trigger('onPrepareContent', array(&$item, &$item->params, 0));
+            if (MageBridgeHelper::isJoomla25()) {
+                $dispatcher = JDispatcher::getInstance();
             } else {
-                $item->params = YireoHelper::toRegistry();
-                $result = $dispatcher->trigger('onContentPrepare', array ('com_magebridge.block', &$item, &$item->params, 0));
+                $dispatcher = JEventDispatcher::getInstance();
             }
+
+            $item->params = YireoHelper::toRegistry();
+            $result = $dispatcher->trigger('onContentPrepare', array ('com_magebridge.block', &$item, &$item->params, 0));
 
             // Move the modified contents into $block_data
             $block_data = $item->text;
@@ -202,15 +202,9 @@ class MageBridgeModelBridgeBlock extends MageBridgeModelBridgeSegment
         // Get system variables
         $db = JFactory::getDBO();
 
-        if (MageBridgeHelper::isJoomla15()) {
-            $query = 'SELECT `element` FROM `#__plugins`'
-                . ' WHERE `folder`="content" AND `published` >= 1 AND `element` NOT LIKE "magebridge%" AND `element` != "emailcloak"'
-                . ' ORDER BY `ordering`';
-        } else {
-            $query = 'SELECT `element` FROM `#__extensions`'
-                . ' WHERE `type` = "plugin" AND `enabled` = 1 AND `element` NOT LIKE "magebridge%" AND `element` != "emailcloak"'
-                . ' ORDER BY `ordering`';
-        }
+        $query = 'SELECT `element` FROM `#__extensions`'
+            . ' WHERE `type` = "plugin" AND `enabled` = 1 AND `element` NOT LIKE "magebridge%" AND `element` != "emailcloak"'
+            . ' ORDER BY `ordering`';
 
         $db->setQuery( $query );
         $plugins = (method_exists($db, 'loadColumn')) ? $db->loadColumn() : $db->loadResultArray(); 

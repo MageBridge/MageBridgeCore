@@ -84,7 +84,11 @@ class MageBridgeModelProxy
     {
         $rt = json_encode($data);
         if ($rt == false) {
-            $data = utf8_encode($data);
+
+            if(is_string($data)) {
+                $data = utf8_encode($data);
+            }
+
             $rt = json_encode($data);          
             if ($rt == false) {
                 if (function_exists('json_last_error')) {

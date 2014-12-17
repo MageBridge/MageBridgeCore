@@ -51,7 +51,7 @@ class plgContentMageBridge extends JPlugin
             $text = MageBridgeEncryptionHelper::base64_encode($row->text);
 
             // Conditionally load CSS
-            if ($this->getParams()->get('load_css') == 1 || $this->getParams()->get('load_js') == 1) {
+            if ($this->params->get('load_css') == 1 || $this->params->get('load_js') == 1) {
                 $bridge->register('headers');
             }
 
@@ -60,12 +60,12 @@ class plgContentMageBridge extends JPlugin
             $bridge->build();
         
             // Load CSS if needed
-            if ($this->getParams()->get('load_css') == 1) {
+            if ($this->params->get('load_css') == 1) {
                 $bridge->setHeaders('css');
             }
 
             // Load JavaScript if needed
-            if ($this->getParams()->get('load_js') == 1) {
+            if ($this->params->get('load_js') == 1) {
                 $bridge->setHeaders('js');
             }
 
@@ -92,25 +92,6 @@ class plgContentMageBridge extends JPlugin
     public function onPrepareContent(&$article, &$params, $limitstart)
     {
         $this->onContentPrepare('content', $article, $params, $limitstart);
-    }
-
-    /**
-     * Load the parameters
-     * 
-     * @access private
-     * @param null
-     * @return JParameter
-     */
-    private function getParams()
-    {
-        if (!MageBridgeHelper::isJoomla15()) {
-            return $this->params;
-        } else {
-            jimport('joomla.html.parameter');
-            $plugin = JPluginHelper::getPlugin('content', 'magebridge');
-            $params = new JParameter($plugin->params);
-            return $params;
-        }
     }
 
     /**

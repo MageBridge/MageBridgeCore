@@ -499,11 +499,7 @@ class MageBridgeHelper
      */
     static public function getParams()
     {
-        if (self::isJoomla15()) {
-            $params = JComponentHelper::getParams('com_magebridge');
-        } else {
-            $params = JFactory::getApplication()->getMenu('site')->getParams(JRequest::getInt('Itemid'));
-        }
+        $params = JFactory::getApplication()->getMenu('site')->getParams(JRequest::getInt('Itemid'));
         return $params;
     }
 
