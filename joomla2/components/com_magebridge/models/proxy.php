@@ -569,10 +569,10 @@ class MageBridgeModelProxy
                 $cookieValue = trim($cookieValue);
 
                 // Check if the cookie was dealt with or not
-                if (in_array($cookieName.'='.$cookieValue, $matchedCookies)) {
+                if (in_array($cookieName, $matchedCookies)) {
                     continue;
                 } else {
-                    $matchedCookies[] = $cookieName.'='.$cookieValue;
+                    $matchedCookies[] = $cookieName;
                 }
 
                 // Set the cookie

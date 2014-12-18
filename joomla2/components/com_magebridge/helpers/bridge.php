@@ -42,7 +42,7 @@ class MageBridgeBridgeHelper
         // Otherwise define a default list of cookies
         $application = JFactory::getApplication();
         if ($application->isSite() == 1 ) {
-            $cookies = array('frontend', 'user_allowed_save_cookie', 'persistent_shopping_cart');
+            $cookies = array('frontend', 'frontend_cid', 'user_allowed_save_cookie', 'persistent_shopping_cart');
         } else {
             $cookies = array('admin');
         }
