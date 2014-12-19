@@ -577,6 +577,13 @@ class Yireo_MageBridge_Model_Core
             $session->setCustomer($customer);
         }
     
+        // Reset session if session_regenerate is used
+        $session = Mage::getModel('core/session');
+        if(!empty($_GET['SID']) && $session->getSessionId() != $_GET['SID']) {
+            $session->setSessionId($_GET['SID']);
+            session_id($_GET['SID']);
+        }
+
         // Do not return direct output
         return false;
     }
