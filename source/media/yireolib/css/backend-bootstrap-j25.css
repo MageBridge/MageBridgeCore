@@ -49,6 +49,10 @@ div.well {
     background-color: #fefefe;
 }
 
+div#cpanel {
+    padding-bottom: 120px;
+}
+
 div#toolbar li.button a.modal {
     position: relative;
     width: auto;
@@ -69,11 +73,3 @@ ul#menu li.node a {
     background-image: none;
 }
 
-fieldset.jpublished input[type="radio"] {
-    margin-left: 5px;
-    margin-right: 5px;
-}
-
-fieldset.jpublished label {
-    font-size: 12px !important;
-}

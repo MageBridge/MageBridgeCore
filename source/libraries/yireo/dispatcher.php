@@ -26,8 +26,9 @@ class YireoDispatcher
     static public function dispatch()
     {
         // Fetch URL-variables
-        $option = JRequest::getCmd('option');
-        $view = JRequest::getCmd('view');
+        $jinput = JFactory::getApplication()->input;
+        $option = $jinput->getCmd('option');
+        $view = $jinput->getCmd('view');
 
         // Construct the controller-prefix
         $prefix = ucfirst(preg_replace('/^com_/', '', $option));
@@ -62,7 +63,7 @@ class YireoDispatcher
         }
 
         // Perform the Request task
-        $controller->execute( JRequest::getCmd('task'));
+        $controller->execute( $jinput->getCmd('task'));
         $controller->redirect();
     }
 }

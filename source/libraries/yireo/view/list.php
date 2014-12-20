@@ -163,17 +163,13 @@ class YireoViewList extends YireoView
      */
     public function checkedout($item, $i)
     {
-        if (YireoHelper::isJoomla15()) {
-            $checked = JHTML::_('grid.checkedout', $item, $i);
-        } else {
-            $user = JFactory::getUser();
-            if(!isset($item->editor)) $item->editor = $user->get('id');
-            if(!isset($item->checked_out)) $item->checked_out = 0;
-            if(!isset($item->checked_out_time)) $item->checked_out_time = 0;
+        $user = JFactory::getUser();
+        if(!isset($item->editor)) $item->editor = $user->get('id');
+        if(!isset($item->checked_out)) $item->checked_out = 0;
+        if(!isset($item->checked_out_time)) $item->checked_out_time = 0;
 
-            $canCheckin = $user->authorise('core.manage', 'com_checkin') || $item->checked_out == $user->get('id') || $item->checked_out == 0;
-            $checked = JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, '', $canCheckin);
-        }
+        $canCheckin = $user->authorise('core.manage', 'com_checkin') || $item->checked_out == $user->get('id') || $item->checked_out == 0;
+        $checked = JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, '', $canCheckin);
 
         return $checked;
     }
@@ -189,11 +185,7 @@ class YireoViewList extends YireoView
      */
     public function checkbox($item, $i)
     {
-        if (YireoHelper::isJoomla15()) {
-            $checkbox = JHTML::_('grid.checkedout', $item, $i);
-        } else {
-            $checkbox = JHtml::_('grid.id', $i, $item->id);
-        }
+        $checkbox = JHtml::_('grid.id', $i, $item->id);
 
         return $checkbox;
     }
@@ -211,23 +203,18 @@ class YireoViewList extends YireoView
     {
         $published = null;
 
-        if (YireoHelper::isJoomla15()) {
-            $published = JHTML::_('grid.published', $item, $i );
-        } else {
+        // Import variables
+        $user = JFactory::getUser();
 
-            // Import variables
-            $user = JFactory::getUser();
+        // Create dummy publish_up and publish_down variables if not set
+        if(!isset($item->publish_up)) $item->publish_up = null;
+        if(!isset($item->publish_down)) $item->publish_down = null;
 
-            // Create dummy publish_up and publish_down variables if not set
-            if(!isset($item->publish_up)) $item->publish_up = null;
-            if(!isset($item->publish_down)) $item->publish_down = null;
-
-            // Fetch the state-field
-            $stateField = $this->_table->getStateField();
-            if(!empty($stateField)) {
-                $canChange = $user->authorise('core.edit.state', $this->_option.'.item.'.$item->id);
-                $published = JHtml::_('jgrid.published', $item->$stateField, $i, '', $canChange, 'cb', $item->publish_up, $item->publish_down);
-            }
+        // Fetch the state-field
+        $stateField = $this->_table->getStateField();
+        if(!empty($stateField)) {
+            $canChange = $user->authorise('core.edit.state', $this->_option.'.item.'.$item->id);
+            $published = JHtml::_('jgrid.published', $item->$stateField, $i, '', $canChange, 'cb', $item->publish_up, $item->publish_down);
         }
 
         return $published;

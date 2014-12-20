@@ -28,7 +28,7 @@ foreach($form->getFieldsets() as $fieldsetCode => $fieldsetObject) {
             <legend><?php echo $legend; ?></legend>
 
             <?php if(!empty($fieldsetObject->description)) : ?>
-                <div class="fieldset-description"><?php echo $fieldsetObject->description; ?></div>
+                <div class="fieldset-description"><?php echo JText::_($fieldsetObject->description); ?></div>
             <?php endif; ?>
 
             <?php foreach($form->getFieldset($fieldset) as $field): ?>

@@ -36,7 +36,7 @@ class YireoViewHomeAjax extends YireoView
      */
     public function display($tpl = null)
     {
-        switch (JRequest::getVar('layout')) {
+        switch ($this->jinput->get('layout')) {
             case 'feeds':
                 $feeds = $this->fetchFeeds('http://www.yireo.com/blog?format=feed&type=rss', 3);
                 $this->assignRef( 'feeds', $feeds);

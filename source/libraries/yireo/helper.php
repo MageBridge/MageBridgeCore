@@ -29,9 +29,6 @@ class YireoHelper
      */
     static public function getDBO()
     {
-        if (YireoHelper::isJoomla15()) {
-            return JFactory::getDBO();
-        }
         return JFactory::getDbo();
     }
 
@@ -67,7 +64,7 @@ class YireoHelper
      */
     static public function getFormEnd($id = 0)
     {
-        echo '<input type="hidden" name="option" value="'.JRequest::getCmd('option').'" />';
+        echo '<input type="hidden" name="option" value="'.JFactory::getApplication()->input->getCmd('option').'" />';
         echo '<input type="hidden" name="cid[]" value="'.$id.'" />';
         echo '<input type="hidden" name="task" value="" />';
         echo JHTML::_( 'form.token' );
@@ -138,7 +135,7 @@ class YireoHelper
      */
     static public function getCurrentVersion()
     {
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         $name = preg_replace('/^com_/', '', $option);
 
         $file = JPATH_ADMINISTRATOR.'/components/'.$option.'/'.$name.'.xml';
@@ -191,24 +188,20 @@ class YireoHelper
 
         if (is_string($params)) $params = trim($params);
 
-        if (self::isJoomla15()) {
-            jimport('joomla.html.parameter');
-            $params = @new JParameter($params, $file);
-        } else {
-            jimport('joomla.registry.registry');
-            $registry = @new JRegistry();
-            if(!empty($params) && is_string($params)) $registry->loadString($params);
-            if(!empty($params) && is_array($params)) $registry->loadArray($params);
+        jimport('joomla.registry.registry');
+        $registry = @new JRegistry();
+        if(!empty($params) && is_string($params)) $registry->loadString($params);
+        if(!empty($params) && is_array($params)) $registry->loadArray($params);
 
-            $fileContents = @file_get_contents($file);
-            if(preg_match('/\.xml$/', $fileContents)) {
-                $registry->loadFile($file, 'XML');
-            } elseif(preg_match('/\.json$/', $fileContents)) {
-                $registry->loadFile($file, 'JSON');
-            }
-
-            $params = $registry;
+        $fileContents = @file_get_contents($file);
+        if(preg_match('/\.xml$/', $fileContents)) {
+            $registry->loadFile($file, 'XML');
+        } elseif(preg_match('/\.json$/', $fileContents)) {
+            $registry->loadFile($file, 'JSON');
         }
+
+        $params = $registry;
+
         return $params;
     }
 
@@ -241,7 +234,7 @@ class YireoHelper
             $application = JFactory::getApplication();
             if(method_exists($application, 'set')) $application->set('bootstrap', true);
 
-            $option = JRequest::getCmd('option');
+            $option = JFactory::getApplication()->input->getCmd('option');
             $document = JFactory::getDocument();
             $document->addStyleSheet('//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css');
             $document->addStyleSheet(JURI::root().'media/'.$option.'/css/backend-bootstrap-j25.css');
@@ -288,7 +281,7 @@ class YireoHelper
         }
 
         // Load jQuery using the framework (Joomla! 3.0 and higher)
-        if(YireoHelper::isJoomla15() == false && YireoHelper::isJoomla25() == false) {
+        if(YireoHelper::isJoomla25() == false) {
             return JHtml::_('jquery.framework');
         }
 
@@ -299,10 +292,10 @@ class YireoHelper
         }
 
         // Do not load this for specific extensions
-        if(JRequest::getCmd('option') == 'com_virtuemart') return false;
+        if(JFactory::getApplication()->input->getCmd('option') == 'com_virtuemart') return false;
 
         // Load jQuery
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         if (file_exists(JPATH_SITE.'/media/'.$option.'/js/jquery.js')) {
             $document->addScript(JURI::root().'media/'.$option.'/js/jquery.js');
             $document->addCustomTag('<script type="text/javascript">jQuery.noConflict();</script>');

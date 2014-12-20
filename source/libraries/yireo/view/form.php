@@ -79,7 +79,7 @@ class YireoViewForm extends YireoView
     public function display($tpl = null)
     {
         // Hide the menu
-        JRequest::setVar('hidemainmenu', 1);
+        $this->jinput->set('hidemainmenu', 1);
     
         // Initialize tooltips
         JHTML::_('behavior.tooltip');
