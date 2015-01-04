@@ -3,7 +3,7 @@
  * User Plugin for Joomla! - MageBridge First Last name
  *
  * @author Yireo (info@yireo.com)
- * @copyright Copyright 2014 Yireo
+ * @copyright Copyright 2015 Yireo
  * @license GNU Public License version 3 or later
  * @link http://www.yireo.com/software/magebridge
  */

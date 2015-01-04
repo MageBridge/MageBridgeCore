@@ -3,7 +3,7 @@
  * Joomla! Form Field Template - Select Improved
  *
  * @author Yireo (info@yireo.com)
- * @copyright Copyright 2014
+ * @copyright Copyright 2015
  * @license GNU Public License
  * @link http://www.yireo.com
  */
