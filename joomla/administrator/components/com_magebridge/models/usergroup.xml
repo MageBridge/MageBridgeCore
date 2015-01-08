@@ -2,8 +2,8 @@
 <form>
     <fields name="params" addfieldpath="/administrator/components/com_magebridge/fields/">
         <fieldset name="params">
-		    <field name="usergroup" type="usergroup" multiple="multiple" label="COM_MAGEBRIDGE_USERGROUP_PARAM_USERGROUP" description="COM_MAGEBRIDGE_USERGROUP_PARAM_USERGROUP_DESC" />
-		    <field name="override_existing" type="boolean" default="0" label="COM_MAGEBRIDGE_USERGROUP_PARAM_OVERRIDE_EXISTING" description="COM_MAGEBRIDGE_USERGROUP_PARAM_OVERRIDE_EXISTING_DESC" />
+		    <field name="usergroup" type="magebridge.usergroup" multiple="multiple" label="COM_MAGEBRIDGE_USERGROUP_PARAM_USERGROUP" description="COM_MAGEBRIDGE_USERGROUP_PARAM_USERGROUP_DESC" />
+		    <field name="override_existing" type="magebridge.boolean" default="0" label="COM_MAGEBRIDGE_USERGROUP_PARAM_OVERRIDE_EXISTING" description="COM_MAGEBRIDGE_USERGROUP_PARAM_OVERRIDE_EXISTING_DESC" />
         </fieldset>
     </fields>
 </form>

@@ -18,7 +18,7 @@ require_once JPATH_SITE.'/components/com_magebridge/helpers/loader.php';
 /*
  * Form Field-class 
  */
-class JFormFieldDisablejs extends JFormFieldAbstract
+class MagebridgeFormFieldDisablejs extends MagebridgeFormFieldAbstract
 {
     /*
      * Form field type

@@ -25,7 +25,7 @@
 	<config>
 		<fields name="params">
 			<fieldset name="basic" addfieldpath="/administrator/components/com_magebridge/fields">
-		        <field name="widget" type="widget" default="" label="MOD_MAGEBRIDGE_WIDGET_FIELD_WIDGET" description="MOD_MAGEBRIDGE_WIDGET_FIELD_WIDGET_DESC" />
+		        <field name="widget" type="magebridge.widget" default="" label="MOD_MAGEBRIDGE_WIDGET_FIELD_WIDGET" description="MOD_MAGEBRIDGE_WIDGET_FIELD_WIDGET_DESC" />
 				<field name="layout" type="modulelayout" label="JFIELD_ALT_LAYOUT_LABEL" description="JFIELD_ALT_MODULE_LAYOUT_DESC" />
         		<field name="load_css" type="list" default="1" label="MOD_MAGEBRIDGE_LOAD_CSS" description="MOD_MAGEBRIDGE_LOAD_CSS_DESC">
 		        	<option value="0">JNO</option>

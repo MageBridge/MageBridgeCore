@@ -18,7 +18,7 @@ include_once JPATH_LIBRARIES.'/joomla/form/fields/radio.php';
 /*
  * Form Field-class for showing a yes/no field
  */
-class JFormFieldBoolean extends JFormFieldRadio
+class MagebridgeFormFieldBoolean extends JFormFieldRadio
 {
     /*
      * Form field type

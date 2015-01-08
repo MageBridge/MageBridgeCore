@@ -13,7 +13,7 @@ defined('JPATH_BASE') or die;
  * @subpackage    com_content
  * @since        1.6
  */
-class JFormFieldArticle extends JFormField
+class MagebridgeFormFieldArticle extends JFormField
 {
     /**
      * The form field type.

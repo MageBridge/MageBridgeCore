@@ -114,7 +114,7 @@ class MageBridge_Autoload
             'MageBridgeUpdateHelper' => JPATH_ADMINISTRATOR.'/components/com_magebridge/helpers/update.php',
             'MageBridgeWidgetHelper' => JPATH_ADMINISTRATOR.'/components/com_magebridge/helpers/widget.php',
             'MageBridgeInstallHelper' => JPATH_ADMINISTRATOR.'/components/com_magebridge/helpers/install.php',
-            'JFormFieldAbstract' => JPATH_ADMINISTRATOR.'/components/com_magebridge/fields/abstract.php',
+            'MagebridgeFormFieldAbstract' => JPATH_ADMINISTRATOR.'/components/com_magebridge/fields/abstract.php',
         );
 
         // Get system variables

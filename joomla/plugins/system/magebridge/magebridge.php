@@ -54,6 +54,9 @@ class plgSystemMageBridge extends JPlugin
         // Don't do anything if MageBridge is not enabled 
         if ($this->isEnabled() == false) return false;
 
+        // Include JForm elements
+        //$this->loadJform();
+
         // NewRelic support
         $this->loadNewRelic();
 
@@ -243,6 +246,19 @@ class plgSystemMageBridge extends JPlugin
                 continue;
             } 
         }
+    }
+
+    /**
+     * Include JForm namespace
+     * 
+     * @access private
+     * @param null
+     * @return null
+     */
+    private function loadJForm()
+    {
+        jimport('joomla.form.form');
+        JForm::addFieldPath(JPATH_ADMINISTRATOR.'/components/com_magebridge/fields');
     }
 
     /**

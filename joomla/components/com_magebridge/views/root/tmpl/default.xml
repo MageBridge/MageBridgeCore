@@ -13,8 +13,8 @@
         <fieldset name="basic">
         </fieldset>
         <fieldset name="scope" label="COM_MAGEBRIDGE_VIEW_FIELDSET_SCOPE" addfieldpath="/administrator/components/com_magebridge/fields">
-			<field name="store" type="store" default="" label="COM_MAGEBRIDGE_VIEW_FIELD_STORE" description="COM_MAGEBRIDGE_VIEW_FIELD_STORE_DESC" />
-			<field name="website" type="website" default="" label="COM_MAGEBRIDGE_VIEW_FIELD_WEBSITE" description="COM_MAGEBRIDGE_VIEW_FIELD_WEBSITE_DESC" />
+			<field name="store" type="magebridge.store" default="" label="COM_MAGEBRIDGE_VIEW_FIELD_STORE" description="COM_MAGEBRIDGE_VIEW_FIELD_STORE_DESC" />
+			<field name="website" type="magebridge.website" default="" label="COM_MAGEBRIDGE_VIEW_FIELD_WEBSITE" description="COM_MAGEBRIDGE_VIEW_FIELD_WEBSITE_DESC" />
         </fieldset>
     </fields>
 </metadata>

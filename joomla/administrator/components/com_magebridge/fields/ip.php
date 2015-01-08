@@ -18,7 +18,7 @@ require_once JPATH_SITE.'/components/com_magebridge/helpers/loader.php';
 /*
  * Form Field-class for adding an IP
  */
-class JFormFieldIp extends JFormFieldAbstract
+class MagebridgeFormFieldIp extends MagebridgeFormFieldAbstract
 {
     /*
      * Form field type

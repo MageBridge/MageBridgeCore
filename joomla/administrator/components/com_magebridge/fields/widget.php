@@ -18,7 +18,7 @@ require_once JPATH_SITE.'/components/com_magebridge/helpers/loader.php';
 /*
  * Form Field-class for choosing a specific Magento widget in a modal box
  */
-class JFormFieldWidget extends JFormFieldAbstract
+class MagebridgeFormFieldWidget extends MagebridgeFormFieldAbstract
 {
     /*
      * Form field type

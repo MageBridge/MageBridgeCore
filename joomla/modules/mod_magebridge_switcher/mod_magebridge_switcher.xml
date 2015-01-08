@@ -25,7 +25,7 @@
 	<config>
 		<fields name="params">
 			<fieldset name="basic" addfieldpath="/administrator/components/com_magebridge/fields">
-        		<field name="store_id" type="storegroup" default="" label="MOD_MAGEBRIDGE_SWITCHER_FIELD_STORE_ID" description="MOD_MAGEBRIDGE_SWITCHER_FIELD_STORE_ID_DESC" />
+        		<field name="store_id" type="magebridge.storegroup" default="" label="MOD_MAGEBRIDGE_SWITCHER_FIELD_STORE_ID" description="MOD_MAGEBRIDGE_SWITCHER_FIELD_STORE_ID_DESC" />
 				<field name="layout" type="modulelayout" label="JFIELD_ALT_LAYOUT_LABEL" description="JFIELD_ALT_MODULE_LAYOUT_DESC" />
            	</fieldset>
 			<fieldset name="advanced">

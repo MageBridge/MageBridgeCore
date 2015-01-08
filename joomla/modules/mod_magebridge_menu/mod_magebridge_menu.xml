@@ -25,7 +25,7 @@
 	<config>
 		<fields name="params">
 			<fieldset name="basic" addfieldpath="/administrator/components/com_magebridge/fields">
-		        <field name="root" type="mcategory" default="0" return="id" allow_root="1" label="MOD_MAGEBRIDGE_MENU_FIELD_ROOT" description="MOD_MAGEBRIDGE_MENU_FIELD_ROOT_DESC" />
+		        <field name="root" type="magebridge.category" default="0" return="id" allow_root="1" label="MOD_MAGEBRIDGE_MENU_FIELD_ROOT" description="MOD_MAGEBRIDGE_MENU_FIELD_ROOT_DESC" />
         		<field name="levels" type="list" default="1" label="MOD_MAGEBRIDGE_MENU_FIELD_LEVELS" description="MOD_MAGEBRIDGE_MENU_FIELD_LEVELS_DESC">
 		        	<option value="1">1</option>
         			<option value="2">2</option>

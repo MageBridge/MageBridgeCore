@@ -23,7 +23,7 @@ jimport('joomla.form.formfield');
 /*
  * Generic Form Field-class 
  */
-abstract class JFormFieldAbstract extends JFormField
+abstract class MagebridgeFormFieldAbstract extends JFormField
 {
     /*
      * Method to wrap the protected getInput() method
