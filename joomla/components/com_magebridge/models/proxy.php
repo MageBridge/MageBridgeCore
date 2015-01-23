@@ -326,7 +326,10 @@ class MageBridgeModelProxy
         ));
 
         // Set additional SSL options
-        $ssl_version = (int)MagebridgeModelConfig::load('ssl_version');
+        $ssl_version = MagebridgeModelConfig::load('ssl_version');
+        if(!empty($ssl_version) && !is_numeric($ssl_version)) {
+            $ssl_version = constant('CURL_SSLVERSION_'.$ssl_version);
+        }
         $ssl_ciphers = MagebridgeModelConfig::load('ssl_ciphers');
         if(!empty($ssl_version)) curl_setopt($handle, CURLOPT_SSLVERSION, $ssl_version);
         if(!empty($ssl_ciphers)) curl_setopt($handle, CURLOPT_SSL_CIPHER_LIST, $ssl_ciphers);

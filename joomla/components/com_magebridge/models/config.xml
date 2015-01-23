@@ -43,18 +43,22 @@
 			    <option value="3">COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_ENFORCE_SSL_OPTION_3</option>
 	    	</field>
 		    <field name="ssl_version" type="list" default="0">
-			    <option value="0">COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_SSL_VERSION_OPTION_0</option>
-			    <option value="1">COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_SSL_VERSION_OPTION_1</option>
-			    <option value="2">COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_SSL_VERSION_OPTION_2</option>
-			    <option value="3">COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_SSL_VERSION_OPTION_3</option>
-	    	</field>
-		    <field name="ssl_ciphers" type="list">
-			    <option value="">COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_SSL_CIPHERS_OPTION_DEFAULT</option>
+			    <option value="">COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_SSL_VERSION_OPTION_NONE</option>
 			    <option value="SSLv2">SSLv2</option>
 			    <option value="SSLv3">SSLv3</option>
-			    <option value="TLSv1.2">TLSv1.2</option>
 			    <option value="TLSv1">TLSv1</option>
-			    <option value="HIGH:MEDIUM:!SSLv2">COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_SSL_CIPHERS_OPTION_HIGHMEDIUM</option>
+			    <option value="TLSv1_0">TLSv1.0</option>
+			    <option value="TLSv1_2">TLSv1.1</option>
+			    <option value="TLSv1_2">TLSv1.2</option>
+			    <option value="TLSv1_3">TLSv1.3</option>
+	    	</field>
+		    <field name="ssl_ciphers" type="combobox">
+			    <option value="">COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_SSL_CIPHERS_OPTION_DEFAULT</option>
+			    <option value="ALL">COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_SSL_CIPHERS_OPTION_ALL</option>
+			    <option value="HIGH:!SSLv2">COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_SSL_CIPHERS_OPTION_HIGH_NO2</option>
+			    <option value="HIGH:!SSLv2:!SSLv3">COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_SSL_CIPHERS_OPTION_HIGH_NO3</option>
+			    <option value="HIGH:MEDIUM:!SSLv2">COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_SSL_CIPHERS_OPTION_HIGHMEDIUM_NO2</option>
+			    <option value="HIGH:MEDIUM:!SSLv2:!SSLv3">COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_SSL_CIPHERS_OPTION_HIGHMEDIUM_NO3</option>
 	    	</field>
 		    <field name="payment_urls" type="textarea"/>
 
