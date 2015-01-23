@@ -126,7 +126,7 @@ class MageBridgeViewCommon extends MageBridgeView
 
         require_once JPATH_COMPONENT.'/fields/store.php';
         $class = 'JFormFieldStore';
-        $field = JFormHelper::loadFieldType('store');
+        $field = JFormHelper::loadFieldType('magebridge.store');
         $field->setName('store');
         $field->setValue($current_store);
         $store = $field->getHtmlInput();
