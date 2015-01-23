@@ -149,16 +149,16 @@ class MagebridgeModelCheck extends YireoCommonModel
         $server_software = (isset($_SERVER['software'])) ? $_SERVER['software'] : null;
 
         // System Compatibility
-        $result = (version_compare(phpversion(), '5.2.8', '>=')) ? self::CHECK_OK : self::CHECK_ERROR;
-        $this->addResult('compatibility', 'PHP version', $result, JText::sprintf('COM_MAGEBRIDGE_CHECK_PHP_VERSION', '5.2.8'));
+        $result = (version_compare(phpversion(), '5.4.0', '>=')) ? self::CHECK_OK : self::CHECK_ERROR;
+        $this->addResult('compatibility', 'PHP version', $result, JText::sprintf('COM_MAGEBRIDGE_CHECK_PHP_VERSION', '5.4.0'));
 
         $result = (version_compare(ini_get('memory_limit'), '31M', '>')) ? self::CHECK_OK : self::CHECK_ERROR;
         if(ini_get('memory_limit') == -1) $result = self::CHECK_OK;
         $this->addResult('compatibility', 'PHP memory', $result, JText::sprintf('COM_MAGEBRIDGE_CHECK_PHP_MEMORY', '32Mb', ini_get('memory_limit')));
 
         $jversion = new JVersion();
-        $result = (version_compare($jversion->getShortVersion(), '1.5.12', '>=')) ? self::CHECK_OK : self::CHECK_ERROR;
-        $this->addResult('compatibility', 'Joomla! version', $result, JText::sprintf('COM_MAGEBRIDGE_CHECK_JOOMLA_VERSION', '1.5.12'));
+        $result = (version_compare($jversion->getShortVersion(), '3.0.0', '>=')) ? self::CHECK_OK : self::CHECK_ERROR;
+        $this->addResult('compatibility', 'Joomla! version', $result, JText::sprintf('COM_MAGEBRIDGE_CHECK_JOOMLA_VERSION', '3.0.0'));
 
         $result = (function_exists('simplexml_load_string')) ? self::CHECK_OK : self::CHECK_ERROR;
         $this->addResult('compatibility', 'SimpleXML', $result, JText::_('COM_MAGEBRIDGE_CHECK_SIMPLEXML'));
