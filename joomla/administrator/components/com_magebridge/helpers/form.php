@@ -28,10 +28,17 @@ class MageBridgeFormHelper
         jimport('joomla.form.helper');
         jimport('joomla.form.form');
 
-        require_once JPATH_ADMINISTRATOR.'/components/com_magebridge/fields/'.$type.'.php';
+        $fileType = preg_replace('/^magebridge\./', '', $type);
+        include_once JPATH_ADMINISTRATOR.'/components/com_magebridge/fields/'.$fileType.'.php';
 
         $form = new JForm('magebridge');
         $field = JFormHelper::loadFieldType($type);
+        if (is_object($field) == false) {
+            $message = JText::sprintf('COM_MAGEBRIDGE_UNKNOWN_FIELD', $type);
+            JFactory::getApplication()->enqueueMessage($message, 'error');
+            return null;
+        }
+
         $field->setName($name);
         $field->setValue($value);
    
