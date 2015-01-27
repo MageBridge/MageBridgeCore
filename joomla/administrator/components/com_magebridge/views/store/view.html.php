@@ -157,7 +157,7 @@ class MageBridgeViewStore extends YireoViewForm
         }
     
         if (empty($name)) $name = 'store';
-        return MageBridgeFormHelper::getField('store', $name, $value, null);
+        return MageBridgeFormHelper::getField('magebridge.store', $name, $value, null);
     }
 
     /*
@@ -168,7 +168,7 @@ class MageBridgeViewStore extends YireoViewForm
      */
     protected function getFieldStoreview($default = null)
     {
-        return MageBridgeFormHelper::getField('storeview', 'name', $value, null);
+        return MageBridgeFormHelper::getField('magebridge.storeview', 'name', $value, null);
     }
 
     /*
@@ -179,6 +179,6 @@ class MageBridgeViewStore extends YireoViewForm
      */
     protected function getFieldStoregroup($default = null)
     {
-        return MageBridgeFormHelper::getField('storegroup', 'name', $value, null);
+        return MageBridgeFormHelper::getField('magebridge.storegroup', 'name', $value, null);
     }
 }

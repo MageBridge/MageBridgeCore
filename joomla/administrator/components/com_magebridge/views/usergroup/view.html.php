@@ -94,11 +94,7 @@ class MageBridgeViewUsergroup extends MageBridgeView
      */
     public function getFieldMagentoGroup($value = null)
     {
-        require_once JPATH_COMPONENT.'/fields/customergroup.php';
-        $field = new JFormFieldCustomerGroup();
-        $field->setName('magento_group');
-        $field->setValue($value);
-        return $field->getHtmlInput();
+        return MageBridgeFormHelper::getField('magebridge.customergroup', 'magento_group', $value);
     }
 
     /*

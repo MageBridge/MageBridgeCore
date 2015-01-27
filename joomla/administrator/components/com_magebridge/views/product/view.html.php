@@ -52,7 +52,7 @@ class MageBridgeViewProduct extends MageBridgeView
 	    $this->assignRef('actions_form', $actions_form);
 
         // Build the fields
-        $this->lists['product'] = MageBridgeFormHelper::getField('product', 'sku', $this->item->sku, null);
+        $this->lists['product'] = MageBridgeFormHelper::getField('magebridge.product', 'sku', $this->item->sku, null);
 
         // Check for a previous connector-value
         if(!empty($this->item->connector)) {
