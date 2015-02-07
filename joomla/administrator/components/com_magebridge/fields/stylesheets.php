@@ -41,7 +41,7 @@ class MagebridgeFormFieldStylesheets extends MagebridgeFormFieldAbstract
         if (MagebridgeModelConfig::load('api_widgets') == true) {
 
             $cache = JFactory::getCache('com_magebridge.admin');
-            $options = $cache->call(array('JFormFieldStylesheets', 'getResult'));
+            $options = $cache->call(array('MagebridgeFormFieldStylesheets', 'getResult'));
 
             if (empty($options) && !is_array($options)) {
                 MageBridgeModelDebug::getInstance()->trace('Unable to obtain MageBridge API Widget "stylesheets"', $options);
@@ -70,6 +70,7 @@ class MagebridgeFormFieldStylesheets extends MagebridgeFormFieldAbstract
     {
         $name = 'disable_css_all';
         $value = MagebridgeModelConfig::load('disable_css_all');
+
         $options = array(
             array('value' => '0', 'label' => 'JNO'),
             array('value' => '1', 'label' => 'JYES'),
@@ -82,7 +83,9 @@ class MagebridgeFormFieldStylesheets extends MagebridgeFormFieldAbstract
             $options[$index] = JArrayHelper::toObject($option);
         }
 
-        return JHTML::_('select.radiolist', $options, $name, null, 'value', 'label', $value);
+        $attributes = null;
+
+        return JHTML::_('select.radiolist', $options, $name, $attributes, 'value', 'label', $value);
     }
 
     /*

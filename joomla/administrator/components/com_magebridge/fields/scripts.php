@@ -40,7 +40,7 @@ class MagebridgeFormFieldScripts extends MagebridgeFormFieldAbstract
         if (MagebridgeModelConfig::load('api_widgets') == true) {
 
             $cache = JFactory::getCache('com_magebridge.admin');
-            $options = $cache->call(array('JFormFieldScripts', 'getResult'));
+            $options = $cache->call(array('MagebridgeFormFieldScripts', 'getResult'));
 
             // Parse the result into an HTML form-field
             if (!empty($options) && is_array($options)) {
