@@ -174,9 +174,24 @@ class MageBridgeModelBridgeHeaders extends MageBridgeModelBridgeSegment
         $document = JFactory::getDocument();
 
         // Add common META-tags
-        if (!empty($headers['title'])) $document->setTitle( $headers['title'] );
-        if (!empty($headers['keywords'])) $document->setMetaData( 'keywords', $headers['keywords'] );
-        if (!empty($headers['description'])) $document->setMetaData( 'description', htmlspecialchars($headers['description']));
+        if (!empty($headers['title']))
+        {
+            $document->setTitle( $headers['title'] );
+        }
+
+        if (!empty($headers['keywords']))
+        {
+            $document->setMetaData( 'keywords', $headers['keywords'] );
+        }
+
+        if (!empty($headers['description']))
+        {
+            $metaDescription = $headers['description'];
+            $metaDescription = strip_tags($metaDescription);
+            $metaDescription = htmlspecialchars($metaDescription);
+            $document->setMetaData('description', $metaDescription);
+        }
+
         if (!empty($headers['robots'])) {
             $document->setMetaData( 'robots', htmlspecialchars($headers['robots']));
             @header('X-Robots-Tag: '.$headers['robots'], true);
