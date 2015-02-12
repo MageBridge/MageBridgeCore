@@ -242,6 +242,7 @@ class MageBridgeModelBridgeHeaders extends MageBridgeModelBridgeSegment
         // * 2 = Disable only the CSS listed under "disable_css_custom"
         // * 3 = Disable all CSS except for the CSS listed under "disable_css_custom"
         $disable_css_all = MagebridgeModelConfig::load('disable_css_all');
+
         if ($disable_css_all != 1 && !empty($headers['items'])) {
             foreach ($headers['items'] as $item) {
                 if ($item['type'] == 'skin_css' || $item['type'] == 'css') {
@@ -253,11 +254,23 @@ class MageBridgeModelBridgeHeaders extends MageBridgeModelBridgeSegment
                     $this->_stylesheets[] = $item['name'];
 
                     $css = '';
-                    if (!empty($item['if'])) $css .= '<!--[if '.$item['if'].' ]>'."\n";
+
+                    if ( !empty($item) && strpos($item, "><!-->") !== false ) {
+                        $css .= $item . "\n";
+                    } elseif (!empty($item['if'])) {
+                        $css .= '<!--[if '.$item['if'].' ]>'."\n";
+                    }
 
                     $css .= '<link rel="stylesheet" href="'.$item['path'].'" type="text/css" '.$item['params'].'/>'."\n";
-                    if (!empty($item['if'])) $css .= '<![endif]-->'."\n";
+
+                    if (!empty($item) && strpos($item, "><!-->") !== false) {
+                        $css .= '<!--<![endif]-->' . "\n";
+                    } elseif (!empty($item['if'])) {
+                        $css .= '<![endif]-->'."\n";
+                    }
+
                     $document->addCustomTag($css);
+
                     continue;
                 }
             }
@@ -274,12 +287,14 @@ class MageBridgeModelBridgeHeaders extends MageBridgeModelBridgeSegment
     {
         // Dot not load if this is not the right document-class
         $document = JFactory::getDocument();
+
         if ($document->getType() != 'html') {
             return false;
         }
 
         // Check whether the bridge is offline
         $offline = MageBridge::getBridge()->isOffline();
+
         if ($offline == true) {
             return false;
         }
@@ -292,9 +307,17 @@ class MageBridgeModelBridgeHeaders extends MageBridgeModelBridgeSegment
             MageBridgeTemplateHelper::load('css', 'custom.css');
 
             // Load specific stylesheets per page
-            if (MageBridgeTemplateHelper::isHomePage()) MageBridgeTemplateHelper::load('css', 'homepage.css');
-            if (MageBridgeTemplateHelper::isProductPage()) MageBridgeTemplateHelper::load('css', 'product.css');
-            if (MageBridgeTemplateHelper::isCategoryPage()) MageBridgeTemplateHelper::load('css', 'category.css');
+            if (MageBridgeTemplateHelper::isHomePage()) {
+                MageBridgeTemplateHelper::load('css', 'homepage.css');
+            }
+
+            if (MageBridgeTemplateHelper::isProductPage()) {
+                MageBridgeTemplateHelper::load('css', 'product.css');
+            }
+
+            if (MageBridgeTemplateHelper::isCategoryPage()) {
+                MageBridgeTemplateHelper::load('css', 'category.css');
+            }
 
             // Determine browser-specific stylesheets
             jimport('joomla.environment.browser');
