@@ -71,7 +71,8 @@ class modMageBridgeCartHelper
         if ($layout) {
             return $bridge->getAPI('magebridge_session.checkout');
         } else {
-            return $bridge->getBlock('cart_sidebar');
+            $block_name = $params->get('block_name', 'cart_sidebar');
+            return $bridge->getBlock($block_name);
         }
     }
 }
