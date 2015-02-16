@@ -49,13 +49,20 @@ class Yireo_MageBridge_Model_User
             return $customer;
         }
 
+		// Determine the username and email
+		$email = (isset($data['email'])) ? $data['email'] : null;
+		$email = (isset($data['original_data']['email'])) ? $data['original_data']['email'] : $email;
+
+		$username = (isset($data['username'])) ? $data['username'] : null;
+		$username = (isset($data['original_data']['username'])) ? $data['original_data']['username'] : $username;
+
         // Try to load it by username (if it's an email-address)
-        if(isset($data['username']) && Mage::helper('magebridge/user')->isEmailAddress($data['username']) == true) {
-            $customer->loadByEmail(stripslashes($data['username']));
+        if(!empty($username) && Mage::helper('magebridge/user')->isEmailAddress($username) == true) {
+            $customer->loadByEmail(stripslashes($username));
 
         // Try to load it by email
-        } elseif(isset($data['email']) && !empty($data['email'])) {
-            $customer->loadByEmail(stripslashes($data['email']));
+        } elseif(!empty($email) && !empty($email)) {
+            $customer->loadByEmail(stripslashes($email));
         }
 
         return $customer;

@@ -23,6 +23,11 @@ require_once JPATH_SITE.'/components/com_magebridge/helpers/loader.php';
  */
 class plgUserMageBridge extends JPlugin
 {
+	/*
+	 * Temporary container for original user-data
+	 */
+	private $original_data = array();
+
     /**
      * Return a MageBridge configuration parameter
      * 
@@ -54,9 +59,10 @@ class plgUserMageBridge extends JPlugin
      * @param array $user
      * @param bool $success
      * @param string $msg
+	 *
      * @return null
      */
-    public function onUserAfterDelete($user, $succes, $msg = '')
+    public function onUserAfterDelete($user, $success, $msg = '')
     {
         MageBridgeModelDebug::getInstance()->notice( "onUserAfterDelete::userDelete on user ".$user['username'] );
 
@@ -69,6 +75,32 @@ class plgUserMageBridge extends JPlugin
         return null;
     }
 
+	/**
+	 * Event onUserBeforeSave
+	 *
+	 * @access public
+	 * @param array $oldUser
+	 * @param bool $isnew
+	 * @param array $newUser
+	 *
+	 * @return bool
+	 */
+	public function onUserBeforeSave($oldUser, $isnew, $newUser)
+	{
+		if(isset($oldUser['id']))
+		{
+			$id = $oldUser['id'];
+		}
+		else
+		{
+			$id = 0;
+		}
+
+		$this->original_data[$id] = array('email' => $oldUser['email']);
+
+		return true;
+	}
+
     /**
      * Event onUserAfterSave
      * 
@@ -77,12 +109,30 @@ class plgUserMageBridge extends JPlugin
      * @param bool $isnew
      * @param bool $success
      * @param string $msg
+	 *
      * @return bool
      */
     public function onUserAfterSave($user, $isnew, $success, $msg)
     {
+		if(isset($user['id']))
+		{
+			$id = $user['id'];
+		}
+		else
+		{
+			$id = 0;
+		}
+
+		if (isset($this->original_data[$id]))
+		{
+			$user['original_data'] = $this->original_data[$id];
+		}
+
         // Check if we can run this event or not
-        if (MageBridgePluginHelper::allowEvent('onUserAfterSave') == false) return;
+        if (MageBridgePluginHelper::allowEvent('onUserAfterSave') == false)
+		{
+			return false;
+		}
 
         // Get system variables
         $application = JFactory::getApplication();
