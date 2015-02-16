@@ -14,7 +14,7 @@
  */
 class Yireo_MageBridge_Model_Observer extends Mage_Core_Model_Abstract
 {
-    /*
+    /**
      * Method to list all current events
      *
      * @access public
@@ -57,7 +57,7 @@ class Yireo_MageBridge_Model_Observer extends Mage_Core_Model_Abstract
         );
     }
 
-    /*
+    /**
      * Method fired on the event <address_save_after>
      *
      * @access public
@@ -80,7 +80,7 @@ class Yireo_MageBridge_Model_Observer extends Mage_Core_Model_Abstract
         return $this;
     }
 
-    /*
+    /**
      * Method fired on the event <admin_session_user_login_success>
      *
      * @access public
@@ -103,7 +103,19 @@ class Yireo_MageBridge_Model_Observer extends Mage_Core_Model_Abstract
         return $this;
     }
 
-    /*
+	/**
+     * Method fired on the event <adminhtml_customer_save_before>
+     *
+     * @access public
+     * @param Varien_Event_Observer $observer
+     * @return Yireo_MageBridge_Model_Observer
+     */
+	public function adminhtmlCustomerSaveBefore($observer)
+	{
+		return $this;
+	}
+
+    /**
      * Method fired on the event <adminhtml_customer_save_after>
      *
      * @access public
@@ -140,7 +152,7 @@ class Yireo_MageBridge_Model_Observer extends Mage_Core_Model_Abstract
         return $this;
     }
 
-    /*
+    /**
      * Method fired on the event <adminhtml_customer_delete_after>
      *
      * @access public
@@ -166,7 +178,7 @@ class Yireo_MageBridge_Model_Observer extends Mage_Core_Model_Abstract
         return $this;
     }
 
-    /*
+    /**
      * Method fired on the event <catalog_product_is_salable_before>
      *
      * @access public
@@ -189,7 +201,7 @@ class Yireo_MageBridge_Model_Observer extends Mage_Core_Model_Abstract
         return $this;
     }
 
-    /*
+    /**
      * Method fired on the event <catalog_product_save_after>
      *
      * @access public
@@ -212,7 +224,7 @@ class Yireo_MageBridge_Model_Observer extends Mage_Core_Model_Abstract
         return $this;
     }
 
-    /*
+    /**
      * Method fired on the event <catalog_product_delete_after>
      *
      * @access public
@@ -235,7 +247,7 @@ class Yireo_MageBridge_Model_Observer extends Mage_Core_Model_Abstract
         return $this;
     }
 
-    /*
+    /**
      * Method fired on the event <catalog_category_save_after>
      *
      * @access public
@@ -258,7 +270,7 @@ class Yireo_MageBridge_Model_Observer extends Mage_Core_Model_Abstract
         return $this;
     }
 
-    /*
+    /**
      * Method fired on the event <catalog_category_delete_after>
      *
      * @access public
@@ -281,7 +293,7 @@ class Yireo_MageBridge_Model_Observer extends Mage_Core_Model_Abstract
         return $this;
     }
 
-    /*
+    /**
      * Method fired on the event <catalog_product_status_update>
      *
      * @access public
@@ -306,7 +318,7 @@ class Yireo_MageBridge_Model_Observer extends Mage_Core_Model_Abstract
         return $this;
     }
 
-    /*
+    /**
      * Method fired on the event <checkout_cart_add_product_complete>
      *
      * @access public
@@ -332,7 +344,7 @@ class Yireo_MageBridge_Model_Observer extends Mage_Core_Model_Abstract
         return $this;
     }
 
-    /*
+    /**
      * Method fired on the event <checkout_controller_onepage_save_shipping_method>
      *
      * @access public
@@ -358,7 +370,7 @@ class Yireo_MageBridge_Model_Observer extends Mage_Core_Model_Abstract
         return $this;
     }
 
-    /*
+    /**
      * Method fired on the event <checkout_onepage_controller_success_action>
      *
      * @access public
@@ -383,7 +395,7 @@ class Yireo_MageBridge_Model_Observer extends Mage_Core_Model_Abstract
         return $this;
     }
 
-    /*
+    /**
      * Method fired on the event <checkout_type_onepage_save_order_after>
      *
      * @access public
@@ -410,7 +422,7 @@ class Yireo_MageBridge_Model_Observer extends Mage_Core_Model_Abstract
         return $this;
     }
 
-    /*
+    /**
      * Method fired on the event <controller_action_predispatch>
      *
      * @access public
@@ -477,7 +489,7 @@ class Yireo_MageBridge_Model_Observer extends Mage_Core_Model_Abstract
         return $this;
     }
 
-    /*
+    /**
      * Method fired on the event <controller_action_layout_render_before>
      *
      * @access public
@@ -490,7 +502,7 @@ class Yireo_MageBridge_Model_Observer extends Mage_Core_Model_Abstract
         return $this;
     }
 
-    /*
+    /**
      * Method fired on the event <controller_action_layout_load_before>
      *
      * @access public
@@ -503,7 +515,7 @@ class Yireo_MageBridge_Model_Observer extends Mage_Core_Model_Abstract
         return $this;
     }
 
-    /*
+    /**
      * Method fired on the event <customer_delete_after>
      *
      * @access public
@@ -538,7 +550,7 @@ class Yireo_MageBridge_Model_Observer extends Mage_Core_Model_Abstract
         return $this;
     }
 
-    /*
+    /**
      * Method fired on the event <customer_login>
      *
      * @access public
@@ -575,7 +587,7 @@ class Yireo_MageBridge_Model_Observer extends Mage_Core_Model_Abstract
         return $this;
     }
 
-    /*
+    /**
      * Method fired on the event <customer_logout>
      *
      * @access public
@@ -610,7 +622,7 @@ class Yireo_MageBridge_Model_Observer extends Mage_Core_Model_Abstract
         return $this;
     }
 
-    /*
+    /**
      * Method fired on the event <customer_save_after>
      *
      * @access public
@@ -648,7 +660,19 @@ class Yireo_MageBridge_Model_Observer extends Mage_Core_Model_Abstract
         return $this;
     }
 
-    /*
+	/**
+	 * Method fired on the event <customer_save_before>
+	 *
+	 * @access public
+	 * @param Varien_Event_Observer $observer
+	 * @return Yireo_MageBridge_Model_Observer
+	 */
+	public function customerSaveBefore($observer)
+	{
+		return $this;
+	}
+
+    /**
      * Method fired on the event <joomla_on_after_delete_user>
      *
      * @access public
@@ -660,7 +684,7 @@ class Yireo_MageBridge_Model_Observer extends Mage_Core_Model_Abstract
         return $this;
     }
 
-    /*
+    /**
      * Method fired on the event <newsletter_subscriber_save_after>
      *
      * @access public
@@ -695,7 +719,7 @@ class Yireo_MageBridge_Model_Observer extends Mage_Core_Model_Abstract
         return $this;
     }
 
-    /*
+    /**
      * Method fired on the event <sales_convert_order_to_quote>
      *
      * @access public
@@ -722,7 +746,7 @@ class Yireo_MageBridge_Model_Observer extends Mage_Core_Model_Abstract
         return $this;
     }
 
-    /*
+    /**
      * Method fired on the event <sales_order_place_after>
      *
      * @access public
@@ -752,7 +776,7 @@ class Yireo_MageBridge_Model_Observer extends Mage_Core_Model_Abstract
         return $this;
     }
 
-    /*
+    /**
      * Method fired on the event <sales_order_save_after>
      *
      * @access public
@@ -797,7 +821,7 @@ class Yireo_MageBridge_Model_Observer extends Mage_Core_Model_Abstract
         return $this;
     }
 
-    /*
+    /**
      * Method that adds this event to the Joomla! bridge-reply
      *
      * @access public
@@ -823,7 +847,7 @@ class Yireo_MageBridge_Model_Observer extends Mage_Core_Model_Abstract
         return true;
     }
 
-    /*
+    /**
      * Method that forwards the event to Joomla! straight-away through RPC
      * 
      * @access public
@@ -867,7 +891,7 @@ class Yireo_MageBridge_Model_Observer extends Mage_Core_Model_Abstract
         return $rt;
     }
 
-    /* 
+    /**
      * Method to check if an event is enabled or not
      * 
      * @access public

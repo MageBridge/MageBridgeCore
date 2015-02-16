@@ -138,6 +138,15 @@
                     </magebridge_admin_session_user_login_success>
                 </observers>
             </admin_session_user_login_success>
+            <adminhtml_customer_save_before>
+                <observers>
+                    <magebridge_adminhtml_customer_save_before>
+                        <type>singleton</type>
+                        <class>Yireo_MageBridge_Model_Observer</class>
+                        <method>adminhtmlCustomerSaveBefore</method>
+                    </magebridge_adminhtml_customer_save_before>
+                </observers>
+            </adminhtml_customer_save_before>
             <adminhtml_customer_save_after>
                 <observers>
                     <magebridge_adminhtml_customer_save_after>
@@ -300,6 +309,15 @@
                     </magebridge_customer_logout>
                 </observers>
             </customer_logout>
+            <customer_save_before>
+                <observers>
+                    <magebridge_customer_save_before>
+                        <type>singleton</type>
+                        <class>Yireo_MageBridge_Model_Observer</class>
+                        <method>customerSaveBefore</method>
+                    </magebridge_customer_save_before>
+                </observers>
+            </customer_save_before>
             <customer_save_after>
                 <observers>
                     <magebridge_customer_save_after>

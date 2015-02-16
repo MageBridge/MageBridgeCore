@@ -62,8 +62,14 @@ class MageBridgeModelUser
         // Get system variables
         $db = JFactory::getDBO();
 
+		// Determine the email address
+		$email = $user['email'];
+		if(!empty($user['original_data']['email'])) {
+			$email = $user['original_data']['email'];
+		}
+
         // Try to fetch the user-record from the database
-        $query = 'SELECT `id` FROM #__users WHERE email=' . $db->quote($user['email']);
+        $query = 'SELECT `id` FROM #__users WHERE email=' . $db->quote(email);
         $db->setQuery( $query );
         $result = $db->loadResult();
 
@@ -546,9 +552,11 @@ class MageBridgeModelUser
 
     public function isValidEmail($email)
     {
-        if(JMailHelper::isEmailAddress($email)) {
+        if(JMailHelper::isEmailAddress($email))
+		{
             return true;
         }
+
         return false;
     }
 }

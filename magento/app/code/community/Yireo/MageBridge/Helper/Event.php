@@ -82,6 +82,7 @@ class Yireo_MageBridge_Helper_Event extends Mage_Core_Helper_Abstract
         $customerArray = array_merge(
             Mage::helper('magebridge/event')->cleanAssoc($customer->debug()), 
             Mage::helper('magebridge/event')->cleanAssoc(array(
+				'original_data' => $customer->getOrigData(),
                 'customer_id' => $customer->getId(),
                 'joomla_id' => $joomla_id,
                 'name' => $customer->getName(),
