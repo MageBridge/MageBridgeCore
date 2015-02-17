@@ -2,7 +2,7 @@
 <extension version="3.2" type="plugin" group="user">
 	<name>PLG_SYSTEM_MAGEBRIDGEFIRSTLAST</name>
 	<author>Jisse Reitsma</author>
-	<creationDate>January 2015</creationDate>
+	<creationDate>February 2015</creationDate>
 	<copyright>Copyright (C) 2015 Yireo.com. All rights reserved.</copyright>
 	<license>GNU General Public License version 3 or later</license>
 	<authorEmail>jisse@yireo.com</authorEmail>
