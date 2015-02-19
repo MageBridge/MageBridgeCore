@@ -255,15 +255,15 @@ class MageBridgeModelBridgeHeaders extends MageBridgeModelBridgeSegment
 
                     $css = '';
 
-                    if ( !empty($item) && strpos($item, "><!-->") !== false ) {
-                        $css .= $item . "\n";
+                    if ( !empty($item['if']) && strpos($item['if'], "><!-->") !== false ) {
+                        $css .= $item['if'] . "\n";
                     } elseif (!empty($item['if'])) {
                         $css .= '<!--[if '.$item['if'].' ]>'."\n";
                     }
 
                     $css .= '<link rel="stylesheet" href="'.$item['path'].'" type="text/css" '.$item['params'].'/>'."\n";
 
-                    if (!empty($item) && strpos($item, "><!-->") !== false) {
+                    if (!empty($item['if']) && strpos($item['if'], "><!-->") !== false) {
                         $css .= '<!--<![endif]-->' . "\n";
                     } elseif (!empty($item['if'])) {
                         $css .= '<![endif]-->'."\n";
