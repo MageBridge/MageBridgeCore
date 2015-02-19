@@ -151,7 +151,14 @@ class Yireo_MageBridge_Model_Core
                 $location = Mage::helper('magebridge/encryption')->base64_decode($match[2]);
             }
 
-            header('X-MageBridge-Location-Customer: '.$location);
+            $referer = null;
+            if(isset($_SERVER['HTTP_REFERER']) && !empty($_SERVER['HTTP_REFERER'])) {
+                $referer = $_SERVER['HTTP_REFERER'];
+            }
+
+            if(stristr($referer, '/checkout/') == false) {
+                header('X-MageBridge-Location-Customer: '.$location);
+            }
         }
 
         return true;
