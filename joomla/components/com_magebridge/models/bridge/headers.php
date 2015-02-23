@@ -439,6 +439,17 @@ class MageBridgeModelBridgeHeaders extends MageBridgeModelBridgeSegment
                         }
                     }
 
+                    // Detect jQuery and replace it
+                    if (preg_match('/jquery-([0-9]+)\.([0-9]+)\.([0-9]+)/', $item['path']) || 
+                        preg_match('/jquery.js$/', $item['path']) || 
+                        preg_match('/jquery.min.js$/', $item['path'])
+                        ) { 
+                        if (MagebridgeModelConfig::load('replace_jquery') == 1) {
+                            MageBridgeTemplateHelper::load('jquery');
+                            continue;
+                        }
+                    }
+
                     // Detect the translation script
                     if (strstr($item['name'], 'translate.js')) {
                         $translate = true;

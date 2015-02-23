@@ -109,6 +109,7 @@
 		    <field name="use_google_api" type="magebridge.boolean" />
 		    <field name="use_protoculous" type="magebridge.boolean" />
 		    <field name="use_protoaculous" type="magebridge.boolean" />
+		    <field name="replace_jquery" type="magebridge.boolean" />
 
 		    <field type="spacer" name="javascript_advanced" class="fieldgroup" />
 		    <field name="disable_js_footools" type="magebridge.boolean" />

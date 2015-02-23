@@ -88,12 +88,13 @@ class MagebridgeModelConfig extends YireoAbstractModel
             'disable_js_footools' => 0, // Disable FooTools
             'disable_js_frototype' => 0, // Disable Frototype
             'disable_js_jquery' => 0, // Disable jQuery
-            'disable_js_prototype' => 0, // Disable non-Magento ProtoType
+            'disable_js_prototype' => 0, // Disable Magento ProtoType
             'disable_js_custom' => '', // Custom list of JS files from Joomla!
             'disable_js_all' => 1, // Disable Joomla! JS
+            'replace_jquery' => 1, // Replace Magento jQuery with Joomla
             'merge_js' => 0,
             'use_google_api' => 0,
-            'use_protoaculous' => 1,
+            'use_protoaculous' => 0,
             'use_protoculous' => 0,
             'bridge_cookie_all' => 0,
             'bridge_cookie_custom' => '',
