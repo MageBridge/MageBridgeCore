@@ -122,6 +122,9 @@ class MagebridgeModelCheck extends YireoCommonModel
         $result = (MageBridgeModelConfig::load('modify_url') == 1) ? self::CHECK_OK : self::CHECK_WARNING;
         $this->addResult('bridge', 'Modify URLs', $result, JText::_('COM_MAGEBRIDGE_CHECK_BRIDGE_MODIFY_URL'));
 
+        $result = (MageBridgeModelConfig::load('disable_js_mootools') == 1) ? self::CHECK_OK : self::CHECK_WARNING;
+        $this->addResult('bridge', 'Disable MooTools', $result, JText::_('COM_MAGEBRIDGE_CHECK_BRIDGE_DISABLE_MOOTOOLS'));
+
         $result = (MageBridgeModelConfig::load('link_to_magento') == 0) ? self::CHECK_OK : self::CHECK_WARNING;
         $this->addResult('bridge', 'Link to Magento', $result, JText::_('COM_MAGEBRIDGE_CHECK_BRIDGE_LINK_TO_MAGENTO'));
 
