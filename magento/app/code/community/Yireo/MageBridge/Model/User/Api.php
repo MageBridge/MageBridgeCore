@@ -15,7 +15,7 @@
 class Yireo_MageBridge_Model_User_Api extends Mage_Api_Model_Resource_Abstract
 {
     /*
-     * API-method to save a customer to the database
+     * API-method to sync user-data to Magento
      *
      * @access public
      * @param array $options
@@ -36,6 +36,28 @@ class Yireo_MageBridge_Model_User_Api extends Mage_Api_Model_Resource_Abstract
 
         Mage::getSingleton('magebridge/debug')->trace('User data from Joomla!', $data);
 
+        // Save the customer
+        $rt = $this->saveCustomer($data);
+        Mage::getSingleton('magebridge/debug')->trace('Test 1');
+
+        // Save the backend-user 
+        if(isset($data['admin']) && (bool)$data['admin'] == true) {
+        Mage::getSingleton('magebridge/debug')->trace('Test 2');
+            $rt = $this->saveAdminUser($data);
+        }
+
+        return $rt;
+    }
+
+    /*
+     * API-method to save a customer to the database
+     *
+     * @access public
+     * @param array $data
+     * @return array
+     */
+    public function saveCustomer($data = array())
+    {
         try {
             // Initialize the session
             Mage::getSingleton('core/session', array('name'=>'frontend'));
@@ -43,16 +65,19 @@ class Yireo_MageBridge_Model_User_Api extends Mage_Api_Model_Resource_Abstract
 
             // Load the customer 
             $customer = Mage::getModel('magebridge/user')->load($data);
+            if(empty($customer)) {
+                return false;
+            }
 
             // Set new values
-            if(!$customer->getId() > 0) {
+            if($customer->getId() > 0 == false) {
                 $customer->setCreatedAt(strftime('%Y-%m-%d %H:%M:%S', time()));
-                if(isset($data['website_id'])) $customer->setWebsiteId($data['website_id']);
+                if(isset($data['website_id'])) $customer->setWebsiteId((int)$data['website_id']);
             }
 
             // Load the new data
             foreach($data as $name => $value) {
-                if(isset($name)) {
+                if(!empty($name)) {
 
                     // Skip fields that look like address-fields
                     if(preg_match('/^address_/', $name)) {
@@ -130,6 +155,73 @@ class Yireo_MageBridge_Model_User_Api extends Mage_Api_Model_Resource_Abstract
             } catch(Exception $e) {
                 Mage::getSingleton('magebridge/debug')->error('Failed to save customer address: '.$e->getMessage());
             }
+        }
+
+        return $data;
+    }
+
+    /*
+     * API-method to save an admin user to the database
+     *
+     * @access public
+     * @param array $data
+     * @return array
+     */
+    public function saveAdminUser($data = array())
+    {
+        try {
+            // Initialize the session
+            Mage::getSingleton('core/session', array('name'=>'frontend'));
+            $session = Mage::getSingleton('customer/session');
+
+            // Load the customer 
+            $user = Mage::getModel('magebridge/user')->loadAdminUser($data);
+
+            // Set new values
+            if(!$user->getId() > 0) {
+                $user->setCreatedAt(strftime('%Y-%m-%d %H:%M:%S', time()));
+            }
+
+            // Load the new data
+            foreach($data as $name => $value) {
+                if(!empty($name)) {
+                    $user->setData($name, $value);
+                }
+            }
+
+            // Support for MageBridge First Last plugin
+            if(!empty($data['magebridgefirstlast']['firstname'])) {
+                $user->setFirstname($data['magebridgefirstlast']['firstname']);
+            }
+            if(!empty($data['magebridgefirstlast']['lastname'])) {
+                $user->setLastname($data['magebridgefirstlast']['lastname']);
+            }
+
+            // Set required entries
+            if($user->getFirstname() == '') $user->setFirstname('-');
+            if($user->getLastname() == '') $user->setLastname('-');
+
+            // Try to save the user
+            if($user->save() == false) {
+                Mage::getSingleton('magebridge/debug')->error('Failed to save admin-user '.$user->getEmail());
+            }
+
+            // Decrypt and set the password 
+            if(isset($data['password_clear'])) {
+                $data['password_clear'] = trim($data['password_clear']);
+                if(!empty($data['password_clear'])) {
+                    $data['password_clear'] = Mage::helper('magebridge/encryption')->decrypt($data['password_clear']);
+                    $user->load($user->getId()); 
+                    $user->setPassword($data['password_clear']);
+                    $user->save();
+                }
+            }
+                    
+            // Get the current password-hash
+            $data['hash'] = $user->getPasswordHash();
+
+        } catch(Exception $e) {
+            Mage::getSingleton('magebridge/debug')->error('Failed to load admin-user: '.$e->getMessage());
         }
 
         return $data;

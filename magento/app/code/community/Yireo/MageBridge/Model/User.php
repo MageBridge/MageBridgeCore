@@ -32,7 +32,7 @@ class Yireo_MageBridge_Model_User
      */
     public function load($data)
     {
-        $this->loadCustomer($data);
+        return $this->loadCustomer($data);
     }
 
     /*
@@ -73,7 +73,7 @@ class Yireo_MageBridge_Model_User
             $customer->loadByEmail(stripslashes($username));
 
         // Try to load it by email
-        } elseif(!empty($email) && !empty($email)) {
+        } elseif(!empty($email)) {
             $customer->loadByEmail(stripslashes($email));
         }
 
@@ -99,12 +99,12 @@ class Yireo_MageBridge_Model_User
 		$username = (isset($data['username'])) ? $data['username'] : null;
 		$username = (isset($data['original_data']['username'])) ? $data['original_data']['username'] : $username;
 
-        // Try to load it by username (if it's an email-address)
-        if(!empty($username) && Mage::helper('magebridge/user')->isEmailAddress($username) == true) {
-            $user->loadByEmail(stripslashes($username));
+        // Try to load it by username
+        if(!empty($username)) {
+            $user->loadByUsername(stripslashes($username));
 
         // Try to load it by email
-        } elseif(!empty($email) && !empty($email)) {
+        } elseif(!empty($email)) {
             $user->loadByEmail(stripslashes($email));
         }
 
