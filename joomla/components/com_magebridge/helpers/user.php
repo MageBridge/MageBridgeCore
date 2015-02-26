@@ -67,12 +67,12 @@ class MageBridgeUserHelper
         {
             if($type == 'email')
             {
-                $user = MageBridgeModelUser::loadByEmail($user);
+                $user = MageBridge::getUser()->loadByEmail($user);
             }
 
             if($type == 'username')
             {
-                $user = MageBridgeModelUser::loadByUsername($user);
+                $user = MageBridge::getUser()->loadByUsername($user);
             }
         }
 
