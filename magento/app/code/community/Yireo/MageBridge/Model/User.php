@@ -32,6 +32,18 @@ class Yireo_MageBridge_Model_User
      */
     public function load($data)
     {
+        $this->loadCustomer($data);
+    }
+
+    /*
+     * Loads the current customer-record
+     *
+     * @access public
+     * @param array $data
+     * @return Mage_Customer_Model_Customer
+     */
+    public function loadCustomer($data)
+    {
         // Get a clean customer-object
         $customer = Mage::getModel('customer/customer');
         if(isset($data['website_id'])) $customer->setWebsiteId($data['website_id']);
@@ -66,6 +78,37 @@ class Yireo_MageBridge_Model_User
         }
 
         return $customer;
+    }
+
+    /*
+     * Loads the current admin-record
+     *
+     * @access public
+     * @param array $data
+     * @return Mage_Admin_Model_User
+     */
+    public function loadAdminUser($data)
+    {
+        // Get a clean customer-object
+        $user = Mage::getModel('admin/user');
+
+		// Determine the username and email
+		$email = (isset($data['email'])) ? $data['email'] : null;
+		$email = (isset($data['original_data']['email'])) ? $data['original_data']['email'] : $email;
+
+		$username = (isset($data['username'])) ? $data['username'] : null;
+		$username = (isset($data['original_data']['username'])) ? $data['original_data']['username'] : $username;
+
+        // Try to load it by username (if it's an email-address)
+        if(!empty($username) && Mage::helper('magebridge/user')->isEmailAddress($username) == true) {
+            $user->loadByEmail(stripslashes($username));
+
+        // Try to load it by email
+        } elseif(!empty($email) && !empty($email)) {
+            $user->loadByEmail(stripslashes($email));
+        }
+
+        return $user;
     }
 
     /*
