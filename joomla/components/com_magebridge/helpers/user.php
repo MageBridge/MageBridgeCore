@@ -38,12 +38,57 @@ class MageBridgeUserHelper
     /*
      * Helper-method to return the default Joomla! usergroup name
      *
+     * @deprecated
      * @param null
      * @return string
      */
     static public function getDefaultJoomlaGroup()
     {
         return null;
+    }
+
+    /*
+     * Helper-method to determine whether an user is a backend user
+     *
+     * @param mixed $user User object or identifier
+     * @param string $type Either object, email or username
+     * @return boolean
+     */
+    static public function isBackendUser($user = null, $type = 'object')
+    {
+        // Check for empty user
+        if (empty($user))
+        {
+            return false;
+        }
+
+        // Get the right instance
+        if ($user instanceof JUser == false)
+        {
+            if($type == 'email')
+            {
+                $user = MageBridgeModelUser::loadByEmail($user);
+            }
+
+            if($type == 'username')
+            {
+                $user = MageBridgeModelUser::loadByUsername($user);
+            }
+        }
+
+        // Check the legacy usertype parameter
+        if (!empty($user->usertype) && (stristr($user->usertype, 'administrator') || stristr($user->usertype, 'manager')))
+        {
+            return false;
+        }
+
+        // Check for ACL access
+        if (method_exists($user, 'authorise') && $user->authorise('core.admin'))
+        {
+            return true;
+        }
+
+        return false;
     }
 
     /*
@@ -135,10 +180,10 @@ class MageBridgeUserHelper
     }
 
     /*
-     * Helper-method to convert the name into a firstname and lastname
+     * Helper-method to convert user data into a valid user record
      *
-     * @param mixed $user
-     * @return bool
+     * @param mixed $user User data
+     * @return mixed $user
      */
     static public function convert($user)
     {
@@ -152,6 +197,7 @@ class MageBridgeUserHelper
                     unset($user[$name]);
                 }
             }
+
             $user = JArrayHelper::toObject($user);
         }
 
@@ -188,6 +234,7 @@ class MageBridgeUserHelper
         $user->username = trim($username);
         $user->firstname = trim($firstname);
         $user->lastname = trim($lastname);
+        $user->admin = (int)self::isBackendUser($username, 'username');
 
         // Return either an array or an object
         if ($rt == 'array') {
