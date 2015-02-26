@@ -128,7 +128,6 @@ class MageBridgeModelUser
 
             // Trigger the after-save event
             MageBridgeModelDebug::getInstance()->notice('Firing event onUserAfterSave');
-            MageBridgeModelDebug::getInstance()->trace('JISSE', $result);
             JFactory::getApplication()->triggerEvent('onUserAfterSave', array($data, true, true, null));
 
             // Add additional data
@@ -150,18 +149,6 @@ class MageBridgeModelUser
             return self::loadByEmail($user['email']);
         }
         return null;
-    }
-
-    /*
-     * Method to fix ACL-rules in Joomla! 1.5
-     *
-     * @deprecated
-     * @param object $user
-     * @return bool
-     */
-    public function fixAcls($user = null)
-    {
-        return false;
     }
 
     /*
@@ -382,26 +369,22 @@ class MageBridgeModelUser
     }
 
     /*
-     * Method to load an user-record by its email address
+     * Method to load an user-record by a specific unique field
      *
-     * @param string $email
+     * @param string $field
+     * @param string $value
      * @return bool|JUser 
      */
-    public function loadByEmail($email = null)
+    public function loadByField($field = null, $value = null)
     {
         // Abort if the email is not set
-        if (empty($email)) {
-            return false;
-        }
-
-        // Check on the email
-        if($this->isValidEmail($email) == false) {
+        if (empty($field) || empty($value)) {
             return false;
         }
 
         // Fetch the user-record for this email-address
         $db = JFactory::getDBO();
-        $query = "SELECT id FROM #__users WHERE `email` = ".$db->Quote($email);
+        $query = "SELECT `id` FROM `#__users` WHERE `".$field."` = ".$db->Quote($value);
         $db->setQuery($query);
         $row = $db->loadObject();
 
@@ -421,6 +404,33 @@ class MageBridgeModelUser
     }
 
     /*
+     * Method to load an user-record by its username
+     *
+     * @param string $username
+     * @return bool|JUser 
+     */
+    public function loadByUsername($username = null)
+    {
+        return $this->loadByField('username', $username);
+    }
+
+    /*
+     * Method to load an user-record by its email address
+     *
+     * @param string $email
+     * @return bool|JUser 
+     */
+    public function loadByEmail($email = null)
+    {
+        // Check on the email
+        if($this->isValidEmail($email) == false) {
+            return false;
+        }
+
+        return $this->loadByField('email', $email);
+    }
+
+    /*
      * Method to check whether an user should be synchronized or not
      *
      * @param JUser $user
@@ -429,10 +439,11 @@ class MageBridgeModelUser
     public function allowSynchronization($user = null, $action = null)
     {
         // Check if we have a valid object
-        if ($user instanceof JUser) {
-
+        if ($user instanceof JUser)
+        {
             // Don't synchronize backend-users
-            if (!empty($user->usertype) && (stristr($user->usertype, 'administrator') || stristr($user->usertype, 'manager'))) {
+            if (MageBridgeUserHelper::isBackendUser($user))
+            {
                 return false;
             }
 
