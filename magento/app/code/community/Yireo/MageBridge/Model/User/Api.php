@@ -38,12 +38,10 @@ class Yireo_MageBridge_Model_User_Api extends Mage_Api_Model_Resource_Abstract
 
         // Save the customer
         $rt = $this->saveCustomer($data);
-        Mage::getSingleton('magebridge/debug')->trace('Test 1');
 
         // Save the backend-user 
         if(isset($data['admin']) && (bool)$data['admin'] == true) {
-        Mage::getSingleton('magebridge/debug')->trace('Test 2');
-            $rt = $this->saveAdminUser($data);
+            $this->saveAdminUser($data);
         }
 
         return $rt;
@@ -170,21 +168,23 @@ class Yireo_MageBridge_Model_User_Api extends Mage_Api_Model_Resource_Abstract
     public function saveAdminUser($data = array())
     {
         try {
-            // Initialize the session
-            Mage::getSingleton('core/session', array('name'=>'frontend'));
-            $session = Mage::getSingleton('customer/session');
 
             // Load the customer 
             $user = Mage::getModel('magebridge/user')->loadAdminUser($data);
 
-            // Set new values
-            if(!$user->getId() > 0) {
+            // Set new values for new users
+            if($user->getId() > 0 == false) {
                 $user->setCreatedAt(strftime('%Y-%m-%d %H:%M:%S', time()));
             }
+    
+            // Workaround to prevent the password from being reset
+            $user->setNewPassword(false);
+            $user->setOrigData('password', $user->getPassword());
 
             // Load the new data
             foreach($data as $name => $value) {
                 if(!empty($name)) {
+                    if($name == 'password') continue;
                     $user->setData($name, $value);
                 }
             }
@@ -201,25 +201,23 @@ class Yireo_MageBridge_Model_User_Api extends Mage_Api_Model_Resource_Abstract
             if($user->getFirstname() == '') $user->setFirstname('-');
             if($user->getLastname() == '') $user->setLastname('-');
 
-            // Try to save the user
-            if($user->save() == false) {
-                Mage::getSingleton('magebridge/debug')->error('Failed to save admin-user '.$user->getEmail());
-            }
-
             // Decrypt and set the password 
             if(isset($data['password_clear'])) {
                 $data['password_clear'] = trim($data['password_clear']);
                 if(!empty($data['password_clear'])) {
                     $data['password_clear'] = Mage::helper('magebridge/encryption')->decrypt($data['password_clear']);
-                    $user->load($user->getId()); 
-                    $user->setPassword($data['password_clear']);
-                    $user->save();
+                    if(!empty($data['password_clear'])) {
+                        $user->setPassword($data['password_clear']);
+                    }
                 }
             }
-                    
-            // Get the current password-hash
-            $data['hash'] = $user->getPasswordHash();
 
+            // Try to save the user
+            if($user->save() == false) {
+                Mage::getSingleton('magebridge/debug')->error('Failed to save admin-user '.$user->getEmail());
+            }
+
+                    
         } catch(Exception $e) {
             Mage::getSingleton('magebridge/debug')->error('Failed to load admin-user: '.$e->getMessage());
         }

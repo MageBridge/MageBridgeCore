@@ -272,6 +272,8 @@ class Yireo_MageBridge_Model_User
      */
     private function doSSOLoginAdmin($username) 
     {
+        return null;
+
         Mage::app()->setCurrentStore(Mage::app()->getStore(Mage_Core_Model_App::ADMIN_STORE_ID));
         if(isset($_COOKIE['adminhtml'])) {
             Mage::getSingleton('adminhtml/session')->setSessionId($_COOKIE['adminhtml']);
@@ -423,6 +425,7 @@ class Yireo_MageBridge_Model_User
                 if (Mage::getSingleton('adminhtml/url')->useSecretKey()) {
                     Mage::getSingleton('adminhtml/url')->renewSecretUrls();
                 }
+
                 $session = Mage::getSingleton('admin/session');
                 $session->setIsFirstVisit(true);
                 $session->setUser($user);

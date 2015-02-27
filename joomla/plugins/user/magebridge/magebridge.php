@@ -201,15 +201,36 @@ class plgUserMageBridge extends JPlugin
         // Perform a login
         $this->getUser()->login($user['email']);
 
+        return true;
+    }
+
+    /**
+     * Event onUserAfterLogin
+     * 
+     * @access public
+     * @param array $options
+     * @return bool
+     */
+    public function onUserAfterLogin($options = array())
+    {
+        // Check if we can run this event or not
+        if (MageBridgePluginHelper::allowEvent('onUserLogin', $options) == false) {
+            return true;
+        }
+
         // Check whether SSO is enabled
         if ($this->getParam('enable_sso') == 1) {
 
+            $user = $options['user'];
+
             if ($application->isSite() && $this->getParam('enable_auth_frontend') == 1) {
                 MageBridgeModelUserSSO::doSSOLogin($user);
+
             } else if ($application->isAdmin() && $this->getParam('enable_auth_backend') == 1) {
                 MageBridgeModelUserSSO::doSSOLogin($user);
             }
         }
+
         return true;
     }
 
@@ -253,75 +274,33 @@ class plgUserMageBridge extends JPlugin
         $id = $register->add('logout', null, $arguments);
         $bridge->build();
 
-        // Check whether SSO is enabled
-        if ($this->getParam('enable_sso') == 1 && isset($user['username'])) {
-            if ($application->isSite() && $this->getParam('enable_auth_frontend') == 1) {
-                MageBridgeModelUserSSO::doSSOLogout($user['username']);
-            } else if ($application->isAdmin() && $this->getParam('enable_auth_backend') == 1) {
-                MageBridgeModelUserSSO::doSSOLogout($user['username']);
-            }
-        }
-
         return true;
     }
 
     /**
-     * Joomla! 1.5 alias
+     * Event onUserAfterLogout
      * 
      * @access public
-     * @param array $user
-     * @param bool $isnew
-     * @param bool $success
-     * @param string $msg
-     * @return null
+     * @param array $options
+     * @return bool
      */
-    public function onAfterStoreUser($user, $isnew, $success, $msg)
+    public function onUserAfterLogout($options = array())
     {
-        return $this->onUserAfterSave($user, $isnew, $success, $msg);
-    }
+        // Check if we can run this event or not
+        if (MageBridgePluginHelper::allowEvent('onUserLogout', $options) == false) {
+            return true;
+        }
 
-    /**
-     * Joomla! 1.5 alias
-     * 
-     * @access public
-     * @param array $user
-     * @param bool $isnew
-     * @param bool $success
-     * @param string $msg
-     * @return null
-     */
-    public function onAfterDeleteUser($user, $succes, $msg)
-    {
-        return $this->onUserAfterDelete($user, $succes, $msg);
-    }
+        // Check whether SSO is enabled
+        if ($this->getParam('enable_sso') == 1 && isset($options['username'])) {
+            if ($application->isSite() && $this->getParam('enable_auth_frontend') == 1) {
+                MageBridgeModelUserSSO::doSSOLogout($options['username']);
 
-    /**
-     * Joomla! 1.5 alias
-     * 
-     * @access public
-     * @param array $user
-     * @param bool $isnew
-     * @param bool $success
-     * @param string $msg
-     * @return null
-     */
-    public function onLoginUser($user, $options)
-    {
-        return $this->onUserLogin($user, $options);
-    }
+            } else if ($application->isAdmin() && $this->getParam('enable_auth_backend') == 1) {
+                MageBridgeModelUserSSO::doSSOLogout($options['username']);
+            }
+        }
 
-    /**
-     * Joomla! 1.5 alias
-     * 
-     * @access public
-     * @param array $user
-     * @param bool $isnew
-     * @param bool $success
-     * @param string $msg
-     * @return null
-     */
-    public function onLogoutUser($user)
-    {
-        return $this->onUserLogout($user);
+        return true;
     }
 }

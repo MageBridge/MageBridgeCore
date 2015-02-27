@@ -40,6 +40,7 @@ class MageBridgeModelUserSSO extends MageBridgeModelUser
         } else {
             $return = MageBridgeUrlHelper::current();
         }
+
         $session->set('magento_redirect', $return);
 
         // Determine the user-name
@@ -69,6 +70,7 @@ class MageBridgeModelUserSSO extends MageBridgeModelUser
         // Redirect the browser to Magento
         MageBridgeModelDebug::getInstance()->trace( "SSO: Sending arguments", $arguments );
         $application->redirect($url);
+
         return true;
     }
 
@@ -115,6 +117,8 @@ class MageBridgeModelUserSSO extends MageBridgeModelUser
         // Redirect the browser to Magento
         MageBridgeModelDebug::getInstance()->notice( "SSO: Logout of '$username' from ".$application_name);
         $application->redirect($url);
+
+        return true;
     }
 
     /*
