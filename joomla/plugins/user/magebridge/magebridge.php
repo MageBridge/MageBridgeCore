@@ -256,9 +256,9 @@ class plgUserMageBridge extends JPlugin
         $register = MageBridgeModelRegister::getInstance();
 
         // Remove the Magento cookies
-        $cookies = array('frontend', 'user_allowed_save_cookie', 'persistent_shopping_cart');
+        $cookies = array('frontend', 'user_allowed_save_cookie', 'persistent_shopping_cart', 'mb_postlogin');
         foreach($cookies as $cookie) {
-            if(isset($_COOKIE[$cookie])) unset($_COOKIE['frontend']);
+            if(isset($_COOKIE[$cookie])) unset($_COOKIE[$cookie]);
             setcookie($cookie, '', time()-1000);
             setcookie($cookie, '', time()-1000, '/');
             setcookie($cookie, '', time()-1000, '/', '.'.JURI::getInstance()->toString(array('host')));
@@ -270,9 +270,11 @@ class plgUserMageBridge extends JPlugin
         $session->set('magento_session', null);
 
         // Build the bridge and fetch the result
-        $arguments = array('disable_events' => 1);
-        $id = $register->add('logout', null, $arguments);
-        $bridge->build();
+        if ($this->getParam('link_to_magento') == 0) {
+            $arguments = array('disable_events' => 1);
+            $id = $register->add('logout', null, $arguments);
+            $bridge->build();
+        }
 
         return true;
     }
