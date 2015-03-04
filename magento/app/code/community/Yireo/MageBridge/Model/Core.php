@@ -83,6 +83,7 @@ class Yireo_MageBridge_Model_Core
         try {
             $session = Mage::getSingleton('core/session', array('name'=>'frontend'));
             $session->start();
+            Mage::getSingleton('magebridge/debug')->notice('Core session started: '.$session->getSessionId());
         } catch( Exception $e ) {
             Mage::getSingleton('magebridge/debug')->error('Unable to instantiate core/session: '.$e->getMessage());
             return false;
@@ -579,7 +580,8 @@ class Yireo_MageBridge_Model_Core
 
         // Correct the session
         $session = Mage::getSingleton('customer/session');
-        if(!$session->getId() > 0 && $session->getCustomerId() > 0) {
+        $sessionId = $session->getSessionId();
+        if(empty($sessionId) && $session->getCustomerId() > 0) {
             $customer = Mage::getModel('customer/customer')->load($session->getCustomerId());
             $session->setCustomer($customer);
         }
@@ -706,6 +708,7 @@ class Yireo_MageBridge_Model_Core
         // Construct extra data
         $store = Mage::app()->getStore($this->getStore());
         $data = array(
+            'session_id' => Mage::getModel('core/session')->getSessionId(),
             'catalog/seo/product_url_suffix' => $store->getConfig('catalog/seo/product_url_suffix'),
             'catalog/seo/category_url_suffix' => $store->getConfig('catalog/seo/category_url_suffix'),
             'admin/security/session_cookie_lifetime' => $store->getConfig('admin/security/session_cookie_lifetime'),
