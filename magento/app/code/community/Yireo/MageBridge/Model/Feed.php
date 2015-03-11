@@ -42,6 +42,7 @@ class Yireo_MageBridge_Model_Feed extends Mage_AdminNotification_Model_Feed
         }
 
         // Is the backend-user logged-in
+        Mage::getModel('admin/user');
         if (Mage::getSingleton('admin/session')->isLoggedIn() == false) {
             return false;
         }

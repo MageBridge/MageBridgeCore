@@ -138,6 +138,8 @@ class Yireo_MageBridge_Model_Core
             if(isset($_SERVER['HTTP_REFERER']) && !empty($_SERVER['HTTP_REFERER'])) {
                 if(strstr($this->getRequestUrl(), 'checkout/cart')) {
                     Mage::getSingleton('checkout/session')->setContinueShoppingUrl($_SERVER['HTTP_REFERER']);
+                } elseif(strstr($this->getRequestUrl(), 'firecheckout')) {
+                    Mage::getSingleton('checkout/session')->setContinueShoppingUrl($_SERVER['HTTP_REFERER']);
                 } elseif(strstr($this->getRequestUrl(), 'checkout/onepage/success')) {
                     Mage::getSingleton('customer/session')->setNextUrl($_SERVER['HTTP_REFERER']);
                 }
@@ -157,7 +159,7 @@ class Yireo_MageBridge_Model_Core
                 $referer = $_SERVER['HTTP_REFERER'];
             }
 
-            if(stristr($referer, '/checkout/') == false) {
+            if(stristr($referer, '/checkout/') == false && stristr($referer, 'firecheckout') == false) {
                 header('X-MageBridge-Location-Customer: '.$location);
             }
         }

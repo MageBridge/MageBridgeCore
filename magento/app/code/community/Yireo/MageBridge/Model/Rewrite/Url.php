@@ -105,6 +105,7 @@ class Yireo_MageBridge_Model_Rewrite_Url extends Mage_Core_Model_Url
 
         $pages = array(
             'checkout/',
+            'firecheckout/',
             'customer/',
             'wishlist/',
         );
