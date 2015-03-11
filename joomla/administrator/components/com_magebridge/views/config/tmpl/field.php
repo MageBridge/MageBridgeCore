@@ -14,7 +14,7 @@
 <?php else: ?>
 <?php
 $fieldDescription = JText::_('COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_'.$field->fieldname.'_DESC');
-$fieldTooltip = '<strong>'.$field->fieldname.'</strong><br/>'.$fieldDescription;
+$fieldTooltip = '['.$field->fieldname.'] '.$fieldDescription;
 $oldFieldLabel = $field->label;
 $fieldLabel = JText::_('COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_'.$field->fieldname);
 ?>

@@ -534,6 +534,8 @@ class MageBridgeModelUser
         // Do not fire the event when using the onepage-checkout
         if (MageBridgeTemplateHelper::isPage('checkout/onepage') == true && MageBridgeTemplateHelper::isPage('checkout/onepage/success') == false) {
             $throw_event = false;
+        } elseif (MageBridgeTemplateHelper::isPage('firecheckout') == true) {
+            $throw_event = false;
         }
 
         // Give a simple log-entry

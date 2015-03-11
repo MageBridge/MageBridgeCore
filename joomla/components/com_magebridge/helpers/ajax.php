@@ -41,7 +41,7 @@ class MageBridgeAjaxHelper
      */
     static public function getUrl($block)
     {
-        $url = 'index.php?option=com_magebridge&view=ajax&tmpl=component&block='.$block;
+        $url = JURI::root().'index.php?option=com_magebridge&view=ajax&tmpl=component&block='.$block;
         $request = MageBridgeUrlHelper::getRequest();
         if (!empty($request)) $url .= '&request='.$request;
         return $url;
