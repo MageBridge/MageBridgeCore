@@ -164,6 +164,9 @@ class Yireo_MageBridge_Model_Core
             }
         }
 
+        $session = Mage::getSingleton('checkout/session');
+        Mage::getSingleton('magebridge/debug')->notice('Quote: '.$session->getQuoteId());
+
         return true;
     }
 

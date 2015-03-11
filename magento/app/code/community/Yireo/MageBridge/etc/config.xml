@@ -88,6 +88,9 @@
                 <rewrite>
                     <customer>Yireo_MageBridge_Model_Rewrite_Customer</customer>
                 </rewrite>
+                <rewrite>
+                    <session>Yireo_MageBridge_Model_Rewrite_Customer_Session</session>
+                </rewrite>
             </customer>
 
             <adminhtml>
