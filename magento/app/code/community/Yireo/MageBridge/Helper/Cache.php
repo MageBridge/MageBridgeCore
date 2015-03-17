@@ -11,7 +11,7 @@
 
 class Yireo_MageBridge_Helper_Cache extends Mage_Core_Helper_Abstract
 {
-    /*
+    /**
      * Helper-method to check whether caching is enabled
      *
      * @access public
@@ -24,7 +24,7 @@ class Yireo_MageBridge_Helper_Cache extends Mage_Core_Helper_Abstract
         return (bool)Mage::getStoreConfig('magebridge/cache/caching');
     }
 
-    /*
+    /**
      * Helper-method to return an unique identifier for the current page
      *
      * @access public
@@ -45,7 +45,7 @@ class Yireo_MageBridge_Helper_Cache extends Mage_Core_Helper_Abstract
         return $id;
     }
 
-    /*
+    /**
      * Listen to the event core_block_abstract_to_html_before
      * 
      * @access public
