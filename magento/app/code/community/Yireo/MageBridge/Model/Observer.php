@@ -134,6 +134,12 @@ class Yireo_MageBridge_Model_Observer extends Mage_Core_Model_Abstract
             'customer' => Mage::helper('magebridge/event')->getCustomerArray($customer),
         );
 
+		// Check for syncing customer groups
+		if(Mage::helper('magebridge/user')->allowSyncCustomerGroup($customer->getGroupId()) == false) {
+			Mage::getSingleton('magebridge/debug')->trace('Customer group not allowed syncing', $customer->getGroupId());
+			return $this;
+		}
+
         // Set the current scope
         Mage::helper('magebridge')->setStore($customer->getStoreId());
 
@@ -167,6 +173,13 @@ class Yireo_MageBridge_Model_Observer extends Mage_Core_Model_Abstract
         }
 
         $customer = $observer->getEvent()->getCustomer();
+
+		// Check for syncing customer groups
+		if(Mage::helper('magebridge/user')->allowSyncCustomerGroup($customer->getGroupId()) == false) {
+			Mage::getSingleton('magebridge/debug')->trace('Customer group not allowed syncing', $customer->getGroupId());
+			return $this;
+		}
+
         $arguments = array(
             'customer' => Mage::helper('magebridge/event')->getCustomerArray($customer),
         );
@@ -538,6 +551,12 @@ class Yireo_MageBridge_Model_Observer extends Mage_Core_Model_Abstract
             $map->delete();
         }
 
+		// Check for syncing customer groups
+		if(Mage::helper('magebridge/user')->allowSyncCustomerGroup($customer->getGroupId()) == false) {
+			Mage::getSingleton('magebridge/debug')->trace('Customer group not allowed syncing', $customer->getGroupId());
+			return $this;
+		}
+
         // Build the API arguments
         $arguments = array(
             'customer' => Mage::helper('magebridge/event')->getCustomerArray($customer),
@@ -574,7 +593,14 @@ class Yireo_MageBridge_Model_Observer extends Mage_Core_Model_Abstract
             return $this;
         }
 
-        $customer = $observer->getEvent()->getCustomer();
+		$customer = $observer->getEvent()->getCustomer();
+
+		// Check for syncing customer groups
+		if(Mage::helper('magebridge/user')->allowSyncCustomerGroup($customer->getGroupId()) == false) {
+			Mage::getSingleton('magebridge/debug')->trace('Customer group not allowed syncing', $customer->getGroupId());
+			return $this;
+		}
+
         $arguments = array(
             'customer' => Mage::helper('magebridge/event')->getCustomerArray($customer),
         );
@@ -638,6 +664,13 @@ class Yireo_MageBridge_Model_Observer extends Mage_Core_Model_Abstract
 
         // Build the API arguments
         $customer = $observer->getEvent()->getCustomer();
+
+		// Check for syncing customer groups
+		if(Mage::helper('magebridge/user')->allowSyncCustomerGroup($customer->getGroupId()) == false) {
+			Mage::getSingleton('magebridge/debug')->trace('Customer group not allowed syncing', $customer->getGroupId());
+			return $this;
+		}
+
         $arguments = array(
             'customer' => Mage::helper('magebridge/event')->getCustomerArray($customer),
         );

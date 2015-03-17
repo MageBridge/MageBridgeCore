@@ -14,10 +14,9 @@
  */
 class Yireo_MageBridge_Helper_User extends Mage_Core_Helper_Abstract
 {
-    /*
+    /**
      * Load the data mapping the Magento customer to the Joomla! user (and vice versa)
      *
-     * @access public
      * @param mixed $select
      * @return array
      */
@@ -56,10 +55,9 @@ class Yireo_MageBridge_Helper_User extends Mage_Core_Helper_Abstract
         return null;
     }
 
-    /*
+    /**
      * Save the mapping between the Magento customer and the Joomla! user 
      *
-     * @access public
      * @param array $data
      * @return bool
      */
@@ -90,10 +88,9 @@ class Yireo_MageBridge_Helper_User extends Mage_Core_Helper_Abstract
         return true;
     }
 
-    /*
+    /**
      * Save the mapping between the Magento customer and the Joomla! user 
      *
-     * @access public
      * @param array $data
      * @return bool
      */
@@ -120,7 +117,6 @@ class Yireo_MageBridge_Helper_User extends Mage_Core_Helper_Abstract
     /*
      * Check whether a certain string is an email-address
      *
-     * @access public
      * @param string $string
      * @return bool
      */
@@ -131,4 +127,29 @@ class Yireo_MageBridge_Helper_User extends Mage_Core_Helper_Abstract
         }
         return false;
     }
+
+	/**
+     * Check whether a specific group ID can be synced to Joomla
+     *
+     * @param int $groupId
+     * @return bool
+     */
+	public function allowSyncCustomerGroup($groupId)
+	{
+		if(empty($groupId)) {
+			return true;
+		}
+
+		$syncCustomerGroups = Mage::getStoreConfig('magebridge/sync/customer_groups');
+		if(empty($syncCustomerGroups)) {
+			return true;
+		}
+
+		$syncCustomerGroups = explode(',', $syncCustomerGroups);
+		if(in_array($groupId, $syncCustomerGroups)) {
+			return true;
+		}
+
+		return false;
+	}
 }
