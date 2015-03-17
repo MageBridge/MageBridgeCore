@@ -535,6 +535,10 @@ class MageBridgeUrlHelper
      */ 
     static public function route($request = null, $xhtml = true, $arguments = array())
     {
+        if(preg_match('/^(http|https):\/\//', $request)) {
+            return $request;
+        }
+
         $link_to_magento = MagebridgeModelConfig::load('link_to_magento');
         if ($link_to_magento == 1) {
             $bridge = MageBridge::getBridge();
@@ -557,9 +561,7 @@ class MageBridgeUrlHelper
         }
 
         $url = 'index.php?option=com_magebridge&view=root&request='.$request;
-        //if(JRequest::getCmd('option') == 'com_magebridge') {
-            $url .= '&Itemid='.self::getItemId();
-        //}
+        $url .= '&Itemid='.self::getItemId();
 
         if(!empty($arguments)) {
             $url .= '&'.http_build_query($arguments);
