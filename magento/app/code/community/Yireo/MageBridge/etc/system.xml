@@ -21,72 +21,6 @@
             <show_in_website>1</show_in_website>
             <show_in_store>1</show_in_store>
             <groups>
-                <cache translate="label">
-                    <label>MageBridge Core - Caching</label>
-                    <frontend_type>text</frontend_type>
-                    <sort_order>3</sort_order>
-                    <show_in_default>1</show_in_default>
-                    <show_in_website>1</show_in_website>
-                    <show_in_store>1</show_in_store>
-                    <fields>
-                        <caching translate="label">
-                            <label>Caching</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <sort_order>1</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <comment><![CDATA[
-                                Extra block-caching capabilities per page per block<br/>
-                                <strong>WARNING</strong>: Make sure you have enough cache-space
-                            ]]></comment>
-                        </caching>
-                        <caching_gzip translate="label">
-                            <label>Cache compression</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <sort_order>2</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <comment><![CDATA[
-                                Compress cache-elements to save diskspace.<br/>
-                                <strong>WARNING</strong>: Do NOT use with APC or memcache
-                            ]]></comment>
-                        </caching_gzip>
-                    </fields>
-                </cache>
-                <debug translate="label">
-                    <label>MageBridge Core - Debugging</label>
-                    <frontend_type>text</frontend_type>
-                    <sort_order>2</sort_order>
-                    <show_in_default>1</show_in_default>
-                    <show_in_website>1</show_in_website>
-                    <show_in_store>1</show_in_store>
-                    <fields>
-                        <log translate="label">
-                            <label>Debug Log</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <sort_order>1</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <comment>Log debugging to MAGENTO/var/log/magebridge.log</comment>
-                        </log>
-                        <print translate="label">
-                            <label>Print errors</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <sort_order>2</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <comment>Print all errors on screen when debugging</comment>
-                        </print>
-                    </fields>
-                </debug>
                 <joomla translate="label">
                     <label>MageBridge Core - API</label>
                     <frontend_type>text</frontend_type>
@@ -180,10 +114,96 @@
                         </encryption_key>
                     </fields>
                 </joomla>
+                <cache translate="label">
+                    <label>MageBridge Core - Caching</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>2</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <caching translate="label">
+                            <label>Caching</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[
+                                Extra block-caching capabilities per page per block<br/>
+                                <strong>WARNING</strong>: Make sure you have enough cache-space
+                            ]]></comment>
+                        </caching>
+                        <caching_gzip translate="label">
+                            <label>Cache compression</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[
+                                Compress cache-elements to save diskspace.<br/>
+                                <strong>WARNING</strong>: Do NOT use with APC or memcache
+                            ]]></comment>
+                        </caching_gzip>
+                    </fields>
+                </cache>
+                <sync translate="label">
+                    <label>MageBridge Core - Synchronizing</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>3</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <customer_groups translate="label">
+                            <label>Customer Groups</label>
+                            <frontend_type>multiselect</frontend_type>
+                            <source_model>adminhtml/system_config_source_customer_group_multiselect</source_model>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Select customer groups to sync records for. None means all groups are synced.</comment>
+                        </customer_groups>
+                    </fields>
+                </sync>
+                <debug translate="label">
+                    <label>MageBridge Core - Debugging</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>4</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <log translate="label">
+                            <label>Debug Log</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Log debugging to MAGENTO/var/log/magebridge.log</comment>
+                        </log>
+                        <print translate="label">
+                            <label>Print errors</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Print all errors on screen when debugging</comment>
+                        </print>
+                    </fields>
+                </debug>
                 <settings translate="label">
                     <label>MageBridge Core - Other Options</label>
                     <frontend_type>text</frontend_type>
-                    <sort_order>4</sort_order>
+                    <sort_order>5</sort_order>
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
@@ -227,7 +247,7 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                             <comment><![CDATA[
-                                <strong>EXPERIMENTAL</strong>: This is for experts only
+                                <strong>EXPERIMENTAL</strong>: This is for experts only - and we don't even use it
                             ]]></comment>
                         </bridge_all>
                         <continue_shopping_to_previous translate="label">
