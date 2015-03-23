@@ -240,11 +240,13 @@ class plgSystemMageBridge extends JPlugin
      */
     public function onPrepareModuleList(&$modules)
     {
-        foreach ($modules as $id => $module) {
-            if (MageBridgeTemplateHelper::allowPosition($module->position) == false) {
-                unset($modules[$id]);
-                continue;
-            } 
+        if(!empty($modules) && is_array($modules)) {
+            foreach ($modules as $id => $module) {
+                if (MageBridgeTemplateHelper::allowPosition($module->position) == false) {
+                    unset($modules[$id]);
+                    continue;
+                } 
+            }
         }
     }
 

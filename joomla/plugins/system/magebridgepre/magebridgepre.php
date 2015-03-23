@@ -102,11 +102,13 @@ class plgSystemMageBridgePre extends JPlugin
         // Don't do anything if MageBridge is not enabled 
         if ($this->isEnabled() == false) return false;
 
-        foreach ($modules as $id => $module) {
-            if (MageBridgeTemplateHelper::allowPosition($module->position) == false) {
-                unset($modules[$id]);
-                continue;
-            } 
+        if (!empty($modules) && is_array($modules)) {
+            foreach ($modules as $id => $module) {
+                if (MageBridgeTemplateHelper::allowPosition($module->position) == false) {
+                    unset($modules[$id]);
+                    continue;
+                } 
+            }
         }
     }
 

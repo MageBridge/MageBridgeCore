@@ -148,6 +148,7 @@ class MageBridgeModelProxy
 
             // Fetch the data by using POST
             $raw = $this->getRemote($bridge->getMagentoBridgeUrl(), $data, MagebridgeModelConfig::load('method'), true);
+            $raw = trim($raw);
 
             // Decode the reply
             $decoded = $this->decode($raw);
