@@ -124,6 +124,9 @@ class MageBridge
     {
         // Fetch the meta-data from the bridge-request
         $data = $this->getMeta();
+        if(empty($data)) {
+            return;
+        }
 
         // Mask the POST
         if(!empty($data['post'])) {
