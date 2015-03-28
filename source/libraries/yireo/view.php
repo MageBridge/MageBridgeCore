@@ -129,14 +129,13 @@ class YireoCommonView extends YireoAbstractView
     /*
      * Helper-method to set the page title
      *
-     * @access protected
      * @subpackage Yireo
      * @param string $title
      * @return null
      */
-    protected function setMenu()
+    public function setMenu()
     {
-        $menuitems = YireoHelper::getData('menu');
+        $menuitems = YireoHelper::getData('menu', $this->_option);
         if (!empty($menuitems)) {
             foreach ($menuitems as $view => $title) {
             
@@ -150,7 +149,7 @@ class YireoCommonView extends YireoAbstractView
 
                 $titleLabel = strtoupper($this->_option).'_VIEW_'.strtoupper($title);
                 
-                if (is_dir(JPATH_COMPONENT.'/views/'.$view)) {
+                if (is_dir(JPATH_ADMINISTRATOR.'/components/'.$this->_option.'/views/'.$view)) {
 
                     if ($this->_view == $view && $this->jinput->getCmd('layout') == $layout) {
                         $active = true;
@@ -295,16 +294,19 @@ class YireoCommonView extends YireoAbstractView
 
         } else {
 
+            $template = $this->application->getTemplate();
+
             // Local layout
             $this->addNewTemplatePath(JPATH_SITE.'/components/'.$this->_option.'/views/'.$this->_view.'/tmpl', true);
             $this->addNewTemplatePath(JPATH_SITE.'/components/'.$this->_option.'/views/'.$this->_view.'/tmpl/'.$versionFolder, true);
 
             // Template override
-            $template = $this->application->getTemplate();
+            $this->addNewTemplatePath(JPATH_THEMES.'/'.$template.'/html/lib_yireo/'.$this->_view, true);
             $this->addNewTemplatePath(JPATH_THEMES.'/'.$template.'/html/'.$this->_option.'/'.$this->_view, true);
             $this->addNewTemplatePath(JPATH_THEMES.'/'.$template.'/html/'.$this->_option.'/'.$this->_view.'/'.$versionFolder, true);
 
             // Library defaults
+            $this->addNewTemplatePath(JPATH_THEMES.'/'.$template.'/html/lib_yireo/'.$this->_viewParent, true);
             $this->addNewTemplatePath(JPATH_LIBRARIES.'/yireo/view/'.$this->_viewParent.'/'.$versionFolder, false);
             $this->addNewTemplatePath(JPATH_LIBRARIES.'/yireo/view/'.$this->_viewParent, false);
             $this->addNewTemplatePath(JPATH_ADMINISTRATOR.'/components/'.$this->_option.'/lib/view/'.$this->_viewParent.'/'.$versionFolder, false);
@@ -928,5 +930,25 @@ class YireoView extends YireoCommonView
             $name = strtolower( $r[3] );
         }   
         return $name;
+    }
+
+    /*
+     * Add a layout to this view
+     *
+     * @access public
+     * @param string $name
+     * @param array $variables
+     * @return string
+     */
+    public function loadLayout($name = null, $variables = array())
+    {
+        // Skip for Joomla 2.5
+        if (YireoHelper::isJoomla25() == true) {
+            return false;
+        }
+
+        $basePath = null;
+        $layout = new JLayoutFile($name, $basePath);
+        echo $layout->render($variables);
     }
 }

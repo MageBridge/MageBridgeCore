@@ -56,6 +56,11 @@ class YireoViewForm extends YireoView
      */
     public function __construct()
     {
+        // Add the Yireo form fields
+        jimport('joomla.form.form');
+        JForm::addFieldPath(JPATH_LIBRARIES.'/yireo/form/fields');
+		JForm::addFieldPath(JPATH_COMPONENT_ADMINISTRATOR.'/fields');
+
         // Call the parent constructor
         $rt = parent::__construct();
 

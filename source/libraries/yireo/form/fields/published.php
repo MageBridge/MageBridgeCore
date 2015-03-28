@@ -18,12 +18,23 @@ include_once JPATH_LIBRARIES.'/joomla/form/fields/radio.php';
 /*
  * Form Field-class for showing a yes/no field
  */
-class JFormFieldPublished extends JFormFieldRadio
+class YireoFormFieldPublished extends JFormFieldRadio
 {
     /*
      * Form field type
      */
     public $type = 'Published';
+
+	public function setup(SimpleXMLElement $element, $value, $group = null)
+    {
+        $rt = parent::setup($element, $value, $group);
+
+        $this->element['label'] = 'JPUBLISHED';
+        $this->element['required'] = 1;
+        $this->required = 1;
+
+        return $rt;
+    }
 
     /*
      * Method to construct the HTML of this element
@@ -33,7 +44,18 @@ class JFormFieldPublished extends JFormFieldRadio
      */
 	protected function getInput()
 	{
-        $this->class = 'radio btn-group btn-group-yesno';
+        $classes = array(
+            'radio', 
+            'btn-group',
+            'btn-group-yesno'
+        );
+        
+        if (in_array($this->fieldname, array('published', 'enabled', 'state'))) {
+            $classes[] = 'jpublished';
+        }
+
+        $this->class = implode(' ', $classes);
+
         return parent::getInput();
     }
     

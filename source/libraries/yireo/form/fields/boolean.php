@@ -18,12 +18,22 @@ include_once JPATH_LIBRARIES.'/joomla/form/fields/radio.php';
 /*
  * Form Field-class for showing a yes/no field
  */
-class JFormFieldBoolean extends JFormFieldRadio
+class YireoFormFieldBoolean extends JFormFieldRadio
 {
     /*
      * Form field type
      */
     public $type = 'Boolean';
+
+	public function setup(SimpleXMLElement $element, $value, $group = null)
+    {
+        $rt = parent::setup($element, $value, $group);
+
+        $this->element['description'] = $this->element['label'].'_DESC';
+        $this->description = $this->element['label'].'_DESC';
+
+        return $rt;
+    }
 
     /*
      * Method to construct the HTML of this element
@@ -33,16 +43,28 @@ class JFormFieldBoolean extends JFormFieldRadio
      */
 	protected function getInput()
 	{
-        $this->class = 'radio btn-group btn-group-yesno';
+        $classes = array(
+            'radio', 
+            'btn-group',
+            'btn-group-yesno'
+        );
+        
+        if (in_array($this->fieldname, array('published', 'enabled', 'state'))) {
+            $classes[] = 'jpublished';
+        }
+
+        $this->class = implode(' ', $classes);
+
         return parent::getInput();
     }
     
 	protected function getOptions()
 	{
-        $options = array(
-            JHtml::_('select.option', '0', JText::_('JNO')),
-            JHtml::_('select.option', '1', JText::_('JYES')),
-        );
+        $options = parent::getOptions();
+
+        array_unshift($options, JHtml::_('select.option', '1', JText::_('JYES')));
+        array_unshift($options, JHtml::_('select.option', '0', JText::_('JNO')));
+
         return $options;
     }
 }

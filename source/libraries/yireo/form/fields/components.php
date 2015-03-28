@@ -19,7 +19,7 @@ jimport('joomla.form.formfield');
 /**
  * Form Field-class for selecting a component
  */
-class JFormFieldComponents extends JFormField
+class YireoFormFieldComponents extends JFormField
 {
     /*
      * Form field type

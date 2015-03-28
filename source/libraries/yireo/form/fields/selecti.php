@@ -18,7 +18,7 @@ require_once dirname(__FILE__).'/abstract.php';
 /*
  * Form Field-class for adding a select-box that is automatically filled with data
  */
-class JFormFieldSelecti extends YireoFormFieldAbstract
+class YireoFormFieldSelecti extends YireoFormFieldAbstract
 {
     /*
      * Form field type

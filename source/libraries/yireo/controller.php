@@ -61,13 +61,14 @@ class YireoCommonController extends YireoAbstractController
     public function __construct()
     {
         // Define variables
-        $this->_application = JFactory::getApplication();
-        $this->_jinput = $this->_application->input;
+        $this->_app = JFactory::getApplication();
+        $this->_application = $this->_app;
+        $this->_jinput = $this->_app->input;
 
         // Add extra model-paths
         $option = $this->_jinput->getCmd('option');
 
-        if ($this->_application->isSite())
+        if ($this->_app->isSite())
         {
             $this->addModelPath(JPATH_ADMINISTRATOR.'/components/'.$option.'/models');
             $this->addModelPath(JPATH_SITE.'/components/'.$option.'/models');
@@ -92,6 +93,34 @@ class YireoCommonController extends YireoAbstractController
  */
 class YireoController extends YireoCommonController
 {
+    /**
+     * Value of the current stable PHP 5.4 version
+     *
+     * @constant
+     */
+    const PHP_STABLE_54 = '5.4.36';
+
+    /**
+     * Value of the current stable PHP 5.5 version
+     *
+     * @constant
+     */
+    const PHP_STABLE_55 = '5.5.20';
+
+    /**
+     * Value of the current stable PHP 5.6 version
+     *
+     * @constant
+     */
+    const PHP_STABLE_56 = '5.6.4';
+
+    /**
+     * Value of the minimum supported PHP version
+     *
+     * @constant
+     */
+    const PHP_SUPPORTED_VERSION = '5.4.0';
+
     /**
      * Value of the default View to use
      *
@@ -168,15 +197,15 @@ class YireoController extends YireoCommonController
         $this->registerTask('change', 'edit');
 
         // Allow or disallow frontend editing
-        if ($this->_application->isSite() && in_array($this->_jinput->getCmd('task', 'display'), $this->_allow_tasks) == false) {
+        if ($this->_app->isSite() && in_array($this->_jinput->getCmd('task', 'display'), $this->_allow_tasks) == false) {
             JError::raiseError(500, JText::_('LIB_YIREO_CONTROLLER_ILLEGAL_REQUEST'));
         }
 
         // Check for ACLs in backend
-        if ($this->_application->isAdmin()) {
+        if ($this->_app->isAdmin()) {
             $user = JFactory::getUser();
             if($user->authorise('core.manage', $this->_jinput->getCmd('option')) == false) {
-                $this->_application->redirect('index.php', JText::_('LIB_YIREO_CONTROLLER_ILLEGAL_REQUEST'));
+                $this->_app->redirect('index.php', JText::_('LIB_YIREO_CONTROLLER_ILLEGAL_REQUEST'));
             }
         }
 
@@ -200,6 +229,11 @@ class YireoController extends YireoCommonController
         if (in_array($this->_jinput->get('format'), array('pdf', 'print'))) {
             $this->_jinput->set('layout', 'print');
         }
+
+        if ($this->_jinput->get('view') == 'home') {
+            $this->showPhpSupported();
+        }
+        
 
         parent::display($cachable, $urlparams);
     }
@@ -268,14 +302,38 @@ class YireoController extends YireoCommonController
         JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
 
         // Fetch the POST-data
-        if(empty($post)) $post = $this->_jinput->post->getArray();
+        if(empty($post)) {
+            $inputPost = $this->_jinput->post;
+            if(YireoHelper::compareJoomlaVersion('3.2.0', 'gt')) {
+                $post = $inputPost->getArray();
+            } else {
+                $post = $this->_app->input->getArray($_POST);
+            }
+        }
+
+        // Fetch the ID
         $post['id'] = $this->getId();
         $this->id = $post['id'] ;
 
         // Make sure fields that are configured as "raw" are loaded correspondingly
         if (!empty($this->_allow_raw)) {
             foreach ( $this->_allow_raw as $raw ) {
-                $post[$raw] = $this->_jinput->get($raw, '', 'post', 'string', JREQUEST_ALLOWRAW);
+                if(isset($post[$raw])) {
+                    if(YireoHelper::compareJoomlaVersion('3.2.0', 'gt')) {
+                        $post[$raw] = $this->_jinput->get($raw, '', 'raw');
+                    } else {
+                        $post[$raw] = $_POST[$raw];
+                    }
+                }
+
+                if(isset($post['item'][$raw])) {
+                    if(YireoHelper::compareJoomlaVersion('3.2.0', 'gt')) {
+                        $array = $this->_jinput->getArray(array('item' => array($raw => 'raw')));
+                        $post['item'][$raw] = $array['item'][$raw];
+                    } else {
+                        $post['item'][$raw] = $_POST['item'][$raw];
+                    }
+                }
             }
         }
 
@@ -875,7 +933,7 @@ class YireoController extends YireoCommonController
         }
 
         // Set the redirect, including messages if they are set
-        if ($this->_application->isSite()) $link = JRoute::_($link);
+        if ($this->_app->isSite()) $link = JRoute::_($link);
         $this->setRedirect($link, $this->msg, $this->msg_type);
         return true;
     }
@@ -933,5 +991,44 @@ class YireoController extends YireoCommonController
         $cid = $this->_jinput->get( 'cid', array(0), 'post', 'array' );
         JArrayHelper::toInteger($cid);
         return $cid;
+    }
+
+    /**
+     * Method to check whether the current PHP version is supported
+     *
+     * @access protected
+     * @subpackage Yireo
+     * @param null
+     * @return null
+     */
+    protected function showPhpSupported()
+    {
+        $phpversion = phpversion();
+        $phpmajor = explode('.', $phpversion);
+        $phpmajor = $phpmajor[0].'.'.$phpmajor[1];
+        if (version_compare($phpversion, self::PHP_SUPPORTED_VERSION, 'lt')) {
+            $message = JText::sprintf('LIB_YIREO_PHP_UNSUPPORTED', $phpversion, self::PHP_SUPPORTED_VERSION);
+            $this->_app->enqueueMessage($message, 'error');
+        }
+
+        if (version_compare($phpversion, '5.4', 'lt')) {
+            $message = JText::sprintf('LIB_YIREO_PHP54_UPGRADE_NOTICE', $phpversion, self::PHP_SUPPORTED_VERSION);
+            $this->_app->enqueueMessage($message, 'warning');
+        }
+
+        if ($phpmajor == '5.4' && version_compare($phpversion, self::PHP_STABLE_54, 'lt')) {
+            $message = JText::sprintf('LIB_YIREO_PHP_OUTDATED_NOTICE', $phpversion, self::PHP_STABLE_54);
+            $this->_app->enqueueMessage($message, 'warning');
+        }
+
+        if ($phpmajor == '5.5' && version_compare($phpversion, self::PHP_STABLE_55, 'lt')) {
+            $message = JText::sprintf('LIB_YIREO_PHP_OUTDATED_NOTICE', $phpversion, self::PHP_STABLE_55);
+            $this->_app->enqueueMessage($message, 'warning');
+        }
+
+        if ($phpmajor == '5.6' && version_compare($phpversion, self::PHP_STABLE_56, 'lt')) {
+            $message = JText::sprintf('LIB_YIREO_PHP_OUTDATED_NOTICE', $phpversion, self::PHP_STABLE_56);
+            $this->_app->enqueueMessage($message, 'warning');
+        }
     }
 }
