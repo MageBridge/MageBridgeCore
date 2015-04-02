@@ -4,10 +4,10 @@
     <author>Yireo</author>
     <authoremail>development@yireo.com</authoremail>
     <authorurl>http://www.yireo.com</authorurl>
-    <creationDate>March 2015</creationDate>
+    <creationDate>April 2015</creationDate>
     <copyright>Copyright (C) 2015 Yireo.com. All rights reserved.</copyright>
     <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
-    <version>1.9.5274</version>
+    <version>1.9.5285</version>
     <description>COM_MAGEBRIDGE_DESC</description>
 
     <!-- installation part -->
