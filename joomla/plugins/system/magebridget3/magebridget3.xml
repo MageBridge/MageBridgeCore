@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="2.5" type="plugin" group="system" method="upgrade">
+    <name>PLG_SYSTEM_MAGEBRIDGET3</name>
+    <author>Yireo</author>
+    <creationDate>March 2015</creationDate>
+    <copyright>Copyright (C) 2015 Yireo.com. All rights reserved.</copyright>
+    <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+    <authorEmail>info@yireo.com</authorEmail>
+    <authorUrl>www.yireo.com</authorUrl>
+    <version>1.9.5274</version>
+    <description>PLG_SYSTEM_MAGEBRIDGET3_DESC</description>
+
+    <files>
+        <filename plugin="magebridget3">magebridget3.php</filename>
+        <filename>index.html</filename>
+        <folder>fields</folder>
+    </files>
+    
+    <languages>
+        <language tag="en-GB">en-GB.plg_system_magebridget3.ini</language>
+        <language tag="en-GB">en-GB.plg_system_magebridget3.sys.ini</language>
+    </languages>
+
+    <config>
+        <fields name="params">
+            <fieldset name="basic" addpath="/plugins/system/magebridget3/elements">
+                <field name="layout_homepage" type="t3layout" default="full-width" label="PLG_SYSTEM_MAGEBRIDGET3_LAYOUT_HOMEPAGE" description="PLG_SYSTEM_MAGEBRIDGET3_LAYOUT_HOMEPAGE_DESC" />
+                <field name="layout_customer" type="t3layout" default="full-width" label="PLG_SYSTEM_MAGEBRIDGET3_LAYOUT_CUSTOMER" description="PLG_SYSTEM_MAGEBRIDGET3_LAYOUT_CUSTOMER_DESC" />
+                <field name="layout_product" type="t3layout" default="full-width" label="PLG_SYSTEM_MAGEBRIDGET3_LAYOUT_PRODUCT" description="PLG_SYSTEM_MAGEBRIDGET3_LAYOUT_PRODUCT_DESC" />
+                <field name="layout_category" type="t3layout" default="full-width" label="PLG_SYSTEM_MAGEBRIDGET3_LAYOUT_CATEGORY" description="PLG_SYSTEM_MAGEBRIDGET3_LAYOUT_CATEGORY_DESC" />
+                <field name="layout_cart" type="t3layout" default="full-width" label="PLG_SYSTEM_MAGEBRIDGET3_LAYOUT_CART" description="PLG_SYSTEM_MAGEBRIDGET3_LAYOUT_CART_DESC" />
+                <field name="layout_checkout" type="t3layout" default="full-width" label="PLG_SYSTEM_MAGEBRIDGET3_LAYOUT_CHECKOUT" description="PLG_SYSTEM_MAGEBRIDGET3_LAYOUT_CHECKOUT_DESC" />
+            </fieldset>
+        </fields>
+    </config>
+</extension>

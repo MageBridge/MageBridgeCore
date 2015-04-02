@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="2.5" type="plugin" group="system" method="upgrade">
+    <name>PLG_SYSTEM_MAGEBRIDGERT</name>
+    <author>Yireo</author>
+    <creationDate>March 2015</creationDate>
+    <copyright>Copyright (C) 2015 Yireo.com. All rights reserved.</copyright>
+    <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+    <authorEmail>info@yireo.com</authorEmail>
+    <authorUrl>www.yireo.com</authorUrl>
+    <version>1.9.5274</version>
+    <description>PLG_SYSTEM_MAGEBRIDGERT_DESC</description>
+
+    <files>
+        <filename plugin="magebridgert">magebridgert.php</filename>
+        <filename>index.html</filename>
+    </files>
+
+    <languages>
+        <language tag="en-GB">en-GB.plg_system_magebridgert.ini</language>
+        <language tag="en-GB">en-GB.plg_system_magebridgert.sys.ini</language>
+    </languages>
+
+    <config>
+        <fields name="params">
+            <fieldset name="basic">
+                <field name="fix_submenu_wrapper" type="radio" default="1" label="PLG_SYSTEM_MAGEBRIDGERT_FIX_SUBMENU_WRAPPER" description="PLG_SYSTEM_MAGEBRIDGERT_FIX_SUBMENU_WRAPPER_DESC">
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+                <field name="fix_body_zindex" type="radio" default="1" label="PLG_SYSTEM_MAGEBRIDGERT_FIX_BODY_ZINDEX" description="PLG_SYSTEM_MAGEBRIDGERT_FIX_BODY_ZINDEX_DESC">
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+            </fieldset>
+        </fields>
+    </config>
+</extension>

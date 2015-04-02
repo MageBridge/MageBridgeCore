@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="2.5" type="plugin" group="community">
+    <name>PLG_COMMUNITY_MAGEBRIDGE</name>
+    <author>Yireo</author>
+    <authorEmail>info@yireo.com</authorEmail>
+    <authorUrl>www.yireo.com</authorUrl>
+    <creationDate>March 2015</creationDate>
+    <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+    <copyright>Copyright (C) 2015 Yireo.com. All rights reserved.</copyright>
+    <version>1.9.5274</version>
+    <description>PLG_COMMUNITY_MAGEBRIDGE_DESC</description>
+    <isapplication>false</isapplication>
+
+    <!--
+    <languages>
+        <language tag="en-GB">en-GB.plg_community_magebridge.ini</language>
+    </languages>
+    -->
+
+    <files>
+        <filename plugin="magebridge">magebridge.php</filename>
+        <filename>index.html</filename>
+    </files>
+    
+    <config>
+        <fields name="params">
+            <fieldset name="basic">
+                <field name="enable_tab" type="list" default="1" label="PLG_COMMUNITY_MAGEBRIDGE_ENABLE_TAB" description="PLG_COMMUNITY_MAGEBRIDGE_ENABLE_TAB_DESC">
+                    <option value="0">No</option>
+                    <option value="1">Yes</option>
+                </field>
+                <field name="user_sync" type="list" default="1" label="PLG_COMMUNITY_MAGEBRIDGE_USER_SYNC" description="PLG_COMMUNITY_MAGEBRIDGE_USER_SYNC_DESC">
+                    <option value="0">No</option>
+                    <option value="1">Yes</option>
+                </field>
+                <field name="coreapp" type="list" default="0" label="PLG_COMMUNITY_MAGEBRIDGE_COREAPP" description="PLG_COMMUNITY_MAGEBRIDGE_COREAPP_DESC">
+                    <option value="0">No</option>
+                    <option value="1">Yes</option>
+                </field>
+                <field name="cache" type="list" default="1" label="PLG_COMMUNITY_MAGEBRIDGE_CACHE" description="PLG_COMMUNITY_MAGEBRIDGE_CACHE_DESC">
+                    <option value="1">Use Global</option>
+                    <option value="0">No</option>
+                </field>
+            </fieldset>
+        </fields>
+    </config>
+</extension>
