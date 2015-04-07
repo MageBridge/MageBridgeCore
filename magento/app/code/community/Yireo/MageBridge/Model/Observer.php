@@ -180,6 +180,13 @@ class Yireo_MageBridge_Model_Observer extends Mage_Core_Model_Abstract
 			return $this;
 		}
 
+        // Check for duplicate records and stop if there are any
+        $duplicateCustomers = Mage::helper('magebridge/user')->getCustomersByEmail($customer->getEmail());
+        if ($duplicateCustomers->getSize() > 1) {
+            Mage::getSingleton('magebridge/debug')->trace('Skipping user sync because of duplicate records', $customer->getEmail());
+            return $this;
+        }
+
         $arguments = array(
             'customer' => Mage::helper('magebridge/event')->getCustomerArray($customer),
         );
@@ -556,6 +563,13 @@ class Yireo_MageBridge_Model_Observer extends Mage_Core_Model_Abstract
 			Mage::getSingleton('magebridge/debug')->trace('Customer group not allowed syncing', $customer->getGroupId());
 			return $this;
 		}
+
+        // Check for duplicate records and stop if there are any
+        $duplicateCustomers = Mage::helper('magebridge/user')->getCustomersByEmail($customer->getEmail());
+        if ($duplicateCustomers->getSize() > 1) {
+            Mage::getSingleton('magebridge/debug')->trace('Skipping user sync because of duplicate records', $customer->getEmail());
+            return $this;
+        }
 
         // Build the API arguments
         $arguments = array(

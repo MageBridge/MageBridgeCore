@@ -152,4 +152,20 @@ class Yireo_MageBridge_Helper_User extends Mage_Core_Helper_Abstract
 
 		return false;
 	}
+
+    /**
+     * Method to return all customer records by a certain email (global scope)
+     *
+     * @param $email
+     *
+     * @return Mage_Customer_Model_Resource_Customer_Collection
+     */
+    public function getCustomersByEmail($email)
+    {
+        $customers = Mage::getModel('customer/customer')->getCollection()
+            ->addAttributeToFilter('email', $email)
+            ;
+
+        return $customers;
+    }
 }
