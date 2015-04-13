@@ -84,6 +84,45 @@ class YireoCommonController extends YireoAbstractController
         // Call the parent constructor
         parent::__construct();
     }
+
+    static public function getControllerInstance($option, $name)
+    {
+
+        // Check for a child controller
+        if (is_file(JPATH_COMPONENT . '/controllers/' . $name . '.php'))
+        {
+            require_once JPATH_COMPONENT . '/controllers/' . $name . '.php';
+
+            $controllerClass = ucfirst($option) . 'Controller' . ucfirst($name);
+
+            if (class_exists($controllerClass))
+            {
+                $controller = new $controllerClass;
+                return $controller;
+            }
+        }
+
+        return self::getDefaultControllerInstance($option, $name);
+    }
+
+    static public function getDefaultControllerInstance($option, $name)
+    {
+        // Require the base controller
+        if (is_file(JPATH_COMPONENT . '/controller.php'))
+        {
+            require_once JPATH_COMPONENT . '/controller.php';
+        }
+
+        $controllerClass = ucfirst($option) . 'Controller';
+
+        if (class_exists($controllerClass))
+        {
+            $controller = new $controllerClass;
+            return $controller;
+        }
+
+        throw new Exception(JText::_('LIB_YIREO_NO_CONTROLLER_FOUND'));
+    }
 }
 
 /**
