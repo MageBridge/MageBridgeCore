@@ -218,6 +218,7 @@ class MageBridgeModelProxy
 
                     // Output the raw content
                     header('Content-Encoding: none');
+                    header('Content-Length: '.strlen($raw));
                     print $raw;
 
                     MageBridgeModelDebug::getInstance()->warning( "Non-bridge output from Magento" );
@@ -891,7 +892,6 @@ class MageBridgeModelProxy
                         if (preg_match('/^Content/', $header)) header($header);
                         if (preg_match('/^ETag/', $header)) header($header);
                         if (preg_match('/^Last-Modified/', $header)) header($header);
-                        //if (preg_match('/^Set-Cookie/', $header)) header($header);
                     }
                 }
             }
