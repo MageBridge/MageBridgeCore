@@ -541,7 +541,7 @@ class Yireo_MageBridge_Model_Core
 
         // Start the buffer and fetch the output from Magento
         $body = Mage::app()->getResponse()->getBody();
-        if(!empty($body)) {
+        if($body == '') {
             $controller->getResponse()->clearBody();
             return true;
         }
