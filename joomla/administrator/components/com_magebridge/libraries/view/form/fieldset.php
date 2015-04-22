@@ -28,23 +28,23 @@ foreach($form->getFieldsets() as $fieldsetCode => $fieldsetObject) {
             <legend><?php echo $legend; ?></legend>
 
             <?php if(!empty($fieldsetObject->description)) : ?>
-                <div class="fieldset-description"><?php echo $fieldsetObject->description; ?></div>
+                <div class="fieldset-description"><?php echo JText::_($fieldsetObject->description); ?></div>
             <?php endif; ?>
 
             <?php foreach($form->getFieldset($fieldset) as $field): ?>
                 <?php $fieldType = strtolower((string)$field->type); ?>
                 <?php if($fieldset == 'editor' || in_array($fieldType, array('textarea', 'editor'))): ?>
-                    <div class="row-fluid">
-                        <div class="span12">
+                    <div class="row-fluid form-group">
+                        <div class="span12 col-md-12">
                             <?php echo $field->label; ?>
                             <?php echo $field->input; ?>
                         </div>
                     </div>
 
                 <?php else: ?>
-                    <div class="row-fluid">
-                        <div class="span4"><?php echo $field->label; ?></div>
-                        <div class="span8"><?php echo $field->input; ?></div>
+                    <div class="row-fluid form-group">
+                        <div class="span4 col-md-4"><?php echo $field->label; ?></div>
+                        <div class="span8 col-md-8"><?php echo $field->input; ?></div>
                     </div>
                 <?php endif; ?>
             <?php endforeach; ?>

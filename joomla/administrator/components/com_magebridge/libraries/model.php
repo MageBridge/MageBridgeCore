@@ -17,237 +17,6 @@ defined('_JEXEC') or die();
 require_once dirname(__FILE__).'/loader.php';
 
 /**
- * Yireo Abstract Model
- * Parent class to easily maintain backwards compatibility
- *
- * @package Yireo
- */
-if(YireoHelper::isJoomla25() || YireoHelper::isJoomla15()) {
-    jimport('joomla.application.component.model');
-    class YireoAbstractModel extends JModel {}
-} else {
-    class YireoAbstractModel extends JModelLegacy {}
-}
-
-/**
- * Yireo Model 
- * Parent class for models that need additional features without JTable functionality
- *
- * @package Yireo
- */
-class YireoCommonModel extends YireoAbstractModel
-{
-    /*
-     * Boolean to skip table-detection
-     *
-     * @protected int
-     */
-    protected $_skip_table = true;
-
-    /*
-     * Boolean to allow forms in the frontend
-     *
-     * @protected int
-     */
-    protected $_frontend_form = false;
-
-    /**
-     * Name of the XML-file containing the JForm definitions (if any)
-     *
-     * @protected int
-     */
-    protected $_form_name = null;
-
-    /**
-     * Database table object
-     *
-     * @protected string
-     */
-    protected $_tbl = null;
-
-    /**
-     * Database table-name
-     *
-     * @protected string
-     */
-    protected $_tbl_name = null;
-
-    /**
-     * Database table-alias
-     *
-     * @protected string
-     */
-    protected $_tbl_alias = null;
-
-    /**
-     * Database primary key
-     *
-     * @protected string
-     */
-    protected $_tbl_key = null;
-
-    /**
-     * Flag to automatically set the table class prefix
-     *
-     * @protected boolean
-     */
-    protected $_tbl_prefix_auto = false;
-
-    /**
-     * Unique id
-     *
-     * @protected int
-     */
-    protected $_id = null;
-
-    /**
-     * Data array
-     *
-     * @protected array
-     */
-    protected $_data = null;
-
-    /**
-     * Constructor
-     *
-     * @access public
-     * @subpackage Yireo
-     * @param string $tableAlias
-     * @return null
-     */
-    public function __construct($tableAlias = null)
-    {
-        // Import use full variables from JFactory
-        $this->application = JFactory::getApplication();
-        $this->user = JFactory::getUser();
-
-        // Create the option-namespace
-        $classParts = explode('Model', get_class($this));
-        $this->_view = (!empty($classParts[1])) ? strtolower($classParts[1]) : JRequest::getCmd('view');
-        $this->_option = $this->getOption();
-        $this->_option_id = $this->_option.'_'.$this->_view.'_';
-        if ($this->application->isSite()) $this->_option_id .= JRequest::getInt('Itemid').'_';
-
-        $this->_component = preg_replace('/^com_/', '', $this->_option);
-        $this->_component = preg_replace('/[^A-Z0-9_]/i', '', $this->_component);
-        $this->_component = str_replace(' ', '', ucwords(str_replace('_', ' ', $this->_component)));
-
-        // Call the parent constructor
-        $rt = parent::__construct();
-        return $rt;
-    }
-
-    /**
-     * Method to get data
-     *
-     * @access public
-     * @subpackage Yireo
-     * @param null
-     * @return array
-     */
-    public function getData($forceNew = false)
-    {
-        return array();
-    }
-
-    /**
-     * Method to get a XML-based form
-     *
-     * @access public
-     * @subpackage Yireo
-     * @param array $data
-     * @param bool $loadData
-     * @return mixed
-     */
-    public function getForm($data = array(), $loadData = true)
-    {
-        // Do not continue if this is not the right backend
-        if ($this->application->isAdmin() == false && $this->_frontend_form == false) {
-            return false;
-        }
-
-        // Do not continue if this is not a singular view
-        if (method_exists($this, 'isSingular') && $this->isSingular() == false) {
-            return false;
-        }
-
-        // Read the form from XML
-        $xmlFile = JPATH_ADMINISTRATOR.'/components/'.$this->_option.'/models/'.$this->_form_name.'.xml';
-        if (!file_exists($xmlFile)) {
-            $xmlFile = JPATH_SITE.'/components/'.$this->_option.'/models/'.$this->_form_name.'.xml';
-        }
-
-        if (!file_exists($xmlFile)) {
-            return false;
-        }
-
-        // Construct the form-object
-        jimport('joomla.form.form');
-        $form = JForm::getInstance('item', $xmlFile);
-        if (empty($form)) {
-            return false;
-        }
-
-        // Bind the data
-        $data = $this->getData();
-        $form->bind(array('item' => $data));
-
-        // Insert the params-data if set
-        if (!empty($data->params)) {
-            $params = $data->params;
-            if (is_string($params)) $params = YireoHelper::toRegistry($params)->toArray();
-            $form->bind(array('params' => $params));
-        }
-
-        return $form;
-    }
-
-    /* 
-     * Helper method to override the name of the form
-     */
-    public function setFormName($form_name)
-    {
-        $this->_form_name = $form_name;
-    }
-
-    /**
-     * Override the default method to allow for skipping table creation
-     *
-     * @access public
-     * @subpackage Yireo
-     * @param string $name
-     * @param string $prefix
-     * @param array $options
-     * @return mixed
-     */
-    public function getTable($name = '', $prefix = 'Table', $options = array())
-    {
-        if ($this->_skip_table == true) return null;
-        if (empty($name)) $name = $this->_tbl_alias;
-        if (!empty($this->_tbl_prefix)) $prefix = $this->_tbl_prefix;
-        return parent::getTable($name, $prefix, $options);
-    }
-
-    /**
-     * Method to determine the component-name
-     *
-     * @access protected
-     * @subpackage Yireo
-     * @param null
-     * @return string
-     */
-    protected function getOption()
-    {
-        $classParts = explode('Model', get_class($this));
-        $comPart = (!empty($classParts[0])) ? $classParts[0] : null;
-        $comPart = preg_replace('/([A-Z])/', '_\\1', $comPart);
-        $comPart = strtolower(preg_replace('/^_/', '', $comPart));
-        $option = (!empty($comPart) && $comPart != 'yireo') ? 'com_'.$comPart : JRequest::getCmd('option');
-        return $option;
-    }
-}
-
-/**
  * Yireo Model 
  * Parent class for models that use the full-blown MVC pattern
  *
@@ -368,6 +137,13 @@ class YireoModel extends YireoCommonModel
     protected $_extra = array();
 
     /**
+     * Extra select fields
+     *
+     * @protected array
+     */
+    protected $_extraFields = array();
+
+    /**
      * Order-by default-value
      *
      * @protected string
@@ -444,10 +220,10 @@ class YireoModel extends YireoCommonModel
 
         // Set the parameters for the frontend
         if (empty($this->params)) {
-            if ($this->application->isSite() == false) {
+            if ($this->app->isSite() == false) {
                 $this->params = JComponentHelper::getParams($this->_option);
             } else {
-                $this->params = $this->application->getParams($this->_option);
+                $this->params = $this->app->getParams($this->_option);
             }
         }
 
@@ -467,12 +243,12 @@ class YireoModel extends YireoCommonModel
         // Initialize the ID for single records
         if ($this->isSingular()) {
 
-            $cid = JRequest::getVar( 'cid', array(0), '', 'array' );
+            $cid = $this->jinput->get('cid', array(0), '', 'array');
             if (!empty($cid) && count($cid) > 0) {
                 $this->setId((int)$cid[0]);
             }
 
-            $id = JRequest::getInt( 'id', 0 );
+            $id = $this->jinput->getInt( 'id', 0 );
             if (!empty($id) && $id > 0) {
                 $this->setId((int)$id);
             }
@@ -536,7 +312,7 @@ class YireoModel extends YireoCommonModel
     public function initLimit($limit = null) 
     {
         if (is_numeric($limit) == false) {
-            $limit = $this->getFilter('list_limit', $this->application->getCfg('list_limit')); 
+            $limit = $this->getFilter('list_limit', $this->app->getCfg('list_limit')); 
         }
         $this->setState('limit', $limit);
     }
@@ -552,7 +328,7 @@ class YireoModel extends YireoCommonModel
     public function initLimitstart($limitstart = null) 
     {
         if (is_numeric($limitstart) == false) {
-            $limitstart = $this->application->getUserStateFromRequest($this->_option_id.'limitstart', 'limitstart', 0, 'int');
+            $limitstart = $this->app->getUserStateFromRequest($this->_option_id.'limitstart', 'limitstart', 0, 'int');
         }
         $this->setState('limitstart', $limitstart);
     }
@@ -572,7 +348,7 @@ class YireoModel extends YireoCommonModel
     {
         if ($this->_allow_filter == false) return null;
         if (empty($option)) $option = $this->_option_id;
-        $value = $this->application->getUserStateFromRequest( $option.'filter_'.$filter, 'filter_'.$filter, $default, $type );
+        $value = $this->app->getUserStateFromRequest( $option.'filter_'.$filter, 'filter_'.$filter, $default, $type );
         return $value;
     }
 
@@ -645,7 +421,7 @@ class YireoModel extends YireoCommonModel
 
                 // Check to see if the data is published
                 $stateField = $this->_tbl->getStateField();
-                if ($this->application->isSite() && isset($data->$stateField) && $data->$stateField == 0) {
+                if ($this->app->isSite() && isset($data->$stateField) && $data->$stateField == 0) {
                     JError::raiseError(404, JText::_('LIB_YIREO_MODEL_NOT_FOUND'));
                     return;
                 }
@@ -669,7 +445,7 @@ class YireoModel extends YireoCommonModel
                     foreach ($data as $index => $item) {
 
                         // Frontend permissions
-                        if ($this->application->isSite() && isset($item->access) && is_numeric($item->access)) {
+                        if ($this->app->isSite() && isset($item->access) && is_numeric($item->access)) {
                             $accessLevels = $this->user->getAuthorisedViewLevels();
                             if (YireoHelper::isJoomla25()) {
                                 if (!array_key_exists($item->access, $accessLevels) || $accessLevels[$item->access] == 0) {
@@ -685,22 +461,40 @@ class YireoModel extends YireoCommonModel
                         }
 
                         // Backend permissions
-                        if ($this->application->isAdmin() && (bool)$this->_tbl->hasAssetId() == true) {
+                        if ($this->app->isAdmin() && (bool)$this->_tbl->hasAssetId() == true) {
 
                             // Get the ID
                             $key = $this->getPrimaryKey();
                             $id = $item->$key;
 
-                            // Asset data
-                            $option = str_replace('com_', '#__', $this->_option);
-                            $view = JRequest::getCmd('view');
+                            // Determine the owner
+                            $owner = 0;
+                            if(!empty($item->created_by)) {
+                                $owner = (int)$item->created_by;
+                            } elseif(!empty($item->modified_by)) {
+                                $owner = (int)$item->modified_by;
+                            } elseif(!empty($item->owned_by)) {
+                                $owner = (int)$item->owned_by;
+                            }
 
-                            // Construct the ACL-data
-                            $action = ($id > 0) ? 'core.manage' : 'core.create';
-                            $itemAsset = ($id > 0) ? $option.'_'.$view.'.'.$id : $option;
+                            if($owner == 0) {
+                                $owner = $this->user->id;
+                            }
 
-                            // Check
-                            if ($this->user->authorise($action, $itemAsset) == false) {
+                            // Get the ACL rules
+                            $canEdit = $this->user->authorise('core.edit', $this->_option);
+                            $canEditOwn = $this->user->authorise('core.edit.own', $this->_option);
+
+                            // Determine authorisation
+                            $authorise = false;
+                            if($canEdit) {
+                                $authorise = true;
+                            } elseif($canEditOwn && $owner == $this->user->id) {
+                                $authorise = true;
+                            }
+
+                            // Authorise
+                            if ($authorise == false) {
                                 unset($data[$index]);
                                 continue;
                             }
@@ -723,7 +517,7 @@ class YireoModel extends YireoCommonModel
                         }
 
                         // Check for publish_up and publish_down
-                        if ($this->application->isSite()) {
+                        if ($this->app->isSite()) {
                             $publish_up = $item->params->get('publish_up');
                             $publish_down = $item->params->get('publish_down');
                             if (!empty($publish_up) && strtotime($publish_up) > time()) {
@@ -761,6 +555,11 @@ class YireoModel extends YireoCommonModel
                     if($this->_limit_query == false) $this->_total = count($data);
                     $this->_data = $data;
                 }
+            }
+
+            // Allow to modify the data afterwards
+            if (method_exists($this, 'onDataLoadAfter')) {
+                $data = $this->onDataLoadAfter($data);
             }
         }
 
@@ -824,7 +623,7 @@ class YireoModel extends YireoCommonModel
             // Reset pagination if it does not make sense
             if ($this->getState('limitstart') > $this->getTotal()) {
                 $this->setState('limitstart', 0);
-                $this->application->setUserState('limitstart', 0);
+                $this->app->setUserState('limitstart', 0);
                 $this->getData(self::FORCE_NEW);
             }
 
@@ -1197,9 +996,11 @@ class YireoModel extends YireoCommonModel
         $extra = $this->buildQueryExtra();
 
         // Get the LIMIT segments for the query
-        $limit = null;
+        $limitString = null;
         if ($this->_limit_query == true) {
-            $limit = ' LIMIT '.$this->getState('limitstart').','.($this->getState('limit'));
+            $limitstart = $this->getState('limitstart');
+            $limit = $this->getState('limit');
+            if(!(empty($limit) && empty($limitStart))) $limitString = ' LIMIT '.$limitstart.','.$limit;
         }
 
         // Build the default query if not set
@@ -1214,13 +1015,21 @@ class YireoModel extends YireoCommonModel
             $fields = $this->_tbl->getDatabaseFields();
             $fieldsStrings = array();
             foreach($fields as $field) {
-                if($this->application->isSite() && in_array($field, $skipFrontendFields)) continue;
+                if($this->app->isSite() && in_array($field, $skipFrontendFields)) continue;
                 $fieldsStrings[] = '`{tableAlias}`.`'.$field.'`';
             }
+
+            // Append extra fields
+            if (!empty($this->_extraFields)) {
+                foreach($this->_extraFields as $extraField) {
+                    $fieldsStrings[] = $extraField;
+                }
+            }
+
             $fieldsString = implode(',', $fieldsStrings);
 
             // Frontend or backend query
-            if ($this->_checkout == true && $this->application->isAdmin()) {
+            if ($this->_checkout == true && $this->app->isAdmin()) {
                 $query = "SELECT ".$fieldsString.", `editor`.`name` AS `editor` FROM `{table}` AS `{tableAlias}`\n";
                 $query .= " LEFT JOIN `#__users` AS `editor` ON `{tableAlias}`.`checked_out` = `editor`.`id`\n";
             } else {
@@ -1241,7 +1050,7 @@ class YireoModel extends YireoCommonModel
         }
 
         // Return the query including WHERE and ORDER BY and LIMIT
-        $query = $query . $extra . $where . $groupby . $orderby . $limit;
+        $query = $query . $extra . $where . $groupby . $orderby . $limitString;
         $query = str_replace( '{table}', $this->_tbl_name, $query );
         $query = str_replace( '{tableAlias}', $this->_tbl_alias, $query );
         $query = str_replace( '{primary}', $this->_tbl_key, $query );
@@ -1316,7 +1125,7 @@ class YireoModel extends YireoCommonModel
         }
 
         // Automatically add a WHERE-statement if only published items should appear on the frontend
-        if ($this->application->isSite()) {
+        if ($this->app->isSite()) {
             $stateField = $this->_tbl->getStateField();
             if (!empty($stateField)) $this->addWhere($this->_tbl_alias.'.'.$stateField.' = 1');
         }
@@ -1406,13 +1215,33 @@ class YireoModel extends YireoCommonModel
      *
      * @access protected
      * @subpackage Yireo
-     * @param string $where
+     *
+     * @param mixed $where WHERE statement in the form of an array ($name, $value) or string
+     * @param string $type Type of WHERE statement. Either "is" or "like".
+     *
      * @return null
      */
-    public function addWhere($where = null)
+    public function addWhere($where, $type = 'is')
     {
-        if ($this->_allow_filter == false) return null;
-        if (is_string($where) && !in_array($where, $this->_where)) {
+        if ($this->_allow_filter == false)
+        {
+            return null;
+        }
+
+        if (is_array($where))
+        {
+            if ($type == 'like')
+            {
+                $where = $this->db->quoteName($where[0]) . ' LIKE ' . $this->db->quote($where[1]);
+            }
+            else
+            {
+                $where = $this->db->quoteName($where[0]) . ' = ' . $this->db->quote($where[1]);
+            }
+        }
+
+        if (is_string($where) && !in_array($where, $this->_where))
+        {
             $this->_where[] = $where;
         }
     }

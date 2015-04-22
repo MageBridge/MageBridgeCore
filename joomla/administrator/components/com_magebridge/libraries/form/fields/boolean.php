@@ -13,36 +13,67 @@
 defined('JPATH_BASE') or die();
 
 // @bug: jimport() fails here
-include_once JPATH_LIBRARIES.'/joomla/form/fields/radio.php';
+include_once JPATH_LIBRARIES . '/joomla/form/fields/radio.php';
 
 /*
  * Form Field-class for showing a yes/no field
  */
-class JFormFieldBoolean extends JFormFieldRadio
-{
-    /*
-     * Form field type
-     */
-    public $type = 'Boolean';
 
-    /*
-     * Method to construct the HTML of this element
-     *
-     * @param null
-     * @return string
-     */
+class YireoFormFieldBoolean extends JFormFieldRadio
+{
+	/*
+	 * Form field type
+	 */
+	public $type = 'Boolean';
+
+	public function setup(SimpleXMLElement $element, $value, $group = null)
+	{
+		$rt = parent::setup($element, $value, $group);
+
+		$this->element['description'] = $this->element['label'] . '_DESC';
+		$this->description = $this->element['label'] . '_DESC';
+		$this->global = (isset($this->element['global'])) ? $this->element['global'] : 0;
+
+		return $rt;
+	}
+
+	/*
+	 * Method to construct the HTML of this element
+	 *
+	 * @param null
+	 * @return string
+	 */
 	protected function getInput()
 	{
-        $this->class = 'radio btn-group btn-group-yesno';
-        return parent::getInput();
-    }
-    
+		$classes = array(
+			'radio',
+			'btn-group',
+			'btn-group-yesno'
+		);
+
+		if (in_array($this->fieldname, array('published', 'enabled', 'state')))
+		{
+			$classes[] = 'jpublished';
+		}
+
+		$this->class = implode(' ', $classes);
+
+		return parent::getInput();
+	}
+
 	protected function getOptions()
 	{
-        $options = array(
-            JHtml::_('select.option', '0', JText::_('JNO')),
-            JHtml::_('select.option', '1', JText::_('JYES')),
-        );
-        return $options;
-    }
+		$options = parent::getOptions();
+
+		if ($this->global != 0)
+		{
+			array_unshift($options, JHtml::_('select.option', $this->global, JText::_('JGLOBAL')));
+		}
+
+		array_unshift($options, JHtml::_('select.option', '1', JText::_('JYES')));
+		array_unshift($options, JHtml::_('select.option', '0', JText::_('JNO')));
+
+
+		return $options;
+	}
 }

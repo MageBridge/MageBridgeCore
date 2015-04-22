@@ -24,7 +24,7 @@ require_once dirname(__FILE__).'/loader.php';
  *
  * @package Yireo
  */
-if(YireoHelper::isJoomla25() || YireoHelper::isJoomla15()) {
+if(YireoHelper::isJoomla25()) {
     jimport('joomla.application.component.view');
     class YireoAbstractView extends JView {}
 } else {
@@ -77,13 +77,14 @@ class YireoCommonView extends YireoAbstractView
         $this->document = JFactory::getDocument();
         $this->user = JFactory::getUser();
         $this->application = JFactory::getApplication();
+        $this->jinput = $this->application->input;
 
         // Create the namespace-variables
-        $this->_view = (!empty($config['name'])) ? $config['name'] : JRequest::getCmd('view', 'default');
-        $this->_option = (!empty($config['option'])) ? $config['option'] : JRequest::getCmd('option');
+        $this->_view = (!empty($config['name'])) ? $config['name'] : $this->jinput->getCmd('view', 'default');
+        $this->_option = (!empty($config['option'])) ? $config['option'] : $this->jinput->getCmd('option');
         $this->_name = $this->_view;
         $this->_option_id = $this->_option.'_'.$this->_view.'_';
-        if ($this->application->isSite()) $this->_option_id .= JRequest::getInt('Itemid').'_';
+        if ($this->application->isSite()) $this->_option_id .= $this->jinput->getInt('Itemid').'_';
 
         // Load additional language-files
         YireoHelper::loadLanguageFile();
@@ -105,7 +106,7 @@ class YireoCommonView extends YireoAbstractView
             if (!empty($views)) {
                 foreach ($views as $view => $view_title) {
                     if ($this->_view == $view) {
-                        $title = JText::_(JRequest::getCmd('option').'_VIEW_'.$view);
+                        $title = JText::_($this->jinput->getCmd('option').'_VIEW_'.$view);
                         break;
                     }
                 }
@@ -128,14 +129,13 @@ class YireoCommonView extends YireoAbstractView
     /*
      * Helper-method to set the page title
      *
-     * @access protected
      * @subpackage Yireo
      * @param string $title
      * @return null
      */
-    protected function setMenu()
+    public function setMenu()
     {
-        $menuitems = YireoHelper::getData('menu');
+        $menuitems = YireoHelper::getData('menu', $this->_option);
         if (!empty($menuitems)) {
             foreach ($menuitems as $view => $title) {
             
@@ -149,9 +149,9 @@ class YireoCommonView extends YireoAbstractView
 
                 $titleLabel = strtoupper($this->_option).'_VIEW_'.strtoupper($title);
                 
-                if (is_dir(JPATH_COMPONENT.'/views/'.$view)) {
+                if (is_dir(JPATH_ADMINISTRATOR.'/components/'.$this->_option.'/views/'.$view)) {
 
-                    if ($this->_view == $view && JRequest::getCmd('layout') == $layout) {
+                    if ($this->_view == $view && $this->jinput->getCmd('layout') == $layout) {
                         $active = true;
                     } else if ($this->_view == $view && empty($layout)) {
                         $active = true;
@@ -294,16 +294,19 @@ class YireoCommonView extends YireoAbstractView
 
         } else {
 
+            $template = $this->application->getTemplate();
+
             // Local layout
             $this->addNewTemplatePath(JPATH_SITE.'/components/'.$this->_option.'/views/'.$this->_view.'/tmpl', true);
             $this->addNewTemplatePath(JPATH_SITE.'/components/'.$this->_option.'/views/'.$this->_view.'/tmpl/'.$versionFolder, true);
 
             // Template override
-            $template = $this->application->getTemplate();
+            $this->addNewTemplatePath(JPATH_THEMES.'/'.$template.'/html/lib_yireo/'.$this->_view, true);
             $this->addNewTemplatePath(JPATH_THEMES.'/'.$template.'/html/'.$this->_option.'/'.$this->_view, true);
             $this->addNewTemplatePath(JPATH_THEMES.'/'.$template.'/html/'.$this->_option.'/'.$this->_view.'/'.$versionFolder, true);
 
             // Library defaults
+            $this->addNewTemplatePath(JPATH_THEMES.'/'.$template.'/html/lib_yireo/'.$this->_viewParent, true);
             $this->addNewTemplatePath(JPATH_LIBRARIES.'/yireo/view/'.$this->_viewParent.'/'.$versionFolder, false);
             $this->addNewTemplatePath(JPATH_LIBRARIES.'/yireo/view/'.$this->_viewParent, false);
             $this->addNewTemplatePath(JPATH_ADMINISTRATOR.'/components/'.$this->_option.'/lib/view/'.$this->_viewParent.'/'.$versionFolder, false);
@@ -623,7 +626,7 @@ class YireoView extends YireoCommonView
         $this->item->isNew = (isset($this->item->$primary_key) && $this->item->$primary_key < 1);
 
         // Override in case of copying
-        if (JRequest::getCmd('task') == 'copy') {
+        if ($this->jinput->getCmd('task') == 'copy') {
             $this->item->$primary_key = 0;
             $this->item->isNew = true;
         }
@@ -647,7 +650,7 @@ class YireoView extends YireoCommonView
             }
 
             // Clean data
-            if ($this->application->isAdmin() == false || (JRequest::getCmd('task') != 'edit' && $this->_viewParent != 'form')) {
+            if ($this->application->isAdmin() == false || ($this->jinput->getCmd('task') != 'edit' && $this->_viewParent != 'form')) {
                 if ($this->autoclean == true) {
                     JFilterOutput::objectHTMLSafe( $this->item, ENT_QUOTES, 'text' );
                     if (isset($this->item->title)) $this->item->title = htmlspecialchars($this->item->title);
@@ -780,12 +783,12 @@ class YireoView extends YireoCommonView
      */
     public function isEdit()
     {
-        $cid = JRequest::getVar( 'cid', array(0), '', 'array' );
+        $cid = $this->jinput->get('cid', array(0), '', 'array');
         if (!empty($cid) && $cid > 0) {
             return true;
         }
 
-        $id = JRequest::getInt('id');
+        $id = $this->jinput->getInt('id');
         if (!empty($id) && $id > 0) {
             return true;
         }
@@ -809,7 +812,7 @@ class YireoView extends YireoCommonView
 
         if (empty($model)) {
             jimport('joomla.application.component.model');
-            if (YireoHelper::isJoomla25() || YireoHelper::isJoomla15()) {
+            if (YireoHelper::isJoomla25()) {
                 JModel::addIncludePath(JPATH_ADMINISTRATOR.'/components/'.$this->_option.'/models');
             } else {
                 JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR.'/components/'.$this->_option.'/models');
@@ -819,7 +822,7 @@ class YireoView extends YireoCommonView
             $classPrefix = preg_replace('/[^A-Z0-9_]/i', '', $classPrefix);
             $classPrefix = str_replace(' ', '', ucwords(str_replace('_', ' ', $classPrefix)));
 
-            if (YireoHelper::isJoomla25() || YireoHelper::isJoomla15()) {
+            if (YireoHelper::isJoomla25()) {
                 $model = JModel::getInstance($name, $classPrefix, array());
             } else {
                 $model = JModelLegacy::getInstance($name, $classPrefix, array());
@@ -927,5 +930,25 @@ class YireoView extends YireoCommonView
             $name = strtolower( $r[3] );
         }   
         return $name;
+    }
+
+    /*
+     * Add a layout to this view
+     *
+     * @access public
+     * @param string $name
+     * @param array $variables
+     * @return string
+     */
+    public function loadLayout($name = null, $variables = array())
+    {
+        // Skip for Joomla 2.5
+        if (YireoHelper::isJoomla25() == true) {
+            return false;
+        }
+
+        $basePath = null;
+        $layout = new JLayoutFile($name, $basePath);
+        echo $layout->render($variables);
     }
 }

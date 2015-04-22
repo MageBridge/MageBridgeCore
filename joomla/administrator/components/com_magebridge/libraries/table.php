@@ -76,7 +76,7 @@ class YireoTable extends JTable
     public function __construct($table_name, $primary_key, $db) 
     {
         // Determine the table name
-        $table_namespace = preg_replace( '/^com_/', '', JRequest::getCmd('option'));
+        $table_namespace = preg_replace( '/^com_/', '', JFactory::getApplication()->input->getCmd('option'));
         if (!empty($table_name)) {
             if (!strstr($table_name, '#__')) {
                 $table_name = $table_namespace.'_'.$table_name;

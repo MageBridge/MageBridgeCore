@@ -12,7 +12,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 ?>
-<div class="well">
+<div class="well details">
     <p> 
     <i class="fa fa-twitter-square fa-lg"></i> <?php echo JText::_('LIB_YIREO_VIEW_HOME_TWITTER'); ?>: <a href="http://twitter.com/yireo">@yireo</a><br/>
     <i class="fa fa-facebook-square fa-lg"></i> <?php echo JText::_('LIB_YIREO_VIEW_HOME_FACEBOOK'); ?>: <a href="http://www.facebook.com/yireo">facebook.com/yireo</a><br/>
