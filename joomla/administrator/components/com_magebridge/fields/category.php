@@ -4,7 +4,7 @@
  *
  * @author Yireo (info@yireo.com)
  * @package MageBridge
- * @copyright Copyright 2014
+ * @copyright Copyright 2011
  * @license GNU Public License
  * @link http://www.yireo.com
  */
@@ -13,7 +13,7 @@
 defined('JPATH_BASE') or die();
 
 // Import the MageBridge autoloader
-require_once JPATH_SITE.'/components/com_magebridge/helpers/loader.php';
+require_once JPATH_SITE.DS.'components'.DS.'com_magebridge'.DS.'helpers'.DS.'loader.php';
 
 /*
  * Form Field-class for choosing a specific Magento category in a modal box
@@ -23,7 +23,7 @@ class MagebridgeFormFieldCategory extends MagebridgeFormFieldAbstract
     /*
      * Form field type
      */
-    public $type = 'Magento Category';
+    public $type = 'MageBridge Category';
 
     /*
      * Method to get the HTML of this element
@@ -37,10 +37,10 @@ class MagebridgeFormFieldCategory extends MagebridgeFormFieldAbstract
         $value = $this->value;
 
         // Are the API widgets enabled?
-        if (MagebridgeModelConfig::load('api_widgets') == true) {
+        if(MagebridgeModelConfig::load('api_widgets') == true) {
 
             // Load the javascript
-            JHTML::script('media/com_magebridge/js/backend-elements.js');
+            JHTML::script('backend-elements.js', 'media/com_magebridge/js/');
 	    	JHTML::_('behavior.modal', 'a.modal');
     
             $returnType = (string)$this->element['return'];
@@ -55,7 +55,7 @@ class MagebridgeFormFieldCategory extends MagebridgeFormFieldAbstract
             $html .= '<input type="text" id="'.$name.'" name="'.$name.'" value="'.$title.'" />';
             $html .= '</div>';
 		    $html .= '<div class="button2-left"><div class="blank">';
-            $html .= '<a class="modal btn" title="'.JText::_('Select an Category').'"  href="'.$link.'" rel="{handler: \'iframe\', size: {x:750, y:475}}">'.JText::_('Select').'</a>';
+            $html .= '<a class="modal" title="'.JText::_('Select an Category').'"  href="'.$link.'" rel="{handler: \'iframe\', size: {x:750, y:475}}">'.JText::_('Select').'</a>';
             $html .= '</div></div>'."\n";
 
             return $html;
