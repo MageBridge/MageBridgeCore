@@ -164,8 +164,8 @@ class Yireo_MageBridge_Model_Core
             }
         }
 
-        $session = Mage::getSingleton('checkout/session');
-        Mage::getSingleton('magebridge/debug')->notice('Quote: '.$session->getQuoteId());
+        //$session = Mage::getSingleton('checkout/session');
+        //Mage::getSingleton('magebridge/debug')->notice('Quote: '.$session->getQuoteId());
 
         return true;
     }
@@ -541,7 +541,7 @@ class Yireo_MageBridge_Model_Core
 
         // Start the buffer and fetch the output from Magento
         $body = Mage::app()->getResponse()->getBody();
-        if($body == '') {
+        if($body != '') {
             $controller->getResponse()->clearBody();
             return true;
         }
