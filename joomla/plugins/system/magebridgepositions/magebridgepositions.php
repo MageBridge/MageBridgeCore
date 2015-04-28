@@ -123,7 +123,6 @@ class plgSystemMageBridgePositions extends JPlugin
             $module = null;
             return;
         }
-        print_r($module->position);
     }
 
     private function allowPosition($position)
