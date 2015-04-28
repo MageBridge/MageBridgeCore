@@ -38,7 +38,6 @@
         <folder>helpers</folder>
         <folder>libraries</folder>
         <folder>models</folder>
-        <folder>rewrite</folder>
         <folder>sef_ext</folder>
         <folder>views</folder>
     </files>

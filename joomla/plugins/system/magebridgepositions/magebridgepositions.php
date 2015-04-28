@@ -93,7 +93,7 @@ class plgSystemMageBridgePositions extends JPlugin
 	/*
 	 * Event onPrepareModuleList (used by Advanced Module Manager)
 	 */
-	/*public function onPrepareModuleList(&$modules)
+	public function onPrepareModuleList(&$modules)
 	{
 		// Don't do anything if MageBridge is not enabled
 		if ($this->isEnabled() == false)
@@ -114,8 +114,17 @@ class plgSystemMageBridgePositions extends JPlugin
 
     		$modules = array_values($modules);
 		}
-	}
-    */
+    }
+
+    public function onRenderModule(&$module, &$attribs)
+    {
+		if ($this->allowPosition($module->position) == false)
+        {
+            $module = null;
+            return;
+        }
+        print_r($module->position);
+    }
 
     private function allowPosition($position)
     {
@@ -137,11 +146,14 @@ class plgSystemMageBridgePositions extends JPlugin
         } else if (MageBridgeTemplateHelper::isCheckoutPage()) {
             $setting = 'flush_positions_checkout';
         } else {
-            $setting = '';
+            $setting = null;
         }
     
         // If the page-check returns empty, default to true
-        if (empty($setting)) return true;
+        if (empty($setting))
+        {
+            return true;
+        }
 
         // Check for flushing of positions within the MageBridge configuration
         $array = explode(',', $this->params->get($setting));

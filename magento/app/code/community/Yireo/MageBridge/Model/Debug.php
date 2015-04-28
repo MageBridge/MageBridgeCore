@@ -224,7 +224,10 @@ class Yireo_MageBridge_Model_Debug
      */
     public function warning($message = null, $time = null)
     {
-        header('Warning: 199 '.$message);  
+        if (!headers_sent()) {
+            header('Warning: 199 '.$message);
+        }
+
         $this->add($message, MAGEBRIDGE_DEBUG_WARNING, $time);
     }
 
@@ -238,7 +241,10 @@ class Yireo_MageBridge_Model_Debug
      */
     public function error($message = null, $time = null)
     {
-        header('Warning: 199 '.$message);  
+        if (!headers_sent()) {
+            header('Warning: 199 '.$message);  
+        }
+
         $this->add($message, MAGEBRIDGE_DEBUG_ERROR, $time);
     }
 

@@ -536,6 +536,13 @@ class MageBridgeUrlHelper
     static public function route($request = null, $xhtml = true, $arguments = array())
     {
         if(preg_match('/^(http|https):\/\//', $request)) {
+
+            // Try to strip domain part
+            $url = JURI::base();
+            $request = str_replace($url, '', $request);
+            $request = str_replace(str_replace('https://', 'http://', $url), '', $request);
+            $request = str_replace(str_replace('http://', 'https://', $url), '', $request);
+
             return $request;
         }
 

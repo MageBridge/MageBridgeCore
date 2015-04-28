@@ -135,9 +135,11 @@ foreach ($this->data as $package) {
         ?>
         <td class="<?php echo implode(' ', $class); ?>">
             <?php if($package['available'] == 1) : ?>
-            <?php echo ($package['version']) ? '<a href="'.$upgrade_url.'">'.$package['version'].'</a>' :  '&nbsp;'; ?>
+            <?php echo ($package['version']) ? '<a href="'.$upgrade_url.'">'.$package['version'].'</a>' :  JText::_('n/a'); ?>
             <?php elseif(!empty($package['purchase_url'])): ?>
             <?php echo '<a target="_new" href="'.$package['purchase_url'].'">'.JText::_('Buy now').'</a>'; ?>
+            <?php else: ?>
+            <?php echo JText::_('n/a'); ?>
             <?php endif; ?>
         </td>
     </tr>
