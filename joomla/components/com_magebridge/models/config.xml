@@ -117,14 +117,6 @@
         </fieldset>
 
         <fieldset name="theming" label="COM_MAGEBRIDGE_MODEL_CONFIG_FIELDSET_THEMING">
-		    <field type="spacer" name="flush_positions" class="fieldgroup" />
-		    <field name="flush_positions_home" type="text" />
-		    <field name="flush_positions_customer" type="text" />
-		    <field name="flush_positions_product" type="text" />
-		    <field name="flush_positions_category" type="text" />
-		    <field name="flush_positions_cart" type="text" />
-		    <field name="flush_positions_checkout" type="text" />
-
 		    <field type="spacer" name="theming_other" class="fieldgroup" />
 		    <field name="template" type="magebridge.template" />
 		    <field name="magento_theme" type="magebridge.theme" />
