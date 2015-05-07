@@ -127,7 +127,7 @@
 
         <fieldset name="debugging" label="COM_MAGEBRIDGE_MODEL_CONFIG_FIELDSET_DEBUGGING">
 		    <field type="spacer" name="debugging" class="fieldgroup" />
-		    <field name="debug" type="magebridge.boolean" />
+		    <field name="debug" type="magebridge.boolean" default="0" />
 		    <field name="debug_ip" type="magebridge.ip" />
 		    <field name="debug_level" type="list">
 			    <option value="all">COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_DEBUG_LEVEL_OPTION_ALL</option>
@@ -144,7 +144,7 @@
 		    <field name="debug_display_errors" type="magebridge.boolean" />
 
 		    <field type="spacer" name="debugging_bar" class="fieldgroup" />
-		    <field name="debug_bar" type="magebridge.boolean" />
+		    <field name="debug_bar" type="magebridge.boolean" default="0" />
 		    <field name="debug_bar_parts" type="magebridge.boolean" />
 		    <field name="debug_bar_request" type="magebridge.boolean" />
 		    <field name="debug_bar_store" type="magebridge.boolean" />
