@@ -191,8 +191,7 @@ class plgMagentoMageBridge extends JPlugin
 
         // Try to load the user through the Joomla! ID stored in Magento
         if (isset($customer['joomla_id'])) {
-            $user = JFactory::getUser();
-            $user->load($customer['joomla_id']);
+            $user = JFactory::getUser($customer['joomla_id']);
         }
 
         // Try to load the user through its email-address

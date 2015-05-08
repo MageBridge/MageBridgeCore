@@ -290,8 +290,7 @@ class MageBridgeController extends YireoController
 
         // Run the relations
         } else {
-            $user = JFactory::getUser();
-            $user->load($user_id);
+            $user = JFactory::getUser($user_id);
             MageBridgeConnectorProduct::getInstance()->runOnPurchase($product_sku, $count, $user, $status);
         
             $msgType = 'success';

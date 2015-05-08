@@ -144,8 +144,7 @@ class plgUserMageBridge extends JPlugin
 
             // Load the right JUser object
             $data = array('username' => $user['email']);
-            $object = new JUser();
-            $object->load($user['id']);
+            $object = JFactory::getUser($user['id']);
 
             // Check whether user-syncing is allowed for this user
             if ($this->getUser()->allowSynchronization($object, 'save') == true) {
