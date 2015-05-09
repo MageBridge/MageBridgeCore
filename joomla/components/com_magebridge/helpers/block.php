@@ -19,6 +19,9 @@ class MageBridgeBlockHelper
 {
     static public function parseBlock($data)
     {
+        $formToken = JHtml::_( 'form.token' );
+        $data = str_replace('</form>', $formToken . '</form>', $data);
+
 		$replace = array();
 		$matches = array();
 

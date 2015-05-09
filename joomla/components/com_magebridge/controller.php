@@ -31,6 +31,14 @@ class MageBridgeController extends YireoAbstractController
         $this->registerTask('switch', 'switchStores');
         $this->registerTask('login', 'ssoCheck');
         $this->registerTask('logout', 'ssoCheck');
+
+        $input = JFactory::getApplication()->input;
+        $post = JRequest::get('post');
+
+        if (!empty($post))
+        {
+            JSession::checkToken() or die('Invalid Token');
+        }
     }
 
     /*
