@@ -64,6 +64,10 @@
                     <option value="0">JNO</option>
                     <option value="1">JYES</option>
                 </field>
+                <field name="deny_iframe" type="radio" default="1" label="PLG_SYSTEM_MAGEBRIDGE_DENY_IFRAME" description="PLG_SYSTEM_MAGEBRIDGE_DENY_IFRAME_DESC">
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
             </fieldset>
         </fields>
     </config>

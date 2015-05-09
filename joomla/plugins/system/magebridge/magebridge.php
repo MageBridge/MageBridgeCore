@@ -63,6 +63,12 @@ class plgSystemMageBridge extends JPlugin
 			return false;
 		}
 
+        // Deny iframes
+        if ($this->params->get('deny_iframe'))
+        {
+            header('X-Frame-Options: DENY');
+        }
+
 		// Include JForm elements
 		//$this->loadJform();
 
