@@ -38,6 +38,22 @@ class MageBridgeController extends YireoAbstractController
         if (!empty($post))
         {
             JSession::checkToken() or die('Invalid Token');
+
+            // Further checking of HTTP Referer
+            $httpReferer = isset($_SERVER['HTTP_REFERER']) ? trim($_SERVER['HTTP_REFERER']) : null;
+            $httpHost = isset($_SERVER['HTTP_HOST']) ? trim($_SERVER['HTTP_HOST']) : null;
+
+            if (empty($httpReferer))
+            {
+                header('Location: '.$_SERVER['REQUEST_URI']);
+                exit;
+            }
+
+            if (preg_match('/(http|https):\/\/' . $httpHost . '/', $httpReferer) == false)
+            {
+                header('Location: '.$_SERVER['REQUEST_URI']);
+                exit;
+            }
         }
     }
 
