@@ -32,17 +32,42 @@ class MageBridgeController extends YireoAbstractController
         $this->registerTask('login', 'ssoCheck');
         $this->registerTask('logout', 'ssoCheck');
 
+        $uri = JURI::current();
         $input = JFactory::getApplication()->input;
         $post = JRequest::get('post');
+        $httpReferer = isset($_SERVER['HTTP_REFERER']) ? trim($_SERVER['HTTP_REFERER']) : null;
+        $httpHost = isset($_SERVER['HTTP_HOST']) ? trim($_SERVER['HTTP_HOST']) : null;
 
-        if (!empty($post))
+        $checkPaths = array('customer', 'address', 'cart');
+        $doCheckPath = false;
+
+        foreach ($checkPaths as $checkPath)
+        {
+            if (stristr($uri, '/' . $checkPath . '/'))
+            {
+                $doCheckPath = true;
+            }
+        }
+
+        if ($doCheckPost && !empty($post))
         {
             JSession::checkToken() or die('Invalid Token');
 
-            // Further checking of HTTP Referer
-            $httpReferer = isset($_SERVER['HTTP_REFERER']) ? trim($_SERVER['HTTP_REFERER']) : null;
-            $httpHost = isset($_SERVER['HTTP_HOST']) ? trim($_SERVER['HTTP_HOST']) : null;
+            if (empty($httpReferer))
+            {
+                header('Location: '.$_SERVER['REQUEST_URI']);
+                exit;
+            }
 
+            if (preg_match('/(http|https):\/\/' . $httpHost . '/', $httpReferer) == false)
+            {
+                header('Location: '.$_SERVER['REQUEST_URI']);
+                exit;
+            }
+        }
+
+        if (stristr($uri, '/customer/address/delete'))
+        {
             if (empty($httpReferer))
             {
                 header('Location: '.$_SERVER['REQUEST_URI']);
