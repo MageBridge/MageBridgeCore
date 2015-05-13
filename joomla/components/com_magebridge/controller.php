@@ -51,7 +51,7 @@ class MageBridgeController extends YireoAbstractController
 
         if ($doCheckPost && !empty($post))
         {
-            JSession::checkToken() or die('Invalid Token');
+            JSession::checkToken() or $this->forbidden('Invalid token');
 
             if (empty($httpReferer))
             {
@@ -80,6 +80,12 @@ class MageBridgeController extends YireoAbstractController
                 exit;
             }
         }
+    }
+
+    public function forbidden($message = 'Access denied')
+    {
+        header('HTTP/1.0 403 Forbidden');
+        die($message);
     }
 
     /*

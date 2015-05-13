@@ -395,7 +395,7 @@ class MageBridgeModelUser
 
         // Load the user by its user-ID
         $user_id = $row->id;
-        $user = new JUser($user_id);
+        $user = JFactory::getUser($user_id);
         if (empty($user->id)) {
             return false;
         }
