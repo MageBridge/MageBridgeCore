@@ -47,9 +47,9 @@ class MagebridgeFormFieldStore extends MagebridgeFormFieldAbstract
             if (!empty($rows) && is_array($rows)) {
                 foreach ($rows as $index => $group) {
 
-                    if ($group['website'] != MageBridgeModelConfig::load('website')) {
+                    /*if ($group['website'] != MageBridgeModelConfig::load('website')) {
                         continue;
-                    }
+                    }*/
 
                     $options[] = array(
                         'value' => 'g:'.$group['value'].':'.$group['label'],
