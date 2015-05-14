@@ -63,12 +63,6 @@ class plgSystemMageBridge extends JPlugin
 			return false;
 		}
 
-        // Deny iframes
-        if ($this->params->get('deny_iframe'))
-        {
-            header('X-Frame-Options: DENY');
-        }
-
 		// Include JForm elements
 		//$this->loadJform();
 
@@ -78,6 +72,11 @@ class plgSystemMageBridge extends JPlugin
 		// Perform actions on the frontend
 		if ($this->app->isSite())
 		{
+            // Deny iframes
+            if ($this->params->get('deny_iframe'))
+            {
+                header('X-Frame-Options: DENY');
+            }
 
 			// Hard-spoof all MageBridge SEF URLs (for sh404SEF)
 			if ($this->getParam('spoof_sef', 0) == 1)
