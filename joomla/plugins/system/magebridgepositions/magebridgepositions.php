@@ -127,9 +127,19 @@ class plgSystemMageBridgePositions extends JPlugin
 
     private function allowPosition($position)
     {
+		// Don't do anything if MageBridge is not enabled
+		if ($this->isEnabled() == false)
+		{
+			return true;
+		}
+
         // If the position is empty, default to true
         $position = trim($position);
-        if (empty($position)) return true;
+
+        if (empty($position))
+        {
+            return true;
+        }
 
         // Check for a certain page
         if (MageBridgeTemplateHelper::isHomePage()) {
@@ -181,11 +191,17 @@ class plgSystemMageBridgePositions extends JPlugin
 	{
 		if (!JFactory::getApplication()->isSite())
 		{
-			return;
+			return false;
 		}
 
 		// Import the MageBridge autoloader
 		include_once JPATH_SITE . '/components/com_magebridge/helpers/loader.php';
+
+        // Check for the MageBridgeTemplateHelper class
+        if (class_exists('MageBridgeTemplateHelper') == false)
+        {
+            return false;
+        }
 
 		// Check for the file only
 		if (is_file(JPATH_SITE . '/components/com_magebridge/models/config.php'))
