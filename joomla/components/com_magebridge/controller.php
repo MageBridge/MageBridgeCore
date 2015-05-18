@@ -39,13 +39,13 @@ class MageBridgeController extends YireoAbstractController
         $httpHost = isset($_SERVER['HTTP_HOST']) ? trim($_SERVER['HTTP_HOST']) : null;
 
         $checkPaths = array('customer', 'address', 'cart');
-        $doCheckPath = false;
+        $doCheckPost = false;
 
         foreach ($checkPaths as $checkPath)
         {
             if (stristr($uri, '/' . $checkPath . '/'))
             {
-                $doCheckPath = true;
+                $doCheckPost = true;
             }
         }
 
