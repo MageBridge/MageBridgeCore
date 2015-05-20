@@ -426,7 +426,9 @@ class plgSystemMageBridge extends JPlugin
 					$source = MageBridgeUrlHelper::route($source);
 					$source = preg_replace('/\/$/', '', $source);
 				}
+
 				$source = str_replace('/', '\/', $source);
+                $source = preg_replace('/^(http|https)/', '', $source);
 
 				// Prepare the destination URL
 				if (preg_match('/^index\.php\?option=/', $destination))
