@@ -391,6 +391,10 @@ class MageBridgeModelBridgeHeaders extends MageBridgeModelBridgeSegment
                     $this->_stylesheets[] = $item['name'];
                     $this->_scripts[] = $item['name'];
 
+                    if (empty($item['name'])) {
+                        continue;
+                    }
+
                     // If this is a skin-script, construct the tag but add it later to the HTML-header
                     if ($item['type'] == 'skin_js') {
 
@@ -427,6 +431,7 @@ class MageBridgeModelBridgeHeaders extends MageBridgeModelBridgeSegment
                                 'scriptaculous/controls.js',
                                 'scriptaculous/slider.js',
                             );
+
                             if (in_array($item['name'], $skip_scripts)) {
                                 continue;
                             }

@@ -630,7 +630,8 @@ class MageBridgeModelProxy
         preg_match('/^Location: ([^\s]+)/m', $this->_head['headers'], $matches);
         if ($this->_allow_redirects && (preg_match('/^3([0-9]+)/', $this->_head['http_code']) || !empty($matches))) {
 
-            $location = trim(array_pop($matches));
+            $originalLocation = trim(array_pop($matches));
+            $location = $originalLocation;
 
             // Check for a location-override
             if ($this->getHeader('X-MageBridge-Location') != null) {
@@ -672,6 +673,7 @@ class MageBridgeModelProxy
 
             //$location = preg_replace('/magebridge\.php\//', '', $location);
             MageBridgeModelDebug::getInstance()->warning( 'Trying to redirect to new location '.$location);
+            header('X-MageBridge-Redirect: '.$originalLocation);
             $this->setRedirect($location);
         }
 
