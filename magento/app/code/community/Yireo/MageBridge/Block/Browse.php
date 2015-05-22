@@ -62,7 +62,11 @@ class Yireo_MageBridge_Block_Browse extends Mage_Core_Block_Template
     {
         $client = Mage::getSingleton('magebridge/client');
         $result = $client->call('magebridge.test', null, $store);
-        if(empty($result)) $result = 'No response';
+
+        if(empty($result)) {
+            $result = 'No response';
+        }
+
         return $result;
     }
 
@@ -77,6 +81,7 @@ class Yireo_MageBridge_Block_Browse extends Mage_Core_Block_Template
     {
         $scope = Mage::app()->getRequest()->getParam('scope');
         $scope_id = Mage::app()->getRequest()->getParam('id');
+
         switch($scope) {
             case 'websites':
                 $scope_name = Mage::app()->getWebsite($scope_id)->getName().' ['.$scope.']';
@@ -106,6 +111,7 @@ class Yireo_MageBridge_Block_Browse extends Mage_Core_Block_Template
             'api_key' => Mage::getStoreConfig('magebridge/joomla/api_key', $store),
             'api_result' => $this->getApiResult($store),
         );
+
         return $data;
     }
 }
