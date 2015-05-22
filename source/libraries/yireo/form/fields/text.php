@@ -24,8 +24,24 @@ class YireoFormFieldText extends JFormFieldText
     {
         $rt = parent::setup($element, $value, $group);
 
-        $this->element['description'] = $this->element['label'].'_DESC';
-        $this->description = $this->element['label'].'_DESC';
+        $label = (string)$this->element['label'];
+
+        if (empty($label))
+        {
+            $option = JFactory::getApplication()->input->getCmd('option');
+            $prefix = $option;
+
+            if ($option == 'com_plugins')
+            {
+                $prefix = $this->form->getData()->get('name');
+            }
+
+            $label = strtoupper($prefix . '_' . $this->fieldname);
+        }
+
+        $this->element['label'] = $label;
+        $this->element['description'] = $label.'_DESC';
+        $this->description = $label.'_DESC';
 
         return $rt;
     }
