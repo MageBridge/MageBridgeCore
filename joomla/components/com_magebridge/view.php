@@ -25,6 +25,26 @@ class MageBridgeView extends YireoAbstractView
     protected $block = null;
     protected $block_built = false;
 
+    /**
+     * Main constructor method
+     *
+     * @param array $config
+     */
+    public function __construct($config = array())
+    {
+        // Call the parent constructor
+        $rt = parent::__construct($config);
+
+        // Import use full variables from JFactory
+        $this->db = JFactory::getDBO();
+        $this->doc = JFactory::getDocument();
+        $this->user = JFactory::getUser();
+        $this->app = JFactory::getApplication();
+        $this->input = $this->app->input;
+
+        return $rt;
+    }
+
     /*
      * Method to display the requested view
      *

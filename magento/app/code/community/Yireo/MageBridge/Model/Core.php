@@ -164,7 +164,21 @@ class Yireo_MageBridge_Model_Core
             }
         }
 
-        //$session = Mage::getSingleton('checkout/session');
+
+        // Manual hack to set the right customer-redirect URL
+        if(strstr($this->getRequestUrl(), 'checkout/cart/add')) {
+
+            $location = null;
+            if (preg_match('/(uenc|referer)\/([^\/]+)/', $this->getRequestUrl(), $match)) {
+                $location = Mage::helper('magebridge/encryption')->base64_decode($match[2]);
+            }
+
+            if (!empty($location)) {
+                Mage::app()->getRequest()->setParam('return_url', $location);
+            }
+        }
+
+            //$session = Mage::getSingleton('checkout/session');
         //Mage::getSingleton('magebridge/debug')->notice('Quote: '.$session->getQuoteId());
 
         return true;

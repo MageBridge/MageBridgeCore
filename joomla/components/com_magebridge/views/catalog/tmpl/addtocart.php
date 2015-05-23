@@ -6,17 +6,17 @@
  * @package MageBridge
  * @copyright Copyright 2015
  * @license GNU Public License
- * @link http://www.yireo.com
+ * @link https://www.yireo.com
  */
 
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 ?>
-<?php if (!empty($this->block)) { ?>
-<div id="magebridge-content">
-    <?php echo $this->block; ?>
-</div>
-<div style="clear:both"></div>
-<?php } else { ?>
-<?php echo JText::_($this->getOfflineMessage()); ?>
-<?php } ?>
+<?php if (!empty($this->block)) : ?>
+    <div id="magebridge-content">
+        <?php echo $this->block; ?>
+    </div>
+    <div style="clear:both"></div>
+<?php else: ?>
+    <?php echo JText::_($this->getOfflineMessage()); ?>
+<?php endif; ?>
