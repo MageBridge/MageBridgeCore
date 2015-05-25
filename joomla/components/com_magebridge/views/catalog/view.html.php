@@ -68,13 +68,11 @@ class MageBridgeViewCatalog extends MageBridgeView
 			}
 		}
 
-		// Add the
-		$mode = $params->get('mode');
-
-		if (!empty($mode))
-		{
-			$request .= '?mode=' . $mode;
-		}
+        // Add the qty parameter
+        $qty = JFactory::getApplication()->input->getInt('qty');
+        if (!empty($qty)) {
+            $request .= 'qty/'.$qty.'/';
+        }
 
 		// Check for the redirect parameter
 		$redirect = $this->input->getString('redirect');
@@ -100,6 +98,14 @@ class MageBridgeViewCatalog extends MageBridgeView
 			{
 				$request .= 'form_key/' . $form_key;
 			}
+		}
+
+		// Add the mode (for catalog)
+		$mode = $params->get('mode');
+
+		if (!empty($mode))
+		{
+			$request .= '?mode=' . $mode;
 		}
 
 		// Set the request in the bridge and wait for the response
