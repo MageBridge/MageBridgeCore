@@ -1,0 +1,29 @@
+{
+    "name": "yireo/magebridgecore",
+    "license": "OSL-3.0",
+    "type": "magento-module",
+    "homepage": "https://www.yireo.com/software/magebridge",
+    "description": "Core Magento module to bridge Joomla with Magento",
+    "authors": [
+        {
+            "name": "Jisse Reitsma (Yireo)",
+            "email": "jisse@yireo.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0"
+    },
+    "require-dev":{
+        "phpunit/phpunit":"*",
+        "composer/composer":"*@dev"
+    },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "http://packages.firegento.com"
+        }
+    ],
+    "extra":{
+        "magento-root-dir": "source/"
+    }
+}
