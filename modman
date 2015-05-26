@@ -1,0 +1,3 @@
+# Modman file
+magento/app/code/community/Yireo/MageBridge app/code/community/Yireo/MageBridge
+magento/app/etc/modules/Yireo_MageBridge.xml app/etc/modules/Yireo_MageBridge.xml
