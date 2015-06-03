@@ -166,7 +166,10 @@ class Yireo_MageBridge_Model_Core
 
 
         // Manual hack to set the right customer-redirect URL
-        if(strstr($this->getRequestUrl(), 'checkout/cart/add')) {
+        $continueShoppingToPrevious = (bool)Mage::getStoreConfig('magebridge/settings/continue_shopping_to_previous');
+        $redirectToCart = (bool)Mage::getStoreConfig('checkout/cart/redirect_to_cart');
+
+        if($redirectToCart == false && $continueShoppingToPrevious && strstr($this->getRequestUrl(), 'checkout/cart/add')) {
 
             $location = null;
             if (preg_match('/(uenc|referer)\/([^\/]+)/', $this->getRequestUrl(), $match)) {
@@ -178,7 +181,7 @@ class Yireo_MageBridge_Model_Core
             }
         }
 
-            //$session = Mage::getSingleton('checkout/session');
+        //$session = Mage::getSingleton('checkout/session');
         //Mage::getSingleton('magebridge/debug')->notice('Quote: '.$session->getQuoteId());
 
         return true;
