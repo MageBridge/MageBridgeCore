@@ -142,7 +142,7 @@ class plgSystemMageBridge extends JPlugin
 			// Check for a different mobile-template
 			$mobile_template = $this->loadConfig('mobile_joomla_theme');
 
-			if (!empty($mobile_template) && MageBridgeTemplateHelper::isMobile())
+			if (!empty($mobile_template) && MageBridgeTemplateHelper::isMobile() && $this->app->input->getCmd('option') == 'com_magebridge')
 			{
 				$this->app->setTemplate($mobile_template);
 			}
