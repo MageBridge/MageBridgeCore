@@ -68,7 +68,7 @@ class MagebridgeModelUsers extends YireoCommonModel
      * @access public
      * @return array
      */
-    public function getData()
+    public function getData($forceNew = false)
     {
         // Lets load the content if it doesn't already exist
         if (empty($this->_data))
