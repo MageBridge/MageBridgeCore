@@ -92,7 +92,10 @@ class MageBridgeModelBridge
             $route = preg_replace('/\.html$/', '', $route);
 
             // Add a / as suffix
-            if (!preg_match('/\/$/', $route)) $route .= '/';
+            if (!strstr($route, '?') && !preg_match('/\/$/', $route))
+            {
+                $route .= '/';
+            }
 
             // Prepend the hostname
             if (!preg_match('/^(http|https):\/\//', $route)) {
