@@ -544,6 +544,9 @@ class Yireo_MageBridge_Model_Core
 
         // Preoutput when MageBridge has set the AJAX-flag (and there is no POST)
         if($this->getMetaData('ajax') == 1 && ($this->getMetaData('post') == null && empty($_POST))) {
+            if(strstr($_SERVER['HTTP_REFERER'], 'option=com_jmap')) {
+                return false;
+            }
             Mage::getSingleton('magebridge/core')->getController(false);
             return true;
         }
