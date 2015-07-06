@@ -179,7 +179,7 @@ class Yireo_MageBridge_Block_Check extends Mage_Core_Block_Template
         $this->addResult('system', 'iconv', $result, 'The iconv-extension for PHP is needed');
 
         $result = (@class_exists('ZipArchive')) ? self::CHECK_OK : self::CHECK_ERROR;
-        $this->addResult('system', 'ZipArchive', $result, 'ZipArchive in PHP is needed for 1-click upgrades. This bundles with PECL-zip 1.1.0 or higher.');
+        $this->addResult('system', 'ZipArchive', $result, 'ZipArchive in PHP is needed for one-click upgrades. This bundles with PECL-zip 1.1.0 or higher.');
 
         $result = (ini_get('safe_mode')) ? self::CHECK_ERROR : self::CHECK_OK;
         $this->addResult('system', 'Safe Mode', $result, 'PHP Safe Mode is strongly outdated and not supported by either Joomla! or Magento');
@@ -191,8 +191,9 @@ class Yireo_MageBridge_Block_Check extends Mage_Core_Block_Template
         $memcached = extension_loaded('memcache');
         $xcache = extension_loaded('xcache');
         $eaccelerator = extension_loaded('eaccelerator');
-        $result = ($apc || $memcached || $xcache || $eaccelerator) ? self::CHECK_OK : self::CHECK_WARNING;
-        $this->addResult('system', 'OPC-caching', $result, 'An OPC-caching PHP-extension (like APC, XCache, memcached or eAccelerator) is highly recommended');
+        $opcache = (bool)ini_get('opcache.enable');
+        $result = ($opcache || $apc || $memcached || $xcache || $eaccelerator) ? self::CHECK_OK : self::CHECK_WARNING;
+        $this->addResult('system', 'OPC-caching', $result, 'An OPC-caching PHP-extension (like Zend OPC, APC or XCache) is highly recommended');
 
         $remote_domain = 'api.yireo.com';
         $result = (gethostbyname($remote_domain) == $remote_domain) ? self::CHECK_ERROR : self::CHECK_OK;
