@@ -982,6 +982,10 @@ class MageBridgeModelBridge
      */
     public function isAjax()
     {
+        if (in_array(JRequest::getCmd('format'), array('xml', 'json', 'ajax'))) {
+            return true;
+        }
+
         // Things to consider: Backend Lightbox-effect, frontend AJAX-lazyloading
         $check_xrequestedwith = true;
         if (JFactory::getApplication()->isSite() == false) {
