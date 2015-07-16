@@ -530,10 +530,18 @@ class Yireo_MageBridge_Model_Core
             return true;
         }
 
-        // Check if preoutput is forced manually
+        // Preoutput for AW AJAX Cart
         if(isset($_REQUEST['awacp']) && $_REQUEST['awacp'] == 1) {
             Mage::app()->getFrontController()->dispatch();
             return true;
+        }
+
+        // Preoutput for Temando
+        if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+            if (!empty($_REQUEST['country_id']) && !empty($_REQUEST['postcode']) && !empty($_REQUEST['product_id'])) {
+                Mage::app()->getFrontController()->dispatch();
+                return true;
+            }
         }
 
         // Check if preoutput is forced manually
