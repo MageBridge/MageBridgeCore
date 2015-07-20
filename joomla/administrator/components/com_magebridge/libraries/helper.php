@@ -359,7 +359,7 @@ class YireoHelper
         $language->load($extension, $folder, $tag, $reload);
     }
 
-    public function strlen($string)
+    public static function strlen($string)
     {
         if (function_exists('mb_strlen'))
         {
