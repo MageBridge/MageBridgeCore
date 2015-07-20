@@ -30,59 +30,47 @@ class MageBridgeHelper
 			'faq' => array(
 				'title' => 'General FAQ',
 				'link' => 'http://www.yireo.com/software/magebridge/experience/faq',
-				'internal' => 0,
-			),
+				'internal' => 0,),
 			'faq-troubleshooting' => array(
 				'title' => 'Troubleshooting FAQ',
 				'link' => 'http://www.yireo.com/tutorials/magebridge/troubleshooting/729-magebridge-faq-troubleshooting',
-				'internal' => 0,
-			),
+				'internal' => 0,),
 			'faq-troubleshooting:api-widgets' => array(
 				'title' => 'API Widgets FAQ',
 				'link' => 'http://www.yireo.com/tutorials/magebridge/troubleshooting/729-magebridge-faq-troubleshooting#api-widgets-do-not-work',
-				'internal' => 0,
-			),
+				'internal' => 0,),
 			'faq-development' => array(
 				'title' => 'Development FAQ',
 				'link' => 'http://www.yireo.com/tutorials/magebridge/development/577-magebridge-faq-development',
-				'internal' => 0,
-			),
+				'internal' => 0,),
 			'forum' => array(
 				'title' => 'MageBridge Support Form',
 				'link' => 'http://www.yireo.com/forum/',
-				'internal' => 0,
-			),
+				'internal' => 0,),
 			'tutorials' => array(
 				'title' => 'Yireo Tutorials',
 				'link' => 'http://www.yireo.com/tutorials',
-				'internal' => 0,
-			),
+				'internal' => 0,),
 			'quickstart' => array(
 				'title' => 'MageBridge Quick Start Guide',
 				'link' => 'http://www.yireo.com/tutorials/magebridge/basics/540-magebridge-quick-start-guide',
-				'internal' => 0,
-			),
+				'internal' => 0,),
 			'troubleshooting' => array(
 				'title' => 'MageBridge Troubleshooting Guide',
 				'link' => 'http://www.yireo.com/tutorials/magebridge/troubleshooting/723-magebridge-troubleshooting-guide',
-				'internal' => 0,
-			),
+				'internal' => 0,),
 			'changelog' => array(
 				'title' => 'MageBridge Changelog',
 				'link' => 'http://www.yireo.com/tutorials/magebridge/updates/975-magebridge-changelog',
-				'internal' => 0,
-			),
+				'internal' => 0,),
 			'subscriptions' => array(
 				'title' => 'your Yireo Subscriptions page',
 				'link' => 'https://www.yireo.com/shop/membership/customer/products/',
-				'internal' => 0,
-			),
+				'internal' => 0,),
 			'config' => array(
 				'title' => 'Global Configuration',
 				'link' => 'index.php?option=com_config',
-				'internal' => 1,
-			),
-		);
+				'internal' => 1,),);
 
 		if (!empty($name) && isset($links[$name]))
 		{
@@ -132,7 +120,6 @@ class MageBridgeHelper
 	{
 		if (MagebridgeModelConfig::load('show_help') == 1)
 		{
-
 			if (preg_match('/\{([^\}]+)\}/', $text, $match))
 			{
 				$array = explode(':', $match[1]);
@@ -170,16 +157,15 @@ class MageBridgeHelper
 
 		// Implement a very dirty hack because PayPal converts URLs "&" to "and"
 		$current = MageBridgeUrlHelper::current();
+
 		if (strstr($current, 'paypal') && strstr($current, 'redirect'))
 		{
-
 			// Try to find the distorted URLs
 			$matches = array();
 			if (preg_match_all('/([^\"\']+)com_magebridgeand([^\"\']+)/', $content, $matches))
 			{
 				foreach ($matches[0] as $match)
 				{
-
 					// Replace the wrong "and" words with "&" again
 					$url = str_replace('com_magebridgeand', 'com_magebridge&', $match);
 					$url = str_replace('rootand', 'root&', $url);
@@ -193,11 +179,11 @@ class MageBridgeHelper
 		// Replace all uenc-URLs from Magento with URLs parsed through JRoute
 		$matches = array();
 		$replaced = array();
+
 		if (preg_match_all('/\/uenc\/([a-zA-Z0-9\-\_\,]+)/', $content, $matches))
 		{
 			foreach ($matches[1] as $match)
 			{
-
 				// Decode the match
 				$original_url = MageBridgeEncryptionHelper::base64_decode($match);
 				$url = $original_url;
@@ -206,15 +192,12 @@ class MageBridgeHelper
 				// Convert the non-SEF URL to a SEF URL
 				if (preg_match('/^index.php\?option=com_magebridge/', $url))
 				{
-
 					// Parse the URL but do NOT turn it into SEF because of Mage_Core_Controller_Varien_Action::_isUrlInternal()
 					$url = MageBridgeHelper::filterUrl(str_replace('/', urldecode('/'), $url), false);
 					$url = $bridge->getJoomlaBridgeSefUrl($url);
-
 				}
 				else
 				{
-
 					if (!preg_match('/^(http|https)/', $url))
 					{
 						$url = $bridge->getJoomlaBridgeSefUrl($url);
@@ -245,6 +228,7 @@ class MageBridgeHelper
 
 		// Match all URLs and filter them
 		$matches = array();
+
 		if (preg_match_all('/index.php\?option=com_magebridge([^\'\"\<]+)([\'\"\<]{1})/', $content, $matches))
 		{
 			for ($i = 0; $i < count($matches[0]); $i++)
@@ -252,6 +236,7 @@ class MageBridgeHelper
 				$oldurl = 'index.php?option=com_magebridge' . $matches[1][$i];
 				$end = $matches[2][$i];
 				$newurl = MageBridgeHelper::filterUrl($oldurl);
+
 				if (!empty($newurl))
 				{
 					$content = str_replace($oldurl . $end, $newurl . $end, $content);
@@ -321,6 +306,7 @@ class MageBridgeHelper
 
 		// Get rid of the annoying SID
 		$sids = array('SID', 'sid', '__SID', '___SID');
+
 		foreach ($sids as $sid)
 		{
 			if (isset($query[$sid]))
@@ -332,6 +318,7 @@ class MageBridgeHelper
 		// Construct the URL again
 		$url = 'index.php?';
 		$url_segments = array();
+
 		foreach ($query as $name => $value)
 		{
 			$url_segments[] = $name . '=' . $value;
@@ -346,6 +333,7 @@ class MageBridgeHelper
 		$prefix = JURI::getInstance()->toString(array('scheme', 'host', 'port'));
 		$path = str_replace($prefix, '', JURI::base());
 		$pos = strpos($url, $path);
+
 		if (!empty($path) && $pos !== false)
 		{
 			$url = substr($url, $pos + strlen($path));
@@ -363,12 +351,14 @@ class MageBridgeHelper
 	static public function getDisableCss()
 	{
 		$disable_css = MagebridgeModelConfig::load('disable_css_mage');
+
 		if (empty($disable_css))
 		{
 			return array();
 		}
 
 		$disable_css = explode(',', $disable_css);
+
 		if (!empty($disable_css))
 		{
 			foreach ($disable_css as $name => $value)
@@ -391,11 +381,13 @@ class MageBridgeHelper
 	{
 		$allow = MagebridgeModelConfig::load('disable_css_all');
 		$disable_css = self::getDisableCss();
+
 		if (!empty($disable_css))
 		{
 			foreach ($disable_css as $disable)
 			{
 				$disable = str_replace('/', '\/', $disable);
+
 				if (preg_match("/$disable$/", $css))
 				{
 					return ($allow == 3) ? false : true;
@@ -415,12 +407,14 @@ class MageBridgeHelper
 	static public function getDisableJs()
 	{
 		$disable_js = MagebridgeModelConfig::load('disable_js_mage');
+
 		if (empty($disable_js))
 		{
 			return array();
 		}
 
 		$disable_js = explode(',', $disable_js);
+
 		if (!empty($disable_js))
 		{
 			foreach ($disable_js as $name => $value)
@@ -442,11 +436,13 @@ class MageBridgeHelper
 	static public function jsIsDisabled($js)
 	{
 		$disable_js = self::getDisableJs();
+
 		if (!empty($disable_js))
 		{
 			foreach ($disable_js as $disable)
 			{
 				$disable = str_replace('/', '\/', $disable);
+
 				if (preg_match("/$disable$/", $js))
 				{
 					return true;
@@ -576,6 +572,7 @@ class MageBridgeHelper
 	{
 		$db = JFactory::getDBO();
 		$sql = array();
+
 		foreach ($array as $name => $value)
 		{
 			$sql[] = '`' . $name . '`=' . $db->Quote($value);
@@ -599,6 +596,7 @@ class MageBridgeHelper
 
 		$tmp = explode(',', $csv);
 		$array = array();
+
 		if (!empty($tmp))
 		{
 			foreach ($tmp as $t)

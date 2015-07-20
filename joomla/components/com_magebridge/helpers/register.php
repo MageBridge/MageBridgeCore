@@ -2,18 +2,18 @@
 /**
  * Joomla! component MageBridge
  *
- * @author Yireo (info@yireo.com)
- * @package MageBridge
+ * @author    Yireo (info@yireo.com)
+ * @package   MageBridge
  * @copyright Copyright 2015
- * @license GNU Public License
- * @link http://www.yireo.com
+ * @license   GNU Public License
+ * @link      http://www.yireo.com
  */
 
 // No direct access
 defined('_JEXEC') or die('Restricted access');
-        
+
 // Require the loader
-require_once JPATH_SITE.'/components/com_magebridge/helpers/loader.php';
+require_once JPATH_SITE . '/components/com_magebridge/helpers/loader.php';
 
 // Import the general module-helper
 jimport('joomla.application.module.helper');
@@ -21,125 +21,159 @@ jimport('joomla.application.module.helper');
 /*
  * Helper for handling the register
  */
+
 class MageBridgeRegisterHelper extends JModuleHelper
 {
-    /*
-     * Pre-register the modules, because they are loaded after the component output
-     *
-     * @param null
-     * @return null
-     */
-    public static function preload()
-    {
-        // Preload only once
-        static $preload = false;
-        if($preload == true) {
-            return null;
-        }
-        $preload = true;
+	/*
+	 * Pre-register the modules, because they are loaded after the component output
+	 *
+	 * @param null
+	 * @return null
+	 */
+	public static function preload()
+	{
+		// Preload only once
+		static $preload = false;
 
-        // Don't preload anything if this is the API
-        if (MageBridge::isApiPage() == true) {
-            return null;
-        }
+		if ($preload == true)
+		{
+			return null;
+		}
+		$preload = true;
 
-        // Don't preload anything if the current output contains only the component-area
-        if (in_array(JRequest::getCmd('tmpl'), array('component', 'raw'))) {
-            return null;
-        }
+		// Don't preload anything if this is the API
+		if (MageBridge::isApiPage() == true)
+		{
+			return null;
+		}
 
-        // Only preload once
-        static $preloaded = false;
-        if($preloaded == false) $preloaded = true;
+		// Don't preload anything if the current output contains only the component-area
+		if (in_array(JRequest::getCmd('tmpl'), array('component', 'raw')))
+		{
+			return null;
+		}
 
-        // Fetch all the current modules
-        $modules = MageBridgeModuleHelper::loadMageBridgeModules();
-        $register = MageBridgeModelRegister::getInstance();
+		// Only preload once
+		static $preloaded = false;
 
-        // Loop through all the available Joomla! modules
-        if (!empty($modules)) {
-            foreach ($modules as $module) {
+		if ($preloaded == false)
+		{
+			$preloaded = true;
+		}
 
-                // Check the name to see if this is a MageBridge-related module
-                if (preg_match('/^mod_magebridge_/', $module->module)) {
+		// Fetch all the current modules
+		$modules = MageBridgeModuleHelper::loadMageBridgeModules();
+		$register = MageBridgeModelRegister::getInstance();
 
-                    // Initialize variables
-                    $type = null;
-                    $name = null;
-            
-                    $params = YireoHelper::toRegistry($module->params);
-                    $app = JFactory::getApplication();
-                    $user = JFactory::getUser();
+		// Loop through all the available Joomla! modules
+		if (!empty($modules))
+		{
+			foreach ($modules as $module)
+			{
+				// Check the name to see if this is a MageBridge-related module
+				if (preg_match('/^mod_magebridge_/', $module->module))
+				{
+					// Initialize variables
+					$type = null;
+					$name = null;
 
-                    // Check whether caching returns a valid module-output
-                    if ($params->get('cache', 0) && $app->getCfg( 'caching' )) {
-                        $cache = JFactory::getCache($module->module);
-                        $cache->setLifeTime($params->get('cache_time', $app->getCfg('cachetime')*60));
-                        $contents =  $cache->get(array('JModuleHelper', 'renderModule'), array($module, $params->toArray()), $module->id. $user->get('aid', 0));
-                        $contents = trim($contents);
+					$params = YireoHelper::toRegistry($module->params);
+					$app = JFactory::getApplication();
+					$user = JFactory::getUser();
 
-                        // If the contents are not empty, there is a cached version so we skip this
-                        if (!empty($contents)) {
-                            continue;
-                        }
-                    }
+					// Check whether caching returns a valid module-output
+					if ($params->get('cache', 0) && $app->getCfg('caching'))
+					{
+						$cache = JFactory::getCache($module->module);
+						$cache->setLifeTime($params->get('cache_time', $app->getCfg('cachetime') * 60));
+						$contents = $cache->get(array('JModuleHelper', 'renderModule'), array(
+							$module,
+							$params->toArray()), $module->id . $user->get('aid', 0));
+						$contents = trim($contents);
 
-                    // If the layout is AJAX-ified, do not fetch the block at all
-                    if ($params->get('layout') == 'ajax') {
-                        continue;
-                    }
+						// If the contents are not empty, there is a cached version so we skip this
+						if (!empty($contents))
+						{
+							continue;
+						}
+					}
 
-                    // Try to include the helper-file
-                    if (is_file(JPATH_SITE.'/modules/'.$module->module.'/helper.php')) {
-                        $module_file = JPATH_SITE.'/modules/'.$module->module.'/helper.php';
-                    } else if (is_file(JPATH_ADMINISTRATOR.'/modules/'.$module->module.'/helper.php')) {
-                        $module_file = JPATH_ADMINISTRATOR.'/modules/'.$module->module.'/helper.php';
-                    }
+					// If the layout is AJAX-ified, do not fetch the block at all
+					if ($params->get('layout') == 'ajax')
+					{
+						continue;
+					}
 
-                    // If there is no module-file, skip this module
-                    if (empty($module_file) || !is_file($module_file)) {
-                        continue;
-                    }
+					// Try to include the helper-file
+					if (is_file(JPATH_SITE . '/modules/' . $module->module . '/helper.php'))
+					{
+						$module_file = JPATH_SITE . '/modules/' . $module->module . '/helper.php';
+					}
+					else
+					{
+						if (is_file(JPATH_ADMINISTRATOR . '/modules/' . $module->module . '/helper.php'))
+						{
+							$module_file = JPATH_ADMINISTRATOR . '/modules/' . $module->module . '/helper.php';
+						}
+					}
 
-                    // Include the module file
-                    require_once $module_file;
+					// If there is no module-file, skip this module
+					if (empty($module_file) || !is_file($module_file))
+					{
+						continue;
+					}
 
-                    // Construct and detect the module-class
-                    $class = preg_replace( '/_([a-z]{1})/', '\1', $module->module).'Helper';
+					// Include the module file
+					require_once $module_file;
 
-                    // If the class does not exist, skip this module
-                    if (!class_exists($class)) {
-                        continue;
-                    }
+					// Construct and detect the module-class
+					$class = preg_replace('/_([a-z]{1})/', '\1', $module->module) . 'Helper';
 
-                    // Instantiate the class 
-                    $o = new $class();
+					// If the class does not exist, skip this module
+					if (!class_exists($class))
+					{
+						continue;
+					}
 
-                    // If the register-method does not exist, skip this module
-                    if (!method_exists($o, 'register')) {
-                        continue;
-                    }
+					// Instantiate the class
+					$o = new $class();
 
-                    MageBridgeModelDebug::getInstance()->notice('Preloading module-resource for '.$module->module);
+					// If the register-method does not exist, skip this module
+					if (!method_exists($o, 'register'))
+					{
+						continue;
+					}
 
-                    // Fetch the requested tasks
-                    $requests = $o->register($params);
-                    if (is_array($requests) && count($requests) > 0) {
-                        foreach ($requests as $request) {
+					MageBridgeModelDebug::getInstance()->notice('Preloading module-resource for ' . $module->module);
 
-                            // Add each requested task to the MageBridge register
-                            if (!empty($request[2])) {
-                                $register->add($request[0], $request[1], $request[2]);
-                            } else if (!empty($request[1])) {
-                                $register->add($request[0], $request[1]);
-                            } else {
-                                $register->add($request[0]);
-                            }
+					// Fetch the requested tasks
+					$requests = $o->register($params);
 
-                        }
-                    }
-                }
-            }
-        }
-    }
+					if (is_array($requests) && count($requests) > 0)
+					{
+						foreach ($requests as $request)
+						{
+							// Add each requested task to the MageBridge register
+							if (!empty($request[2]))
+							{
+								$register->add($request[0], $request[1], $request[2]);
+							}
+							else
+							{
+								if (!empty($request[1]))
+								{
+									$register->add($request[0], $request[1]);
+								}
+								else
+								{
+									$register->add($request[0]);
+								}
+							}
+
+						}
+					}
+				}
+			}
+		}
+	}
 }
