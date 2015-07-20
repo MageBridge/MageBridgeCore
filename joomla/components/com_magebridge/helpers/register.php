@@ -71,7 +71,7 @@ class MageBridgeRegisterHelper extends JModuleHelper
 			foreach ($modules as $module)
 			{
 				// Check the name to see if this is a MageBridge-related module
-				if (preg_match('/^mod_magebridge_/', $module->module))
+				if (preg_match('/^mod_magebridge/', $module->module))
 				{
 					// Initialize variables
 					$type = null;
@@ -128,6 +128,12 @@ class MageBridgeRegisterHelper extends JModuleHelper
 
 					// Construct and detect the module-class
 					$class = preg_replace('/_([a-z]{1})/', '\1', $module->module) . 'Helper';
+
+					// If the class does not exist, try it with a uppercase-first match
+					if (!class_exists($class))
+					{
+						$class = ucfirst($class);
+					}
 
 					// If the class does not exist, skip this module
 					if (!class_exists($class))
