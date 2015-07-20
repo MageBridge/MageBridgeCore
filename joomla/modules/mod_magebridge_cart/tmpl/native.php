@@ -13,10 +13,10 @@
 defined('_JEXEC') or die('Restricted access');
 ?>
 <div id="magebridge-cart" class="magebridge-module">
-    <?php if (isset($data['items']) && is_array($data['items']) && !empty($data['items'])) { ?>
+    <?php if (isset($data['items']) && is_array($data['items']) && !empty($data['items'])) : ?>
         <p><?php echo JText::sprintf('MOD_MAGEBRIDGE_CART_ITEMS_COUNT', $data['items_count']); ?></p>
         <ul>
-        <?php foreach ($data['items'] as $item) { ?>
+        <?php foreach ($data['items'] as $item): ?>
             <li style="height:100px;"> 
                 <?php $url = MageBridgeUrlHelper::route($item['url_path']); ?>
                 <a href="<?php echo $url; ?>" title="<?php echo $item['name']; ?>"><img src="<?php echo $item['thumbnail']; ?>" alt="<?php echo $item['name']; ?>" title="<?php echo $item['name']; ?>" align="left" /></a>
@@ -25,12 +25,12 @@ defined('_JEXEC') or die('Restricted access');
                     <?php echo $item['price']; ?>
                 </p>
             </li> 
-        <?php } ?>
+        <?php endforeach; ?>
         </ul>
         <p><?php echo JText::_('MOD_MAGEBRIDGE_CART_SUBTOTAL'); ?>: <?php echo $data['subtotal_formatted']; ?></p>
         <p><a href="<?php echo $data['cart_url']; ?>"><?php echo JText::_('MOD_MAGEBRIDGE_CART_CHECKOUT'); ?></a></p>
-    <?php } else { ?>
+    <?php else: ?>
         <?php echo JText::_('MOD_MAGEBRIDGE_CART_NO_ITEMS'); ?>
-    <?php } ?>
+    <?php endif; ?>
 </div>
 <div style="clear:both"></div>

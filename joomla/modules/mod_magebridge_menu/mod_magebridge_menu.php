@@ -2,25 +2,30 @@
 /**
  * Joomla! module MageBridge: Catalog Menu
  *
- * @author Yireo (info@yireo.com)
- * @package MageBridge
+ * @author    Yireo (info@yireo.com)
+ * @package   MageBridge
  * @copyright Copyright 2015
- * @license GNU Public License
- * @link http://www.yireo.com
+ * @license   GNU Public License
+ * @link      http://www.yireo.com
  */
-        
+
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
 // Import the MageBridge autoloader
-require_once JPATH_SITE.'/components/com_magebridge/helpers/loader.php';
-require_once dirname(__FILE__).'/helper.php';
+require_once JPATH_SITE . '/components/com_magebridge/helpers/loader.php';
+require_once dirname(__FILE__) . '/helper.php';
 
 // Read the parameters
 $root = $params->get('root', 0);
 $levels = $params->get('levels', 2);
 $startLevel = $params->get('startlevel', 1);
-if($startLevel < 1) $startLevel = 1;
+
+if ($startLevel < 1)
+{
+	$startLevel = 1;
+}
+
 $endLevel = $startLevel + $levels - 1;
 $layout = $params->get('layout', 'default');
 
