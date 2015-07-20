@@ -87,11 +87,11 @@ if (!empty($this->products)) {
             $css[] = 'inactive';
         }
 
-        if (strlen($product['name']) > 50) {
+        if (YireoHelper::strlen($product['name']) > 50) {
             $product['name'] = substr($product['name'], 0, 47).'...';
         }
 
-        if (strlen($product['url_key']) > 30) {
+        if (YireoHelper::strlen($product['url_key']) > 30) {
             $product['url_key'] = substr($product['url_key'], 0, 27).'...';
         }
 

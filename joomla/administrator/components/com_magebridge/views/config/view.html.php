@@ -73,7 +73,7 @@ class MageBridgeViewConfig extends YireoCommonView
         if (MageBridgeAclHelper::isDemo() == true) {
             $censored_values = array('supportkey', 'api_user', 'api_key');
             foreach ($censored_values as $censored_value) {
-                $config[$censored_value]['value'] = str_repeat('*', strlen($config[$censored_value]['value']));
+                $config[$censored_value]['value'] = str_repeat('*', YireoHelper::strlen($config[$censored_value]['value']));
             }
         }
 

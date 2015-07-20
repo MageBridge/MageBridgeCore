@@ -530,6 +530,12 @@ class Yireo_MageBridge_Model_Core
             return true;
         }
 
+        // Check if preoutput is forced manually
+        if(stristr($this->getRequestUrl(), 'getAdditional')) {
+            Mage::app()->getFrontController()->dispatch();
+            return true;
+        }
+
         // Preoutput for AW AJAX Cart
         if(isset($_REQUEST['awacp']) && $_REQUEST['awacp'] == 1) {
             Mage::app()->getFrontController()->dispatch();

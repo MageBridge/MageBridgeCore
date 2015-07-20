@@ -218,7 +218,7 @@ class MageBridgeModelProxy
 
                     // Output the raw content
                     header('Content-Encoding: none');
-                    header('Content-Length: '.strlen($raw));
+                    header('Content-Length: '.YireoHelper::strlen($raw));
                     print $raw;
 
                     MageBridgeModelDebug::getInstance()->warning( "Non-bridge output from Magento" );
@@ -424,7 +424,7 @@ class MageBridgeModelProxy
         MageBridgeModelDebug::getInstance()->notice('CURL init: '.$url.' ('.((MageBridgeUrlHelper::getRequest()) ? MageBridgeUrlHelper::getRequest() : 'no request').')');
         $this->handleFileDownloads($handle);
         $data = curl_exec($handle);
-        $size = (function_exists('mb_strlen')) ? mb_strlen($data) : strlen($data);
+        $size = YireoHelper::strlen($data);
         if ($size > 1024) $size = round($size/1024, 2).'Kb';
         MageBridgeModelDebug::getInstance()->profiler('CURL response size: '.$size);
 
@@ -827,7 +827,7 @@ class MageBridgeModelProxy
     public function setCurlBody($handle = null, $data = null)
     {
         print $data;
-        return strlen($data);
+        return Yireo::strlen($data);
     }
 
     /*
@@ -840,7 +840,7 @@ class MageBridgeModelProxy
     public function setCurlHeaders($handle = null, $data = null)
     {
         header(rtrim($data));
-        return strlen($data);
+        return Yireo::strlen($data);
     }
 
     /*
@@ -853,7 +853,7 @@ class MageBridgeModelProxy
     public function setRawHeader($handle, $header)
     {
         $this->rawheaders[] = $header;
-        return strlen($header);
+        return Yireo::strlen($header);
     }
 
     /*

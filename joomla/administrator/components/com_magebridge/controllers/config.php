@@ -151,7 +151,7 @@ class MageBridgeControllerConfig extends YireoCommonController
         $output = $this->getOutput($config);
 
         header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-        header('Content-Length: ' . strlen($output));
+        header('Content-Length: ' . YireoHelper::strlen($output));
         header('Content-type: application/xml');
         header('Content-Disposition: attachment; filename='.$filename);
         print $output;
