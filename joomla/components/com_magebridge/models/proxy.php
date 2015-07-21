@@ -219,6 +219,11 @@ class MageBridgeModelProxy
                     // Output the raw content
                     header('Content-Encoding: none');
                     header('Content-Length: '.YireoHelper::strlen($raw));
+
+                    if(preg_match('/^\{\"/', $raw)) {
+                        header('Content-Type: application/javascript');
+                    }
+
                     print $raw;
 
                     MageBridgeModelDebug::getInstance()->warning( "Non-bridge output from Magento" );
