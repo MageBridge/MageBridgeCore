@@ -51,6 +51,7 @@ class MageBridgeWidgetHelper
         }
 
         $cache = JFactory::getCache('com_magebridge.admin');
+        $cache->setCaching(0);
         $result = $cache->call( array( 'MageBridgeWidgetHelper', $function ));
         return $result;
     }
@@ -120,6 +121,7 @@ class MageBridgeWidgetHelper
     {
         $bridge = MageBridgeModelBridge::getInstance();
         $result = $bridge->getAPI($method);
+
         if (empty($result)) {
 
             // Register this request

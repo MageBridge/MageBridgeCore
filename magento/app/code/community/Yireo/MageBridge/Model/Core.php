@@ -560,7 +560,10 @@ class Yireo_MageBridge_Model_Core
         if($this->getMetaData('ajax') == 1 && ($this->getMetaData('post') == null && empty($_POST))) {
             if(strstr($_SERVER['HTTP_REFERER'], 'option=com_jmap')) {
                 return false;
+            } elseif(strstr($_SERVER['HTTP_REFERER'], 'option=com_menus')) {
+                return false;
             }
+
             Mage::getSingleton('magebridge/core')->getController(false);
             return true;
         }

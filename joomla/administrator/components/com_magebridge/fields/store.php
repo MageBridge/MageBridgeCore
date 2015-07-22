@@ -81,6 +81,7 @@ class MagebridgeFormFieldStore extends MagebridgeFormFieldAbstract
                 MageBridgeModelDebug::getInstance()->warning( 'Unable to obtain MageBridge API Widget "store": '.var_export($options, true));
             }
         }
+
         return '<input type="text" name="'.$fieldName.'" value="'.$value.'" />';
     }
 }

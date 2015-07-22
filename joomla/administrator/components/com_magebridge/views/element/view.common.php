@@ -107,7 +107,6 @@ class MageBridgeViewCommon extends MageBridgeView
 
         // Set the data
         $cache = JFactory::getCache('com_magebridge.admin');
-        $cache->setCaching(0);
         $tree = $cache->call( array( 'MageBridgeElementHelper', 'getCategoryTree' ));
 
         // If search is active, we use a flat list instead of a tree
@@ -125,7 +124,6 @@ class MageBridgeViewCommon extends MageBridgeView
         $current_store = $application->getUserStateFromRequest($option.'.store', 'store');
 
         require_once JPATH_COMPONENT.'/fields/store.php';
-        $class = 'JFormFieldStore';
         $field = JFormHelper::loadFieldType('magebridge.store');
         $field->setName('store');
         $field->setValue($current_store);
