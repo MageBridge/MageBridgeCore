@@ -44,6 +44,10 @@
                     <option value="0">JNO</option>
                     <option value="1">JYES</option>
                 </field>
+                <field name="override_core" type="radio" default="1" label="PLG_SYSTEM_MAGEBRIDGE_OVERRIDE_CORE" description="PLG_SYSTEM_MAGEBRIDGE_OVERRIDE_CORE_DESC">
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
                 <field name="filter_js" type="list" default="remove" label="PLG_SYSTEM_MAGEBRIDGE_FILTER_JS" description="PLG_SYSTEM_MAGEBRIDGE_FILTER_JS_DESC">
                     <option value="comment">PLG_SYSTEM_MAGEBRIDGE_FILTER_JS_OPTION_COMMENT</option>
                     <option value="remove">PLG_SYSTEM_MAGEBRIDGE_FILTER_JS_OPTION_REMOVE</option>
