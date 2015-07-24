@@ -66,7 +66,7 @@ class plgSystemMageBridge extends JPlugin
 		}
 
 		// Include JForm elements
-		//$this->loadJform();
+		$this->loadJform();
 
 		// NewRelic support
 		$this->loadNewRelic();
@@ -310,8 +310,13 @@ class plgSystemMageBridge extends JPlugin
 	 *
 	 * @return null
 	 */
-	private function loadJForm()
+	private function loadJform()
 	{
+		if ($this->app->isSite())
+		{
+            return;
+        }
+
 		jimport('joomla.form.form');
 		JForm::addFieldPath(JPATH_ADMINISTRATOR . '/components/com_magebridge/fields');
 	}
