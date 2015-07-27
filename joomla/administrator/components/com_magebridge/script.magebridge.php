@@ -82,6 +82,18 @@ if(class_exists('com_magebridgeInstallerScript') == false) {
                 return true;
             }
 
+            // Check for PHP version
+            if (version_compare(PHP_VERSION, '5.4.0', '<')) {
+                return false;
+            }
+
+            // Check for Joomla version
+            JLoader::import( 'joomla.version' );
+            $jversion = new JVersion();
+            if (version_compare($jversion->RELEASE, '3.0.0', '<')) {
+                return false;
+            }
+
             // Done
             return true;
         }
