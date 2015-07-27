@@ -40,10 +40,10 @@ class plgSystemMageBridge extends JPlugin
 	{
 		parent::__construct($subject, $config);
 
-        $this->replaceClasses();
-
 		$this->app = JFactory::getApplication();
 		$this->doc = JFactory::getDocument();
+
+        $this->replaceClasses();
 
 		$this->loadLanguage();
 	}
@@ -1265,6 +1265,11 @@ class plgSystemMageBridge extends JPlugin
     {
         if ($this->params->get('override_core', 1) == 0)
         {
+            return false;
+        }
+
+		if ($this->app->isSite() == false)
+		{
             return false;
         }
 
