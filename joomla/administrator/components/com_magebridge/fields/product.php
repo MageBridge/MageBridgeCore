@@ -58,22 +58,10 @@ class MagebridgeFormFieldProduct extends MagebridgeFormFieldAbstract
 			$link .= '&amp;type=product&amp;object=' . $id. '&amp;return=' . $returnType . '&amp;current=' . $value;
 
 			$html = array();
-			if (YireoHelper::isJoomla25())
-			{
-				$html[] = '<div style="float: left;">';
-				$html[] = '<input type="text" id="' . $id. '" name="' . $name . '" value="' . $title . '" />';
-				$html[] = '</div>';
-				$html[] = '<div class="button2-left"><div class="blank">';
-				$html[] = '<a class="modal btn" title="' . JText::_('JSELECT') . '"  href="' . $link . '" rel="{handler: \'iframe\', size: {x:800, y:450}}">' . JText::_('JSELECT') . '</a>';
-				$html[] = '</div></div>' . "\n";
-			}
-			else
-			{
-				$html[] = '<span class="input-append">';
-				$html[] = '<input type="text" class="input-medium" id="' . $id . '" name="' . $name . '" value="' . $title . '" size="35" />';
-				$html[] = '<a class="modal btn" href="' . $link . '" rel="{handler: \'iframe\', size: {x: 800, y: 450}}"><i class="icon-file"></i> ' . JText::_('JSELECT') . '</a>';
-				$html[] = '</span>';
-			}
+			$html[] = '<span class="input-append">';
+			$html[] = '<input type="text" class="input-medium" id="' . $id . '" name="' . $name . '" value="' . $title . '" size="35" />';
+			$html[] = '<a class="modal btn" role="button" href="' . $link . '" rel="{handler: \'iframe\', size: {x: 800, y: 450}}"><i class="icon-file"></i> ' . JText::_('JSELECT') . '</a>';
+			$html[] = '</span>';
 
 			$html = implode("\n", $html);
 
