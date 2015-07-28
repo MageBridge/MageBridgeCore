@@ -18,35 +18,35 @@ require_once JPATH_COMPONENT.'/helpers/loader.php';
 require_once JPATH_ADMINISTRATOR.'/components/com_magebridge/libraries/loader.php';
 
 // Handle the SSO redirect
-if (JRequest::getInt('sso') == 1) {
-    JRequest::setVar('task', 'ssoCheck');
+if (JFactory::getApplication()->input->getInt('sso') == 1) {
+	JFactory::getApplication()->input->setVar('task', 'ssoCheck');
 }
 
 // Handle direct proxy requests
-if (JRequest::getVar('url')) {
-    JRequest::setVar('task', 'proxy');
+if (JFactory::getApplication()->input->getVar('url')) {
+	JFactory::getApplication()->input->setVar('task', 'proxy');
 }
 
 // Initialize debugging
 MagebridgeModelDebug::init();
-            
+			
 // Require the controller
-$requestedController = JRequest::getCmd('controller');
+$requestedController = JFactory::getApplication()->input->getCmd('controller');
 if ($requestedController == 'jsonrpc') {
-    JRequest::setVar('task', JRequest::getCmd('task', '', 'get'));
-    require_once JPATH_COMPONENT.'/controllers/default.jsonrpc.php';
-    $controller = new MageBridgeControllerJsonrpc( );
+	JFactory::getApplication()->input->setVar('task', JFactory::getApplication()->input->getCmd('task', '', 'get'));
+	require_once JPATH_COMPONENT.'/controllers/default.jsonrpc.php';
+	$controller = new MageBridgeControllerJsonrpc( );
 
 } elseif ($requestedController == 'sso') {
-    JRequest::setVar('task', JRequest::getCmd('task', '', 'get'));
-    require_once JPATH_COMPONENT.'/controllers/default.sso.php';
-    $controller = new MageBridgeControllerSso( );
+	JFactory::getApplication()->input->setVar('task', JFactory::getApplication()->input->getCmd('task', '', 'get'));
+	require_once JPATH_COMPONENT.'/controllers/default.sso.php';
+	$controller = new MageBridgeControllerSso( );
 
 } else {
-    require_once JPATH_COMPONENT.'/controller.php';
-    $controller = new MageBridgeController( );
+	require_once JPATH_COMPONENT.'/controller.php';
+	$controller = new MageBridgeController( );
 }
 
 // Perform the Request task
-$controller->execute( JRequest::getCmd('task'));
+$controller->execute( JFactory::getApplication()->input->getCmd('task'));
 $controller->redirect();

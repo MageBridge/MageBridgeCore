@@ -40,7 +40,7 @@ class MageBridgeViewHome extends YireoViewHome
         $icons[] = $this->icon( 'magento', 'COM_MAGEBRIDGE_MAGENTO_BACKEND', 'magento.png', null, '_blank');
         $icons[] = $this->icon( 'tutorials', 'LIB_YIREO_TUTORIALS', 'tutorials.png', null, '_blank');
         $icons[] = $this->icon( 'forum', 'LIB_YIREO_FORUM', 'forum.png', null, '_blank');
-        $this->assignRef('icons', $icons);
+        $this->icons = $icons;
 
         $urls = array();
         $urls['twitter'] ='http://twitter.com/yireo';
@@ -48,10 +48,7 @@ class MageBridgeViewHome extends YireoViewHome
         $urls['tutorials'] = 'http://www.yireo.com/tutorials/magebridge';
         $urls['jed'] ='http://extensions.joomla.org/extensions/bridges/e-commerce-bridges/9440';
         $urls['changelog'] ='http://www.yireo.com/tutorials/magebridge/updates/975-magebridge-changelog'; // @todo: Use this
-        $this->assignRef( 'urls', $urls );
-
-        //$current_version = MageBridgeUpdateHelper::getComponentVersion();
-        //$this->assignRef( 'current_version', $current_version ); // @todo: is this working?
+        $this->urls = $urls;
 
         parent::display($tpl);
     }

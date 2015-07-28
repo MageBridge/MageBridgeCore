@@ -32,7 +32,7 @@ class MageBridgeViewElement extends MageBridgeViewCommon
 	public function display($tpl = null)
 	{
         // Check for AJAX
-        if (JRequest::getInt('ajax') == 1) {
+        if (JFactory::getApplication()->input->getInt('ajax') == 1) {
 
             $this->doAjaxLayout();
 
@@ -41,7 +41,7 @@ class MageBridgeViewElement extends MageBridgeViewCommon
         }
 
         // Determine the layout and data 
-        switch(JRequest::getCmd('type')) {
+        switch(JFactory::getApplication()->input->getCmd('type')) {
 
             case 'product':
                 $this->doProductLayout();

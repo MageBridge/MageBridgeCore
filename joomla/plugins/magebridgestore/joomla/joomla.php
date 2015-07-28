@@ -45,7 +45,7 @@ class plgMageBridgeStoreJoomla extends MageBridgePluginStore
         }
 
         // Check if the condition applies
-        $language_code = JRequest::getCmd('language');
+        $language_code = JFactory::getApplication()->input->getCmd('language');
         if ($actions['joomla_language'] == $language_code) {
             return true;
         }

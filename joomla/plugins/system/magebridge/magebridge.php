@@ -91,10 +91,10 @@ class plgSystemMageBridge extends JPlugin
 				if (substr($current_url, 0, strlen($bridge_url)) == $bridge_url)
 				{
 					$request = substr_replace($current_url, '', 0, strlen($bridge_url));
-					JRequest::setVar('option', 'com_magebridge');
-					JRequest::setVar('view', 'root');
-					JRequest::setVar('Itemid', $root_item_id);
-					JRequest::setVar('request', $request);
+					JFactory::getApplication()->input->setVar('option', 'com_magebridge');
+					JFactory::getApplication()->input->setVar('view', 'root');
+					JFactory::getApplication()->input->setVar('Itemid', $root_item_id);
+					JFactory::getApplication()->input->setVar('request', $request);
 				}
 			}
 
@@ -210,7 +210,7 @@ class plgSystemMageBridge extends JPlugin
 		);
 
 		if (MageBridgeTemplateHelper::isPage($pages)) {
-			JRequest::setVar('tmpl', 'component');
+			JFactory::getApplication()->input->setVar('tmpl', 'component');
 		}
 		*/
 
@@ -293,7 +293,7 @@ class plgSystemMageBridge extends JPlugin
 		}
 
 
-		if ($this->app->isAdmin() && $this->doc->getType() == 'html' && JRequest::getCmd('option') == 'com_magebridge' && JRequest::getCmd('view') == 'root')
+		if ($this->app->isAdmin() && $this->doc->getType() == 'html' && JFactory::getApplication()->input->getCmd('option') == 'com_magebridge' && JFactory::getApplication()->input->getCmd('view') == 'root')
 		{
 			return true;
 		}
@@ -351,11 +351,11 @@ class plgSystemMageBridge extends JPlugin
 	{
 		// Initialize variables
 		$uri = JURI::getInstance();
-		$post = JRequest::get('post');
+		$post = JFactory::getApplication()->input->get('post');
 		$enabled = $this->getParam('enable_nonsef_redirect', 1);
 
 		// Redirect non-SEF URLs to their SEF-equivalent
-		if ($enabled == 1 && empty($post) && $this->app->getCfg('sef') == 1 && JRequest::getCmd('option') == 'com_magebridge')
+		if ($enabled == 1 && empty($post) && JFactory::getConfig()->get('sef') == 1 && JFactory::getApplication()->input->getCmd('option') == 'com_magebridge')
 		{
 			$request = str_replace($uri->base(), '', $uri->toString());
 
@@ -408,10 +408,10 @@ class plgSystemMageBridge extends JPlugin
 	{
 		// Initialize variables
 		$enabled = $this->getParam('enable_urlreplacement_redirect', 1);
-		$post = JRequest::get('post');
+		$post = JFactory::getApplication()->input->get('post');
 
 		// Exit if disabled or if we are not within the MageBridge component
-		if ($enabled == 0 || !empty($post) || JRequest::getCmd('option') != 'com_magebridge')
+		if ($enabled == 0 || !empty($post) || JFactory::getApplication()->input->getCmd('option') != 'com_magebridge')
 		{
 			return;
 		}
@@ -479,8 +479,8 @@ class plgSystemMageBridge extends JPlugin
 	{
 		// Initialize variables
 		$enabled = $this->getParam('enable_comuser_redirect', 0);
-		$post = JRequest::get('post');
-		$option = JRequest::getCmd('option');
+		$post = JFactory::getApplication()->input->get('post');
+		$option = JFactory::getApplication()->input->getCmd('option');
 
 		// Redirect com_user links
 		if ($enabled == 1 && empty($post) && in_array($option, array('com_user', 'com_users')))
@@ -883,9 +883,9 @@ class plgSystemMageBridge extends JPlugin
 	private function handleSsoChecks()
 	{
 		return;
-		if (JRequest::getCmd('task') == 'login')
+		if (JFactory::getApplication()->input->getCmd('task') == 'login')
 		{
-			$user =& JFactory::getUser();
+			$user = JFactory::getUser();
 			if (!$user->guest)
 			{
 				MageBridgeModelUserSSO::checkSSOLogin();
@@ -933,9 +933,9 @@ class plgSystemMageBridge extends JPlugin
 
 		// Add a CB profile-sync
 		if ($this->getParam('spoof_cb_events')) {
-			if (JRequest::getCmd('option') == 'com_comprofiler'
-				&& JRequest::getCmd('task') == 'saveUserEdit'
-				&& JFactory::getUser()->id == JRequest::getInt('id', 0, 'post')) {
+			if (JFactory::getApplication()->input->getCmd('option') == 'com_comprofiler'
+				&& JFactory::getApplication()->input->getCmd('task') == 'saveUserEdit'
+				&& JFactory::getUser()->id == JFactory::getApplication()->input->getInt('id', 0, 'post')) {
 
 				$tasks[] = 'cnsync';
 			}
@@ -943,10 +943,10 @@ class plgSystemMageBridge extends JPlugin
 
 		// Add a JomSocial profile-sync
 		if ($this->getParam('spoof_jomsocial_events')) {
-			if (JRequest::getCmd('option') == 'com_community'
-				&& JRequest::getCmd('view') == 'profile'
-				&& in_array(JRequest::getCmd('task'), array('edit', 'editDetails'))
-				&& JRequest::getCmd('action', null, 'post') == 'save') {
+			if (JFactory::getApplication()->input->getCmd('option') == 'com_community'
+				&& JFactory::getApplication()->input->getCmd('view') == 'profile'
+				&& in_array(JFactory::getApplication()->input->getCmd('task'), array('edit', 'editDetails'))
+				&& JFactory::getApplication()->input->getCmd('action', null, 'post') == 'save') {
 
 				$tasks[] = 'jomsocialsync';
 			}
@@ -973,22 +973,22 @@ class plgSystemMageBridge extends JPlugin
 		$enforce_ssl = $this->loadConfig('enforce_ssl');
 		$from_http_to_https = $this->getParam('enable_ssl_redirect', 1);
 		$from_https_to_http = $this->getParam('enable_nonssl_redirect', 1);
-		$post = JRequest::get('post');
+		$post = JFactory::getApplication()->input->get('post');
 
 		// Match situation where we don't want to redirect
 		if (!empty($post))
 		{
 			return false;
 		}
-		else if (in_array(JRequest::getCmd('view'), array('ajax', 'jsonrpc')))
+		else if (in_array(JFactory::getApplication()->input->getCmd('view'), array('ajax', 'jsonrpc')))
 		{
 			return false;
 		}
-		else if (in_array(JRequest::getCmd('task'), array('ajax', 'json')))
+		else if (in_array(JFactory::getApplication()->input->getCmd('task'), array('ajax', 'json')))
 		{
 			return false;
 		}
-		else if (in_array(JRequest::getCmd('controller'), array('ajax', 'jsonrpc')))
+		else if (in_array(JFactory::getApplication()->input->getCmd('controller'), array('ajax', 'jsonrpc')))
 		{
 			return false;
 		}
@@ -1029,11 +1029,11 @@ class plgSystemMageBridge extends JPlugin
 			{
 
 				// MageBridge links
-				if (JRequest::getCmd('option') == 'com_magebridge')
+				if (JFactory::getApplication()->input->getCmd('option') == 'com_magebridge')
 				{
 
 					// Prevent redirection when doing Single Sign On
-					if (JRequest::getCmd('task') != 'login')
+					if (JFactory::getApplication()->input->getCmd('task') != 'login')
 					{
 						$redirect = true;
 					}
@@ -1053,7 +1053,7 @@ class plgSystemMageBridge extends JPlugin
 			else if ($enforce_ssl == 3)
 			{
 
-				if (JRequest::getCmd('option') == 'com_magebridge')
+				if (JFactory::getApplication()->input->getCmd('option') == 'com_magebridge')
 				{
 					$redirect = (MageBridgeUrlHelper::isSSLPage()) ? true : false;
 				}
@@ -1099,7 +1099,7 @@ class plgSystemMageBridge extends JPlugin
 			else if ($enforce_ssl == 2)
 			{
 
-				if (!in_array(JRequest::getCmd('option'), $components))
+				if (!in_array(JFactory::getApplication()->input->getCmd('option'), $components))
 				{
 					$redirect = true;
 					if ($secureMenuItem == 1)
@@ -1113,7 +1113,7 @@ class plgSystemMageBridge extends JPlugin
 			else if ($enforce_ssl == 3)
 			{
 
-				if (JRequest::getCmd('option') == 'com_magebridge')
+				if (JFactory::getApplication()->input->getCmd('option') == 'com_magebridge')
 				{
 					$redirect = (MageBridgeUrlHelper::isSSLPage()) ? false : true;
 				}
@@ -1148,8 +1148,8 @@ class plgSystemMageBridge extends JPlugin
 	private function spoofMagentoLoginForm()
 	{
 		// Fetch important variables
-		$login = JRequest::getVar('login', array(), 'post', 'array');
-		$option = JRequest::getCmd('option');
+		$login = JFactory::getApplication()->input->getVar('login', array(), 'post', 'array');
+		$option = JFactory::getApplication()->input->getCmd('option');
 
 		// Detect a Magento login-POST
 		if ($option == 'com_magebridge' && !empty($login['username']) && !empty($login['password']))
@@ -1206,9 +1206,9 @@ class plgSystemMageBridge extends JPlugin
 	 */
 	private function doRedirect($name = '', $value = '', $redirect = null)
 	{
-		if (JRequest::getCmd($name) == $value)
+		if (JFactory::getApplication()->input->getCmd($name) == $value)
 		{
-			$return = base64_decode(JRequest::getString('return'));
+			$return = base64_decode(JFactory::getApplication()->input->getString('return'));
 			if (!empty($return))
 			{
 				$return = MageBridgeEncryptionHelper::base64_encode($return);

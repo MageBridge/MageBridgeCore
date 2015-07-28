@@ -45,7 +45,7 @@ class plgMageBridgeStoreNooku extends MageBridgePluginStore
         }
 
         // Check if the condition applies
-        if ($actions['nooku_language'] == JRequest::getCmd('lang')) {
+        if ($actions['nooku_language'] == JFactory::getApplication()->input->getCmd('lang')) {
             return true;
         }
 

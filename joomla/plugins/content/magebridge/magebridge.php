@@ -47,7 +47,8 @@ class plgContentMageBridge extends JPlugin
             $bridge = MageBridgeModelBridge::getInstance();
 
             // Include the MageBridge register
-            $key = md5(var_export($row, true)).':'.JRequest::getCmd('option');
+            $option = JFactory::getApplication()->input->getCmd('option');
+            $key = md5(var_export($row, true)).':'.$option;
             $text = MageBridgeEncryptionHelper::base64_encode($row->text);
 
             // Conditionally load CSS

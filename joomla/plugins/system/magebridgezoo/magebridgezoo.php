@@ -35,7 +35,7 @@ class plgSystemMageBridgeZoo extends JPlugin
         // Don't do anything if MageBridge is not enabled 
         if ($this->isEnabled() == false) return false;
 
-        if (JRequest::getCmd('option') == 'com_zoo') {
+        if (JFactory::getApplication()->input->getCmd('option') == 'com_zoo') {
 
             $body = JResponse::getBody();
 
@@ -64,7 +64,7 @@ class plgSystemMageBridgeZoo extends JPlugin
                 }
 
                 // Include the MageBridge register
-                $key = md5(var_export($body, true)).':'.JRequest::getCmd('option');
+                $key = md5(var_export($body, true)).':'.JFactory::getApplication()->input->getCmd('option');
                 $text = MageBridgeEncryptionHelper::base64_encode($body);
 
                 // Conditionally load CSS

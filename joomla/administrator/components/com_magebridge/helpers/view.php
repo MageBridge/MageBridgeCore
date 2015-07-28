@@ -27,7 +27,7 @@ class MageBridgeViewHelper
     {
         // Load important variables
         $document = JFactory::getDocument();
-        $view = JRequest::getCmd('view');
+        $view = JFactory::getApplication()->input->getCmd('view');
 
         // Add CSS-code
         $document->addStyleSheet(JURI::root().'media/com_magebridge/css/backend.css');
@@ -84,7 +84,7 @@ class MageBridgeViewHelper
             if (MageBridgeAclHelper::isAuthorized($view, false) == false) continue;
 
             // Add the view
-            $active = (JRequest::getCmd('view') == $view) ? true : false;
+            $active = (JFactory::getApplication()->input->getCmd('view') == $view) ? true : false;
             $url = 'index.php?option=com_magebridge&view='.$view;
             $title = JText::_('COM_MAGEBRIDGE_VIEW_'.$view);
 

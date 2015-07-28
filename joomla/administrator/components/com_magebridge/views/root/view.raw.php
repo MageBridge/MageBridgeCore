@@ -32,7 +32,7 @@ class MageBridgeViewRoot extends MageBridgeView
         $application = JFactory::getApplication();
 
         // Set the admin-request
-        MageBridgeUrlHelper::setRequest(JRequest::getVar('request', 'admin'));
+        MageBridgeUrlHelper::setRequest(JFactory::getApplication()->input->getVar('request', 'admin'));
 
         // Set which block to display
         $this->setBlock('root');

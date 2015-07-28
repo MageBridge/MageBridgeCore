@@ -65,13 +65,13 @@ class plgSystemMageBridgeYoo extends JPlugin
             if (is_array($data)) {
 
                 // Fetch the Itemid
-                $Itemid = JRequest::getInt('Itemid');
+                $Itemid = JFactory::getApplication()->input->getInt('Itemid');
 
                 // Define the current profile-indications
                 $profileDefault = (isset($data['profile_default'])) ? $data['profile_default'] : null;
 
                 // Load the profile-specific CSS, set in GET
-                $profileGet = JRequest::getCmd('profile');
+                $profileGet = JFactory::getApplication()->input->getCmd('profile');
                 if (!empty($profileGet)) {
                     $profile = $profileGet;
                     MageBridgeTemplateHelper::load('css', 'profile-'.$profile.'.css');

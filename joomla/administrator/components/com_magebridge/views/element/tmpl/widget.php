@@ -57,11 +57,11 @@ if (!empty($this->widgets)) {
         $css = array();
         $return = $widget['id'];
 
-        if (JRequest::getCmd('current') == $return) {
+        if (JFactory::getApplication()->input->getCmd('current') == $return) {
             $css[] = 'current';
         }
 
-        $js = "window.parent.jSelectWidget('$return', '$return', '".JRequest::getVar('object')."');";
+        $js = "window.parent.jSelectWidget('$return', '$return', '".JFactory::getApplication()->input->getVar('object')."');";
         ?>
         <tr class="<?php echo implode(' ', $css); ?>">
             <td>

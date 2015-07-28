@@ -62,7 +62,7 @@ class plgMageBridgeStoreJoomfish extends MageBridgePluginStore
                 }
             }
         } else {
-            $language_code = JRequest::getCmd('lang');
+            $language_code = JFactory::getApplication()->input->getCmd('lang');
         }
 
         // Check if the condition applies

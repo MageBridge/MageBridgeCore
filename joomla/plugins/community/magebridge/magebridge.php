@@ -88,7 +88,7 @@ class plgCommunityMageBridge extends CApplications
         if ($this->getParams()->get('enable_tab',1) == 0) return;
 
         // Fetch the user and sync it
-        $user =& CFactory::getUser($user_id);
+        $user = CFactory::getUser($user_id);
         if (!empty($user)) {
             $this->syncUser($user);
         }
@@ -139,7 +139,7 @@ class plgCommunityMageBridge extends CApplications
 
         // Get the variables
         $toolbar = CFactory::getToolbar();
-		$user =& CFactory::getActiveProfile();
+		$user = CFactory::getActiveProfile();
         $username = $user->getDisplayName();
 
         $tab = $this->getTab();

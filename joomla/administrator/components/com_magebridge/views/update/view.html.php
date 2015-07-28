@@ -148,9 +148,9 @@ class MageBridgeViewUpdate extends YireoView
             JError::raiseNotice( 'UPDATE', JText::_('COM_MAGEBRIDGE_VIEW_UPDATE_NEW_VERSIONS'));
         }
 
-        $this->assignRef('data', $data);
-        $this->assignRef('update', $update);
-        $this->assignRef('search', $filter_search);
+        $this->data = $data;
+        $this->update = $update;
+        $this->search = $filter_search;
 
 		parent::display($tpl);
 	}

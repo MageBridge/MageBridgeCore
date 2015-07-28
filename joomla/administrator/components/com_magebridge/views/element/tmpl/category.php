@@ -27,7 +27,7 @@ defined('_JEXEC') or die('Restricted access');
         <button onclick="document.getElementById('search').value='';this.form.submit();"><?php echo JText::_('LIB_YIREO_VIEW_RESET'); ?></button>
     </td>
     <td align="right" width="20%">
-        <?php $js = "window.parent.jSelectCategory('', '', '".JRequest::getVar('object')."');"; ?>
+        <?php $js = "window.parent.jSelectCategory('', '', '".JFactory::getApplication()->input->getVar('object')."');"; ?>
         <button onclick="<?php echo $js; ?>"><?php echo JText::_('COM_MAGEBRIDGE_NO_CATEGORY'); ?></button>
     </td>
 </tr>
@@ -63,7 +63,7 @@ defined('_JEXEC') or die('Restricted access');
 <?php 
 if (!empty($this->categories)) {
         
-    if (JRequest::getCmd('allow_root') == 1) {
+    if (JFactory::getApplication()->input->getCmd('allow_root') == 1) {
         $allowRoot = true;
     } else {
         $allowRoot = false;
@@ -72,9 +72,9 @@ if (!empty($this->categories)) {
     $i = 0;
     foreach ($this->categories as $category) {
 
-        if (JRequest::getCmd('return') == 'id') {
+        if (JFactory::getApplication()->input->getCmd('return') == 'id') {
             $return = 'category_id';
-        } else if (JRequest::getCmd('return') == 'url_key') {
+        } else if (JFactory::getApplication()->input->getCmd('return') == 'url_key') {
             $return = 'url_key';
         } else if (!empty($category['url'])) {
             $return = 'url';
@@ -83,7 +83,7 @@ if (!empty($this->categories)) {
         }
 
         $css = array();
-        if (isset($category[$return]) && JRequest::getCmd('current') == $category[$return]) {
+        if (isset($category[$return]) && JFactory::getApplication()->input->getCmd('current') == $category[$return]) {
             $css[] = 'current';
         }
 
@@ -94,9 +94,9 @@ if (!empty($this->categories)) {
         }
 
         $category_name = htmlspecialchars(str_replace("'", '', $category['name']));
-        $jsDefault = "window.parent.jSelectCategory('".$category[$return]."', '$category_name', '".JRequest::getVar('object')."');";
-        $jsUrl = "window.parent.jSelectCategory('".$category['url']."', '$category_name', '".JRequest::getVar('object')."');";
-        $jsId = "window.parent.jSelectCategory('".$category['category_id']."', '$category_name', '".JRequest::getVar('object')."');";
+        $jsDefault = "window.parent.jSelectCategory('".$category[$return]."', '$category_name', '".JFactory::getApplication()->input->getVar('object')."');";
+        $jsUrl = "window.parent.jSelectCategory('".$category['url']."', '$category_name', '".JFactory::getApplication()->input->getVar('object')."');";
+        $jsId = "window.parent.jSelectCategory('".$category['category_id']."', '$category_name', '".JFactory::getApplication()->input->getVar('object')."');";
         ?>
         <tr class="<?php echo implode(' ', $css); ?>">
             <td>

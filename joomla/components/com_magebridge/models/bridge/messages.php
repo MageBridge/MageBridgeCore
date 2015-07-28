@@ -12,65 +12,65 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
-/*
+/**
  * Main bridge class
  */
 class MageBridgeModelBridgeMessages extends MageBridgeModelBridgeSegment
 {
-    /*
-     * Singleton 
-     *
-     * @param string $name
-     * @return object
-     */
-    public static function getInstance($name = null)
-    {
-        return parent::getInstance('MageBridgeModelBridgeMessages');
-    }
+	/**
+	 * Singleton 
+	 *
+	 * @param string $name
+	 * @return object
+	 */
+	public static function getInstance($name = null)
+	{
+		return parent::getInstance('MageBridgeModelBridgeMessages');
+	}
 
-    /*
-     * Load the data from the bridge
-     */
-    public function getResponseData()
-    {
-        return MageBridgeModelRegister::getInstance()->getData('messages');
-    }
+	/**
+	 * Load the data from the bridge
+	 */
+	public function getResponseData()
+	{
+		return MageBridgeModelRegister::getInstance()->getData('messages');
+	}
 
-    /*
-     * Method to set the messages
-     */
-    public function setMessages()
-    {
-        if (MagebridgeModelConfig::load('enable_messages') == 0) {
-            return false;
-        }
+	/**
+	 * Method to set the messages
+	 */
+	public function setMessages()
+	{
+		if (MagebridgeModelConfig::load('enable_messages') == 0) {
+			return false;
+		}
 
-        $messages = $this->getResponseData();
-        if (!empty($messages) && is_array($messages)) {
+		$messages = $this->getResponseData();
+		if (!empty($messages) && is_array($messages)) {
 
-            $application = JFactory::getApplication();
-            foreach ($messages as $message) {
+			$application = JFactory::getApplication();
+			foreach ($messages as $message) {
 
-                if (!is_array($message)) {
-                    continue;
-                }
+				if (!is_array($message)) {
+					continue;
+				}
 
-                switch($message['type']) {
-                    case 'warning':
-                        $type = 'warning';
-                        break;
-                    case 'error':
-                        $type = 'error';
-                        break;
-                    default:
-                        $type = 'message';
-                        break;
-                }
-                
-                $application->enqueueMessage($message['message'], $type);
-            }
-        }
+				switch($message['type']) {
+					case 'warning':
+						$type = 'warning';
+						break;
+					case 'error':
+						$type = 'error';
+						break;
+					default:
+						$type = 'message';
+						break;
+				}
+				
+				$application->enqueueMessage($message['message'], $type);
+			}
+		}
 
-        return true;
-    }
+		return true;
+	}
 }

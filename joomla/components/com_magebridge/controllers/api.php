@@ -20,59 +20,59 @@ jimport( 'joomla.application.component.controller' );
  */
 class MageBridgeControllerApi extends JController
 {
-    public function run()
-    {
-        // Parse the POST-request
-        $post = JRequest::get('post');
-        $data = array();
+	public function run()
+	{
+		// Parse the POST-request
+		$post = JFactory::getApplication()->input->get('post');
+		$data = array();
 
-        foreach ($post as $name => $value) {
-            $value = json_decode($value);
-            $data[$name] = $value;
-        }
+		foreach ($post as $name => $value) {
+			$value = json_decode($value);
+			$data[$name] = $value;
+		}
 
-        if ($this->authenticate($data) == false) {
-            return false;
-        }
+		if ($this->authenticate($data) == false) {
+			return false;
+		}
 
-        if (is_array($data) && !empty($data)) {
-            $this->dispatch($data);
-        }
-    }
+		if (is_array($data) && !empty($data)) {
+			$this->dispatch($data);
+		}
+	}
 
-    protected function authenticate()
-    {
-        if (isset($data['meta']['api_user']) && isset($data['meta']['api_key'])) {
-            // @todo: Perform authentication of these data
-            return true;
-        }
+	protected function authenticate()
+	{
+		if (isset($data['meta']['api_user']) && isset($data['meta']['api_key'])) {
+			// @todo: Perform authentication of these data
+			return true;
+		}
 
-        return false;
-    } 
+		return false;
+	} 
 
-    /*
-     * Method to dispatch the incoming request to various parts of the bridge
-     *
-     * @param null
-     * @return null
-     */
-    protected function dispatch($data)
-    {
-        foreach ($data as $index => $segment) {
+	/**
+	 * Method to dispatch the incoming request to various parts of the bridge
+	 *
+	 * @param null
+	 * @return null
+	 */
+	protected function dispatch($data)
+	{
+		foreach ($data as $index => $segment) {
 
-            switch($index) {
-                case 'authenticate':
-                    // @todo: $segment['data'] = MageBridgeModelUser->authenticate($segment['arguments']);
-                    break;
+			switch($index) {
+				case 'authenticate':
+					// @todo: $segment['data'] = MageBridgeModelUser->authenticate($segment['arguments']);
+					break;
 
-                case 'event':
-                    // @todo: $segment['data'] = MageBridgeModelUser->authenticate($segment['arguments']);
-                    break;
-    
-                case 'log':
-                    // @todo: $segment['data'] = MageBridgeModelUser->authenticate($segment['arguments']);
-                    break;
-            }
-        }
-    }
+				case 'event':
+					// @todo: $segment['data'] = MageBridgeModelUser->authenticate($segment['arguments']);
+					break;
+	
+				case 'log':
+					// @todo: $segment['data'] = MageBridgeModelUser->authenticate($segment['arguments']);
+					break;
+			}
+		}
+	}
 }

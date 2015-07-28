@@ -37,11 +37,9 @@ class MageBridgeViewCommon extends MageBridgeView
         // Load jQuery
         YireoHelper::jquery();
 
-        $current = JRequest::getVar('current');
-        $object = JRequest::getVar('object');
+        $this->current = JFactory::getApplication()->input->getVar('current');
+        $this->object = JFactory::getApplication()->input->getVar('object');
 
-        $this->assignRef('current', $current);
-        $this->assignRef('object', $object);
 		parent::display($tpl);
     }
 
@@ -60,7 +58,7 @@ class MageBridgeViewCommon extends MageBridgeView
         $request = array();
 
         // Get the current request-options 
-        $get = JRequest::get('get');
+        $get = JFactory::getApplication()->input->get('get');
         if (!empty($get)) {
             foreach ($get as $name => $value) {
                 $request[$name] = $value;
@@ -68,7 +66,7 @@ class MageBridgeViewCommon extends MageBridgeView
         }
         
         // Merge the POST if it is there
-        $post = JRequest::get('post');
+        $post = JFactory::getApplication()->input->get('post');
         if (!empty($post)) {
             foreach ($post as $name => $value) {
                 $request[$name] = $value;
@@ -95,7 +93,7 @@ class MageBridgeViewCommon extends MageBridgeView
     {
         // Initialize some important variables
         $application = JFactory::getApplication();
-        $option = JRequest::getCmd( 'option' ).'-element-categories';
+        $option = JFactory::getApplication()->input->getCmd( 'option' ).'-element-categories';
 
         // Set common options
         $this->setTitle('Category');
@@ -117,8 +115,7 @@ class MageBridgeViewCommon extends MageBridgeView
         }
 
         // Initialize pagination
-        $categories = $this->initPagination('categories', $categories);
-        $this->assignRef('categories', $categories);
+        $this->categories = $this->initPagination('categories', $categories);
 
         // Add a dropdown list for Store Views
         $current_store = $application->getUserStateFromRequest($option.'.store', 'store');
@@ -133,7 +130,7 @@ class MageBridgeViewCommon extends MageBridgeView
         $lists = array();
         $lists['search']= $search;
         $lists['store']= $store;
-        $this->assignRef('lists', $lists);
+        $this->lists = $lists;
     }
 
     /*
@@ -154,19 +151,18 @@ class MageBridgeViewCommon extends MageBridgeView
         $widgets = $cache->call( array( 'MageBridgeElementHelper', 'getWidgetList' ));
 
         // Initialize pagination
-        $widgets = $this->initPagination('widgets', $widgets);
-        $this->assignRef('widgets', $widgets);
+        $this->widgets = $this->initPagination('widgets', $widgets);
 
         // Initialize search
         $application = JFactory::getApplication();
-        $option = JRequest::getCmd( 'option' ).'-element-widgets';
+        $option = JFactory::getApplication()->input->getCmd( 'option' ).'-element-widgets';
         $search = $application->getUserStateFromRequest( $option.'.search', 'search', '', 'string' );
         $search = JString::strtolower( $search );
         
         // Build the lists
         $lists = array();
         $lists['search']= $search;
-        $this->assignRef('lists', $lists);
+        $this->lists = $lists;
     }
 
     /*
@@ -187,19 +183,18 @@ class MageBridgeViewCommon extends MageBridgeView
         $customers = $cache->call( array( 'MageBridgeElementHelper', 'getCustomerList' ));
 
         // Initialize pagination
-        $customers = $this->initPagination('customers', $customers);
-        $this->assignRef('customers', $customers);
+        $this->customers = $this->initPagination('customers', $customers);
 
         // Initialize search
         $application = JFactory::getApplication();
-        $option = JRequest::getCmd( 'option' ).'-element-customers';
+        $option = JFactory::getApplication()->input->getCmd( 'option' ).'-element-customers';
         $search = $application->getUserStateFromRequest( $option.'.search', 'search', '', 'string' );
         $search = JString::strtolower( $search );
         
         // Build the lists
         $lists = array();
         $lists['search']= $search;
-        $this->assignRef('lists', $lists);
+        $this->lists = $lists;
     }
 
     /*
@@ -220,19 +215,18 @@ class MageBridgeViewCommon extends MageBridgeView
         $products = $cache->call( array( 'MageBridgeElementHelper', 'getProductList' ));
 
         // Initialize pagination
-        $products = $this->initPagination('products', $products);
-        $this->assignRef('products', $products);
+        $this->products = $this->initPagination('products', $products);
 
         // Initialize search
         $application = JFactory::getApplication();
-        $option = JRequest::getCmd( 'option' ).'-element-products';
+        $option = JFactory::getApplication()->input->getCmd( 'option' ).'-element-products';
         $search = $application->getUserStateFromRequest( $option.'.search', 'search', '', 'string' );
         $search = JString::strtolower( $search );
         
         // Build the lists
         $lists = array();
         $lists['search']= $search;
-        $this->assignRef('lists', $lists);
+        $this->lists = $lists;
     }
 
     /*
@@ -246,14 +240,12 @@ class MageBridgeViewCommon extends MageBridgeView
     {
         // Get the limit & limitstart
         $application = JFactory::getApplication();
-        $option = JRequest::getCmd( 'option' ).'-element-'.$type;
+        $option = JFactory::getApplication()->input->getCmd( 'option' ).'-element-'.$type;
         $limit = $application->getUserStateFromRequest( $option.'.limit', 'limit', $application->getCfg('list_limit'), 'int' );
         $limitstart = $application->getUserStateFromRequest( $option.'.limitstart', 'limitstart', 0, 'int' );
 
         // Set the pagination
-        jimport('joomla.html.pagination');
-        $pagination = new JPagination( count($items), $limitstart, $limit );
-        $this->assignRef('pagination', $pagination);
+        $this->pagination = new JPagination( count($items), $limitstart, $limit );
 
         // Do not do anything when using a limit of 0
         if ($limit == 0) {

@@ -183,14 +183,16 @@ class MageBridgeUpdateHelper
         }
 
         // Set the target path if not given
+        $config = JFactory::getConfig();
+
         if (!$target) {
-            $target = $app->getCfg('tmp_path').'/'.JInstallerHelper::getFilenameFromURL($url);
+            $target = $config->get('tmp_path').'/'.JInstallerHelper::getFilenameFromURL($url);
         } else {
-            $target = $app->getCfg('tmp_path').'/'.basename($target);
+            $target = $config->get('tmp_path').'/'.basename($target);
         }
 
         // Write received data to file
-        JFile::write($target, $data);
+        file_put_contents($target, $data);
 
         // Return the name of the downloaded package
         return basename($target);

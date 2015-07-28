@@ -35,9 +35,9 @@ class MageBridgeController extends YireoController
         $this->registerTask('login', 'ssoCheck');
         $this->registerTask('logout', 'ssoCheck');
 
-        $request = JRequest::getVar('request');
-        if (JRequest::getCmd('view') == 'root' && !empty($request)) {
-            JRequest::setVar('format', 'raw');
+        $request = JFactory::getApplication()->input->getVar('request');
+        if (JFactory::getApplication()->input->getCmd('view') == 'root' && !empty($request)) {
+            JFactory::getApplication()->input->setVar('format', 'raw');
         }
     }
 
@@ -62,21 +62,21 @@ class MageBridgeController extends YireoController
     public function display($cachable = false, $urlparams = false)
     {
         // If the caching view is called, perform the cache-task instead
-        if (JRequest::getCmd('view') == 'cache') {
+        if (JFactory::getApplication()->input->getCmd('view') == 'cache') {
             return $this->cache();    
         }
 
         // Redirect to the Magento Admin Panel
-        if (JRequest::getCmd('view') == 'magento') {
+        if (JFactory::getApplication()->input->getCmd('view') == 'magento') {
             $link = MagebridgeModelConfig::load('url').'index.php/'.MagebridgeModelConfig::load('backend');
             return $this->setRedirect($link);
         }
 
         // Redirect to the Yireo Forum
-        if (JRequest::getCmd('view') == 'forum') return $this->setRedirect('http://www.yireo.com/forum/');
+        if (JFactory::getApplication()->input->getCmd('view') == 'forum') return $this->setRedirect('http://www.yireo.com/forum/');
 
         // Redirect to the Yireo Tutorials
-        if (JRequest::getCmd('view') == 'tutorials') return $this->setRedirect('http://www.yireo.com/tutorials/magebridge/');
+        if (JFactory::getApplication()->input->getCmd('view') == 'tutorials') return $this->setRedirect('http://www.yireo.com/tutorials/magebridge/');
 
         parent::display();
     }
@@ -101,7 +101,7 @@ class MageBridgeController extends YireoController
         $cache->clean();
 
         // Build the next URL
-        $view = JRequest::getCmd('view');
+        $view = JFactory::getApplication()->input->getCmd('view');
         if ($view == 'cache') $view = 'home';
         $link = 'index.php?option=com_magebridge&view='.$view;
 
@@ -148,7 +148,7 @@ class MageBridgeController extends YireoController
         if ($this->_validate() == false) return false;
 
         // Get the selected packages
-        $packages = JRequest::getVar('packages');
+        $packages = JFactory::getApplication()->input->getVar('packages');
 
         // Get the model and update the packages
         $model = $this->getModel('update');
@@ -217,12 +217,12 @@ class MageBridgeController extends YireoController
         if ($this->_validate() == false) return false;
 
         // Only clean items for the right view
-        if (JRequest::getCmd('view') == 'logs') {
+        if (JFactory::getApplication()->input->getCmd('view') == 'logs') {
 
             // Clean up the database
             $db = JFactory::getDBO();
             $db->setQuery('DELETE FROM #__magebridge_log WHERE 1 = 1');
-            $db->query();
+            $db->execute();
 
             // Clean up the database
             $app = JFactory::getApplication();
@@ -252,7 +252,7 @@ class MageBridgeController extends YireoController
         if ($this->_validate() == false) return false;
 
         // Only clean items for the right view
-        if (JRequest::getCmd('view') == 'logs') {
+        if (JFactory::getApplication()->input->getCmd('view') == 'logs') {
             $link = 'index.php?option=com_magebridge&view=logs&format=csv';
             $this->setRedirect($link);
             return;
@@ -274,10 +274,10 @@ class MageBridgeController extends YireoController
         if ($this->_validate() == false) return false;
 
         // POST values
-        $user_id = JRequest::getInt('user_id');
-        $product_sku = JRequest::getString('product_sku');
-        $count = JRequest::getInt('count');
-        $status = JRequest::getCmd('order_status');
+        $user_id = JFactory::getApplication()->input->getInt('user_id');
+        $product_sku = JFactory::getApplication()->input->getString('product_sku');
+        $count = JFactory::getApplication()->input->getInt('count');
+        $status = JFactory::getApplication()->input->getCmd('order_status');
 
         // Validation checks
         if(!$user_id > 0) {
@@ -329,7 +329,7 @@ class MageBridgeController extends YireoController
     protected function _validate($check_token = true, $check_demo = true)
     {
         // Check the token
-        if ($check_token == true && (JRequest::checkToken('post') == false && JRequest::checkToken('get') == false)) {
+        if ($check_token == true && (JFactory::getApplication()->input->checkToken('post') == false && JFactory::getApplication()->input->checkToken('get') == false)) {
             $msg = JText::_('JINVALID_TOKEN');
             $link = 'index.php?option=com_magebridge&view=home';
             $this->setRedirect( $link, $msg );

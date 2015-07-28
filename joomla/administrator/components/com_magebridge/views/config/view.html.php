@@ -29,7 +29,7 @@ class MageBridgeViewConfig extends YireoCommonView
     public function display($tpl = null)
     {
         // Load important variables
-        $layout = JRequest::getCmd('layout');
+        $layout = JFactory::getApplication()->input->getCmd('layout');
 
         // Initalize common elements
         MageBridgeViewHelper::initialize('CONFIG');
@@ -43,11 +43,9 @@ class MageBridgeViewConfig extends YireoCommonView
         jimport('joomla.html.pane');
         if(class_exists('JPane')) {
             $activeTab = $this->application->getUserStateFromRequest( $this->_option.'.tab', 'tab', 1, 'int' );
-            $pane = JPane::getInstance('tabs', array('startOffset' => $activeTab));
-            $this->assignRef('pane', $pane);
+            $this->pane = JPane::getInstance('tabs', array('startOffset' => $activeTab));
         } else {
-            $pane = false;
-            $this->assignRef('pane', $pane);
+            $this->pane = false;
         }
 
         // Toolbar options
@@ -85,8 +83,9 @@ class MageBridgeViewConfig extends YireoCommonView
         $formFile = JPATH_SITE.'/components/com_magebridge/models/config.xml';
         $form = JForm::getInstance('config', $formFile);
         $form->bind($configData);
-		$this->assignRef('form', $form);
-        $this->assignRef('config', $config);
+        $this->form = $form;
+
+        $this->config = $config;
 
         parent::display($tpl);
     }

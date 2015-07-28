@@ -237,7 +237,7 @@ class ModMageBridgeSwitcherHelper
 						}
 						else
 						{
-							$request = JRequest::getString('request');
+							$request = JFactory::getApplication()->input->getString('request');
 						}
 
 						// Construct the Store View URL

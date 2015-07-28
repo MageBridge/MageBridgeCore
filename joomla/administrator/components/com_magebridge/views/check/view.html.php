@@ -38,13 +38,13 @@ class MageBridgeViewCheck extends YireoView
      */
     public function display($tpl = null)
     {
-        if (JRequest::getCmd('layout') == 'browser') {
+        if (JFactory::getApplication()->input->getCmd('layout') == 'browser') {
             $this->displayBrowser($tpl);
 
-        } elseif (JRequest::getCmd('layout') == 'product') {
+        } elseif (JFactory::getApplication()->input->getCmd('layout') == 'product') {
             $this->displayProduct($tpl);
 
-        } elseif (JRequest::getCmd('layout') == 'result') {
+        } elseif (JFactory::getApplication()->input->getCmd('layout') == 'result') {
             $this->displayResult($tpl);
 
         } else {
@@ -68,8 +68,8 @@ class MageBridgeViewCheck extends YireoView
 
         JToolBarHelper::custom( 'refresh', 'preview.png', 'preview_f2.png', 'Refresh', false );
 
-        $checks = $this->get('checks');
-        $this->assignRef('checks', $checks);
+        $this->checks = $this->get('checks');
+
         parent::display($tpl);
     }
 
@@ -84,10 +84,7 @@ class MageBridgeViewCheck extends YireoView
         // Load the form if it's there
         $this->getModel()->setFormName('check_product');
         $this->_viewParent = 'form';
-        $form = $this->get('Form');
-        if(!empty($form)) {
-            $this->assignRef('form', $form);
-        }
+        $this->form = $this->get('Form');
 
         // Initalize common elements
         MageBridgeViewHelper::initialize('PRODUCT_RELATION_TEST');
@@ -110,11 +107,9 @@ class MageBridgeViewCheck extends YireoView
 
         JToolBarHelper::custom( 'refresh', 'preview.png', 'preview_f2.png', 'Browse', false );
 
-        $url = MagebridgeModelConfig::load('url').'magebridge.php';
-        $host = MagebridgeModelConfig::load('host');
+        $this->url = MagebridgeModelConfig::load('url').'magebridge.php';
+        $this->host = MagebridgeModelConfig::load('host');
 
-        $this->assignRef('url', $url);
-        $this->assignRef('host', $host);
         parent::display('browser');
     }
 

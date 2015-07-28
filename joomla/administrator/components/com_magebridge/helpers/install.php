@@ -51,7 +51,7 @@ class MageBridgeInstallHelper
             if(empty($query)) continue;
             $db->setQuery($query);
             try {
-                $db->query();
+                $db->execute();
             } catch(Exception $e) {
             }
         }

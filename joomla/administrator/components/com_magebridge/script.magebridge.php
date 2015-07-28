@@ -56,7 +56,7 @@ if(class_exists('com_magebridgeInstallerScript') == false) {
                         if (!empty($query)) {
                             $db->setQuery($query);
                             try {
-                                $db->query();
+                                $db->execute();
                             } catch(Exception $e) {}
                         }
                     }

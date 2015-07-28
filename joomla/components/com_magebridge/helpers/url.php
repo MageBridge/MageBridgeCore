@@ -2,33 +2,33 @@
 /**
  * Joomla! component MageBridge
  *
- * @author    Yireo (info@yireo.com)
+ * @author	Yireo (info@yireo.com)
  * @package   MageBridge
  * @copyright Copyright 2015
  * @license   GNU Public License
- * @link      http://www.yireo.com
+ * @link	  http://www.yireo.com
  */
 
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
-/*
+/**
  * General helper for usage in Joomla!
  */
 
 class MageBridgeUrlHelper
 {
-	/*
+	/**
 	 * Static variable for the current Magento request
 	 */
 	public static $request = null;
 
-	/*
+	/**
 	 * Static variable for the original Magento request
 	 */
 	public static $original_request = null;
 
-	/*
+	/**
 	 * Helper-method to reset the current Magento request
 	 *
 	 * @param string $request
@@ -49,7 +49,7 @@ class MageBridgeUrlHelper
 		}
 	}
 
-	/*
+	/**
 	 * Helper-method to determine the current Magento request
 	 *
 	 * @param string $force_request
@@ -60,7 +60,7 @@ class MageBridgeUrlHelper
 		return self::$original_request;
 	}
 
-	/*
+	/**
 	 * Helper-method to determine the current Magento request
 	 *
 	 * @param string $force_request
@@ -83,7 +83,7 @@ class MageBridgeUrlHelper
 			}
 			else
 			{
-				if (JRequest::getCmd('option') != 'com_magebridge')
+				if (JFactory::getApplication()->input->getCmd('option') != 'com_magebridge')
 				{
 					$request = null;
 
@@ -93,7 +93,7 @@ class MageBridgeUrlHelper
 				{
 					if (empty($request))
 					{
-						$request = JRequest::getString('request');
+						$request = JFactory::getApplication()->input->getString('request');
 					}
 
 					// Build a list of current variables
@@ -110,7 +110,7 @@ class MageBridgeUrlHelper
 						$request = preg_replace('/^\//', '', $request);
 
 						// Convert the current request into an array (example: /checkout/cart)
-						/*$request_vars = explode('/', preg_replace('/\?([*]+)/', '', $request));
+						/**$request_vars = explode('/', preg_replace('/\?([*]+)/', '', $request));
 						if (!empty($request_vars)) {
 							foreach ($request_vars as $var) {
 								$current_vars[] = $var;
@@ -141,7 +141,7 @@ class MageBridgeUrlHelper
 
 					// Add custom GET variables
 					$get = array();
-					$get_vars = JRequest::get('get');
+					$get_vars = JFactory::getApplication()->input->get('get');
 
 					if (!empty($get_vars))
 					{
@@ -179,7 +179,7 @@ class MageBridgeUrlHelper
 		return self::$request;
 	}
 
-	/*
+	/**
 	 * Helper-method to get a URL replacement for a specific request
 	 *
 	 * @param string $request
@@ -207,7 +207,7 @@ class MageBridgeUrlHelper
 		return $urls;
 	}
 
-	/*
+	/**
 	 * Helper-method to get all MageBridge menu-items
 	 *
 	 * @param bool $only_authorised
@@ -248,7 +248,7 @@ class MageBridgeUrlHelper
 		return $items;
 	}
 
-	/*
+	/**
 	 * Helper-method to determine whether to enable the Root Menu-Item
 	 *
 	 * @param null
@@ -264,7 +264,7 @@ class MageBridgeUrlHelper
 		return false;
 	}
 
-	/*
+	/**
 	 * Helper-method to determine whether to enforce the Root Menu-Item
 	 *
 	 * @param null
@@ -280,7 +280,7 @@ class MageBridgeUrlHelper
 		return false;
 	}
 
-	/*
+	/**
 	 * Helper method to determine the MageBridge Root Menu-Item is set to be default
 	 *
 	 * @param null
@@ -298,7 +298,7 @@ class MageBridgeUrlHelper
 		return false;
 	}
 
-	/*
+	/**
 	 * Helper-method to get the Root Menu-Item
 	 *
 	 * @param null
@@ -344,7 +344,7 @@ class MageBridgeUrlHelper
 				}
 				else
 				{
-					if ($root_item->id == JRequest::getInt('Itemid'))
+					if ($root_item->id == JFactory::getApplication()->input->getInt('Itemid'))
 					{
 						return $root_item;
 					}
@@ -365,7 +365,7 @@ class MageBridgeUrlHelper
 		return false;
 	}
 
-	/*
+	/**
 	 * Helper-method to get the current Menu-Item
 	 *
 	 * @param null
@@ -389,7 +389,7 @@ class MageBridgeUrlHelper
 				{
 					foreach ($items as $item)
 					{
-						if ($item->id == JRequest::getInt('Itemid'))
+						if ($item->id == JFactory::getApplication()->input->getInt('Itemid'))
 						{
 							$current_item = $item;
 							break;
@@ -402,7 +402,7 @@ class MageBridgeUrlHelper
 		return $current_item;
 	}
 
-	/*
+	/**
 	 * Helper-method to get the specified Menu-Item
 	 *
 	 * @param int $id
@@ -466,7 +466,7 @@ class MageBridgeUrlHelper
 		return null;
 	}
 
-	/*
+	/**
 	 * Helper-method to get the current URL
 	 *
 	 * @param null
@@ -477,7 +477,7 @@ class MageBridgeUrlHelper
 		return JURI::getInstance()->toString();
 	}
 
-	/*
+	/**
 	 * Helper-method to strip domains from the URL
 	 *
 	 * @param string $url
@@ -502,7 +502,7 @@ class MageBridgeUrlHelper
 		return $url;
 	}
 
-	/*
+	/**
 	 * Helper-method to get a Joomla! SEF URL
 	 *
 	 * @param string $url
@@ -536,7 +536,7 @@ class MageBridgeUrlHelper
 		return $url;
 	}
 
-	/*
+	/**
 	 * Helper method to check if the URL-suffix is used in Joomla!
 	 *
 	 * @param null
@@ -544,17 +544,17 @@ class MageBridgeUrlHelper
 	 */
 	static public function hasUrlSuffix()
 	{
-		$app = JFactory::getApplication();
+		$config = JFactory::getConfig();
 
-		if ($app->getCfg('sef') == 1)
+		if ($config->get('sef') == 1)
 		{
-			return (boolean) $app->getCfg('sef_suffix');
+			return (boolean) $config->get('sef_suffix');
 		}
 
 		return false;
 	}
 
-	/*
+	/**
 	 * Helper method to only return the Forward SEF option if SEF is actually enabled
 	 *
 	 * @param null
@@ -628,7 +628,7 @@ class MageBridgeUrlHelper
 		}
 	}
 
-	/*
+	/**
 	 * Helper method to only return the Forward SEF option if SEF is actually enabled
 	 *
 	 * @param null
@@ -636,9 +636,9 @@ class MageBridgeUrlHelper
 	 */
 	static public function getForwardSef()
 	{
-		$app = JFactory::getApplication();
+		$config = JFactory::getConfig();
 
-		if ($app->getCfg('sef') == 1)
+		if ($config->get('sef') == 1)
 		{
 			return 1;
 		}
@@ -646,7 +646,7 @@ class MageBridgeUrlHelper
 		return 0;
 	}
 
-	/*
+	/**
 	 * Helper method to get the proper Itemid
 	 *
 	 * @param null
@@ -661,10 +661,10 @@ class MageBridgeUrlHelper
 			return $root_item->id;
 		}
 
-		return JRequest::getInt('Itemid');
+		return JFactory::getApplication()->input->getInt('Itemid');
 	}
 
-	/*
+	/**
 	 * Helper method to generate a MageBridge URL
 	 *
 	 * @param string $request
@@ -691,8 +691,9 @@ class MageBridgeUrlHelper
 		{
 			$bridge = MageBridge::getBridge();
 			$app = JFactory::getApplication();
+			$config = JFactory::getConfig();
 
-			if ((boolean) $app->getCfg('sef_suffix') == true)
+			if ((boolean) $config->get('sef_suffix') == true)
 			{
 				if (preg_match('/\/$/', $request) == false)
 				{
@@ -744,9 +745,9 @@ class MageBridgeUrlHelper
 	static public function isSSLPage($request = null)
 	{
 		// Check current page
-		if (JRequest::getCmd('option') == 'com_magebridge' && JRequest::getCmd('view') == 'content')
+		if (JFactory::getApplication()->input->getCmd('option') == 'com_magebridge' && JFactory::getApplication()->input->getCmd('view') == 'content')
 		{
-			if (in_array(JRequest::getCmd('layout'), array('checkout', 'cart')))
+			if (in_array(JFactory::getApplication()->input->getCmd('layout'), array('checkout', 'cart')))
 			{
 				return true;
 			}
@@ -754,9 +755,9 @@ class MageBridgeUrlHelper
 
 		// Default pages to be served with SSL
 		$pages = array(
-			'checkout/*',
-			'customer/*',
-			'wishlist/*',);
+			'checkout/**',
+			'customer/**',
+			'wishlist/**',);
 
 		// Extra payment-pages to be served with SSL
 		$payment_urls = explode(',', MagebridgeModelConfig::load('payment_urls'));
@@ -768,7 +769,7 @@ class MageBridgeUrlHelper
 				$url = trim($url);
 				if (!empty($url))
 				{
-					$pages[] = $url . '/*';
+					$pages[] = $url . '/**';
 				}
 			}
 		}

@@ -103,7 +103,7 @@ class MagebridgeModelUpdate extends YireoCommonModel
         }
 
         // Premature check for the component-directory to be writable
-        if ($extension['type'] == 'component' && JFactory::getApplication()->getCfg('ftp_enable') == 0) {
+        if ($extension['type'] == 'component' && JFactory::getConfig()->get('ftp_enable') == 0) {
             if (is_dir(JPATH_ADMINISTRATOR.'/components/'.$extension['name']) && !is_writable(JPATH_ADMINISTRATOR.'/components/'.$extension['name'])) {
                 JError::raiseWarning('SOME_ERROR_CODE', JText::sprintf('COM_MAGEBRIDGE_MODEL_UPDATE_INSTALL_DIR_NOT_WRITABLE', JPATH_ADMINISTRATOR.'/components/'.$extension['name']));
                 return false;
@@ -133,7 +133,7 @@ class MagebridgeModelUpdate extends YireoCommonModel
         }
 
         // Check if the downloaded file exists
-        $tmp_path = JFactory::getApplication()->getCfg('tmp_path');
+        $tmp_path = JFactory::getConfig()->get('tmp_path');
         $package_path = $tmp_path.'/'.$package_file;
         if (!is_file($package_path)) {
             JError::raiseWarning('MB', JText::sprintf('COM_MAGEBRIDGE_MODEL_UPDATE_INSTALL_FILE_NOT_EXISTS', $package_path));
@@ -184,7 +184,7 @@ class MagebridgeModelUpdate extends YireoCommonModel
 
         // Get the name of downloaded package
         if (!is_file($package['packagefile'])) {
-            $package['packagefile'] = JFactory::getApplication()->getCfg('tmp_path').'/'.$package['packagefile'];
+            $package['packagefile'] = JFactory::getConfig()->get('tmp_path').'/'.$package['packagefile'];
         }
 
         // Clean up the installation
@@ -197,7 +197,7 @@ class MagebridgeModelUpdate extends YireoCommonModel
                 $db = JFactory::getDBO();
                 $db->setQuery($query);
                 try {
-                    $db->query();
+                    $db->execute();
                 } catch(Exception $e) {
                     JError::raiseWarning('MB', JText::sprintf('COM_MAGEBRIDGE_MODEL_UPDATE_INSTALL_POSTQUERY_FAILED', $db->getErrorMsg()));
                     return false;

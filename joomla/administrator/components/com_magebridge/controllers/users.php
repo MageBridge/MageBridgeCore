@@ -28,7 +28,7 @@ class MageBridgeControllerUsers extends MageBridgeController
      */
     public function import()
     {
-        JRequest::setVar('layout', 'import');
+        JFactory::getApplication()->input->setVar('layout', 'import');
         parent::display();
     }
 
@@ -85,7 +85,7 @@ class MageBridgeControllerUsers extends MageBridgeController
     public function upload()
     {
         // Construct the needed variables
-        $upload = JRequest::getVar('csv', null, 'files');
+        $upload = JFactory::getApplication()->input->getVar('csv', null, 'files');
         $user_records_ok = 0;
         $user_records_fail = 0;
 

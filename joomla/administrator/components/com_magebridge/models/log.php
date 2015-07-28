@@ -67,7 +67,7 @@ class MagebridgeModelLog extends YireoModel
         // Build the data
         $data['remote_addr'] = $_SERVER['REMOTE_ADDR'];
         $data['http_agent'] = $_SERVER['HTTP_USER_AGENT'];
-        $data['timestamp'] = $now->toMySQL();
+        $data['timestamp'] = $now->toSql();
 
         return parent::store($data);
     }

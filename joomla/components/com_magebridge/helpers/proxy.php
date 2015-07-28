@@ -2,23 +2,23 @@
 /**
  * Joomla! component MageBridge
  *
- * @author    Yireo (info@yireo.com)
+ * @author	Yireo (info@yireo.com)
  * @package   MageBridge
  * @copyright Copyright 2015
  * @license   GNU Public License
- * @link      http://www.yireo.com
+ * @link	  http://www.yireo.com
  */
 
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
-/*
+/**
  * Helper for proxy
  */
 
 class MageBridgeProxyHelper
 {
-	/*
+	/**
 	 * Proxy uploads
 	 *
 	 * @param null
@@ -27,7 +27,7 @@ class MageBridgeProxyHelper
 	public static function upload()
 	{
 		// Don't do anything outside of the MageBridge component
-		if (JRequest::getCmd('option') != 'com_magebridge')
+		if (JFactory::getApplication()->input->getCmd('option') != 'com_magebridge')
 		{
 			return array();
 		}
@@ -70,7 +70,7 @@ class MageBridgeProxyHelper
 
 					// Upload the specific file
 					jimport('joomla.filesystem.file');
-					$tmp_file = JFactory::getApplication()->getCfg('tmp_path') . '/' . $file['name'];
+					$tmp_file = JFactory::getConfig()->get('tmp_path') . '/' . $file['name'];
 					JFile::upload($file['tmp_name'], $tmp_file);
 
 					// Check if the file is there
@@ -99,7 +99,7 @@ class MageBridgeProxyHelper
 				if (!empty($error_msg))
 				{
 					// See if we can redirect back to the same old page
-					$request = JRequest::getString('request');
+					$request = JFactory::getApplication()->input->getString('request');
 
 					if (preg_match('/\/uenc\/([a-zA-Z0-9\,\-\_]+)/', $request, $uenc))
 					{
@@ -127,7 +127,7 @@ class MageBridgeProxyHelper
 		return $tmp_files;
 	}
 
-	/*
+	/**
 	 * Cleanup temporary uploads
 	 *
 	 * @param null
@@ -141,8 +141,7 @@ class MageBridgeProxyHelper
 			{
 				if (is_file($tmp_file))
 				{
-					jimport('joomla.filesystem.file');
-					JFile::delete($tmp_file);
+					unlink($tmp_file);
 				}
 			}
 		}

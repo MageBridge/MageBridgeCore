@@ -41,7 +41,7 @@ class MageBridgeViewProduct extends MageBridgeView
         $params = YireoHelper::toRegistry($this->item->params)->toArray();
         $params_form = JForm::getInstance('params', $file);
         $params_form->bind(array('params' => $params));
-	    $this->assignRef('params_form', $params_form);
+	    $this->params_form = $params_form;
 
         // Prepare the actions-form
         $actions = YireoHelper::toRegistry($this->item->actions)->toArray();
@@ -49,7 +49,7 @@ class MageBridgeViewProduct extends MageBridgeView
         JPluginHelper::importPlugin('magebridgeproduct');
         JFactory::getApplication()->triggerEvent('onMageBridgeProductPrepareForm', array(&$actions_form, (array)$this->item));
         $actions_form->bind(array('actions' => $actions));
-	    $this->assignRef('actions_form', $actions_form);
+	    $this->actions_form = $actions_form;
 
         // Build the fields
         $this->lists['product'] = MageBridgeFormHelper::getField('magebridge.product', 'sku', $this->item->sku, null);

@@ -34,7 +34,7 @@ class MageBridgeViewUsers extends MageBridgeView
 
         // Initialize common variables
         $application = JFactory::getApplication();
-        $option = JRequest::getCmd( 'option' ).'-users';
+        $option = JFactory::getApplication()->input->getCmd( 'option' ).'-users';
 
         // Handle the filters
         $filter_type = $application->getUserStateFromRequest( $option.'filter_type', 'filter_type', '', 'word' );
@@ -86,11 +86,10 @@ class MageBridgeViewUsers extends MageBridgeView
             }
         }
 
-        $user = JFactory::getUser();
-        $this->assignRef('user', $user);
-        $this->assignRef('lists', $lists);
-        $this->assignRef('items', $items);
-        $this->assignRef('pagination', $pagination);
+        $this->user = JFactory::getUser();
+        $this->lists = $lists;
+        $this->items = $items;
+        $this->pagination = $pagination;
         
         parent::display($tpl);
     }

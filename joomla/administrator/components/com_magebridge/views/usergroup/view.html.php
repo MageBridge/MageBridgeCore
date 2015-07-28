@@ -49,9 +49,10 @@ class MageBridgeViewUsergroup extends MageBridgeView
         $form = JForm::getInstance('params', $file);
         $params = YireoHelper::toRegistry($this->item->params);
         $form->bind(array('params' => $params->toArray()));
-	    $this->assignRef('params_form', $form);
+        $this->params_form = $form;
 
-		$this->assignRef('fields', $fields);
+        $this->fields = $fields;
+
 		parent::display($tpl);
 	}
 

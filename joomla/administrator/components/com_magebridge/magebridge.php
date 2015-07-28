@@ -19,13 +19,13 @@ require_once JPATH_ADMINISTRATOR.'/components/com_magebridge/libraries/loader.ph
 require_once JPATH_COMPONENT.'/helpers/acl.php';
 
 // If no view has been set, try the default
-if (JRequest::getCmd('view') == '') {
-    JRequest::setVar('view', 'home');
+if (JFactory::getApplication()->input->getCmd('view') == '') {
+    JFactory::getApplication()->input->setVar('view', 'home');
 }
 
 // Handle the SSO redirect
-if (JRequest::getInt('sso') == 1) {
-    JRequest::setVar('task', 'ssoCheck');
+if (JFactory::getApplication()->input->getInt('sso') == 1) {
+    JFactory::getApplication()->input->setVar('task', 'ssoCheck');
 }
 
 // Make sure the user is authorised to view this page
@@ -37,7 +37,7 @@ if (MageBridgeAclHelper::isAuthorized() == false) {
 MagebridgeModelDebug::init();
 
 // Require the current controller
-$view = JRequest::getCmd('view');
+$view = JFactory::getApplication()->input->getCmd('view');
 $controller_file = JPATH_COMPONENT.'/controllers/'.$view.'.php';
 if (is_file($controller_file)) {
     require_once $controller_file; 
@@ -48,6 +48,6 @@ if (is_file($controller_file)) {
 }
 
 // Perform the requested task
-$controller->execute(JRequest::getCmd('task'));
+$controller->execute(JFactory::getApplication()->input->getCmd('task'));
 $controller->redirect();
 

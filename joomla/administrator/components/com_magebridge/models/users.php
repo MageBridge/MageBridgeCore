@@ -51,7 +51,7 @@ class MagebridgeModelUsers extends YireoCommonModel
         parent::__construct();
 
         $application = JFactory::getApplication();
-        $option = JRequest::getCmd( 'option' ).'-users';
+        $option = JFactory::getApplication()->input->getCmd( 'option' ).'-users';
 
         // Get the pagination request variables
         $limit = $application->getUserStateFromRequest( 'global.list.limit', 'limit', $application->getCfg('list_limit'), 'int' );
@@ -152,7 +152,7 @@ class MagebridgeModelUsers extends YireoCommonModel
     private function _buildContentOrderBy()
     {
         $application = JFactory::getApplication();
-        $option = JRequest::getCmd( 'option' ).'-users';
+        $option = JFactory::getApplication()->input->getCmd( 'option' ).'-users';
 
         $filter_order = $application->getUserStateFromRequest( $option.'filter_order', 'filter_order', 'u.username', 'cmd' );
         $filter_order_Dir = $application->getUserStateFromRequest( $option.'filter_order_Dir', 'filter_order_Dir', '', 'word' );
@@ -178,7 +178,7 @@ class MagebridgeModelUsers extends YireoCommonModel
     {
         $application = JFactory::getApplication();
         $db = JFactory::getDBO();
-        $option = JRequest::getCmd( 'option' ).'-users';
+        $option = JFactory::getApplication()->input->getCmd( 'option' ).'-users';
 
         $filter_type = $application->getUserStateFromRequest( $option.'filter_type', 'filter_type', '', 'word' );
         $filter_state = $application->getUserStateFromRequest( $option.'filter_state', 'filter_state', '', 'word' );

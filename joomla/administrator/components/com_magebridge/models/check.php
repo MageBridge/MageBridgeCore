@@ -203,13 +203,13 @@ class MagebridgeModelCheck extends YireoCommonModel
             $this->addResult('system', 'htaccess', $result, JText::_('COM_MAGEBRIDGE_CHECK_HTACCESS'));
         }
 
-        $result = ($application->getCfg('sef') == 1) ? self::CHECK_OK : self::CHECK_ERROR;
+        $result = (JFactory::getConfig()->get('sef') == 1) ? self::CHECK_OK : self::CHECK_ERROR;
         $this->addResult('system', 'SEF', $result, JText::_('COM_MAGEBRIDGE_CHECK_SEF'));
 
-        $result = ($application->getCfg('sef_rewrite') == 1) ? self::CHECK_OK : self::CHECK_WARNING;
+        $result = (JFactory::getConfig()->get('sef_rewrite') == 1) ? self::CHECK_OK : self::CHECK_WARNING;
         $this->addResult('system', 'SEF Rewrites', $result, JText::_('COM_MAGEBRIDGE_CHECK_SEF_REWRITE'));
 
-        $result = ($application->getCfg('caching') == 0) ? self::CHECK_OK : self::CHECK_WARNING;
+        $result = (JFactory::getConfig()->get('caching') == 0) ? self::CHECK_OK : self::CHECK_WARNING;
         $this->addResult('system', 'Caching', $result, JText::_('COM_MAGEBRIDGE_CHECK_CACHING'));
 
         $cachePlugin = JPluginHelper::getPlugin('system', 'cache');
@@ -221,10 +221,10 @@ class MagebridgeModelCheck extends YireoCommonModel
             $this->addResult('system', 'Root item', $result, JText::_('COM_MAGEBRIDGE_CHECK_ROOT_ITEM'));
         }
 
-        $result = self::checkWritable($application->getCfg('tmp_path'));
+        $result = self::checkWritable(JFactory::getConfig()->get('tmp_path'));
         $this->addResult('system', 'Temporary path writable', $result, JText::_('COM_MAGEBRIDGE_CHECK_TMP'));
 
-        $result = self::checkWritable($application->getCfg('log_path'));
+        $result = self::checkWritable(JFactory::getConfig()->get('log_path'));
         $this->addResult('system', 'Log path writable', $result, JText::_('COM_MAGEBRIDGE_CHECK_LOG'));
 
         $result = self::checkWritable(JPATH_SITE.'/cache');

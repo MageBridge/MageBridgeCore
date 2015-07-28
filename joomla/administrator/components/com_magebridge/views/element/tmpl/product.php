@@ -25,7 +25,7 @@ defined('_JEXEC') or die('Restricted access');
         <button onclick="document.getElementById('search').value='';this.form.submit();"><?php echo JText::_('LIB_YIREO_VIEW_RESET'); ?></button>
     </td>
     <td align="right" width="40%">
-        <?php $js = "window.parent.jSelectProduct('', '', '".JRequest::getVar('object')."');"; ?>
+        <?php $js = "window.parent.jSelectProduct('', '', '".JFactory::getApplication()->input->getVar('object')."');"; ?>
         <button onclick="<?php echo $js; ?>"><?php echo JText::_('COM_MAGEBRIDGE_NO_PRODUCT'); ?></button>
     </td>
 </tr>
@@ -66,9 +66,9 @@ if (!empty($this->products)) {
     $i = 0;
     foreach ($this->products as $product) {
 
-        if (JRequest::getCmd('return') == 'id' || JRequest::getCmd('return') == 'product_id') {
+        if (JFactory::getApplication()->input->getCmd('return') == 'id' || JFactory::getApplication()->input->getCmd('return') == 'product_id') {
             $return = $product['product_id'];
-        } else if (JRequest::getCmd('return') == 'sku' && !empty($product['sku'])) {
+        } else if (JFactory::getApplication()->input->getCmd('return') == 'sku' && !empty($product['sku'])) {
             $return = $product['sku'];
         } else if (!empty($product['url_key'])) {
             $return = $product['url_key'];
@@ -76,7 +76,7 @@ if (!empty($this->products)) {
             $return = $product['product_id'];
         }
 
-        if (JRequest::getCmd('current') == $return) {
+        if (JFactory::getApplication()->input->getCmd('current') == $return) {
             $css[] = 'current';
         }
 
@@ -96,7 +96,7 @@ if (!empty($this->products)) {
         }
 
         $product_name = htmlspecialchars(str_replace("'", '', $product['name']));
-        $jsDefault = "window.parent.jSelectProduct('$return', '$product_name', '".JRequest::getVar('object')."');";
+        $jsDefault = "window.parent.jSelectProduct('$return', '$product_name', '".JFactory::getApplication()->input->getVar('object')."');";
         ?>
         <tr class="<?php echo implode(' ', $css); ?>">
             <td>

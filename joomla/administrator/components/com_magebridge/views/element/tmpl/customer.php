@@ -59,13 +59,13 @@ if (!empty($this->customers)) {
 
         $css = array();
 
-        if (JRequest::getCmd('return') == 'id') {
+        if (JFactory::getApplication()->input->getCmd('return') == 'id') {
             $return = $customer['customer_id'];
         } else {
             $return = $customer['email'];
         }
 
-        if (JRequest::getCmd('current') == $return) {
+        if (JFactory::getApplication()->input->getCmd('current') == $return) {
             $css[] = 'current';
         }
 
@@ -75,7 +75,7 @@ if (!empty($this->customers)) {
             $css[] = 'inactive';
         }
 
-        $js = "window.parent.jSelectCustomer('$return', '$return', '".JRequest::getVar('object')."');";
+        $js = "window.parent.jSelectCustomer('$return', '$return', '".JFactory::getApplication()->input->getVar('object')."');";
         ?>
         <tr class="<?php echo implode(' ', $css); ?>">
             <td>

@@ -32,7 +32,7 @@ class MageBridgeViewStore extends YireoViewForm
      */
     public function __construct($config = array())
     {
-        if(JRequest::getCmd('task') == 'default') {
+        if(JFactory::getApplication()->input->getCmd('task') == 'default') {
             $this->loadToolbar = false;
         }
 
@@ -48,7 +48,7 @@ class MageBridgeViewStore extends YireoViewForm
      */
 	public function display($tpl = null)
 	{
-        switch(JRequest::getCmd('task')) {
+        switch(JFactory::getApplication()->input->getCmd('task')) {
             case 'default':
                 $this->showDefaultForm($tpl);
                 break;
@@ -118,7 +118,7 @@ class MageBridgeViewStore extends YireoViewForm
         $params = YireoHelper::toRegistry($this->item->params)->toArray();
         $params_form = JForm::getInstance('params', $file);
         $params_form->bind(array('params' => $params));
-	    $this->assignRef('params_form', $params_form);
+        $this->params_form = $params_form;
 
         // Prepare the actions-form
         $actions = YireoHelper::toRegistry($this->item->actions)->toArray();
@@ -126,7 +126,7 @@ class MageBridgeViewStore extends YireoViewForm
         JPluginHelper::importPlugin('magebridgestore');
         JFactory::getApplication()->triggerEvent('onMageBridgeStorePrepareForm', array(&$actions_form, (array)$this->item));
         $actions_form->bind(array('actions' => $actions));
-	    $this->assignRef('actions_form', $actions_form);
+        $this->actions_form = $actions_form;
 
         // Check for a previous connector-value
         if(!empty($this->item->connector)) {

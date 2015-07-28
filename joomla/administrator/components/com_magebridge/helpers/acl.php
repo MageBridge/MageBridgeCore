@@ -29,7 +29,7 @@ class MageBridgeAclHelper
         // Initialize system variables
         $application = JFactory::getApplication();
         $user = JFactory::getUser();
-        if (empty($view)) $view = JRequest::getCmd('view');
+        if (empty($view)) $view = JFactory::getApplication()->input->getCmd('view');
 
         switch($view) {
             case 'config':

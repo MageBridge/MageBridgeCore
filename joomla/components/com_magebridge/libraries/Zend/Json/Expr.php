@@ -13,11 +13,11 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Json
+ * @package	Zend_Json
  * @subpackage Expr
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Expr.php 20096 2010-01-06 02:05:09Z bkarwin $
+ * @license	http://framework.zend.com/license/new-bsd	 New BSD License
+ * @version	$Id: Expr.php 20096 2010-01-06 02:05:09Z bkarwin $
  */
 
 defined('_JEXEC') or die('Restricted access');
@@ -32,11 +32,11 @@ defined('_JEXEC') or die('Restricted access');
  * Example:
  * <code>
  * $foo = array(
- *     'integer'  =>9,
- *     'string'   =>'test string',
- *     'function' => Zend_Json_Expr(
- *         'function(){ window.alert("javascript function encoded by Zend_Json") }'
- *     ),
+ *	 'integer'  =>9,
+ *	 'string'   =>'test string',
+ *	 'function' => Zend_Json_Expr(
+ *		 'function(){ window.alert("javascript function encoded by Zend_Json") }'
+ *	 ),
  * );
  *
  * Zend_Json::encode($foo, false, array('enableJsonExprFinder' => true));
@@ -45,38 +45,38 @@ defined('_JEXEC') or die('Restricted access');
  * </code>
  *
  * @category   Zend
- * @package    Zend_Json
+ * @package	Zend_Json
  * @subpackage Expr
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @license	http://framework.zend.com/license/new-bsd	 New BSD License
  */
 class Zend_Json_Expr
 {
-    /**
-     * Storage for javascript expression.
-     *
-     * @var string
-     */
-    protected $_expression;
+	/**
+	 * Storage for javascript expression.
+	 *
+	 * @var string
+	 */
+	protected $_expression;
 
-    /**
-     * Constructor
-     *
-     * @param  string $expression the expression to hold.
-     * @return void
-     */
-    public function __construct($expression)
-    {
-        $this->_expression = (string) $expression;
-    }
+	/**
+	 * Constructor
+	 *
+	 * @param  string $expression the expression to hold.
+	 * @return void
+	 */
+	public function __construct($expression)
+	{
+		$this->_expression = (string) $expression;
+	}
 
-    /**
-     * Cast to string
-     *
-     * @return string holded javascript expression.
-     */
-    public function __toString()
-    {
-        return $this->_expression;
-    }
+	/**
+	 * Cast to string
+	 *
+	 * @return string holded javascript expression.
+	 */
+	public function __toString()
+	{
+		return $this->_expression;
+	}
 }

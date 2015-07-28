@@ -13,10 +13,10 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Json
+ * @package	Zend_Json
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Exception.php 20096 2010-01-06 02:05:09Z bkarwin $
+ * @license	http://framework.zend.com/license/new-bsd	 New BSD License
+ * @version	$Id: Exception.php 20096 2010-01-06 02:05:09Z bkarwin $
  */
 
 defined('_JEXEC') or die('Restricted access');
@@ -27,11 +27,11 @@ require_once 'Zend/Json/Exception.php';
 /**
  * Zend_Json_Server exceptions
  *
- * @uses       Zend_Json_Exception
- * @package    Zend_Json
+ * @uses	   Zend_Json_Exception
+ * @package	Zend_Json
  * @subpackage Server
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @license	http://framework.zend.com/license/new-bsd	 New BSD License
  */
 class Zend_Json_Server_Exception extends Zend_Json_Exception
 {

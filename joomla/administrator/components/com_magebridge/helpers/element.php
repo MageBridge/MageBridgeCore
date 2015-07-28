@@ -83,7 +83,7 @@ class MageBridgeElementHelper
 
         // Fetch any current filters
         $application = JFactory::getApplication();
-        $option = JRequest::getCmd( 'option' ).'-element-products';
+        $option = JFactory::getApplication()->input->getCmd( 'option' ).'-element-products';
 
         // Set the limits
         $default_limit = $application->getCfg('list_limit');
@@ -123,7 +123,7 @@ class MageBridgeElementHelper
     {
         // Initialize some important variables
         $application = JFactory::getApplication();
-        $option = JRequest::getCmd( 'option' ).'-element-categories';
+        $option = JFactory::getApplication()->input->getCmd( 'option' ).'-element-categories';
 
         // Add the search-filter
         $search = $application->getUserStateFromRequest( $option.'.search', 'search', '', 'string' );

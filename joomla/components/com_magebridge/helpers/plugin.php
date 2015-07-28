@@ -2,23 +2,23 @@
 /**
  * Joomla! component MageBridge
  *
- * @author    Yireo (info@yireo.com)
+ * @author	Yireo (info@yireo.com)
  * @package   MageBridge
  * @copyright Copyright 2015
  * @license   GNU Public License
- * @link      http://www.yireo.com
+ * @link	  http://www.yireo.com
  */
 
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
-/*
+/**
  * Helper for usage in Joomla!/MageBridge plugins
  */
 
 class MageBridgePluginHelper
 {
-	/*
+	/**
 	 * Helper-method to determine if it's possible to run this event
 	 *
 	 * @param string $event

@@ -32,7 +32,7 @@ class MageBridgeViewElement extends MageBridgeViewCommon
     public function display($tpl = null)
     {
         // Determine the layout and data 
-        switch(JRequest::getCmd('type')) {
+        switch(JFactory::getApplication()->input->getCmd('type')) {
 
             case 'product':
                 $this->doProductLayout();

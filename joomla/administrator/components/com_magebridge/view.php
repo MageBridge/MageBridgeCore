@@ -69,7 +69,7 @@ class MageBridgeView extends YireoView
         }
 
         // If debugging is enabled report it
-        if (MagebridgeModelConfig::load('debug') == 1 && JRequest::getCmd('tmpl') != 'component' && in_array(JRequest::getCmd('view'), array('config', 'home'))) {
+        if (MagebridgeModelConfig::load('debug') == 1 && JFactory::getApplication()->input->getCmd('tmpl') != 'component' && in_array(JFactory::getApplication()->input->getCmd('view'), array('config', 'home'))) {
             MageBridgeModelDebug::getInstance()->feedback('COM_MAGEBRIDGE_VIEW_API_DEBUGGING_ENABLED');
         }
 

@@ -43,7 +43,7 @@ class MageBridgeControllerConfig extends YireoCommonController
     public function save()
     {
         // Security check
-        JRequest::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+        JFactory::getApplication()->input->checkToken() or jexit(JText::_('JINVALID_TOKEN'));
 
         // Validate whether this task is allowed
         if ($this->_validate(true, true) == false) return false;
@@ -65,7 +65,7 @@ class MageBridgeControllerConfig extends YireoCommonController
     public function apply()
     {
         // Security check
-        JRequest::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+        JFactory::getApplication()->input->checkToken() or jexit(JText::_('JINVALID_TOKEN'));
 
         // Validate whether this task is allowed
         if ($this->_validate(true, true) == false) return false;
@@ -86,15 +86,15 @@ class MageBridgeControllerConfig extends YireoCommonController
     public function store($post = null)
     {
         // Security check
-        JRequest::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+        JFactory::getApplication()->input->checkToken() or jexit(JText::_('JINVALID_TOKEN'));
 
         // Validate whether this task is allowed
         if ($this->_validate(true, true) == false) return false;
 
         // Fetch the POST-data
-        $post = JRequest::get('post');
-        $post['api_key'] = JRequest::getVar('api_key', '', 'post', 'string', JREQUEST_ALLOWRAW);
-        $post['api_user'] = JRequest::getVar('api_user', '', 'post', 'string', JREQUEST_ALLOWRAW);
+        $post = JFactory::getApplication()->input->get('post');
+        $post['api_key'] = JFactory::getApplication()->input->getVar('api_key', '', 'post', 'string', JREQUEST_ALLOWRAW);
+        $post['api_user'] = JFactory::getApplication()->input->getVar('api_user', '', 'post', 'string', JREQUEST_ALLOWRAW);
 
         // Override with new JForm-output (temp)
         if(isset($post['config'])) {
@@ -109,12 +109,12 @@ class MageBridgeControllerConfig extends YireoCommonController
 
         // Store these data with the model
         if ($model->store($post)) {
-            $this->msg = JText::sprintf('LIB_YIREO_CONTROLLER_ITEM_SAVED', JRequest::getCmd('view'));
+            $this->msg = JText::sprintf('LIB_YIREO_CONTROLLER_ITEM_SAVED', JFactory::getApplication()->input->getCmd('view'));
             return true;
 
         // If this fails, set the error
         } else {
-            $this->msg = JText::sprintf('LIB_YIREO_CONTROLLER_ITEM_NOT_SAVED', JRequest::getCmd('view'));
+            $this->msg = JText::sprintf('LIB_YIREO_CONTROLLER_ITEM_NOT_SAVED', JFactory::getApplication()->input->getCmd('view'));
             $error = $model->getError();
             if (!empty($error)) $this->msg .= ': '.$error;
             $this->msg_type = 'error';
@@ -130,7 +130,7 @@ class MageBridgeControllerConfig extends YireoCommonController
      */
     public function import()
     {
-        JRequest::setVar('layout', 'import');
+        JFactory::getApplication()->input->setVar('layout', 'import');
         parent::display();
     }
 
@@ -170,7 +170,7 @@ class MageBridgeControllerConfig extends YireoCommonController
     public function upload()
     {
         // Construct the needed variables
-        $upload = JRequest::getVar('xml', null, 'files');
+        $upload = JFactory::getApplication()->input->getVar('xml', null, 'files');
 
         // Check whether this is a valid download
         if (empty($upload) || empty($upload['name']) || empty($upload['tmp_name']) || empty($upload['size'])) {
@@ -244,7 +244,7 @@ class MageBridgeControllerConfig extends YireoCommonController
     protected function _validate($check_token = true, $check_demo = true)
     {
         // Check the token
-        if ($check_token == true && (JRequest::checkToken('post') == false && JRequest::checkToken('get') == false)) {
+        if ($check_token == true && (JFactory::getApplication()->input->checkToken('post') == false && JFactory::getApplication()->input->checkToken('get') == false)) {
             $msg = JText::_('JINVALID_TOKEN');
             $link = 'index.php?option=com_magebridge&view=home';
             $this->setRedirect( $link, $msg );
