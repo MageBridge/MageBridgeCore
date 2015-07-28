@@ -2,11 +2,11 @@
 /**
  * Joomla! MageBridge Preloader - System plugin
  *
- * @author	Yireo (info@yireo.com)
+ * @author    Yireo (info@yireo.com)
  * @package   MageBridge
  * @copyright Copyright 2015
  * @license   GNU Public License
- * @link	  http://www.yireo.com
+ * @link      http://www.yireo.com
  */
 
 // Check to ensure this file is included in Joomla!
@@ -40,7 +40,8 @@ class plgSystemMageBridgePre extends JPlugin
 			// If the user is already logged in, remove the cookie
 			if (JFactory::getUser()->id > 0)
 			{
-				setcookie('mb_postlogin', '', time() - 3600, '/', '.' . JURI::getInstance()->toString(array('host')));
+				setcookie('mb_postlogin', '', time() - 3600, '/', '.' . JURI::getInstance()
+						->toString(array('host')));
 			}
 
 			// Otherwise decrypt the cookie and use it here
@@ -61,12 +62,14 @@ class plgSystemMageBridgePre extends JPlugin
 
 			if (empty($customer_email))
 			{
-				$customer_email = MageBridgeModelBridge::getInstance()->getSessionData('customer/email');
+				$customer_email = MageBridgeModelBridge::getInstance()
+					->getSessionData('customer/email');
 			}
 
 			if (!empty($customer_email))
 			{
-				MageBridge::getUser()->postlogin($customer_email, null, $postlogin_userevents);
+				MageBridge::getUser()
+					->postlogin($customer_email, null, $postlogin_userevents);
 			}
 		}
 	}

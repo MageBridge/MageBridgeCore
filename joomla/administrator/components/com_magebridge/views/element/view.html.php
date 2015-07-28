@@ -2,11 +2,11 @@
 /**
  * Joomla! component MageBridge
  *
- * @author Yireo (info@yireo.com)
- * @package MageBridge
+ * @author    Yireo (info@yireo.com)
+ * @package   MageBridge
  * @copyright Copyright 2015
- * @license GNU Public License
- * @link http://www.yireo.com
+ * @license   GNU Public License
+ * @link      http://www.yireo.com
  */
 
 // Check to ensure this file is included in Joomla! 
@@ -19,7 +19,7 @@ require_once 'view.common.php';
  * HTML View class
  *
  * @static
- * @package	MageBridge
+ * @package    MageBridge
  */
 class MageBridgeViewElement extends MageBridgeViewCommon
 {
@@ -27,22 +27,24 @@ class MageBridgeViewElement extends MageBridgeViewCommon
 	 * Display method
 	 *
 	 * @param string $tpl
-	 * @return null
+	 *
+	 * @return mixed
 	 */
 	public function display($tpl = null)
 	{
 		// Check for AJAX
-		if (JFactory::getApplication()->input->getInt('ajax') == 1) {
-
+		if (JFactory::getApplication()->input->getInt('ajax') == 1)
+		{
 			$this->doAjaxLayout();
 
 			parent::display($tpl);
+
 			return true;
 		}
 
 		// Determine the layout and data 
-		switch(JFactory::getApplication()->input->getCmd('type')) {
-
+		switch (JFactory::getApplication()->input->getCmd('type'))
+		{
 			case 'product':
 				$this->doProductLayout();
 				break;

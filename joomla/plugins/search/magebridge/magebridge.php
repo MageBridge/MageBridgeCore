@@ -2,106 +2,115 @@
 /**
  * Joomla! MageBridge - Search plugin
  *
- * @author Yireo (info@yireo.com)
- * @package MageBridge
+ * @author    Yireo (info@yireo.com)
+ * @package   MageBridge
  * @copyright Copyright 2015
- * @license GNU Public License
- * @link http://www.yireo.com
+ * @license   GNU Public License
+ * @link      http://www.yireo.com
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 // Import the parent class
-jimport( 'joomla.plugin.plugin' );
+jimport('joomla.plugin.plugin');
 
 // Import the MageBridge autoloader
-include_once JPATH_SITE.'/components/com_magebridge/helpers/loader.php';
+include_once JPATH_SITE . '/components/com_magebridge/helpers/loader.php';
 
 /**
  * MageBridge User Plugin
  */
-class plgSearchMageBridge extends JPlugin
+class PlgSearchMageBridge extends JPlugin
 {
 	/**
 	 * Constructor
 	 *
-	 * @access public
 	 * @param object $subject
-	 * @param array $config
+	 * @param array  $config
 	 */
 	public function __construct(& $subject, $config)
 	{
 		parent::__construct($subject, $config);
+
 		$this->loadLanguage();
 	}
 
 	/**
 	 * Handle the event when searching for items
 	 *
-	 * @access public
-	 * @param null
 	 * @return array
 	 */
 	public function onContentSearchAreas()
 	{
 		// Do not continue if not enabled
-		if ($this->isEnabled() == false) {
+		if ($this->isEnabled() == false)
+		{
 			return false;
 		}
 
 		static $areas = array(
 			'mage-products' => 'PLG_SEARCH_MAGEBRIDGE_PRODUCTS',
-			'mage-categories' => 'PLG_SEARCH_MAGEBRIDGE_CATEGORIES',
-		);
+			'mage-categories' => 'PLG_SEARCH_MAGEBRIDGE_CATEGORIES',);
+
 		return $areas;
 	}
 
 	/**
 	 * Handle the event when searching for items
 	 *
-	 * @access public
 	 * @param string $text
 	 * @param string $phrase
 	 * @param string $ordering
-	 * @param array $areas
+	 * @param array  $areas
+	 *
 	 * @return array
 	 */
 	public function onContentSearch($text, $phrase, $ordering = '', $areas = null)
 	{
 		// Do not continue if not enabled
-		if ($this->isEnabled() == false) {
+		if ($this->isEnabled() == false)
+		{
 			return array();
 		}
 
 		// Check if the areas match
-		if (!empty($areas) && is_array($areas)) {
-			if (!array_intersect($areas, array_keys($this->onContentSearchAreas()))) {
+		if (!empty($areas) && is_array($areas))
+		{
+			if (!array_intersect($areas, array_keys($this->onContentSearchAreas())))
+			{
 				return array();
 			}
 		}
 
 		// Do not continue with an empty search string
-		if (empty($text)) {
+		if (empty($text))
+		{
 			return array();
 		}
 
 		// Load the plugin parameters
-		$search_limit = (int)$this->params->get('search_limit', 50);
+		$search_limit = (int) $this->params->get('search_limit', 50);
 		$search_fields = trim($this->params->get('search_fields'));
 
 		// Determine the search fields
-		if(!empty($search_fields)) {
+		if (!empty($search_fields))
+		{
 			$search_field_values = explode(',', $search_fields);
 
 			$search_fields = array();
 			//$search_fields = array('title', 'description');
-			foreach($search_field_values as $search_field_value) {
+
+			foreach ($search_field_values as $search_field_value)
+			{
 				$search_fields[] = trim($search_field_value);
 			}
+
 			array_unique($search_fields);
 
-		} else {
+		}
+		else
+		{
 			$search_fields = array('title', 'description');
 		}
 
@@ -111,11 +120,10 @@ class plgSearchMageBridge extends JPlugin
 			'website' => MagebridgeModelConfig::load('website'),
 			'text' => $text,
 			'search_limit' => $search_limit,
-			'search_fields' => $search_fields,
-		);
+			'search_fields' => $search_fields,);
 
 		// Include the MageBridge register
-		MageBridgeModelDebug::getInstance()->trace( 'Search plugin' );
+		MageBridgeModelDebug::getInstance()->trace('Search plugin');
 		$register = MageBridgeModelRegister::getInstance();
 		$segment_id = $register->add('api', 'magebridge_product.search', $search_options);
 
@@ -127,15 +135,18 @@ class plgSearchMageBridge extends JPlugin
 		$results = $register->getDataById($segment_id);
 
 		// Do not continue if the result is empty
-		if (empty($results)) {
+		if (empty($results))
+		{
 			return array();
 		}
 
 		// Only show the maximum amount
-		$results = array_slice( $results, 0, $search_limit );
+		$results = array_slice($results, 0, $search_limit);
 		$objects = array();
-		foreach ($results as $index => $result) {
-			$object = (object)null;
+
+		foreach ($results as $index => $result)
+		{
+			$object = (object) null;
 			$object->title = $result['name'];
 			$object->text = $result['description'];
 			$url = preg_replace('/^(.*)index.php/', 'index.php', $result['url']);
@@ -156,18 +167,19 @@ class plgSearchMageBridge extends JPlugin
 
 	/**
 	 * Return whether MageBridge is available or not
-	 * 
-	 * @access private
-	 * @param null
-	 * @return mixed $value
+	 *
+	 * @return boolean
 	 */
 	private function isEnabled()
 	{
-		if (class_exists('MageBridgeModelBridge')) {
-			if (MageBridgeModelBridge::getInstance()->isOffline() == false) {
+		if (class_exists('MageBridgeModelBridge'))
+		{
+			if (MageBridgeModelBridge::getInstance()->isOffline() == false)
+			{
 				return true;
 			}
 		}
+
 		return false;
 	}
 }

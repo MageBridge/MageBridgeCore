@@ -268,7 +268,6 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 			//$this->debug->trace( 'Proxy headers', $this->head );
 			//$this->debug->trace( 'Proxy raw response', $raw );
 			//$this->debug->trace( 'Proxy decoded response', $decoded );
-
 			// Check whether the current URL is listed for direct output
 			$this->matchDirectOutputUrls($rawResponse);
 

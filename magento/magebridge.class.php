@@ -399,6 +399,7 @@ class MageBridge
         }
 
         Mage::getSingleton('magebridge/debug')->notice('Done with session: '.session_id());
+        //Mage::getSingleton('magebridge/debug')->trace('Response data', $data);
         //Mage::getSingleton('magebridge/debug')->trace('Session dump', $_SESSION);
         //Mage::getSingleton('magebridge/debug')->trace('Cookie dump', $_COOKIE);
         Mage::getSingleton('magebridge/debug')->trace('GET dump', $_GET);

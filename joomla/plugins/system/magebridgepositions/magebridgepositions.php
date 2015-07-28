@@ -2,11 +2,11 @@
 /**
  * Joomla! MageBridge Preloader - System plugin
  *
- * @author	Yireo (info@yireo.com)
+ * @author    Yireo (info@yireo.com)
  * @package   MageBridge
  * @copyright Copyright 2015
  * @license   GNU Public License
- * @link	  http://www.yireo.com
+ * @link      http://www.yireo.com
  */
 
 // Check to ensure this file is included in Joomla!
@@ -63,7 +63,7 @@ class plgSystemMageBridgePositions extends JPlugin
 		// Import the custom module helper - this is needed to make it possible to flush certain positions
 		if ($loadModuleHelper == true)
 		{
-			$rewrite_path = __DIR__ .'/';
+			$rewrite_path = __DIR__ . '/';
 
 			if (MageBridgeHelper::isJoomlaVersion('2.5'))
 			{
@@ -81,7 +81,7 @@ class plgSystemMageBridgePositions extends JPlugin
 					{
 						@include_once($rewrite_path . '31/cms/application/module/helper.php');
 					}
-					elseif(MageBridgeHelper::isJoomlaVersion(array('3.2', '3.3')))
+					elseif (MageBridgeHelper::isJoomlaVersion(array('3.2', '3.3')))
 					{
 						@include_once($rewrite_path . '32/cms/application/module/helper.php');
 					}
@@ -90,7 +90,7 @@ class plgSystemMageBridgePositions extends JPlugin
 		}
 	}
 
-	/**
+	/*
 	 * Event onPrepareModuleList (used by Advanced Module Manager)
 	 */
 	public function onPrepareModuleList(&$modules)
@@ -121,6 +121,7 @@ class plgSystemMageBridgePositions extends JPlugin
 		if ($this->allowPosition($module->position) == false)
 		{
 			$module = null;
+
 			return;
 		}
 	}
@@ -142,22 +143,50 @@ class plgSystemMageBridgePositions extends JPlugin
 		}
 
 		// Check for a certain page
-		if (MageBridgeTemplateHelper::isHomePage()) {
+		if (MageBridgeTemplateHelper::isHomePage())
+		{
 			$setting = 'flush_positions_home';
-		} else if (MageBridgeTemplateHelper::isCustomerPage()) {
-			$setting = 'flush_positions_customer';
-		} else if (MageBridgeTemplateHelper::isProductPage()) {
-			$setting = 'flush_positions_product';
-		} else if (MageBridgeTemplateHelper::isCategoryPage()) {
-			$setting = 'flush_positions_category';
-		} else if (MageBridgeTemplateHelper::isCartPage()) {
-			$setting = 'flush_positions_cart';
-		} else if (MageBridgeTemplateHelper::isCheckoutPage()) {
-			$setting = 'flush_positions_checkout';
-		} else {
-			$setting = null;
 		}
-	
+		else
+		{
+			if (MageBridgeTemplateHelper::isCustomerPage())
+			{
+				$setting = 'flush_positions_customer';
+			}
+			else
+			{
+				if (MageBridgeTemplateHelper::isProductPage())
+				{
+					$setting = 'flush_positions_product';
+				}
+				else
+				{
+					if (MageBridgeTemplateHelper::isCategoryPage())
+					{
+						$setting = 'flush_positions_category';
+					}
+					else
+					{
+						if (MageBridgeTemplateHelper::isCartPage())
+						{
+							$setting = 'flush_positions_cart';
+						}
+						else
+						{
+							if (MageBridgeTemplateHelper::isCheckoutPage())
+							{
+								$setting = 'flush_positions_checkout';
+							}
+							else
+							{
+								$setting = null;
+							}
+						}
+					}
+				}
+			}
+		}
+
 		// If the page-check returns empty, default to true
 		if (empty($setting))
 		{
@@ -166,9 +195,12 @@ class plgSystemMageBridgePositions extends JPlugin
 
 		// Check for flushing of positions within the MageBridge configuration
 		$array = explode(',', $this->params->get($setting));
-		if (!empty($array)) {
-			foreach ($array as $a) {
-				if ($position == trim($a)) {
+		if (!empty($array))
+		{
+			foreach ($array as $a)
+			{
+				if ($position == trim($a))
+				{
 					return false;
 				}
 			}
@@ -189,7 +221,9 @@ class plgSystemMageBridgePositions extends JPlugin
 	 */
 	private function isEnabled()
 	{
-		if (!JFactory::getApplication()->isSite())
+		if (!JFactory::getApplication()
+			->isSite()
+		)
 		{
 			return false;
 		}

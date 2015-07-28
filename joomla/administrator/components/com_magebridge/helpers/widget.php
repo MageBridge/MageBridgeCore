@@ -2,18 +2,18 @@
 /**
  * Joomla! component MageBridge
  *
- * @author Yireo (info@yireo.com)
- * @package MageBridge
+ * @author    Yireo (info@yireo.com)
+ * @package   MageBridge
  * @copyright Copyright 2015
- * @license GNU Public License
- * @link http://www.yireo.com
+ * @license   GNU Public License
+ * @link      http://www.yireo.com
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
 /**
- * MageBridge Controller
+ * MageBridge Widget Helper
  */
 class MageBridgeWidgetHelper
 {
@@ -21,11 +21,13 @@ class MageBridgeWidgetHelper
 	 * Wrapper-method to get specific widget-data with caching options
 	 *
 	 * @param string $name
+	 *
 	 * @return mixed
 	 */
 	static public function getWidgetData($name = null)
 	{
-		switch($name) {
+		switch ($name)
+		{
 			case 'website':
 				$function = 'getWebsites';
 				break;
@@ -52,7 +54,8 @@ class MageBridgeWidgetHelper
 
 		$cache = JFactory::getCache('com_magebridge.admin');
 		$cache->setCaching(0);
-		$result = $cache->call( array( 'MageBridgeWidgetHelper', $function ));
+		$result = $cache->call(array('MageBridgeWidgetHelper', $function));
+
 		return $result;
 	}
 
@@ -60,6 +63,7 @@ class MageBridgeWidgetHelper
 	 * Get a list of websites from the API
 	 *
 	 * @param null
+	 *
 	 * @return array
 	 */
 	static public function getWebsites()
@@ -71,6 +75,7 @@ class MageBridgeWidgetHelper
 	 * Get a list of stores from the API
 	 *
 	 * @param null
+	 *
 	 * @return array
 	 */
 	static public function getStores()
@@ -82,6 +87,7 @@ class MageBridgeWidgetHelper
 	 * Get a list of CMS pages from the API
 	 *
 	 * @param null
+	 *
 	 * @return array
 	 */
 	static public function getCmspages()
@@ -93,6 +99,7 @@ class MageBridgeWidgetHelper
 	 * Get a list of Magento customer-groups from the API
 	 *
 	 * @param null
+	 *
 	 * @return array
 	 */
 	static public function getCustomergroups()
@@ -104,6 +111,7 @@ class MageBridgeWidgetHelper
 	 * Get a list of themes from the API
 	 *
 	 * @param null
+	 *
 	 * @return array
 	 */
 	static public function getThemes()
@@ -115,6 +123,7 @@ class MageBridgeWidgetHelper
 	 * Get an API-result
 	 *
 	 * @param null
+	 *
 	 * @return array
 	 */
 	static public function getApiData($method)
@@ -122,8 +131,8 @@ class MageBridgeWidgetHelper
 		$bridge = MageBridgeModelBridge::getInstance();
 		$result = $bridge->getAPI($method);
 
-		if (empty($result)) {
-
+		if (empty($result))
+		{
 			// Register this request
 			$register = MageBridgeModelRegister::getInstance();
 			$id = $register->add('api', $method);

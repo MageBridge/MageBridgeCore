@@ -2,32 +2,32 @@
 /**
  * Joomla! MageBridge - Finder plugin
  *
- * @author Yireo (info@yireo.com)
- * @package MageBridge
+ * @author    Yireo (info@yireo.com)
+ * @package   MageBridge
  * @copyright Copyright 2015
- * @license GNU Public License
- * @link http://www.yireo.com
+ * @license   GNU Public License
+ * @link      http://www.yireo.com
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 // Import the parent class
-jimport( 'joomla.plugin.plugin' );
+jimport('joomla.plugin.plugin');
 
 // Load the base adapter.
-require_once JPATH_ADMINISTRATOR.'/components/com_finder/helpers/indexer/adapter.php';
+require_once JPATH_ADMINISTRATOR . '/components/com_finder/helpers/indexer/adapter.php';
 
 // Import the MageBridge autoloader
-include_once JPATH_SITE.'/components/com_magebridge/helpers/loader.php';
+include_once JPATH_SITE . '/components/com_magebridge/helpers/loader.php';
 
 /**
  * MageBridge Finder Plugin
  */
-class plgFinderMageBridge extends FinderIndexerAdapter
+class PlgFinderMageBridge extends FinderIndexerAdapter
 {
 	/**
-	 * @var string 
+	 * @var string
 	 */
 	protected $context = 'MageBridge';
 
@@ -49,27 +49,25 @@ class plgFinderMageBridge extends FinderIndexerAdapter
 	/**
 	 * Constructor
 	 *
-	 * @access public
 	 * @param object $subject
-	 * @param array $config
+	 * @param array  $config
 	 */
 	public function __construct(& $subject, $config)
 	{
 		parent::__construct($subject, $config);
+
 		$this->loadLanguage();
 	}
 
 	/**
 	 * Method to setup this finder-plugin
 	 *
-	 * @access protected
-	 * @param none
 	 * @return bool
 	 */
 	protected function setup()
 	{
 		// Import the MageBridge autoloader
-		include_once JPATH_SITE.'/components/com_magebridge/helpers/loader.php';
+		include_once JPATH_SITE . '/components/com_magebridge/helpers/loader.php';
 
 		return true;
 	}
@@ -77,9 +75,9 @@ class plgFinderMageBridge extends FinderIndexerAdapter
 	/**
 	 * Method to index a single item
 	 *
-	 * @access protected
 	 * @param FinderIndexerResult $item
-	 * @param string $format 
+	 * @param string $format
+	 *
 	 * @return null
 	 */
 	protected function index(FinderIndexerResult $item, $format = 'html')
@@ -94,19 +92,15 @@ class plgFinderMageBridge extends FinderIndexerAdapter
 		//$item->addTaxonomy('Language', $item->language);
 
 		// Index the item.
-		if(YireoHelper::isJoomla25()) {
-			FinderIndexer::index($item);
-		} else {
-			$this->indexer->index($item);
-		}
+		$this->indexer->index($item);
 	}
 
 	/**
 	 * Method to load all products through the API
 	 *
-	 * @access protected
 	 * @param int $offset
 	 * @param int $limit
+	 *
 	 * @return array
 	 */
 	protected function loadProducts($offset, $limit)
@@ -119,7 +113,7 @@ class plgFinderMageBridge extends FinderIndexerAdapter
 		$page = round($offset / $limit);
 
 		// Setup the arguments and register this request
-		$arguments = array('search' => 1, 'page' => $page, 'count' => $limit, 'visibility' => array(3,4));
+		$arguments = array('search' => 1, 'page' => $page, 'count' => $limit, 'visibility' => array(3, 4));
 		$id = $register->add('api', 'magebridge_product.list', $arguments);
 
 		// Build the bridge
@@ -127,26 +121,27 @@ class plgFinderMageBridge extends FinderIndexerAdapter
 
 		// Get the requested data from the register
 		$data = $register->getDataById($id);
+
 		return $data;
 	}
 
 	/**
 	 * Method to index all items
 	 *
-	 * @access protected
-	 * @param int $offset
-	 * @param int $limit
+	 * @param int    $offset
+	 * @param int    $limit
 	 * @param string $sql
-	 * @return null
+	 *
+	 * @return array
 	 */
 	protected function getItems($offset, $limit, $sql = null)
 	{
-		// Note that the SQL-argument is pointless in this setup, but is required by parent-class nonetheless
+		$items = array();
+		$products = $this->loadProducts($offset, $limit);
 
 		// Loop through the products to build the item-array
-		$products = $this->loadProducts($offset, $limit);
-		foreach ($products as $product) {
-
+		foreach ($products as $product)
+		{
 			//$this->debug("page [$offset;$limit] ".$product['name']);
 
 			// Construct a basic class
@@ -158,13 +153,16 @@ class plgFinderMageBridge extends FinderIndexerAdapter
 
 			// Add URLs
 			$item->request = $product['url_path'];
-			$item->url = 'index.php?option=com_magebridge&view=root&request='.$item->request;
-			$item->route = 'index.php?option=com_magebridge&view=root&request='.$item->request;
+			$item->url = 'index.php?option=com_magebridge&view=root&request=' . $item->request;
+			$item->route = 'index.php?option=com_magebridge&view=root&request=' . $item->request;
 
 			// Add body-text
-			if (!empty($product['short_description'])) {
+			if (!empty($product['short_description']))
+			{
 				$item->summary = $product['short_description'];
-			} else {
+			}
+			else
+			{
 				$item->summary = $product['description'];
 			}
 
@@ -186,8 +184,10 @@ class plgFinderMageBridge extends FinderIndexerAdapter
 			$item->sale_price = $product['price_raw'];
 
 			// Add extra search terms
-			if (is_array($product['search'])) {
-				foreach ($product['search'] as $searchName => $searchValue) {
+			if (is_array($product['search']))
+			{
+				foreach ($product['search'] as $searchName => $searchValue)
+				{
 					$item->$searchName = $searchValue;
 					$item->addInstruction(FinderIndexer::TEXT_CONTEXT, $searchName);
 				}
@@ -202,8 +202,6 @@ class plgFinderMageBridge extends FinderIndexerAdapter
 	/**
 	 * Method to get the total of products
 	 *
-	 * @access protected
-	 * @param null
 	 * @return int
 	 */
 	protected function getContentCount()
@@ -221,22 +219,24 @@ class plgFinderMageBridge extends FinderIndexerAdapter
 
 		// Return the product-count
 		$count = $register->getDataById($id);
-		//$this->debug('total product count', $count);
+
 		return $count;
 	}
 
 	/**
 	 * Helper method for debugging
 	 *
-	 * @access protected
 	 * @param string $msg
-	 * @param mixed $var
-	 * @return null
+	 * @param mixed  $var
 	 */
 	protected function debug($msg, $var = null)
 	{
-		if ($var != null) $msg .= ': '.var_export($var, true);
-		$msg = $msg."\n";
+		if ($var != null)
+		{
+			$msg .= ': ' . var_export($var, true);
+		}
+
+		$msg = $msg . "\n";
 		//file_put_contents('/tmp/magebridge_finder.log', $msg, FILE_APPEND);
 	}
 }
