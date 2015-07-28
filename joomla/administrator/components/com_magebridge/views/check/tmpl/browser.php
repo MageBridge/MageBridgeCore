@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * Joomla! component MageBridge
  *
  * @author Yireo (info@yireo.com)
@@ -14,16 +14,16 @@ defined('_JEXEC') or die('Restricted access');
 
 <style>
 input.browse {
-    font-size: 120%;
-    padding: 2px;
+	font-size: 120%;
+	padding: 2px;
 }
 div.description {
-    padding-left: 20px;
-    padding-bottom: 20px;
-    width: 700px;
+	padding-left: 20px;
+	padding-bottom: 20px;
+	width: 700px;
 }
 div.description pre {
-    padding-left: 20px;
+	padding-left: 20px;
 }
 </style>
 
@@ -38,36 +38,36 @@ On this page, you can see the result of Joomla! fetching data from the Magento M
 </div>
 <table class="admintable" width="100%">
 <tr>
-    <td class="key">
-        <?php echo JText::_('COM_MAGEBRIDGE_URL'); ?>
-    </td>
-    <td>
-        <form method="post" name="adminForm" id="adminForm">
-            <input class="browse" type="text" name="url" value="<?php echo $this->url; ?>" size="60" disabled />
-            <input class="submit" type="submit" name="type" value="Test" />
-            <input type="hidden" name="option" value="com_magebridge" />
-            <input type="hidden" name="view" value="check" />
-            <input type="hidden" name="layout" value="browser" />
-            <input type="hidden" name="task" value="" />
-            <?php echo JHTML::_( 'form.token' ); ?>
-        </form>
-    </td>
+	<td class="key">
+		<?php echo JText::_('COM_MAGEBRIDGE_URL'); ?>
+	</td>
+	<td>
+		<form method="post" name="adminForm" id="adminForm">
+			<input class="browse" type="text" name="url" value="<?php echo $this->url; ?>" size="60" disabled />
+			<input class="submit" type="submit" name="type" value="Test" />
+			<input type="hidden" name="option" value="com_magebridge" />
+			<input type="hidden" name="view" value="check" />
+			<input type="hidden" name="layout" value="browser" />
+			<input type="hidden" name="task" value="" />
+			<?php echo JHTML::_( 'form.token' ); ?>
+		</form>
+	</td>
 </tr>
 <tr>
-    <td class="key">
-        <?php echo JText::_('COM_MAGEBRIDGE_HOSTNAME'); ?>
-    </td>
-    <td>
-        <?php echo $this->host; ?> (<?php echo JText::_('COM_MAGEBRIDGE_IPADDRESS'); ?>: <?php echo gethostbyname($this->host); ?>)
-    </td>
+	<td class="key">
+		<?php echo JText::_('COM_MAGEBRIDGE_HOSTNAME'); ?>
+	</td>
+	<td>
+		<?php echo $this->host; ?> (<?php echo JText::_('COM_MAGEBRIDGE_IPADDRESS'); ?>: <?php echo gethostbyname($this->host); ?>)
+	</td>
 </tr>
 <tr>
-    <td class="key">
-        <?php echo JText::_('COM_MAGEBRIDGE_RESULT'); ?>
-    </td>
-    <td>
-        <iframe src="index.php?option=com_magebridge&view=check&layout=result" width="100%" height="80"></iframe>
-    </td>
+	<td class="key">
+		<?php echo JText::_('COM_MAGEBRIDGE_RESULT'); ?>
+	</td>
+	<td>
+		<iframe src="index.php?option=com_magebridge&view=check&layout=result" width="100%" height="80"></iframe>
+	</td>
 </tr>
 </table>
 <h3>Step 2: From browser to Magento</h3>

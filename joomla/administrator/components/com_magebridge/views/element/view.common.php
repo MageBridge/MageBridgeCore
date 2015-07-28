@@ -23,241 +23,241 @@ require_once JPATH_COMPONENT.'/view.php';
  */
 class MageBridgeViewCommon extends MageBridgeView
 {
-    /*
-     * Display method
-     *
-     * @param string $tpl
-     * @return null
-     */
+	/**
+	 * Display method
+	 *
+	 * @param string $tpl
+	 * @return null
+	 */
 	public function display($tpl = null)
 	{
-        // Add CSS
-        JHTML::stylesheet('media/com_magebridge/css/backend-elements.css');
+		// Add CSS
+		JHTML::stylesheet('media/com_magebridge/css/backend-elements.css');
 
-        // Load jQuery
-        YireoHelper::jquery();
+		// Load jQuery
+		YireoHelper::jquery();
 
-        $this->current = JFactory::getApplication()->input->getVar('current');
-        $this->object = JFactory::getApplication()->input->getVar('object');
+		$this->current = JFactory::getApplication()->input->getVar('current');
+		$this->object = JFactory::getApplication()->input->getVar('object');
 
 		parent::display($tpl);
-    }
-
-    /*
-     * Initialize the AJAX-layout
-     *
-     * @param null
-     * @return null
-     */
-    public function doAjaxLayout()
-    {
-        // Set common options
-        $this->setLayout('ajax');
-
-        // Create a new request
-        $request = array();
-
-        // Get the current request-options 
-        $get = JFactory::getApplication()->input->get('get');
-        if (!empty($get)) {
-            foreach ($get as $name => $value) {
-                $request[$name] = $value;
-            }
-        }
-        
-        // Merge the POST if it is there
-        $post = JFactory::getApplication()->input->get('post');
-        if (!empty($post)) {
-            foreach ($post as $name => $value) {
-                $request[$name] = $value;
-            }
-        }
-
-        // Add new variables
-        $request['view'] = 'element';
-        $request['format'] = 'ajax';
-
-        // Load the AJAX-script
-        $url = 'index.php?option=com_magebridge';
-        foreach ($request as $name => $value) $url .= '&'.$name.'='.$value;
-        MageBridgeElementHelper::ajax($url, 'ajaxelement');
 	}
 
-    /*
-     * Initialize the category-layout
-     *
-     * @param null
-     * @return null
-     */
-    public function doCategoryLayout()
-    {
-        // Initialize some important variables
-        $application = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd( 'option' ).'-element-categories';
+	/**
+	 * Initialize the AJAX-layout
+	 *
+	 * @param null
+	 * @return null
+	 */
+	public function doAjaxLayout()
+	{
+		// Set common options
+		$this->setLayout('ajax');
 
-        // Set common options
-        $this->setTitle('Category');
-        $this->setLayout('category');
-        
-        // Initialize search
-        $search = $application->getUserStateFromRequest( $option.'.search', 'search', '', 'string' );
-        $search = JString::strtolower( $search );
+		// Create a new request
+		$request = array();
 
-        // Set the data
-        $cache = JFactory::getCache('com_magebridge.admin');
-        $tree = $cache->call( array( 'MageBridgeElementHelper', 'getCategoryTree' ));
+		// Get the current request-options 
+		$get = JFactory::getApplication()->input->get('get');
+		if (!empty($get)) {
+			foreach ($get as $name => $value) {
+				$request[$name] = $value;
+			}
+		}
+		
+		// Merge the POST if it is there
+		$post = JFactory::getApplication()->input->get('post');
+		if (!empty($post)) {
+			foreach ($post as $name => $value) {
+				$request[$name] = $value;
+			}
+		}
 
-        // If search is active, we use a flat list instead of a tree
-        if(empty($search)) {
-            $categories = MageBridgeElementHelper::getCategoryList($tree);
-        } else {
-            $categories = $tree;
-        }
+		// Add new variables
+		$request['view'] = 'element';
+		$request['format'] = 'ajax';
 
-        // Initialize pagination
-        $this->categories = $this->initPagination('categories', $categories);
+		// Load the AJAX-script
+		$url = 'index.php?option=com_magebridge';
+		foreach ($request as $name => $value) $url .= '&'.$name.'='.$value;
+		MageBridgeElementHelper::ajax($url, 'ajaxelement');
+	}
 
-        // Add a dropdown list for Store Views
-        $current_store = $application->getUserStateFromRequest($option.'.store', 'store');
+	/**
+	 * Initialize the category-layout
+	 *
+	 * @param null
+	 * @return null
+	 */
+	public function doCategoryLayout()
+	{
+		// Initialize some important variables
+		$application = JFactory::getApplication();
+		$option = JFactory::getApplication()->input->getCmd( 'option' ).'-element-categories';
 
-        require_once JPATH_COMPONENT.'/fields/store.php';
-        $field = JFormHelper::loadFieldType('magebridge.store');
-        $field->setName('store');
-        $field->setValue($current_store);
-        $store = $field->getHtmlInput();
-        
-        // Build the lists
-        $lists = array();
-        $lists['search']= $search;
-        $lists['store']= $store;
-        $this->lists = $lists;
-    }
+		// Set common options
+		$this->setTitle('Category');
+		$this->setLayout('category');
+		
+		// Initialize search
+		$search = $application->getUserStateFromRequest( $option.'.search', 'search', '', 'string' );
+		$search = JString::strtolower( $search );
 
-    /*
-     * Initialize the widget-layout
-     *
-     * @param null
-     * @return null
-     */
-    public function doWidgetLayout()
-    {
-        // Set common options
-        $this->setTitle('Widget');
-        $this->setLayout('widget');
-        
-        // Set the data
-        $cache = JFactory::getCache('com_magebridge.admin');
-        $cache->setCaching(0);
-        $widgets = $cache->call( array( 'MageBridgeElementHelper', 'getWidgetList' ));
+		// Set the data
+		$cache = JFactory::getCache('com_magebridge.admin');
+		$tree = $cache->call( array( 'MageBridgeElementHelper', 'getCategoryTree' ));
 
-        // Initialize pagination
-        $this->widgets = $this->initPagination('widgets', $widgets);
+		// If search is active, we use a flat list instead of a tree
+		if(empty($search)) {
+			$categories = MageBridgeElementHelper::getCategoryList($tree);
+		} else {
+			$categories = $tree;
+		}
 
-        // Initialize search
-        $application = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd( 'option' ).'-element-widgets';
-        $search = $application->getUserStateFromRequest( $option.'.search', 'search', '', 'string' );
-        $search = JString::strtolower( $search );
-        
-        // Build the lists
-        $lists = array();
-        $lists['search']= $search;
-        $this->lists = $lists;
-    }
+		// Initialize pagination
+		$this->categories = $this->initPagination('categories', $categories);
 
-    /*
-     * Initialize the customer-layout
-     *
-     * @param null
-     * @return null
-     */
-    public function doCustomerLayout()
-    {
-        // Set common options
-        $this->setTitle('Customer');
-        $this->setLayout('customer');
-        
-        // Set the data
-        $cache = JFactory::getCache('com_magebridge.admin');
-        $cache->setCaching(0);
-        $customers = $cache->call( array( 'MageBridgeElementHelper', 'getCustomerList' ));
+		// Add a dropdown list for Store Views
+		$current_store = $application->getUserStateFromRequest($option.'.store', 'store');
 
-        // Initialize pagination
-        $this->customers = $this->initPagination('customers', $customers);
+		require_once JPATH_COMPONENT.'/fields/store.php';
+		$field = JFormHelper::loadFieldType('magebridge.store');
+		$field->setName('store');
+		$field->setValue($current_store);
+		$store = $field->getHtmlInput();
+		
+		// Build the lists
+		$lists = array();
+		$lists['search']= $search;
+		$lists['store']= $store;
+		$this->lists = $lists;
+	}
 
-        // Initialize search
-        $application = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd( 'option' ).'-element-customers';
-        $search = $application->getUserStateFromRequest( $option.'.search', 'search', '', 'string' );
-        $search = JString::strtolower( $search );
-        
-        // Build the lists
-        $lists = array();
-        $lists['search']= $search;
-        $this->lists = $lists;
-    }
+	/**
+	 * Initialize the widget-layout
+	 *
+	 * @param null
+	 * @return null
+	 */
+	public function doWidgetLayout()
+	{
+		// Set common options
+		$this->setTitle('Widget');
+		$this->setLayout('widget');
+		
+		// Set the data
+		$cache = JFactory::getCache('com_magebridge.admin');
+		$cache->setCaching(0);
+		$widgets = $cache->call( array( 'MageBridgeElementHelper', 'getWidgetList' ));
 
-    /*
-     * Initialize the product-layout
-     *
-     * @param null
-     * @return null
-     */
-    public function doProductLayout()
-    {
-        // Set common options
-        $this->setTitle('Product');
-        $this->setLayout('product');
-        
-        // Set the data
-        $cache = JFactory::getCache('com_magebridge.admin');
-        $cache->setCaching(0);
-        $products = $cache->call( array( 'MageBridgeElementHelper', 'getProductList' ));
+		// Initialize pagination
+		$this->widgets = $this->initPagination('widgets', $widgets);
 
-        // Initialize pagination
-        $this->products = $this->initPagination('products', $products);
+		// Initialize search
+		$application = JFactory::getApplication();
+		$option = JFactory::getApplication()->input->getCmd( 'option' ).'-element-widgets';
+		$search = $application->getUserStateFromRequest( $option.'.search', 'search', '', 'string' );
+		$search = JString::strtolower( $search );
+		
+		// Build the lists
+		$lists = array();
+		$lists['search']= $search;
+		$this->lists = $lists;
+	}
 
-        // Initialize search
-        $application = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd( 'option' ).'-element-products';
-        $search = $application->getUserStateFromRequest( $option.'.search', 'search', '', 'string' );
-        $search = JString::strtolower( $search );
-        
-        // Build the lists
-        $lists = array();
-        $lists['search']= $search;
-        $this->lists = $lists;
-    }
+	/**
+	 * Initialize the customer-layout
+	 *
+	 * @param null
+	 * @return null
+	 */
+	public function doCustomerLayout()
+	{
+		// Set common options
+		$this->setTitle('Customer');
+		$this->setLayout('customer');
+		
+		// Set the data
+		$cache = JFactory::getCache('com_magebridge.admin');
+		$cache->setCaching(0);
+		$customers = $cache->call( array( 'MageBridgeElementHelper', 'getCustomerList' ));
 
-    /*
-     * Helper-method to set pagination
-     *
-     * @param string $type
-     * @param array $items
-     * @return array
-     */
-    public function initPagination($type = '', $items = array())
-    {
-        // Get the limit & limitstart
-        $application = JFactory::getApplication();
-        $option = JFactory::getApplication()->input->getCmd( 'option' ).'-element-'.$type;
-        $limit = $application->getUserStateFromRequest( $option.'.limit', 'limit', $application->getCfg('list_limit'), 'int' );
-        $limitstart = $application->getUserStateFromRequest( $option.'.limitstart', 'limitstart', 0, 'int' );
+		// Initialize pagination
+		$this->customers = $this->initPagination('customers', $customers);
 
-        // Set the pagination
-        $this->pagination = new JPagination( count($items), $limitstart, $limit );
+		// Initialize search
+		$application = JFactory::getApplication();
+		$option = JFactory::getApplication()->input->getCmd( 'option' ).'-element-customers';
+		$search = $application->getUserStateFromRequest( $option.'.search', 'search', '', 'string' );
+		$search = JString::strtolower( $search );
+		
+		// Build the lists
+		$lists = array();
+		$lists['search']= $search;
+		$this->lists = $lists;
+	}
 
-        // Do not do anything when using a limit of 0
-        if ($limit == 0) {
-            return $items;
-        }
+	/**
+	 * Initialize the product-layout
+	 *
+	 * @param null
+	 * @return null
+	 */
+	public function doProductLayout()
+	{
+		// Set common options
+		$this->setTitle('Product');
+		$this->setLayout('product');
+		
+		// Set the data
+		$cache = JFactory::getCache('com_magebridge.admin');
+		$cache->setCaching(0);
+		$products = $cache->call( array( 'MageBridgeElementHelper', 'getProductList' ));
 
-        // Split the items 
-        if (!empty($items)) {
-            $items = array_splice($items, $limitstart, $limit, true);
-        }
+		// Initialize pagination
+		$this->products = $this->initPagination('products', $products);
 
-        // Return the items
-        return $items;
-    }
+		// Initialize search
+		$application = JFactory::getApplication();
+		$option = JFactory::getApplication()->input->getCmd( 'option' ).'-element-products';
+		$search = $application->getUserStateFromRequest( $option.'.search', 'search', '', 'string' );
+		$search = JString::strtolower( $search );
+		
+		// Build the lists
+		$lists = array();
+		$lists['search']= $search;
+		$this->lists = $lists;
+	}
+
+	/**
+	 * Helper-method to set pagination
+	 *
+	 * @param string $type
+	 * @param array $items
+	 * @return array
+	 */
+	public function initPagination($type = '', $items = array())
+	{
+		// Get the limit & limitstart
+		$application = JFactory::getApplication();
+		$option = JFactory::getApplication()->input->getCmd( 'option' ).'-element-'.$type;
+		$limit = $application->getUserStateFromRequest( $option.'.limit', 'limit', $application->getCfg('list_limit'), 'int' );
+		$limitstart = $application->getUserStateFromRequest( $option.'.limitstart', 'limitstart', 0, 'int' );
+
+		// Set the pagination
+		$this->pagination = new JPagination( count($items), $limitstart, $limit );
+
+		// Do not do anything when using a limit of 0
+		if ($limit == 0) {
+			return $items;
+		}
+
+		// Split the items 
+		if (!empty($items)) {
+			$items = array_splice($items, $limitstart, $limit, true);
+		}
+
+		// Return the items
+		return $items;
+	}
 }

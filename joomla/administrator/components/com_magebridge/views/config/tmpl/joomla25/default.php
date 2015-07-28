@@ -1,5 +1,5 @@
 <?php 
-/*
+/**
  * Joomla! component MageBridge
  *
  * @author Yireo (info@yireo.com)
@@ -16,10 +16,10 @@ $form = $this->form;
 
 <?php echo $this->pane->startPane('config'); ?>
 <?php foreach($this->getTabs() as $tab) : ?>
-    <?php echo $this->printTab($tab[0], $tab[1], $tab[2]); ?>
+	<?php echo $this->printTab($tab[0], $tab[1], $tab[2]); ?>
 <?php endforeach; ?>
 <?php foreach($form->getFieldsets() as $fieldset): ?>
-    <?php echo $this->printFieldset($form, $fieldset); ?>
+	<?php echo $this->printFieldset($form, $fieldset); ?>
 <?php endforeach; ?>
 <?php echo $this->pane->endPane(); ?>
 

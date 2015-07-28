@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * Joomla! component MageBridge
  *
  * @author Yireo (info@yireo.com)
@@ -15,18 +15,18 @@ defined('JPATH_BASE') or die();
 // Import the MageBridge autoloader
 require_once JPATH_SITE . '/components/com_magebridge/helpers/loader.php';
 
-/*
+/**
  * Form Field-class for choosing a specific Magento product in a modal box
  */
 
 class MagebridgeFormFieldProduct extends MagebridgeFormFieldAbstract
 {
-	/*
+	/**
 	 * Form field type
 	 */
 	public $type = 'MageBridge product';
 
-	/*
+	/**
 	 * Method to get the HTML of this element
 	 *
 	 * @param null
@@ -36,7 +36,7 @@ class MagebridgeFormFieldProduct extends MagebridgeFormFieldAbstract
 	{
 		$name = $this->name;
 		$value = $this->value;
-        $id = preg_replace('/([^0-9a-zA-Z]+)/', '_', $name);
+		$id = preg_replace('/([^0-9a-zA-Z]+)/', '_', $name);
 
 		// Are the API widgets enabled?
 		if (MagebridgeModelConfig::load('api_widgets') == true)

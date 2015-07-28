@@ -19,11 +19,11 @@ defined('_JEXEC') or die();
 $limits = array(0, 10, 20, 30, 40, 50, 100, 200, 300, 400, 500);
 $options = array();
 foreach($limits as $limit) {
-    $options[] = array('value' => $limit, 'title' => $limit);
+	$options[] = array('value' => $limit, 'title' => $limit);
 }
 $javascript = 'onchange="document.adminForm.submit();"';
 ?>
 <div class="list-limit">
-    <?php echo JHTML::_('select.genericlist', $options, 'filter_list_limit', $javascript, 'value', 'title', $this->getFilter('list_limit')); ?>
+	<?php echo JHTML::_('select.genericlist', $options, 'filter_list_limit', $javascript, 'value', 'title', $this->getFilter('list_limit')); ?>
 </div>
 <?php endif; ?>

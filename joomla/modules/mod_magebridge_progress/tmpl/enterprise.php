@@ -13,8 +13,8 @@
 defined('_JEXEC') or die('Restricted access');
 ?>
 <div id="magebridge-checkout-progress" class="magebridge-module">
-    <div id="col-right-opcheckout">
-    <?php echo $data; ?>
-    </div>
+	<div id="col-right-opcheckout">
+	<?php echo $data; ?>
+	</div>
 </div>
 <div style="clear:both"></div>

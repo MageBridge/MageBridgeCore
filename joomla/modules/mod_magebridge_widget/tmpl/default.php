@@ -13,6 +13,6 @@
 defined('_JEXEC') or die('Restricted access'); 
 ?>
 <div id="magebridge-<?php echo $widgetName; ?>" class="magebridge-module">
-    <?php print_r($widget); ?>
+	<?php print_r($widget); ?>
 </div>
 <div style="clear:both"></div>

@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * Joomla! Yireo Library
  *
  * @author Yireo (http://www.yireo.com/)

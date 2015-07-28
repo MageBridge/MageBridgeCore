@@ -2,11 +2,11 @@
 /**
  * Joomla! Yireo Library
  *
- * @author    Yireo (http://www.yireo.com/)
+ * @author	Yireo (http://www.yireo.com/)
  * @package   YireoLib
  * @copyright Copyright 2015
  * @license   GNU Public License
- * @link      http://www.yireo.com/
+ * @link	  http://www.yireo.com/
  * @version   0.6.1
  */
 
@@ -70,7 +70,7 @@ class YireoCommonView extends YireoAbstractView
 	/**
 	 * Main constructor method
 	 *
-	 * @access     public
+	 * @access	 public
 	 * @subpackage Yireo
 	 *
 	 * @param array $config
@@ -107,7 +107,7 @@ class YireoCommonView extends YireoAbstractView
 	/**
 	 * Helper-method to set the page title
 	 *
-	 * @access     protected
+	 * @access	 protected
 	 * @subpackage Yireo
 	 *
 	 * @param string $title
@@ -222,7 +222,7 @@ class YireoCommonView extends YireoAbstractView
 	/**
 	 * Add a specific CSS-stylesheet to this page
 	 *
-	 * @access     public
+	 * @access	 public
 	 * @subpackage Yireo
 	 *
 	 * @param string $stylesheet
@@ -275,7 +275,7 @@ class YireoCommonView extends YireoAbstractView
 	/**
 	 * Add a specific JavaScript-script to this page
 	 *
-	 * @access     public
+	 * @access	 public
 	 * @subpackage Yireo
 	 *
 	 * @param string $script
@@ -328,7 +328,7 @@ class YireoCommonView extends YireoAbstractView
 	/**
 	 * Add a folder to the template-search path
 	 *
-	 * @access     protected
+	 * @access	 protected
 	 * @subpackage Yireo
 	 *
 	 * @param string $path
@@ -544,7 +544,7 @@ class YireoView extends YireoCommonView
 	/**
 	 * Main constructor method
 	 *
-	 * @access     public
+	 * @access	 public
 	 * @subpackage Yireo
 	 *
 	 * @param array $config
@@ -634,7 +634,7 @@ class YireoView extends YireoCommonView
 	/**
 	 * Main display method
 	 *
-	 * @access     public
+	 * @access	 public
 	 * @subpackage Yireo
 	 *
 	 * @param string $tpl
@@ -657,7 +657,7 @@ class YireoView extends YireoCommonView
 	/**
 	 * Method to prepare for displaying
 	 *
-	 * @access     public
+	 * @access	 public
 	 * @subpackage Yireo
 	 *
 	 * @param null
@@ -738,7 +738,7 @@ class YireoView extends YireoCommonView
 	/**
 	 * Helper-method to set a specific filter
 	 *
-	 * @access     public
+	 * @access	 public
 	 * @subpackage Yireo
 	 *
 	 * @param string $filter
@@ -944,11 +944,11 @@ class YireoView extends YireoCommonView
 	{
 		if (YireoHelper::isJoomla25())
 		{
-			$script = "<script type=\"text/javascript\">\n" . "function getAjax(ajax_url, element_id, type) {\n" . "    var MBajax = new Request({\n" . "        url: ajax_url, \n" . "        method: 'get', \n" . "        onSuccess: function(result){\n" . "            if (result == '') {\n" . "                alert('Empty result');\n" . "            } else {\n" . "                if (type == 'input') {\n" . "                    $(element_id).value = result;\n" . "                } else {\n" . "                    $(element_id).innerHTML = result;\n" . "                }\n" . "            }\n" . "        }\n" . "    }).send();\n" . "}\n" . "</script>";
+			$script = "<script type=\"text/javascript\">\n" . "function getAjax(ajax_url, element_id, type) {\n" . "	var MBajax = new Request({\n" . "		url: ajax_url, \n" . "		method: 'get', \n" . "		onSuccess: function(result){\n" . "			if (result == '') {\n" . "				alert('Empty result');\n" . "			} else {\n" . "				if (type == 'input') {\n" . "					$(element_id).value = result;\n" . "				} else {\n" . "					$(element_id).innerHTML = result;\n" . "				}\n" . "			}\n" . "		}\n" . "	}).send();\n" . "}\n" . "</script>";
 		}
 		else
 		{
-			$script = "<script type=\"text/javascript\">\n" . "function getAjax(ajax_url, element_id, type) {\n" . "    var MBajax = jQuery.ajax({\n" . "        url: ajax_url, \n" . "        method: 'get', \n" . "        success: function(result){\n" . "            if (result == '') {\n" . "                alert('Empty result');\n" . "            } else {\n" . "                 jQuery('#' + element_id).val(result);\n" . "            }\n" . "        }\n" . "    });\n" . "}\n" . "</script>";
+			$script = "<script type=\"text/javascript\">\n" . "function getAjax(ajax_url, element_id, type) {\n" . "	var MBajax = jQuery.ajax({\n" . "		url: ajax_url, \n" . "		method: 'get', \n" . "		success: function(result){\n" . "			if (result == '') {\n" . "				alert('Empty result');\n" . "			} else {\n" . "				 jQuery('#' + element_id).val(result);\n" . "			}\n" . "		}\n" . "	});\n" . "}\n" . "</script>";
 		}
 
 		$this->document->addCustomTag($script);
@@ -967,7 +967,7 @@ class YireoView extends YireoCommonView
 	/**
 	 * Helper method to determine whether this is a new entry or not
 	 *
-	 * @access     public
+	 * @access	 public
 	 * @subpackage Yireo
 	 *
 	 * @param null
@@ -1073,8 +1073,8 @@ class YireoView extends YireoCommonView
 	 *
 	 * @param string $type
 	 * @param object $item
-	 * @param int    $i
-	 * @param int    $n
+	 * @param int	$i
+	 * @param int	$n
 	 *
 	 * @return string
 	 */
@@ -1114,7 +1114,7 @@ class YireoView extends YireoCommonView
 	/**
 	 * Method to return img-tag for a certain image, if that image exists
 	 *
-	 * @access     public
+	 * @access	 public
 	 * @subpackage Yireo
 	 *
 	 * @param

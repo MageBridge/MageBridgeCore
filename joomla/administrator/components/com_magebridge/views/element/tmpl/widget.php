@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * Joomla! component MageBridge
  *
  * @author Yireo (info@yireo.com)
@@ -15,79 +15,79 @@ defined('_JEXEC') or die('Restricted access');
 <form method="post" name="adminForm" id="adminForm">
 <table>
 <tr>
-    <td align="left" width="100%">
-        <?php echo JText::_('LIB_YIREO_VIEW_FILTER'); ?>:
-        <input type="text" name="search" id="search" value="<?php echo $this->lists['search'];?>"
-        class="text_area" onchange="document.adminForm.submit();" />
-        <button onclick="this.form.submit();"><?php echo JText::_('LIB_YIREO_VIEW_SEARCH'); ?></button>
-        <button onclick="document.getElementById('search').value='';this.form.submit();"><?php echo JText::_('LIB_YIREO_VIEW_RESET'); ?></button>
-    </td>
+	<td align="left" width="100%">
+		<?php echo JText::_('LIB_YIREO_VIEW_FILTER'); ?>:
+		<input type="text" name="search" id="search" value="<?php echo $this->lists['search'];?>"
+		class="text_area" onchange="document.adminForm.submit();" />
+		<button onclick="this.form.submit();"><?php echo JText::_('LIB_YIREO_VIEW_SEARCH'); ?></button>
+		<button onclick="document.getElementById('search').value='';this.form.submit();"><?php echo JText::_('LIB_YIREO_VIEW_RESET'); ?></button>
+	</td>
 </tr>
 </table>
 <table class="adminlist table table-striped" cellspacing="1">
 <thead>
-    <tr>
-        <th width="30">
-            <?php echo JText::_('JNUM'); ?>
-        </th>
-        <th class="title" width="300">
-            <?php echo JText::_('LIB_YIREO_TABLE_FIELDNAME_NAME'); ?>
-        </th>
-        <th class="title">
-            <?php echo JText::_('LIB_YIREO_TABLE_FIELDNAME_TYPE'); ?>
-        </th>
-        <th class="title">
-            <?php echo JText::_('LIB_YIREO_TABLE_FIELDNAME_ID'); ?>
-        </th>
-    </tr>
+	<tr>
+		<th width="30">
+			<?php echo JText::_('JNUM'); ?>
+		</th>
+		<th class="title" width="300">
+			<?php echo JText::_('LIB_YIREO_TABLE_FIELDNAME_NAME'); ?>
+		</th>
+		<th class="title">
+			<?php echo JText::_('LIB_YIREO_TABLE_FIELDNAME_TYPE'); ?>
+		</th>
+		<th class="title">
+			<?php echo JText::_('LIB_YIREO_TABLE_FIELDNAME_ID'); ?>
+		</th>
+	</tr>
 </thead>
 <tfoot>
-    <tr>
-        <td colspan="5">
-            <?php echo $this->pagination->getListFooter(); ?>
-        </td>
-    </tr>
+	<tr>
+		<td colspan="5">
+			<?php echo $this->pagination->getListFooter(); ?>
+		</td>
+	</tr>
 </tfoot>
 <tbody>
 <?php 
 if (!empty($this->widgets)) {
-    $i = 0;
-    foreach ($this->widgets as $widget) {
+	$i = 0;
+	foreach ($this->widgets as $widget) {
 
-        $css = array();
-        $return = $widget['id'];
+		$css = array();
+		$return = $widget['id'];
 
-        if (JFactory::getApplication()->input->getCmd('current') == $return) {
-            $css[] = 'current';
-        }
+		if (JFactory::getApplication()->input->getCmd('current') == $return) {
+			$css[] = 'current';
+		}
 
-        $js = "window.parent.jSelectWidget('$return', '$return', '".JFactory::getApplication()->input->getVar('object')."');";
-        ?>
-        <tr class="<?php echo implode(' ', $css); ?>">
-            <td>
-                <?php echo $this->pagination->getRowOffset( $i ); ?>
-            </td>
-            <td>
-                <a style="cursor: pointer;" onclick="<?php echo $js; ?>"><?php echo $widget['name']; ?></a>
-            </td>
-            <td>
-                <?php echo $widget['type']; ?>
-            </td>
-            <td>
-                <a style="cursor: pointer;" onclick="<?php echo $js; ?>">
-                    <?php echo $widget['id']; ?>
-                </a>
-            </td>
-        </tr>
-        <?php 
-        $i++;
-    } 
+		$js = "window.parent.jSelectWidget('$return', '$return', '".JFactory::getApplication()->input->getVar('object')."');";
+		?>
+		<tr class="<?php echo implode(' ', $css); ?>">
+			<td>
+				<?php echo $this->pagination->getRowOffset( $i ); ?>
+			</td>
+			<td>
+				<a style="cursor: pointer;" onclick="<?php echo $js; ?>"><?php echo $widget['name']; ?></a>
+			</td>
+			<td>
+				<?php echo $widget['type']; ?>
+			</td>
+			<td>
+				<a style="cursor: pointer;" onclick="<?php echo $js; ?>">
+					<?php echo $widget['id']; ?>
+				</a>
+			</td>
+		</tr>
+		<?php 
+		$i++;
+	} 
 } else {
-    ?>
-    <tr>
-        <td colspan="5"><?php echo JText::_('LIB_YIREO_VIEW_LIST_NO_ITEMS'); ?></td>
-    </tr>
-    <?php
+	?>
+	<tr>
+		<td colspan="5"><?php echo JText::_('LIB_YIREO_VIEW_LIST_NO_ITEMS'); ?></td>
+	</tr>
+	<?php
 }
 ?>
 </tbody>

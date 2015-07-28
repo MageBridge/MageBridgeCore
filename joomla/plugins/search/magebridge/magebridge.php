@@ -36,138 +36,138 @@ class plgSearchMageBridge extends JPlugin
 		$this->loadLanguage();
 	}
 
-    /**
-     * Handle the event when searching for items
-     *
-     * @access public
-     * @param null
-     * @return array
-     */
-    public function onContentSearchAreas()
-    {
-        // Do not continue if not enabled
-        if ($this->isEnabled() == false) {
-            return false;
-        }
+	/**
+	 * Handle the event when searching for items
+	 *
+	 * @access public
+	 * @param null
+	 * @return array
+	 */
+	public function onContentSearchAreas()
+	{
+		// Do not continue if not enabled
+		if ($this->isEnabled() == false) {
+			return false;
+		}
 
-        static $areas = array(
-            'mage-products' => 'PLG_SEARCH_MAGEBRIDGE_PRODUCTS',
-            'mage-categories' => 'PLG_SEARCH_MAGEBRIDGE_CATEGORIES',
-        );
-        return $areas;
-    }
+		static $areas = array(
+			'mage-products' => 'PLG_SEARCH_MAGEBRIDGE_PRODUCTS',
+			'mage-categories' => 'PLG_SEARCH_MAGEBRIDGE_CATEGORIES',
+		);
+		return $areas;
+	}
 
-    /**
-     * Handle the event when searching for items
-     *
-     * @access public
-     * @param string $text
-     * @param string $phrase
-     * @param string $ordering
-     * @param array $areas
-     * @return array
-     */
-    public function onContentSearch($text, $phrase, $ordering = '', $areas = null)
-    {
-        // Do not continue if not enabled
-        if ($this->isEnabled() == false) {
-            return array();
-        }
+	/**
+	 * Handle the event when searching for items
+	 *
+	 * @access public
+	 * @param string $text
+	 * @param string $phrase
+	 * @param string $ordering
+	 * @param array $areas
+	 * @return array
+	 */
+	public function onContentSearch($text, $phrase, $ordering = '', $areas = null)
+	{
+		// Do not continue if not enabled
+		if ($this->isEnabled() == false) {
+			return array();
+		}
 
-        // Check if the areas match
-        if (!empty($areas) && is_array($areas)) {
-            if (!array_intersect($areas, array_keys($this->onContentSearchAreas()))) {
-                return array();
-            }
-        }
+		// Check if the areas match
+		if (!empty($areas) && is_array($areas)) {
+			if (!array_intersect($areas, array_keys($this->onContentSearchAreas()))) {
+				return array();
+			}
+		}
 
-        // Do not continue with an empty search string
-        if (empty($text)) {
-            return array();
-        }
+		// Do not continue with an empty search string
+		if (empty($text)) {
+			return array();
+		}
 
-        // Load the plugin parameters
-        $search_limit = (int)$this->params->get('search_limit', 50);
-        $search_fields = trim($this->params->get('search_fields'));
+		// Load the plugin parameters
+		$search_limit = (int)$this->params->get('search_limit', 50);
+		$search_fields = trim($this->params->get('search_fields'));
 
-        // Determine the search fields
-        if(!empty($search_fields)) {
-            $search_field_values = explode(',', $search_fields);
+		// Determine the search fields
+		if(!empty($search_fields)) {
+			$search_field_values = explode(',', $search_fields);
 
-            $search_fields = array();
-            //$search_fields = array('title', 'description');
-            foreach($search_field_values as $search_field_value) {
-                $search_fields[] = trim($search_field_value);
-            }
-            array_unique($search_fields);
+			$search_fields = array();
+			//$search_fields = array('title', 'description');
+			foreach($search_field_values as $search_field_value) {
+				$search_fields[] = trim($search_field_value);
+			}
+			array_unique($search_fields);
 
-        } else {
-            $search_fields = array('title', 'description');
-        }
+		} else {
+			$search_fields = array('title', 'description');
+		}
 
-        // Build the search array
-        $search_options = array(
-            'store' => MageBridgeConnectorStore::getInstance()->getStore(),
-            'website' => MagebridgeModelConfig::load('website'),
-            'text' => $text,
-            'search_limit' => $search_limit,
-            'search_fields' => $search_fields,
-        );
+		// Build the search array
+		$search_options = array(
+			'store' => MageBridgeConnectorStore::getInstance()->getStore(),
+			'website' => MagebridgeModelConfig::load('website'),
+			'text' => $text,
+			'search_limit' => $search_limit,
+			'search_fields' => $search_fields,
+		);
 
-        // Include the MageBridge register
-        MageBridgeModelDebug::getInstance()->trace( 'Search plugin' );
-        $register = MageBridgeModelRegister::getInstance();
-        $segment_id = $register->add('api', 'magebridge_product.search', $search_options);
+		// Include the MageBridge register
+		MageBridgeModelDebug::getInstance()->trace( 'Search plugin' );
+		$register = MageBridgeModelRegister::getInstance();
+		$segment_id = $register->add('api', 'magebridge_product.search', $search_options);
 
-        // Include the MageBridge bridge
-        $bridge = MageBridgeModelBridge::getInstance();
-        $bridge->build(true);
+		// Include the MageBridge bridge
+		$bridge = MageBridgeModelBridge::getInstance();
+		$bridge->build(true);
 
-        // Get the results
-        $results = $register->getDataById($segment_id);
+		// Get the results
+		$results = $register->getDataById($segment_id);
 
-        // Do not continue if the result is empty
-        if (empty($results)) {
-            return array();
-        }
+		// Do not continue if the result is empty
+		if (empty($results)) {
+			return array();
+		}
 
-        // Only show the maximum amount
-        $results = array_slice( $results, 0, $search_limit );
-        $objects = array();
-        foreach ($results as $index => $result) {
-            $object = (object)null;
-            $object->title = $result['name'];
-            $object->text = $result['description'];
-            $url = preg_replace('/^(.*)index.php/', 'index.php', $result['url']);
-            $object->href = $url;
-            $object->created = $result['created_at'];
-            $object->metadesc = $result['meta_description'];
-            $object->metakey = $result['meta_keyword'];
-            $object->section = null;
-            $object->browsernav = 2;
-            $object->thumbnail = $result['thumbnail'];
-            $object->small_image = $result['small_image'];
-            $object->image = $result['image'];
-            $objects[] = $object;
-        }
+		// Only show the maximum amount
+		$results = array_slice( $results, 0, $search_limit );
+		$objects = array();
+		foreach ($results as $index => $result) {
+			$object = (object)null;
+			$object->title = $result['name'];
+			$object->text = $result['description'];
+			$url = preg_replace('/^(.*)index.php/', 'index.php', $result['url']);
+			$object->href = $url;
+			$object->created = $result['created_at'];
+			$object->metadesc = $result['meta_description'];
+			$object->metakey = $result['meta_keyword'];
+			$object->section = null;
+			$object->browsernav = 2;
+			$object->thumbnail = $result['thumbnail'];
+			$object->small_image = $result['small_image'];
+			$object->image = $result['image'];
+			$objects[] = $object;
+		}
 
-        return $objects;
-    }
+		return $objects;
+	}
 
-    /**
-     * Return whether MageBridge is available or not
-     * 
-     * @access private
-     * @param null
-     * @return mixed $value
-     */
-    private function isEnabled()
-    {
-        if (class_exists('MageBridgeModelBridge')) {
-            if (MageBridgeModelBridge::getInstance()->isOffline() == false) {
-                return true;
-            }
-        }
-        return false;
-    }
+	/**
+	 * Return whether MageBridge is available or not
+	 * 
+	 * @access private
+	 * @param null
+	 * @return mixed $value
+	 */
+	private function isEnabled()
+	{
+		if (class_exists('MageBridgeModelBridge')) {
+			if (MageBridgeModelBridge::getInstance()->isOffline() == false) {
+				return true;
+			}
+		}
+		return false;
+	}
 }

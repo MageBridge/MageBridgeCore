@@ -2,11 +2,11 @@
 /**
  * Joomla! MageBridge Preloader - System plugin
  *
- * @author    Yireo (info@yireo.com)
+ * @author	Yireo (info@yireo.com)
  * @package   MageBridge
  * @copyright Copyright 2015
  * @license   GNU Public License
- * @link      http://www.yireo.com
+ * @link	  http://www.yireo.com
  */
 
 // Check to ensure this file is included in Joomla!

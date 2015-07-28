@@ -19,53 +19,53 @@ defined('_JEXEC') or die('Restricted access');
  */
 class plgMageBridgeStoreNooku extends MageBridgePluginStore
 {
-    /*
-     * Deprecated variable to migrate from the original connector-architecture to new Store Plugins
-     */
-    protected $connector_field = 'nooku_language';
+	/**
+	 * Deprecated variable to migrate from the original connector-architecture to new Store Plugins
+	 */
+	protected $connector_field = 'nooku_language';
 
-    /**
-     * Event "onMageBridgeValidate"
-     * 
-     * @access public
-     * @param array $actions
-     * @param object $condition
-     * @return bool
-     */
-    public function onMageBridgeValidate($actions = null, $condition = null)
-    {
-        // Make sure this plugin is enabled
-        if ($this->isEnabled() == false) {
-            return false;
-        }
+	/**
+	 * Event "onMageBridgeValidate"
+	 * 
+	 * @access public
+	 * @param array $actions
+	 * @param object $condition
+	 * @return bool
+	 */
+	public function onMageBridgeValidate($actions = null, $condition = null)
+	{
+		// Make sure this plugin is enabled
+		if ($this->isEnabled() == false) {
+			return false;
+		}
 
-        // Make sure to check upon the $actions array to see if it contains what we need
-        if(empty($actions['nooku_language'])) {
-            return false;
-        }
+		// Make sure to check upon the $actions array to see if it contains what we need
+		if(empty($actions['nooku_language'])) {
+			return false;
+		}
 
-        // Check if the condition applies
-        if ($actions['nooku_language'] == JFactory::getApplication()->input->getCmd('lang')) {
-            return true;
-        }
+		// Check if the condition applies
+		if ($actions['nooku_language'] == JFactory::getApplication()->input->getCmd('lang')) {
+			return true;
+		}
 
-        // Return false by default
-        return false;
-    }
+		// Return false by default
+		return false;
+	}
 
-    /*
-     * Method to check whether this plugin is enabled or not
-     *
-     * @param null
-     * @return bool
-     */
-    public function isEnabled()
-    {
-        if (is_dir(JPATH_SITE.'/components/com_nooku')) {
-            return true;
-        } else {
-            return false;
-        }
-    }
+	/**
+	 * Method to check whether this plugin is enabled or not
+	 *
+	 * @param null
+	 * @return bool
+	 */
+	public function isEnabled()
+	{
+		if (is_dir(JPATH_SITE.'/components/com_nooku')) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 }
 

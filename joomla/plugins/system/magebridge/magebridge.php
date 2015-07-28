@@ -2,11 +2,11 @@
 /**
  * Joomla! MageBridge - System plugin
  *
- * @author    Yireo (info@yireo.com)
+ * @author	Yireo (info@yireo.com)
  * @package   MageBridge
  * @copyright Copyright 2015
  * @license   GNU Public License
- * @link      http://www.yireo.com
+ * @link	  http://www.yireo.com
  *
  * @todo: plgSystemMageBridgeHelperJavascript
  * @todo: plgSystemMageBridgeHelperSsl
@@ -43,7 +43,7 @@ class plgSystemMageBridge extends JPlugin
 		$this->app = JFactory::getApplication();
 		$this->doc = JFactory::getDocument();
 
-        $this->replaceClasses();
+		$this->replaceClasses();
 
 		$this->loadLanguage();
 	}
@@ -74,11 +74,11 @@ class plgSystemMageBridge extends JPlugin
 		// Perform actions on the frontend
 		if ($this->app->isSite())
 		{
-            // Deny iframes
-            if ($this->params->get('deny_iframe'))
-            {
-                header('X-Frame-Options: DENY');
-            }
+			// Deny iframes
+			if ($this->params->get('deny_iframe'))
+			{
+				header('X-Frame-Options: DENY');
+			}
 
 			// Hard-spoof all MageBridge SEF URLs (for sh404SEF)
 			if ($this->getParam('spoof_sef', 0) == 1)
@@ -203,9 +203,9 @@ class plgSystemMageBridge extends JPlugin
 		}
 
 		// Display the component-only on specific pages
-		/*
+		/**
 		$pages = array(
-			'catalog/product/gallery/id/*',
+			'catalog/product/gallery/id/**',
 			'catalog/product_compare/index',
 		);
 
@@ -314,8 +314,8 @@ class plgSystemMageBridge extends JPlugin
 	{
 		if ($this->app->isSite())
 		{
-            return;
-        }
+			return;
+		}
 
 		jimport('joomla.form.form');
 		JForm::addFieldPath(JPATH_ADMINISTRATOR . '/components/com_magebridge/fields');
@@ -435,7 +435,7 @@ class plgSystemMageBridge extends JPlugin
 				}
 
 				$source = str_replace('/', '\/', $source);
-                $source = preg_replace('/^(http|https)/', '', $source);
+				$source = preg_replace('/^(http|https)/', '', $source);
 
 				// Prepare the destination URL
 				if (preg_match('/^index\.php\?option=/', $destination))
@@ -911,7 +911,7 @@ class plgSystemMageBridge extends JPlugin
 		// Check whether some request is in the queue
 		$tasks = $session->get('com_magebridge.task_queue');
 
-		/*
+		/**
 		// @todo: Remove deprecated code
 		if (!empty($tasks) && is_array($tasks)) {
 			foreach ($tasks as $task) {
@@ -1256,62 +1256,62 @@ class plgSystemMageBridge extends JPlugin
 		return false;
 	}
 
-    /**
-     * Method to override existing classes with MageBridge customized classes
-     *
-     * @return bool
-     */
-    protected function replaceClasses()
-    {
-        if ($this->params->get('override_core', 1) == 0)
-        {
-            return false;
-        }
+	/**
+	 * Method to override existing classes with MageBridge customized classes
+	 *
+	 * @return bool
+	 */
+	protected function replaceClasses()
+	{
+		if ($this->params->get('override_core', 1) == 0)
+		{
+			return false;
+		}
 
 		if ($this->app->isSite() == false)
 		{
-            return false;
-        }
+			return false;
+		}
 
-        $overrides = array(
-            'JHtmlBehavior' => array(
-                'original' => JPATH_LIBRARIES . '/cms/html/behavior.php',
-                'override' => __DIR__ . '/overrides/html/behavior.php',
-            ),
-        );
+		$overrides = array(
+			'JHtmlBehavior' => array(
+				'original' => JPATH_LIBRARIES . '/cms/html/behavior.php',
+				'override' => __DIR__ . '/overrides/html/behavior.php',
+			),
+		);
 
-        foreach ($overrides as $originalClass => $override)
-        {
-            if (file_exists($override['original']) == false)
-            {
-                continue;
-            }
+		foreach ($overrides as $originalClass => $override)
+		{
+			if (file_exists($override['original']) == false)
+			{
+				continue;
+			}
 
-            if (file_exists($override['override']) == false)
-            {
-                continue;
-            }
+			if (file_exists($override['override']) == false)
+			{
+				continue;
+			}
 
-            $originalContent = file_get_contents($override['original']);
+			$originalContent = file_get_contents($override['original']);
 
-            if (empty($originalContent))
-            {
-                continue;
-            }
+			if (empty($originalContent))
+			{
+				continue;
+			}
 
-            $originalContent = str_replace('<?php', "namespace Joomla;", $originalContent);
-            $originalContent = preg_replace('/\J([a-zA-Z0-9]+)::/', "\\J$1::", $originalContent);
-            eval($originalContent);
+			$originalContent = str_replace('<?php', "namespace Joomla;", $originalContent);
+			$originalContent = preg_replace('/\J([a-zA-Z0-9]+)::/', "\\J$1::", $originalContent);
+			eval($originalContent);
 
-            if (class_exists('\Joomla\\' . $originalClass) == false)
-            {
-                continue;
-            }
+			if (class_exists('\Joomla\\' . $originalClass) == false)
+			{
+				continue;
+			}
 
-            require_once $override['override'];
-        }
+			require_once $override['override'];
+		}
 
-        return true;
-    }
+		return true;
+	}
 }
 

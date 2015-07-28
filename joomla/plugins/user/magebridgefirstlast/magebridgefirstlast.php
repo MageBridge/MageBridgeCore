@@ -26,12 +26,12 @@ class plgUserMagebridgefirstlast extends JPlugin
 		$this->loadLanguage();
 	}
 
-    protected $allowedContext = array(
-        'com_users.profile',
-        'com_users.user',
-        'com_users.registration',
-        'com_admin.profile',
-    );
+	protected $allowedContext = array(
+		'com_users.profile',
+		'com_users.user',
+		'com_users.registration',
+		'com_admin.profile',
+	);
 
 	public function onContentPrepareForm($form, $data)
 	{
@@ -89,20 +89,20 @@ class plgUserMagebridgefirstlast extends JPlugin
 			}
 		}
 
-        if (empty($data->magebridgefirstlast['firstname']) && empty($data->magebridgefirstlast['lastname']) && !empty($data->name))
-        {
-            $name = explode(' ', $data->name);
-            if (count($name) >= 2)
-            {
-                $data->magebridgefirstlast['firstname'] = trim(array_shift($name));
-                $data->magebridgefirstlast['lastname'] = trim(implode(' ', $name));
-            }
-        }
+		if (empty($data->magebridgefirstlast['firstname']) && empty($data->magebridgefirstlast['lastname']) && !empty($data->name))
+		{
+			$name = explode(' ', $data->name);
+			if (count($name) >= 2)
+			{
+				$data->magebridgefirstlast['firstname'] = trim(array_shift($name));
+				$data->magebridgefirstlast['lastname'] = trim(implode(' ', $name));
+			}
+		}
 
-        if (!empty($data->magebridgefirstlast['firstname']) && !empty($data->magebridgefirstlast['lastname']) && empty($data->name))
-        {
-            $data->name = $data->magebridgefirstlast['firstname'].' '.$data->magebridgefirstlast['lastname'];
-        }
+		if (!empty($data->magebridgefirstlast['firstname']) && !empty($data->magebridgefirstlast['lastname']) && empty($data->name))
+		{
+			$data->name = $data->magebridgefirstlast['firstname'].' '.$data->magebridgefirstlast['lastname'];
+		}
 
 		return true;
 	}
@@ -115,13 +115,13 @@ class plgUserMagebridgefirstlast extends JPlugin
 		{
 			try
 			{
-                $this->deleteFields($userId);
+				$this->deleteFields($userId);
 
-                $ordering = 0;
+				$ordering = 0;
 				foreach ($data['magebridgefirstlast'] as $fieldName => $fieldValue)
 				{
-                    $this->insertField($userId, $fieldName, $fieldValue, $ordering);
-                    $ordering++;
+					$this->insertField($userId, $fieldName, $fieldValue, $ordering);
+					$ordering++;
 				}
 
 			}
@@ -132,10 +132,10 @@ class plgUserMagebridgefirstlast extends JPlugin
 			}
 		}
 
-        // @todo: Add a setting for this
-        if(!empty($data['magebridgefirstlast']['firstname']) && !empty($data['magebridgefirstlast']['lastname'])) {
-            $this->setUserName($data['id'], $data['magebridgefirstlast']['firstname'], $data['magebridgefirstlast']['lastname']);
-        }
+		// @todo: Add a setting for this
+		if(!empty($data['magebridgefirstlast']['firstname']) && !empty($data['magebridgefirstlast']['lastname'])) {
+			$this->setUserName($data['id'], $data['magebridgefirstlast']['firstname'], $data['magebridgefirstlast']['lastname']);
+		}
 
 		return true;
 	}
@@ -153,7 +153,7 @@ class plgUserMagebridgefirstlast extends JPlugin
 		{
 			try
 			{
-                $this->deleteFields($userId);
+				$this->deleteFields($userId);
 			}
 			catch (Exception $e)
 			{
@@ -167,14 +167,14 @@ class plgUserMagebridgefirstlast extends JPlugin
 
 	public function onUserLoad($user)
 	{
-        if (empty($user) || empty($user->id))
-        {
-            return false;
-        }
+		if (empty($user) || empty($user->id))
+		{
+			return false;
+		}
 
 		try
 		{
-            $fields = $this->getFields($user->id);
+			$fields = $this->getFields($user->id);
 		}
 		catch (Exception $e)
 		{
@@ -182,35 +182,35 @@ class plgUserMagebridgefirstlast extends JPlugin
 			return false;
 		}
 
-        foreach($fields as $field)
-        {
+		foreach($fields as $field)
+		{
 			$fieldName = str_replace('magebridgefirstlast.', '', $field[0]);
-            $fieldValue = $field[1];
-            $user->set($fieldName, $fieldValue);
-        }
-    }
+			$fieldValue = $field[1];
+			$user->set($fieldName, $fieldValue);
+		}
+	}
 
-    protected function getFields($userId)
-    {
+	protected function getFields($userId)
+	{
 		$db = JFactory::getDbo();
-        $query = $db->getQuery(true);
+		$query = $db->getQuery(true);
 
-        $columns = array('profile_key', 'profile_value');
-        $query->select($db->quoteName($columns));
-        $query->from($db->quoteName('#__user_profiles'));
-        $query->where($db->quoteName('profile_key').' LIKE '.$db->quote('magebridgefirstlast.%'));
-        $query->where($db->quoteName('user_id').' = '.(int)$userId);
-        $query->order('ordering ASC');
+		$columns = array('profile_key', 'profile_value');
+		$query->select($db->quoteName($columns));
+		$query->from($db->quoteName('#__user_profiles'));
+		$query->where($db->quoteName('profile_key').' LIKE '.$db->quote('magebridgefirstlast.%'));
+		$query->where($db->quoteName('user_id').' = '.(int)$userId);
+		$query->order('ordering ASC');
 
 		$db->setQuery($query);
 
 		$results = $db->loadRowList();
-        return $results;
-    }
+		return $results;
+	}
 
-    protected function deleteFields($userId)
-    {
-        $db = JFactory::getDbo();
+	protected function deleteFields($userId)
+	{
+		$db = JFactory::getDbo();
 
 		$query = $db->getQuery(true)
 			->delete($db->quoteName('#__user_profiles'))
@@ -219,33 +219,33 @@ class plgUserMagebridgefirstlast extends JPlugin
 		$db->setQuery($query);
 
 		$db->execute();
-    }
+	}
 
-    protected function insertField($userId, $name, $value, $ordering)
-    {
-        $db = JFactory::getDbo();
+	protected function insertField($userId, $name, $value, $ordering)
+	{
+		$db = JFactory::getDbo();
 
-        $columns = array('user_id', 'profile_key', 'profile_value', 'ordering');
-        $values = array($userId, $db->quote('magebridgefirstlast.'.$name), $db->quote($value), $ordering);
+		$columns = array('user_id', 'profile_key', 'profile_value', 'ordering');
+		$values = array($userId, $db->quote('magebridgefirstlast.'.$name), $db->quote($value), $ordering);
 
-	    $query = $db->getQuery(true)
-            ->insert($db->quoteName('#__user_profiles'))
-            ->columns($db->quoteName($columns))
-            ->values(implode(',', $values));
+		$query = $db->getQuery(true)
+			->insert($db->quoteName('#__user_profiles'))
+			->columns($db->quoteName($columns))
+			->values(implode(',', $values));
 		$db->setQuery($query);
 
 		$db->execute();
-    }
+	}
 
-    protected function setUserName($userId, $firstname, $lastname)
-    {
-        $db = JFactory::getDbo();
-	    $query = $db->getQuery(true)
-            ->update($db->quoteName('#__users'))
-            ->set($db->quoteName('name').'='.$db->quote($firstname.' '.$lastname))
-            ->where($db->quoteName('id').'='.(int)$userId);
+	protected function setUserName($userId, $firstname, $lastname)
+	{
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true)
+			->update($db->quoteName('#__users'))
+			->set($db->quoteName('name').'='.$db->quote($firstname.' '.$lastname))
+			->where($db->quoteName('id').'='.(int)$userId);
 		$db->setQuery($query);
 
 		$db->execute();
-    }
+	}
 }

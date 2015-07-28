@@ -23,44 +23,44 @@ require_once 'view.common.php';
  */
 class MageBridgeViewElement extends MageBridgeViewCommon
 {
-    /*
-     * Display method
-     *
-     * @param string $tpl
-     * @return null
-     */
+	/**
+	 * Display method
+	 *
+	 * @param string $tpl
+	 * @return null
+	 */
 	public function display($tpl = null)
 	{
-        // Check for AJAX
-        if (JFactory::getApplication()->input->getInt('ajax') == 1) {
+		// Check for AJAX
+		if (JFactory::getApplication()->input->getInt('ajax') == 1) {
 
-            $this->doAjaxLayout();
+			$this->doAjaxLayout();
 
-            parent::display($tpl);
-            return true;
-        }
+			parent::display($tpl);
+			return true;
+		}
 
-        // Determine the layout and data 
-        switch(JFactory::getApplication()->input->getCmd('type')) {
+		// Determine the layout and data 
+		switch(JFactory::getApplication()->input->getCmd('type')) {
 
-            case 'product':
-                $this->doProductLayout();
-                break;
+			case 'product':
+				$this->doProductLayout();
+				break;
 
-            case 'customer':
-                $this->doCustomerLayout();
-                break;
+			case 'customer':
+				$this->doCustomerLayout();
+				break;
 
-            case 'widget':
-                $this->doWidgetLayout();
-                break;
+			case 'widget':
+				$this->doWidgetLayout();
+				break;
 
-            case 'category':
-            default:
-                $this->doCategoryLayout();
-                break;
-        }
+			case 'category':
+			default:
+				$this->doCategoryLayout();
+				break;
+		}
 
 		parent::display($tpl);
-    }
+	}
 }

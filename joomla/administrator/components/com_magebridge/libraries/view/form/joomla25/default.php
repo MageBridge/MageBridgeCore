@@ -19,18 +19,18 @@ jimport('joomla.utilities.utility');
 
 <form method="post" name="adminForm" id="adminForm">
 <div>
-    <div class="width-60 fltlft">
-        <?php echo $this->loadTemplate('fieldset', array('fieldset' => 'basic')); ?>
-    </div>
-    <div class="width-40 fltlft">
-        <?php echo $this->loadTemplate('fieldset', array('fieldset' => 'other')); ?>
-        <?php echo $this->loadTemplate('fieldset', array('fieldset' => 'params')); ?>
-    </div>
+	<div class="width-60 fltlft">
+		<?php echo $this->loadTemplate('fieldset', array('fieldset' => 'basic')); ?>
+	</div>
+	<div class="width-40 fltlft">
+		<?php echo $this->loadTemplate('fieldset', array('fieldset' => 'other')); ?>
+		<?php echo $this->loadTemplate('fieldset', array('fieldset' => 'params')); ?>
+	</div>
 </div>
 <div>
-    <div class="width-100 fltlft">
-        <?php echo $this->loadTemplate('fieldset', array('fieldset' => 'editor')); ?>
-    </div>
+	<div class="width-100 fltlft">
+		<?php echo $this->loadTemplate('fieldset', array('fieldset' => 'editor')); ?>
+	</div>
 </div>
 <?php echo $this->loadTemplate('formend'); ?>
 </form>

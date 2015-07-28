@@ -1,5 +1,5 @@
 <?php 
-/*
+/**
  * Joomla! component MageBridge
  *
  * @author Yireo (info@yireo.com)
@@ -17,10 +17,10 @@ $fieldCount = count($form->getFieldset('actions'));
 <?php if($fieldCount > 0) : ?>
 <table class="admintable">
 <?php foreach($form->getFieldset('actions') as $field): ?>
-    <tr>
-        <td class="key"><?php echo $field->label; ?></td>
-        <td class="value"><?php echo $field->input; ?></td>
-    </tr>
+	<tr>
+		<td class="key"><?php echo $field->label; ?></td>
+		<td class="value"><?php echo $field->input; ?></td>
+	</tr>
 <?php endforeach; ?>
 </table>
 <?php else: ?>

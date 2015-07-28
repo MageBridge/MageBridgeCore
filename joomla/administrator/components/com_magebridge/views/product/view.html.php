@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * Joomla! component MageBridge
  *
  * @author Yireo (info@yireo.com)
@@ -23,45 +23,45 @@ jimport('joomla.filter.output');
  */
 class MageBridgeViewProduct extends MageBridgeView
 {
-    /*
-     * Display method
-     *
-     * @param string $tpl
-     * @return null
-     */
+	/**
+	 * Display method
+	 *
+	 * @param string $tpl
+	 * @return null
+	 */
 	public function display($tpl = null)
 	{
-        // Fetch this item
-        $this->fetchItem();
+		// Fetch this item
+		$this->fetchItem();
 
-        // Initialize the form-file
-        $file = JPATH_ADMINISTRATOR.'/components/com_magebridge/models/product.xml';
+		// Initialize the form-file
+		$file = JPATH_ADMINISTRATOR.'/components/com_magebridge/models/product.xml';
 
-        // Prepare the params-form
-        $params = YireoHelper::toRegistry($this->item->params)->toArray();
-        $params_form = JForm::getInstance('params', $file);
-        $params_form->bind(array('params' => $params));
-	    $this->params_form = $params_form;
+		// Prepare the params-form
+		$params = YireoHelper::toRegistry($this->item->params)->toArray();
+		$params_form = JForm::getInstance('params', $file);
+		$params_form->bind(array('params' => $params));
+		$this->params_form = $params_form;
 
-        // Prepare the actions-form
-        $actions = YireoHelper::toRegistry($this->item->actions)->toArray();
-        $actions_form = JForm::getInstance('actions', $file);
-        JPluginHelper::importPlugin('magebridgeproduct');
-        JFactory::getApplication()->triggerEvent('onMageBridgeProductPrepareForm', array(&$actions_form, (array)$this->item));
-        $actions_form->bind(array('actions' => $actions));
-	    $this->actions_form = $actions_form;
+		// Prepare the actions-form
+		$actions = YireoHelper::toRegistry($this->item->actions)->toArray();
+		$actions_form = JForm::getInstance('actions', $file);
+		JPluginHelper::importPlugin('magebridgeproduct');
+		JFactory::getApplication()->triggerEvent('onMageBridgeProductPrepareForm', array(&$actions_form, (array)$this->item));
+		$actions_form->bind(array('actions' => $actions));
+		$this->actions_form = $actions_form;
 
-        // Build the fields
-        $this->lists['product'] = MageBridgeFormHelper::getField('magebridge.product', 'sku', $this->item->sku, null);
+		// Build the fields
+		$this->lists['product'] = MageBridgeFormHelper::getField('magebridge.product', 'sku', $this->item->sku, null);
 
-        // Check for a previous connector-value
-        if(!empty($this->item->connector)) {
-            $plugin = JPluginHelper::getPlugin('magebridgeproduct', $this->item->connector);
-            if(empty($plugin)) {
-                $plugin_warning = JText::sprintf('COM_MAGEBRIDGE_PRODUCT_PLUGIN_WARNING', $this->item->connector);
-                JError::raiseWarning(500, $plugin_warning);
-            }
-        }
+		// Check for a previous connector-value
+		if(!empty($this->item->connector)) {
+			$plugin = JPluginHelper::getPlugin('magebridgeproduct', $this->item->connector);
+			if(empty($plugin)) {
+				$plugin_warning = JText::sprintf('COM_MAGEBRIDGE_PRODUCT_PLUGIN_WARNING', $this->item->connector);
+				JError::raiseWarning(500, $plugin_warning);
+			}
+		}
 
 		parent::display($tpl);
 	}

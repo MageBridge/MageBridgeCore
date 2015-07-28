@@ -44,7 +44,7 @@ class plgFinderMageBridge extends FinderIndexerAdapter
 	/**
 	 * @var string
 	 */
-    protected $type_title = 'Product';
+	protected $type_title = 'Product';
 
 	/**
 	 * Constructor
@@ -59,31 +59,31 @@ class plgFinderMageBridge extends FinderIndexerAdapter
 		$this->loadLanguage();
 	}
 
-    /**
+	/**
 	 * Method to setup this finder-plugin
-     *
-     * @access protected
+	 *
+	 * @access protected
 	 * @param none
-     * @return bool
-     */
+	 * @return bool
+	 */
 	protected function setup()
 	{
-        // Import the MageBridge autoloader
-        include_once JPATH_SITE.'/components/com_magebridge/helpers/loader.php';
+		// Import the MageBridge autoloader
+		include_once JPATH_SITE.'/components/com_magebridge/helpers/loader.php';
 
-        return true;
-    }
+		return true;
+	}
 
-    /**
+	/**
 	 * Method to index a single item
-     *
-     * @access protected
+	 *
+	 * @access protected
 	 * @param FinderIndexerResult $item
 	 * @param string $format 
-     * @return null
-     */
-    protected function index(FinderIndexerResult $item, $format = 'html')
-    {
+	 * @return null
+	 */
+	protected function index(FinderIndexerResult $item, $format = 'html')
+	{
 		// Add the type taxonomy data.
 		$item->addTaxonomy('Type', 'Product');
 
@@ -94,149 +94,149 @@ class plgFinderMageBridge extends FinderIndexerAdapter
 		//$item->addTaxonomy('Language', $item->language);
 
 		// Index the item.
-        if(YireoHelper::isJoomla25()) {
-		    FinderIndexer::index($item);
-        } else {
-    		$this->indexer->index($item);
-        }
-    }
+		if(YireoHelper::isJoomla25()) {
+			FinderIndexer::index($item);
+		} else {
+			$this->indexer->index($item);
+		}
+	}
 
-    /**
+	/**
 	 * Method to load all products through the API
-     *
-     * @access protected
+	 *
+	 * @access protected
 	 * @param int $offset
 	 * @param int $limit
-     * @return array
-     */
-    protected function loadProducts($offset, $limit)
-    {
-        // Get the main variables
-        $bridge = MageBridge::getBridge();
-        $register = MageBridge::getRegister();
+	 * @return array
+	 */
+	protected function loadProducts($offset, $limit)
+	{
+		// Get the main variables
+		$bridge = MageBridge::getBridge();
+		$register = MageBridge::getRegister();
 
-        // Calculate the Magento page
-        $page = round($offset / $limit);
+		// Calculate the Magento page
+		$page = round($offset / $limit);
 
-        // Setup the arguments and register this request
-        $arguments = array('search' => 1, 'page' => $page, 'count' => $limit, 'visibility' => array(3,4));
-        $id = $register->add('api', 'magebridge_product.list', $arguments);
+		// Setup the arguments and register this request
+		$arguments = array('search' => 1, 'page' => $page, 'count' => $limit, 'visibility' => array(3,4));
+		$id = $register->add('api', 'magebridge_product.list', $arguments);
 
-        // Build the bridge
-        $bridge->build();
+		// Build the bridge
+		$bridge->build();
 
-        // Get the requested data from the register
-        $data = $register->getDataById($id);
-        return $data;
-    }
+		// Get the requested data from the register
+		$data = $register->getDataById($id);
+		return $data;
+	}
 
-    /**
+	/**
 	 * Method to index all items
-     *
-     * @access protected
+	 *
+	 * @access protected
 	 * @param int $offset
 	 * @param int $limit
 	 * @param string $sql
-     * @return null
-     */
-    protected function getItems($offset, $limit, $sql = null)
-    {
-        // Note that the SQL-argument is pointless in this setup, but is required by parent-class nonetheless
+	 * @return null
+	 */
+	protected function getItems($offset, $limit, $sql = null)
+	{
+		// Note that the SQL-argument is pointless in this setup, but is required by parent-class nonetheless
 
-        // Loop through the products to build the item-array
-        $products = $this->loadProducts($offset, $limit);
-        foreach ($products as $product) {
+		// Loop through the products to build the item-array
+		$products = $this->loadProducts($offset, $limit);
+		foreach ($products as $product) {
 
-            //$this->debug("page [$offset;$limit] ".$product['name']);
+			//$this->debug("page [$offset;$limit] ".$product['name']);
 
-            // Construct a basic class
-            $item = new FinderIndexerResult();
+			// Construct a basic class
+			$item = new FinderIndexerResult();
 
-            // Add basics
-            $item->id = $product['product_id'];
-            $item->title = $product['name'];
+			// Add basics
+			$item->id = $product['product_id'];
+			$item->title = $product['name'];
 
-            // Add URLs
-            $item->request = $product['url_path'];
-    		$item->url = 'index.php?option=com_magebridge&view=root&request='.$item->request;
-	    	$item->route = 'index.php?option=com_magebridge&view=root&request='.$item->request;
+			// Add URLs
+			$item->request = $product['url_path'];
+			$item->url = 'index.php?option=com_magebridge&view=root&request='.$item->request;
+			$item->route = 'index.php?option=com_magebridge&view=root&request='.$item->request;
 
-            // Add body-text
-            if (!empty($product['short_description'])) {
-                $item->summary = $product['short_description'];
-            } else {
-                $item->summary = $product['description'];
-            }
+			// Add body-text
+			if (!empty($product['short_description'])) {
+				$item->summary = $product['short_description'];
+			} else {
+				$item->summary = $product['description'];
+			}
 
-            // Add additional data
-            $item->image = $product['image'];
-            $item->small_image = $product['small_image'];
-            $item->layout = $this->layout;
-            $item->type_id = $this->getTypeId();
+			// Add additional data
+			$item->image = $product['image'];
+			$item->small_image = $product['small_image'];
+			$item->layout = $this->layout;
+			$item->type_id = $this->getTypeId();
 
-            // Add some flags
-            $item->published = 1;
-            $item->state = 1;
-            $item->access = 1;
-            $item->language = 'en-GB'; // @todo
+			// Add some flags
+			$item->published = 1;
+			$item->state = 1;
+			$item->access = 1;
+			$item->language = 'en-GB'; // @todo
 
-            // Add pricing
-            // @todo: Why is in the finder-database but not documented?
-            $item->list_price = $product['price_raw'];
-            $item->sale_price = $product['price_raw'];
+			// Add pricing
+			// @todo: Why is in the finder-database but not documented?
+			$item->list_price = $product['price_raw'];
+			$item->sale_price = $product['price_raw'];
 
-            // Add extra search terms
-            if (is_array($product['search'])) {
-                foreach ($product['search'] as $searchName => $searchValue) {
-                    $item->$searchName = $searchValue;
-                    $item->addInstruction(FinderIndexer::TEXT_CONTEXT, $searchName);
-                }
-            }
+			// Add extra search terms
+			if (is_array($product['search'])) {
+				foreach ($product['search'] as $searchName => $searchValue) {
+					$item->$searchName = $searchValue;
+					$item->addInstruction(FinderIndexer::TEXT_CONTEXT, $searchName);
+				}
+			}
 
-            $items[] = $item;
-        }
+			$items[] = $item;
+		}
 
-        return $items;
-    }
+		return $items;
+	}
 
-    /**
+	/**
 	 * Method to get the total of products
-     *
-     * @access protected
+	 *
+	 * @access protected
 	 * @param null
-     * @return int
-     */
+	 * @return int
+	 */
 	protected function getContentCount()
 	{
-        // Get the main variables
-        $bridge = MageBridge::getBridge();
-        $register = MageBridge::getRegister();
+		// Get the main variables
+		$bridge = MageBridge::getBridge();
+		$register = MageBridge::getRegister();
 
-        // Register this API-request
-        $arguments = array();
-        $id = $register->add('api', 'magebridge_product.count', $arguments);
+		// Register this API-request
+		$arguments = array();
+		$id = $register->add('api', 'magebridge_product.count', $arguments);
 
-        // Build the bridge
-        $bridge->build();
+		// Build the bridge
+		$bridge->build();
 
-        // Return the product-count
-        $count = $register->getDataById($id);
-        //$this->debug('total product count', $count);
-        return $count;
-    }
+		// Return the product-count
+		$count = $register->getDataById($id);
+		//$this->debug('total product count', $count);
+		return $count;
+	}
 
-    /**
+	/**
 	 * Helper method for debugging
-     *
-     * @access protected
+	 *
+	 * @access protected
 	 * @param string $msg
 	 * @param mixed $var
-     * @return null
-     */
-    protected function debug($msg, $var = null)
-    {
-        if ($var != null) $msg .= ': '.var_export($var, true);
-        $msg = $msg."\n";
-        //file_put_contents('/tmp/magebridge_finder.log', $msg, FILE_APPEND);
-    }
+	 * @return null
+	 */
+	protected function debug($msg, $var = null)
+	{
+		if ($var != null) $msg .= ': '.var_export($var, true);
+		$msg = $msg."\n";
+		//file_put_contents('/tmp/magebridge_finder.log', $msg, FILE_APPEND);
+	}
 }
