@@ -389,6 +389,7 @@ class MageBridgeTemplateHelper
 
 				$page = preg_replace('/\/$/', '', $page); // Strip the backslash in the end
 				$page = str_replace('/', '\/', $page); // Transform this string for use within preg_match
+				$page = preg_replace('/\*/', '\\\*', $page); // Escape any remaining characters
 
 				if (preg_match('/^' . $page . '/', $request))
 				{
