@@ -43,7 +43,7 @@ class MageBridgeControllerConfig extends YireoCommonController
 	public function save()
 	{
 		// Security check
-		JFactory::getApplication()->input->checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
 
 		// Validate whether this task is allowed
 		if ($this->_validate(true, true) == false) return false;
@@ -65,7 +65,7 @@ class MageBridgeControllerConfig extends YireoCommonController
 	public function apply()
 	{
 		// Security check
-		JFactory::getApplication()->input->checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
 
 		// Validate whether this task is allowed
 		if ($this->_validate(true, true) == false) return false;
@@ -86,7 +86,7 @@ class MageBridgeControllerConfig extends YireoCommonController
 	public function store($post = null)
 	{
 		// Security check
-		JFactory::getApplication()->input->checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
 
 		// Validate whether this task is allowed
 		if ($this->_validate(true, true) == false) return false;
@@ -244,7 +244,7 @@ class MageBridgeControllerConfig extends YireoCommonController
 	protected function _validate($check_token = true, $check_demo = true)
 	{
 		// Check the token
-		if ($check_token == true && (JFactory::getApplication()->input->checkToken('post') == false && JFactory::getApplication()->input->checkToken('get') == false)) {
+		if ($check_token == true && (JSession::checkToken('post') == false && JSession::checkToken('get') == false)) {
 			$msg = JText::_('JINVALID_TOKEN');
 			$link = 'index.php?option=com_magebridge&view=home';
 			$this->setRedirect( $link, $msg );

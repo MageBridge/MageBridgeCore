@@ -130,7 +130,7 @@ class MageBridgeModelUserSSO extends MageBridgeModelUser
 	static public function checkSSOLogin()
 	{
 		// Check the security token
-		JFactory::getApplication()->input->checkToken('get') or die('SSO redirect failed due to wrong token');
+		JSession::checkToken('get') or die('SSO redirect failed due to wrong token');
 
 		// Get system variables
 		$application = JFactory::getApplication();

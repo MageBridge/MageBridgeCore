@@ -329,7 +329,7 @@ class MageBridgeController extends YireoController
 	protected function _validate($check_token = true, $check_demo = true)
 	{
 		// Check the token
-		if ($check_token == true && (JFactory::getApplication()->input->checkToken('post') == false && JFactory::getApplication()->input->checkToken('get') == false)) {
+		if ($check_token == true && (JSession::checkToken('post') == false && JSession::checkToken('get') == false)) {
 			$msg = JText::_('JINVALID_TOKEN');
 			$link = 'index.php?option=com_magebridge&view=home';
 			$this->setRedirect( $link, $msg );
