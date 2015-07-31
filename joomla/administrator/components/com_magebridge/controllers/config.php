@@ -92,8 +92,8 @@ class MageBridgeControllerConfig extends YireoCommonController
 		// Fetch the POST-data
 		$post = $this->_app->input->post->getArray();
 
-		$post['api_key'] = $this->_app->input->post->getVar('api_key', '', 'raw');
-		$post['api_user'] = $this->_app->input->post->getVar('api_user', '', 'raw');
+		$post['api_key'] = $this->_app->input->post->get('api_key', '', 'raw');
+		$post['api_user'] = $this->_app->input->post->get('api_user', '', 'raw');
 
 		// Override with new JForm-output (temp)
 		if (isset($post['config']))
@@ -137,7 +137,7 @@ class MageBridgeControllerConfig extends YireoCommonController
 	 */
 	public function import()
 	{
-		$this->_app->input->setVar('layout', 'import');
+		$this->_app->input->set('layout', 'import');
 
 		parent::display();
 	}
