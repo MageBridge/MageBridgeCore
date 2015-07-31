@@ -20,7 +20,6 @@ require_once JPATH_ADMINISTRATOR.'/components/com_magebridge/libraries/controlle
  */
 class MageBridgeController extends YireoController
 {
-
 	/**
 	 * Constructor
 	 * @package MageBridge
