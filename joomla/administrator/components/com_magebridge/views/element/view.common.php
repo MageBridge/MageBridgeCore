@@ -38,8 +38,8 @@ class MageBridgeViewCommon extends MageBridgeView
 		// Load jQuery
 		YireoHelper::jquery();
 
-		$this->current = JFactory::getApplication()->input->getVar('current');
-		$this->object = JFactory::getApplication()->input->getVar('object');
+		$this->current = JFactory::getApplication()->input->get('current');
+		$this->object = JFactory::getApplication()->input->get('object');
 
 		parent::display($tpl);
 	}

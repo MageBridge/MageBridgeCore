@@ -37,7 +37,7 @@ if (strstr($request, 'checkout/onepage') && $bridge->getBlock('checkout.progress
 
 // FIX: Make sure that when "page/one-column.phtml" is used, we set the Joomla! variable "tmpl=component"
 if ($page_layout == 'page/one-column.phtml') {
-	JFactory::getApplication()->input->setVar('tmpl', 'component');
+	JFactory::getApplication()->input->set('tmpl', 'component');
 }
 
 // Developers note: Make sure the $html variable still contains your data

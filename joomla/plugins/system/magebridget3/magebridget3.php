@@ -61,27 +61,27 @@ class plgSystemMageBridgeT3 extends JPlugin
 
 			// Magento homepage
 			if (empty($request)) {
-				JFactory::getApplication()->input->setVar('layouts', $this->getParams()->get('layout_homepage', 'full-width'));
+				JFactory::getApplication()->input->set('layouts', $this->getParams()->get('layout_homepage', 'full-width'));
 
 			// Magento customer or sales pages
 			} else if (preg_match('/^(customer|sales)/', $request))  {
-				JFactory::getApplication()->input->setVar('layouts', $this->getParams()->get('layout_customer', 'full-width'));
+				JFactory::getApplication()->input->set('layouts', $this->getParams()->get('layout_customer', 'full-width'));
 
 			// Magento product-pages
 			} else if (preg_match('/^catalog\/product/', $request))  {
-				JFactory::getApplication()->input->setVar('layouts', $this->getParams()->get('layout_product', 'full-width'));
+				JFactory::getApplication()->input->set('layouts', $this->getParams()->get('layout_product', 'full-width'));
 
 			// Magento category-pages
 			} else if (preg_match('/^catalog\/category/', $request))  {
-				JFactory::getApplication()->input->setVar('layouts', $this->getParams()->get('layout_category', 'full-width'));
+				JFactory::getApplication()->input->set('layouts', $this->getParams()->get('layout_category', 'full-width'));
 
 			// Magento cart-pages
 			} else if (preg_match('/^checkout\/cart/', $request))  {
-				JFactory::getApplication()->input->setVar('layouts', $this->getParams()->get('layout_cart', 'full-width'));
+				JFactory::getApplication()->input->set('layouts', $this->getParams()->get('layout_cart', 'full-width'));
 
 			// Magento checkout-pages
 			} else if (preg_match('/^checkout/', $request))  {
-				JFactory::getApplication()->input->setVar('layouts', $this->getParams()->get('layout_checkout', 'full-width'));
+				JFactory::getApplication()->input->set('layouts', $this->getParams()->get('layout_checkout', 'full-width'));
 
 			}
 		}

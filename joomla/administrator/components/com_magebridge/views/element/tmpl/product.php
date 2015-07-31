@@ -26,7 +26,7 @@ defined('_JEXEC') or die('Restricted access');
 					onclick="document.getElementById('search').value='';this.form.submit();"><?php echo JText::_('LIB_YIREO_VIEW_RESET'); ?></button>
 			</td>
 			<td align="right" width="40%">
-				<?php $js = "window.parent.jSelectProduct('', '', '" . JFactory::getApplication()->input->getVar('object') . "');"; ?>
+				<?php $js = "window.parent.jSelectProduct('', '', '" . JFactory::getApplication()->input->get('object') . "');"; ?>
 				<button onclick="<?php echo $js; ?>"><?php echo JText::_('COM_MAGEBRIDGE_NO_PRODUCT'); ?></button>
 			</td>
 		</tr>
@@ -118,7 +118,7 @@ defined('_JEXEC') or die('Restricted access');
 				}
 
 				$product_name = htmlspecialchars(str_replace("'", '', $product['name']));
-				$jsDefault = "window.parent.jSelectProduct('$return', '$product_name', '" . JFactory::getApplication()->input->getVar('object') . "');";
+				$jsDefault = "window.parent.jSelectProduct('$return', '$product_name', '" . JFactory::getApplication()->input->get('object') . "');";
 				?>
 				<tr class="<?php echo implode(' ', $css); ?>">
 					<td>

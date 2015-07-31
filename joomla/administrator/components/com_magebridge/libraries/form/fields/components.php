@@ -21,35 +21,35 @@ jimport('joomla.form.formfield');
  */
 class YireoFormFieldComponents extends JFormField
 {
-	/**
-	 * Form field type
-	 */
-	public $type = 'Components';
+    /*
+     * Form field type
+     */
+    public $type = 'Components';
 
-	/**
-	 * Method to construct the HTML of this element
-	 *
-	 * @param null
-	 * @return string
-	 */
-	protected function getInput()
-	{
-		$name = $this->name.'[]';
-		$value = $this->value;
-		$db = JFactory::getDBO();
+    /*
+     * Method to construct the HTML of this element
+     *
+     * @param null
+     * @return string
+     */
+    protected function getInput()
+    {
+        $name = $this->name.'[]';
+        $value = $this->value;
+        $db = JFactory::getDBO();
 
-		// load the list of components
-		$query = 'SELECT * FROM `#__extensions` WHERE `type`="component" AND `enabled`=1';
-		$db->setQuery( $query );
-		$components = $db->loadObjectList();
+        // load the list of components
+        $query = 'SELECT * FROM `#__extensions` WHERE `type`="component" AND `enabled`=1';
+        $db->setQuery( $query );
+        $components = $db->loadObjectList();
 
-		$options = array();
-		foreach ($components as $component) {
-			$options[] = JHTML::_('select.option',  $component->element, JText::_($component->name).' ['.$component->element.']', 'value', 'text');
-		}
+        $options = array();
+        foreach ($components as $component) {
+            $options[] = JHTML::_('select.option',  $component->element, JText::_($component->name).' ['.$component->element.']', 'value', 'text');
+        }
 
-		$size = (count($options) > 12) ? 12 : count($options);
-		$attribs = 'class="inputbox" multiple="multiple" size="'.$size.'"';
-		return JHTML::_('select.genericlist',  $options, $name, $attribs, 'value', 'text', $value, $name);
-	}
+        $size = (count($options) > 12) ? 12 : count($options);
+        $attribs = 'class="inputbox" multiple="multiple" size="'.$size.'"';
+        return JHTML::_('select.genericlist',  $options, $name, $attribs, 'value', 'text', $value, $name);
+    }
 }

@@ -281,7 +281,7 @@ class PlgUserMageBridge extends JPlugin
 			setcookie($cookie, '', time() - 1000);
 			setcookie($cookie, '', time() - 1000, '/');
 			setcookie($cookie, '', time() - 1000, '/', '.' . JURI::getInstance()->toString(array('host')));
-			$application->input->setVar($cookie, null, 'cookie');
+			$application->input->set($cookie, null, 'cookie');
 			JFactory::getSession()->set('magebridge.cookie.' . $cookie, null);
 		}
 

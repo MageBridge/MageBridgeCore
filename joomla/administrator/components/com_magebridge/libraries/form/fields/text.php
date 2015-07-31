@@ -1,5 +1,5 @@
 <?php
-/**
+/*
  * Joomla! field
  *
  * @author Yireo (info@yireo.com)
@@ -15,51 +15,51 @@ defined('JPATH_BASE') or die();
 // @bug: jimport() fails here
 include_once JPATH_LIBRARIES.'/joomla/form/fields/text.php';
 
-/**
+/*
  * Form Field-class for showing a yes/no field
  */
 class YireoFormFieldText extends JFormFieldText
 {
 	public function setup(SimpleXMLElement $element, $value, $group = null)
-	{
-		$rt = parent::setup($element, $value, $group);
+    {
+        $rt = parent::setup($element, $value, $group);
 
-		$label = (string)$this->element['label'];
+        $label = (string)$this->element['label'];
 
-		if (empty($label))
-		{
-			$option = JFactory::getApplication()->input->getCmd('option');
-			$prefix = $option;
+        if (empty($label))
+        {
+            $option = JFactory::getApplication()->input->getCmd('option');
+            $prefix = $option;
 
-			if ($option == 'com_plugins')
-			{
-				$prefix = $this->form->getData()->get('name');
-			}
+            if ($option == 'com_plugins')
+            {
+                $prefix = $this->form->getData()->get('name');
+            }
 
-			$label = strtoupper($prefix . '_' . $this->fieldname);
-		}
+            $label = strtoupper($prefix . '_' . $this->fieldname);
+        }
 
-		$this->element['label'] = $label;
-		$this->element['description'] = $label.'_DESC';
-		$this->description = $label.'_DESC';
+        $this->element['label'] = $label;
+        $this->element['description'] = $label.'_DESC';
+        $this->description = $label.'_DESC';
 
-		return $rt;
-	}
+        return $rt;
+    }
 
-	/**
-	 * Method to construct the HTML of this element
-	 *
-	 * @param null
-	 * @return string
-	 */
+    /*
+     * Method to construct the HTML of this element
+     *
+     * @param null
+     * @return string
+     */
 	protected function getInput()
 	{
-		$classes = array(
-			'inputbox', 
-		);
-		
-		$this->class = $this->class . ' ' . implode(' ', $classes);
+        $classes = array(
+            'inputbox', 
+        );
+        
+        $this->class = $this->class . ' ' . implode(' ', $classes);
 
-		return parent::getInput();
-	}
+        return parent::getInput();
+    }
 }

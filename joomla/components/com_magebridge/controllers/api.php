@@ -23,7 +23,7 @@ class MageBridgeControllerApi extends JController
 	public function run()
 	{
 		// Parse the POST-request
-		$post = JFactory::getApplication()->input->get('post');
+		$post = JFactory::getApplication()->input->post->getArray();
 		$data = array();
 
 		foreach ($post as $name => $value) {

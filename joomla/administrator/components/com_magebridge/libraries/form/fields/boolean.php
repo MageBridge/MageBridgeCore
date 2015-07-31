@@ -1,5 +1,5 @@
 <?php
-/**
+/*
  * Joomla! field
  *
  * @author Yireo (info@yireo.com)
@@ -15,13 +15,13 @@ defined('JPATH_BASE') or die();
 // @bug: jimport() fails here
 include_once JPATH_LIBRARIES . '/joomla/form/fields/radio.php';
 
-/**
+/*
  * Form Field-class for showing a yes/no field
  */
 
 class YireoFormFieldBoolean extends JFormFieldRadio
 {
-	/**
+	/*
 	 * Form field type
 	 */
 	public $type = 'Boolean';
@@ -37,7 +37,7 @@ class YireoFormFieldBoolean extends JFormFieldRadio
 		return $rt;
 	}
 
-	/**
+	/*
 	 * Method to construct the HTML of this element
 	 *
 	 * @param null

@@ -275,7 +275,7 @@ function MagebridgeParseRoute($segments)
 
 	// Re-spoof the current Itemid
 	if (isset($vars['Itemid']) && $vars['Itemid'] > 0) {
-		JFactory::getApplication()->input->setVar('Itemid', $vars['Itemid']);
+		JFactory::getApplication()->input->set('Itemid', $vars['Itemid']);
 	}
 	
 	return $vars;

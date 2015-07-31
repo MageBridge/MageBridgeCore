@@ -270,7 +270,7 @@ class MageBridgeController extends YireoController
 
 			// Clean up the database
 			$app = $this->_app;
-			$file = $app->getCfg('log_path') . '/magebridge.txt';
+			$file = JFactory::getConfig()->get('log_path') . '/magebridge.txt';
 			file_put_contents($file, null);
 
 			// Redirect

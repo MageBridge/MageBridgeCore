@@ -1,5 +1,5 @@
 <?php
-/**
+/*
  * Joomla! Yireo Lib
  *
  * @author Yireo (info@yireo.com)
@@ -15,10 +15,10 @@ defined('_JEXEC') or die('Restricted access');
 <?php $form = $this->paramsForm; ?>
 <table class="admintable">
 <?php foreach($form->getFieldset('params') as $field): ?>
-	<tr>
-		<td class="key"><?php echo $field->label; ?></td>
-		<td class="value"><?php echo $field->input; ?></td>
-	</tr>
+    <tr>
+        <td class="key"><?php echo $field->label; ?></td>
+        <td class="value"><?php echo $field->input; ?></td>
+    </tr>
 <?php endforeach; ?>
 </table>
 <?php endif; ?>

@@ -85,7 +85,7 @@ defined('_JEXEC') or die('Restricted access');
 					$css[] = 'inactive';
 				}
 
-				$js = "window.parent.jSelectCustomer('$return', '$return', '" . JFactory::getApplication()->input->getVar('object') . "');";
+				$js = "window.parent.jSelectCustomer('$return', '$return', '" . JFactory::getApplication()->input->get('object') . "');";
 				?>
 				<tr class="<?php echo implode(' ', $css); ?>">
 					<td>

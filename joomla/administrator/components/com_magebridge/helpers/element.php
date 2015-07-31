@@ -92,7 +92,7 @@ class MageBridgeElementHelper
 		$option = JFactory::getApplication()->input->getCmd('option') . '-element-products';
 
 		// Set the limits
-		$default_limit = $application->getCfg('list_limit');
+		$default_limit = JFactory::getConfig()->get('list_limit');
 		if (empty($default_limit))
 		{
 			$default_limit = 20;

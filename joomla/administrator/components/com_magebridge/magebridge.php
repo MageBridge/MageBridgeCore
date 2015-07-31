@@ -23,13 +23,13 @@ $app = JFactory::getApplication();
 // If no view has been set, try the default
 if ($app->input->getCmd('view') == '')
 {
-	$app->input->setVar('view', 'home');
+	$app->input->set('view', 'home');
 }
 
 // Handle the SSO redirect
 if ($app->input->getInt('sso') == 1)
 {
-	$app->input->setVar('task', 'ssoCheck');
+	$app->input->set('task', 'ssoCheck');
 }
 
 // Make sure the user is authorised to view this page

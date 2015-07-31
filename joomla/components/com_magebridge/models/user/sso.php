@@ -35,7 +35,7 @@ class MageBridgeModelUserSSO extends MageBridgeModelUser
 		$session = JFactory::getSession();
 
 		// Store the current page, so we can redirect to it after SSO is done
-		if ($return = JFactory::getApplication()->input->getVar('return', '', 'method', 'base64')) {
+		if ($return = JFactory::getApplication()->input->get('return', '', 'base64')) {
 			$return = base64_decode($return);
 		} else {
 			$return = MageBridgeUrlHelper::current();

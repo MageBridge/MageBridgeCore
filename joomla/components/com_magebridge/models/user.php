@@ -195,7 +195,7 @@ class MageBridgeModelUser
 		// Try to detect the password in this POST
 		if (empty($user['password_clear'])) {
 			$fields = array('password_clear', 'password', 'passwd');
-			$jform = JFactory::getApplication()->input->getVar('jform', array(), 'post');
+			$jform = JFactory::getApplication()->input->get('jform', array(), 'post');
 			foreach ($fields as $field) {
 				$password = JFactory::getApplication()->input->getString($field, '', 'post');
 				if (empty($password) && is_array($jform) && !empty($jform[$field])) {
@@ -486,7 +486,7 @@ class MageBridgeModelUser
 		}
 
 		// Check if this current request is actually a POST-request
-		$post = JFactory::getApplication()->input->get('post');
+		$post = JFactory::getApplication()->input->post->getArray();
 		if (!empty($post) && $allow_post == false) {
 			return false;
 		}

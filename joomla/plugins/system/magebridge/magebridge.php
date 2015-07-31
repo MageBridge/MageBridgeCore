@@ -92,10 +92,10 @@ class PlgSystemMageBridge extends JPlugin
 				if (substr($current_url, 0, strlen($bridge_url)) == $bridge_url)
 				{
 					$request = substr_replace($current_url, '', 0, strlen($bridge_url));
-					$this->input->setVar('option', 'com_magebridge');
-					$this->input->setVar('view', 'root');
-					$this->input->setVar('Itemid', $root_item_id);
-					$this->input->setVar('request', $request);
+					$this->input->set('option', 'com_magebridge');
+					$this->input->set('view', 'root');
+					$this->input->set('Itemid', $root_item_id);
+					$this->input->set('request', $request);
 				}
 			}
 
@@ -211,7 +211,7 @@ class PlgSystemMageBridge extends JPlugin
 		);
 
 		if (MageBridgeTemplateHelper::isPage($pages)) {
-			$this->input->setVar('tmpl', 'component');
+			$this->input->set('tmpl', 'component');
 		}
 		*/
 
@@ -353,7 +353,7 @@ class PlgSystemMageBridge extends JPlugin
 	{
 		// Initialize variables
 		$uri = JURI::getInstance();
-		$post = $this->input->get('post');
+		$post = $this->input->post->getArray();
 		$enabled = $this->getParam('enable_nonsef_redirect', 1);
 
 		// Redirect non-SEF URLs to their SEF-equivalent
@@ -412,7 +412,7 @@ class PlgSystemMageBridge extends JPlugin
 	{
 		// Initialize variables
 		$enabled = $this->getParam('enable_urlreplacement_redirect', 1);
-		$post = $this->input->get('post');
+		$post = $this->input->post->getArray();
 
 		// Exit if disabled or if we are not within the MageBridge component
 		if ($enabled == 0 || !empty($post) || $this->input->getCmd('option') != 'com_magebridge')
@@ -483,7 +483,7 @@ class PlgSystemMageBridge extends JPlugin
 	{
 		// Initialize variables
 		$enabled = $this->getParam('enable_comuser_redirect', 0);
-		$post = $this->input->get('post');
+		$post = $this->input->post->getArray();
 		$option = $this->input->getCmd('option');
 
 		// Redirect com_user links
@@ -989,7 +989,7 @@ class PlgSystemMageBridge extends JPlugin
 		$enforce_ssl = $this->loadConfig('enforce_ssl');
 		$from_http_to_https = $this->getParam('enable_ssl_redirect', 1);
 		$from_https_to_http = $this->getParam('enable_nonssl_redirect', 1);
-		$post = $this->input->get('post');
+		$post = $this->input->post->getArray();
 
 		// Match situation where we don't want to redirect
 		if (!empty($post))

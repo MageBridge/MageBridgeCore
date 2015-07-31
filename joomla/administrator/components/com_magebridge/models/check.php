@@ -363,7 +363,7 @@ class MagebridgeModelCheck extends YireoCommonModel
 	public function checkWritable($path)
 	{
 		// Return a warning because we can't check this with JFTP enabled
-		if (JFactory::getApplication()->getCfg('ftp_enable') == 1) {
+		if (JFactory::getConfig()->get('ftp_enable') == 1) {
 			return self::CHECK_WARNING;
 		}
 

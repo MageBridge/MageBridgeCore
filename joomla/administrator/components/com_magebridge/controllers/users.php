@@ -28,7 +28,7 @@ class MageBridgeControllerUsers extends MageBridgeController
 	 */
 	public function import()
 	{
-		JFactory::getApplication()->input->setVar('layout', 'import');
+		JFactory::getApplication()->input->set('layout', 'import');
 		parent::display();
 	}
 

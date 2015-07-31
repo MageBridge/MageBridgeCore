@@ -34,7 +34,7 @@ class MageBridgeController extends YireoAbstractController
 
 		$uri = JURI::current();
 		$input = JFactory::getApplication()->input;
-		$post = JFactory::getApplication()->input->get('post');
+		$post = JFactory::getApplication()->input->post->getArray();
 		$httpReferer = isset($_SERVER['HTTP_REFERER']) ? trim($_SERVER['HTTP_REFERER']) : null;
 		$httpHost = isset($_SERVER['HTTP_HOST']) ? trim($_SERVER['HTTP_HOST']) : null;
 
@@ -99,13 +99,13 @@ class MageBridgeController extends YireoAbstractController
 	{
 		// Check if the bridge is offline
 		if (MageBridge::getBridge()->isOffline()) {
-			JFactory::getApplication()->input->setVar('view' , 'offline');
-			JFactory::getApplication()->input->setVar('layout' , 'default');
+			JFactory::getApplication()->input->set('view' , 'offline');
+			JFactory::getApplication()->input->set('layout' , 'default');
 		}
 
 		// Set a default view
-		if (JFactory::getApplication()->input->getVar('view') == '') {
-			JFactory::getApplication()->input->setVar('view' , 'root');
+		if (JFactory::getApplication()->input->get('view') == '') {
+			JFactory::getApplication()->input->set('view' , 'root');
 		}
 
 		// Check for a logout action and perform a logout in Joomla! first
@@ -125,7 +125,7 @@ class MageBridgeController extends YireoAbstractController
 		}
 
 		// Redirect if the layout is not supported by the view
-		if (JFactory::getApplication()->input->getVar('view') == 'catalog' && !in_array(JFactory::getApplication()->input->getVar('layout'), array('product', 'category', 'addtocart'))) {
+		if (JFactory::getApplication()->input->get('view') == 'catalog' && !in_array(JFactory::getApplication()->input->get('layout'), array('product', 'category', 'addtocart'))) {
 			$url = MageBridgeUrlHelper::route('/');
 			$this->setRedirect($url);
 			return;
@@ -161,7 +161,7 @@ class MageBridgeController extends YireoAbstractController
 	public function proxy()
 	{
 		$application = JFactory::getApplication();
-		$url = JFactory::getApplication()->input->getVar('url');
+		$url = JFactory::getApplication()->input->get('url');
 		print file_get_contents(MageBridgeModelBridge::getMagentoUrl().$url);
 		$application->close();
 	}

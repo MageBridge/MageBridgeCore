@@ -28,7 +28,7 @@ defined('_JEXEC') or die('Restricted access');
 					onclick="document.getElementById('search').value='';this.form.submit();"><?php echo JText::_('LIB_YIREO_VIEW_RESET'); ?></button>
 			</td>
 			<td align="right" width="20%">
-				<?php $js = "window.parent.jSelectCategory('', '', '" . JFactory::getApplication()->input->getVar('object') . "');"; ?>
+				<?php $js = "window.parent.jSelectCategory('', '', '" . JFactory::getApplication()->input->get('object') . "');"; ?>
 				<button onclick="<?php echo $js; ?>"><?php echo JText::_('COM_MAGEBRIDGE_NO_CATEGORY'); ?></button>
 			</td>
 		</tr>
@@ -117,9 +117,9 @@ defined('_JEXEC') or die('Restricted access');
 				}
 
 				$category_name = htmlspecialchars(str_replace("'", '', $category['name']));
-				$jsDefault = "window.parent.jSelectCategory('" . $category[$return] . "', '$category_name', '" . JFactory::getApplication()->input->getVar('object') . "');";
-				$jsUrl = "window.parent.jSelectCategory('" . $category['url'] . "', '$category_name', '" . JFactory::getApplication()->input->getVar('object') . "');";
-				$jsId = "window.parent.jSelectCategory('" . $category['category_id'] . "', '$category_name', '" . JFactory::getApplication()->input->getVar('object') . "');";
+				$jsDefault = "window.parent.jSelectCategory('" . $category[$return] . "', '$category_name', '" . JFactory::getApplication()->input->get('object') . "');";
+				$jsUrl = "window.parent.jSelectCategory('" . $category['url'] . "', '$category_name', '" . JFactory::getApplication()->input->get('object') . "');";
+				$jsId = "window.parent.jSelectCategory('" . $category['category_id'] . "', '$category_name', '" . JFactory::getApplication()->input->get('object') . "');";
 				?>
 				<tr class="<?php echo implode(' ', $css); ?>">
 					<td>

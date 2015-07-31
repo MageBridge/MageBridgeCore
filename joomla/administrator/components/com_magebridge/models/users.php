@@ -54,7 +54,7 @@ class MagebridgeModelUsers extends YireoCommonModel
 		$option = JFactory::getApplication()->input->getCmd( 'option' ).'-users';
 
 		// Get the pagination request variables
-		$limit = $application->getUserStateFromRequest( 'global.list.limit', 'limit', $application->getCfg('list_limit'), 'int' );
+		$limit = $application->getUserStateFromRequest( 'global.list.limit', 'limit', JFactory::getConfig()->get('list_limit'), 'int' );
 		$limitstart	= $application->getUserStateFromRequest( $option.'limitstart', 'limitstart', 0, 'int' );
 
 		$this->setState('limit', $limit);
