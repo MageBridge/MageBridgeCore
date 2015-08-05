@@ -74,8 +74,9 @@ class Yireo_MageBridge_OutputController extends Mage_Core_Controller_Front_Actio
      */
     public function test5Action()
     {
+        // @todo: Test whether Content-Type is correct in Joomla
         header('Content-Type: text/xml');
-        echo '<html>test5</html>';
+        echo '<test>test5</test>';
         exit;
     }
 
@@ -133,5 +134,21 @@ class Yireo_MageBridge_OutputController extends Mage_Core_Controller_Front_Actio
     {
         $url = Mage::getModel('core/url')->getUrl('customer/account');
         $this->getResponse()->setRedirect($url);
+    }
+
+    /**
+     * Output test 10
+     *
+     * @access public
+     * @param null
+     * @return null
+     */
+    public function test10Action()
+    {
+        if (isset($_GET['test'])) {
+            echo 'test=' . (int)$_GET['test']; 
+        } else {
+            echo 'No GET variable "test" given';
+        }
     }
 }
