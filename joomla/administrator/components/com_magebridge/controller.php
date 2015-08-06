@@ -351,7 +351,7 @@ class MageBridgeController extends YireoController
 			MageBridgeConnectorProduct::getInstance()
 				->runOnPurchase($product_sku, $count, $user, $status);
 
-			$msgType = 'success';
+			$msgType = null;
 			$msg = JText::_('COM_MAGEBRIDGE_CHECK_PRODUCT_POST_SUCCESS');
 		}
 
