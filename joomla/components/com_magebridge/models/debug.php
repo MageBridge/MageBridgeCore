@@ -339,8 +339,6 @@ class MagebridgeModelDebug
 	 */
 	static public function isDebug()
 	{
-		return true;
-
 		static $debug = null;
 
 		if ($debug == null)
