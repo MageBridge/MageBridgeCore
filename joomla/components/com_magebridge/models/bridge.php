@@ -1024,6 +1024,7 @@ class MageBridgeModelBridge
 	public function enableSSL()
 	{
 		$enforce_ssl = MagebridgeModelConfig::load('enforce_ssl');
+
 		if (JFactory::getApplication()->input->getCmd('option') == 'com_magebridge' && $enforce_ssl > 0)
 		{
 			return true;
@@ -1064,9 +1065,11 @@ class MageBridgeModelBridge
 		if (MagebridgeModelConfig::load('offline') == 1)
 		{
 			$ips = MagebridgeModelConfig::load('offline_exclude_ip');
+
 			if (!empty($ips))
 			{
 				$ips = explode(',', trim($ips));
+
 				if (in_array($_SERVER['REMOTE_ADDR'], $ips))
 				{
 					return false;
@@ -1080,6 +1083,7 @@ class MageBridgeModelBridge
 		$option = JFactory::getApplication()->input->getCmd('option');
 		$view = JFactory::getApplication()->input->getCmd('view');
 		$layout = JFactory::getApplication()->input->getCmd('layout');
+
 		if ($option == 'com_content' && $view == 'form' && $layout == 'edit')
 		{
 			return true;
@@ -1106,6 +1110,7 @@ class MageBridgeModelBridge
 
 		// Things to consider: Backend Lightbox-effect, frontend AJAX-lazyloading
 		$check_xrequestedwith = true;
+
 		if (JFactory::getApplication()
 				->isSite() == false
 		)
@@ -1142,6 +1147,7 @@ class MageBridgeModelBridge
 
 		// Simple check to see if AJAX is mentioned in the current Magento URL
 		$current_url = MageBridgeUrlHelper::getRequest();
+
 		if (stristr($current_url, 'ajax'))
 		{
 			return true;

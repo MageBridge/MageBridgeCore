@@ -31,14 +31,16 @@ class Yireo_MageBridge_Model_Client
         }
 
         // Make sure we are working with an array
-        if(!is_array($params)) $params = array();
+        if(!is_array($params)) {
+            $params = array();
+        }
 
         // Initialize the API-client
         $client = Mage::getModel('magebridge/client_jsonrpc');
 
         // Call the remote method
         if(!empty($client)) {
-            $rt = $client->makeCall($url, $method, $params);
+            $rt = $client->makeCall($url, $method, $params, $store);
             return $rt;
         }
 
@@ -52,20 +54,22 @@ class Yireo_MageBridge_Model_Client
      * @param null
      * @return array
      */
-    public function getAPIAuthArray() 
+    public function getApiAuthArray($store = null)
     {
-        $api_user = Mage::helper('magebridge')->getApiUser();
-        $api_key = Mage::helper('magebridge')->getApiKey();
-        if(empty($api_user) || empty($api_key)) {
-            Mage::getSingleton('magebridge/debug')->warning('Listener getAPIAuthArray: api_user or api_key is missing');
+        $apiUser = Mage::helper('magebridge')->getApiUser($store);
+        $apiKey = Mage::helper('magebridge')->getApiKey($store);
+
+        if(empty($apiUser) || empty($apiKey)) {
+            Mage::getSingleton('magebridge/debug')->warning('Listener getApiAuthArray: api_user or api_key is missing');
             Mage::getSingleton('magebridge/debug')->trace('Listener: Meta data', Mage::getSingleton('magebridge/core')->getMetaData());
             return false;
         }
 
         $auth = array(
-            'api_user' => Mage::helper('magebridge/encryption')->encrypt($api_user),
-            'api_key' => Mage::helper('magebridge/encryption')->encrypt($api_key),
+            'api_user' => Mage::helper('magebridge/encryption')->encrypt($apiUser),
+            'api_key' => Mage::helper('magebridge/encryption')->encrypt($apiKey),
         );
+
         return $auth;
     }
 } 

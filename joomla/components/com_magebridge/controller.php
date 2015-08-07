@@ -2,39 +2,38 @@
 /**
  * Joomla! component MageBridge
  *
- * @author Yireo (info@yireo.com)
- * @package MageBridge
+ * @author    Yireo (info@yireo.com)
+ * @package   MageBridge
  * @copyright Copyright 2015
- * @license GNU Public License
- * @link http://www.yireo.com
+ * @license   GNU Public License
+ * @link      http://www.yireo.com
  */
 
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * MageBridge Controller 
+ * MageBridge Controller
  *
  * @package MageBridge
  */
 class MageBridgeController extends YireoAbstractController
 {
-	/** 
+	/**
 	 * Constructor
-	 *
-	 * @param null
-	 * @return null
 	 */
 	public function __construct()
 	{
 		parent::__construct();
+
 		$this->registerTask('switch', 'switchStores');
 		$this->registerTask('login', 'ssoCheck');
 		$this->registerTask('logout', 'ssoCheck');
 
 		$uri = JURI::current();
 		$input = JFactory::getApplication()->input;
-		$post = JFactory::getApplication()->input->post->getArray();
+		$post = $input->post->getArray();
+
 		$httpReferer = isset($_SERVER['HTTP_REFERER']) ? trim($_SERVER['HTTP_REFERER']) : null;
 		$httpHost = isset($_SERVER['HTTP_HOST']) ? trim($_SERVER['HTTP_HOST']) : null;
 
@@ -55,14 +54,12 @@ class MageBridgeController extends YireoAbstractController
 
 			if (empty($httpReferer))
 			{
-				header('Location: '.$_SERVER['REQUEST_URI']);
-				exit;
+				$this->returnToRequestUri();
 			}
 
 			if (preg_match('/(http|https):\/\/' . $httpHost . '/', $httpReferer) == false)
 			{
-				header('Location: '.$_SERVER['REQUEST_URI']);
-				exit;
+				$this->returnToRequestUri();
 			}
 		}
 
@@ -70,18 +67,30 @@ class MageBridgeController extends YireoAbstractController
 		{
 			if (empty($httpReferer))
 			{
-				header('Location: '.$_SERVER['REQUEST_URI']);
-				exit;
+				$this->returnToRequestUri();
 			}
 
 			if (preg_match('/(http|https):\/\/' . $httpHost . '/', $httpReferer) == false)
 			{
-				header('Location: '.$_SERVER['REQUEST_URI']);
-				exit;
+				$this->returnToRequestUri();
 			}
 		}
 	}
 
+	/**
+	 * Method to redirect back to the request URI itself
+	 */
+	public function returnToRequestUri()
+	{
+		header('Location: ' . $_SERVER['REQUEST_URI']);
+		exit;
+	}
+
+	/**
+	 * Forbidden task
+	 *
+	 * @param string $message
+	 */
 	public function forbidden($message = 'Access denied')
 	{
 		header('HTTP/1.0 403 Forbidden');
@@ -93,41 +102,56 @@ class MageBridgeController extends YireoAbstractController
 	 *
 	 * @param boolean $cachable
 	 * @param boolean $urlparams
+	 *
 	 * @return null
 	 */
 	public function display($cachable = false, $urlparams = false)
 	{
 		// Check if the bridge is offline
-		if (MageBridge::getBridge()->isOffline()) {
-			JFactory::getApplication()->input->set('view' , 'offline');
-			JFactory::getApplication()->input->set('layout' , 'default');
+		if (MageBridge::getBridge()
+			->isOffline()
+		)
+		{
+			JFactory::getApplication()->input->set('view', 'offline');
+			JFactory::getApplication()->input->set('layout', 'default');
 		}
 
 		// Set a default view
-		if (JFactory::getApplication()->input->get('view') == '') {
-			JFactory::getApplication()->input->set('view' , 'root');
+		if (JFactory::getApplication()->input->get('view') == '')
+		{
+			JFactory::getApplication()->input->set('view', 'root');
 		}
 
 		// Check for a logout action and perform a logout in Joomla! first
 		$request = MageBridgeUrlHelper::getRequest();
-		if ($request == 'customer/account/logout') {
+		if ($request == 'customer/account/logout')
+		{
 			$session = JFactory::getSession();
 			$session->destroy();
 		}
 
 		// Check for an admin request
 		$backend = MageBridgeModelConfig::load('backend');
-		if (!empty($backend) && substr($request, 0, strlen($backend)) === $backend) {
+		if (!empty($backend) && substr($request, 0, strlen($backend)) === $backend)
+		{
 			$request = str_replace($backend, '', $request);
-			$url = MageBridgeModelBridge::getInstance()->getMagentoAdminUrl($request);
+			$url = MageBridgeModelBridge::getInstance()
+				->getMagentoAdminUrl($request);
 			$this->setRedirect($url);
+
 			return;
 		}
 
 		// Redirect if the layout is not supported by the view
-		if (JFactory::getApplication()->input->get('view') == 'catalog' && !in_array(JFactory::getApplication()->input->get('layout'), array('product', 'category', 'addtocart'))) {
+		if (JFactory::getApplication()->input->get('view') == 'catalog' && !in_array(JFactory::getApplication()->input->get('layout'), array(
+				'product',
+				'category',
+				'addtocart'))
+		)
+		{
 			$url = MageBridgeUrlHelper::route('/');
 			$this->setRedirect($url);
+
 			return;
 		}
 
@@ -137,17 +161,19 @@ class MageBridgeController extends YireoAbstractController
 	/**
 	 * Method to check SSO coming from Magento
 	 *
-	 * @param null
 	 * @return null
 	 */
 	public function ssoCheck()
 	{
 		$application = JFactory::getApplication();
 		$user = JFactory::getUser();
-		if (!$user->guest) {
+		if (!$user->guest)
+		{
 			MageBridgeModelUserSSO::checkSSOLogin();
 			$application->close();
-		} else {
+		}
+		else
+		{
 			$this->setRedirect(JURI::base());
 		}
 	}
@@ -155,21 +181,19 @@ class MageBridgeController extends YireoAbstractController
 	/**
 	 * Method to check SSO coming from Magento
 	 *
-	 * @param null
 	 * @return null
 	 */
 	public function proxy()
 	{
 		$application = JFactory::getApplication();
-		$url = JFactory::getApplication()->input->get('url');
-		print file_get_contents(MageBridgeModelBridge::getMagentoUrl().$url);
+		$url = $application->input->get('url');
+		print file_get_contents(MageBridgeModelBridge::getMagentoUrl() . $url);
 		$application->close();
 	}
 
 	/**
 	 * Method to switch Magento store by POST
 	 *
-	 * @param null
 	 * @return null
 	 */
 	public function switchStores()
@@ -179,18 +203,26 @@ class MageBridgeController extends YireoAbstractController
 
 		// Read the posted value
 		$store = JFactory::getApplication()->input->getString('magebridge_store');
-		if (!empty($store) && preg_match('/(g|v):(.*)/', $store, $match)) {
-			if ($match[1] == 'v') {
+		if (!empty($store) && preg_match('/(g|v):(.*)/', $store, $match))
+		{
+			if ($match[1] == 'v')
+			{
 				$application->setUserState('magebridge.store.type', 'store');
 				$application->setUserState('magebridge.store.name', $match[2]);
-			} else if ($match[1] == 'g') {
-				$application->setUserState('magebridge.store.type', 'group');
-				$application->setUserState('magebridge.store.name', $match[2]);
+			}
+			else
+			{
+				if ($match[1] == 'g')
+				{
+					$application->setUserState('magebridge.store.type', 'group');
+					$application->setUserState('magebridge.store.name', $match[2]);
+				}
 			}
 		}
 
 		// Redirect to the previous URL
 		$redirect = JFactory::getApplication()->input->getString('redirect');
 		$application->redirect($redirect);
+		$application->close();
 	}
 }

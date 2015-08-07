@@ -22,10 +22,10 @@ class Yireo_MageBridge_Model_Client_Jsonrpc extends Yireo_MageBridge_Model_Clien
      * @param array $params
      * @return mixed
      */
-    public function makeCall($url, $method, $params = array())
+    public function makeCall($url, $method, $params = array(), $store = null)
     {
         // Get the authentication data
-        $auth = $this->getAPIAuthArray();
+        $auth = $this->getApiAuthArray($store);
         $method = preg_replace('/^magebridge\./', '', $method);
 
         // If these values are not set, we are unable to continue
@@ -62,28 +62,31 @@ class Yireo_MageBridge_Model_Client_Jsonrpc extends Yireo_MageBridge_Model_Clien
 
         if(empty($data) || !preg_match('/^\{/', $data)) {
             Mage::getSingleton('magebridge/debug')->trace('JSON-RPC: Wrong data in JSON-RPC reply', $data);
-            Mage::getSingleton('magebridge/debug')->trace('JSON-RPC: CURL-error', curl_error($ch));
-            return false;
+            Mage::getSingleton('magebridge/debug')->trace('JSON-RPC: CURL error', curl_error($ch));
+            return 'Wrong data in JSON-RPC reply';
         }
 
         // Try to decode the result
         $decoded = json_decode($data, true);
         if(empty($decoded)) {
             Mage::getSingleton('magebridge/debug')->error('JSON-RPC: Empty JSON-response');
-            return false;
+            Mage::getSingleton('magebridge/debug')->trace('JSON-RPC: Actual response', $data);
+            return 'Empty JSON-response';
         }
 
         $data = $decoded;
         if(!is_array($data)) {
             Mage::getSingleton('magebridge/debug')->trace('JSON-RPC: JSON-response is not an array', $data);
-            return false;
+            return 'JSON-response is not an array';
+
         } else {
             if(isset($data['error']) && !empty($data['error']['message'])) {
                 Mage::getSingleton('magebridge/debug')->trace('JSON-RPC: JSON-error', $data['error']['message']);
-                return false;
+                return $data['error']['message'];
+
             } elseif(!isset($data['result'])) {
                 Mage::getSingleton('magebridge/debug')->error('JSON-RPC: No result in JSON-data');
-                return false;
+                return 'No result in JSON-data';
             }
         }
 

@@ -12,13 +12,10 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
-// Include the parent controller
-jimport( 'joomla.application.component.controller' );
-
 /**
  * @package MageBridge
  */
-class MageBridgeControllerApi extends JController
+class MageBridgeControllerApi extends YireoAbstractController
 {
 	public function run()
 	{
