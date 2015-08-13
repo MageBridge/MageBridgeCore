@@ -1169,7 +1169,7 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 			return true;
 		}
 
-		if (preg_match('/downloadable\/download\/link\/id/', MageBridgeUrlHelper::getRequest()))
+		if (strstr(MageBridgeUrlHelper::getRequest(), 'downloadable/download/link/id'))
 		{
 			return true;
 		}
@@ -1237,6 +1237,19 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 		// Determine whether to allow spoofing or not
 		$spoof = $this->canSpoofHeaders($data);
 
+		// Split the header data into an array
+		$headers = $this->convertHeaderStringToArray($this->head['headers']);
+
+		if (count($headers) <= 1)
+		{
+			return false;
+		}
+
+		// Spoof the bridged Content-Type header anyway
+		if (preg_match('/Content-Type: (.*)/', $this->head['headers'], $match)) {
+			header($match[0]);
+		}
+
 		// Set the original HTTP headers
 		if ($spoof == false)
 		{
@@ -1244,13 +1257,6 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 		}
 
 		if (empty($this->head['headers']))
-		{
-			return false;
-		}
-
-		$headers = $this->convertHeaderStringToArray($this->head['headers']);
-
-		if (count($headers) <= 1)
 		{
 			return false;
 		}
