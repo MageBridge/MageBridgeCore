@@ -1202,7 +1202,7 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 	{
 		$header = strtolower($header);
 
-		if (preg_match('/^(http|cache|expires|pragma|content|etag|last-modified/', $header))
+		if (preg_match('/^(http|cache|expires|pragma|content|etag|last-modified)/', $header))
 		{
 			return true;
 		}
@@ -1234,8 +1234,10 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 	 */
 	protected function spoofHeaders($data = null)
 	{
-		// Determine whether to allow spoofing or not
-		$spoof = $this->canSpoofHeaders($data);
+		if (empty($this->head['headers']))
+		{
+			return false;
+		}
 
 		// Split the header data into an array
 		$headers = $this->convertHeaderStringToArray($this->head['headers']);
@@ -1246,17 +1248,16 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 		}
 
 		// Spoof the bridged Content-Type header anyway
-		if (preg_match('/Content-Type: (.*)/', $this->head['headers'], $match)) {
+		if (preg_match('/Content-Type: (.*)/', $this->head['headers'], $match))
+        {
 			header($match[0]);
 		}
 
+		// Determine whether to allow spoofing or not
+		$spoof = $this->canSpoofHeaders($data);
+
 		// Set the original HTTP headers
 		if ($spoof == false)
-		{
-			return false;
-		}
-
-		if (empty($this->head['headers']))
 		{
 			return false;
 		}
