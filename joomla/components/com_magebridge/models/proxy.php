@@ -516,13 +516,13 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 
 			if ($header == 'X_REQUESTED_WITH')
 			{
-				$httpHeaders[] = $header . ': ' . $value;
+				$httpHeaders[] = 'X-REQUESTED-WITH' . ': ' . $value;
 			}
 			else
 			{
 				if (preg_match('/^ACCEPT_/', $header))
 				{
-					$httpHeaders[] = $header . ': ' . $value;
+					$httpHeaders[] = str_replace('_', '-', $header) . ': ' . $value;
 				}
 			}
 		}
@@ -530,12 +530,12 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 		// Add proxy HTTP headers
 		if (isset($_SERVER['REMOTE_ADDR']))
 		{
-			$httpHeaders[] = 'HTTP_X_REAL_IP: ' . $_SERVER['REMOTE_ADDR'];
+			$httpHeaders[] = 'X-REAL-IP: ' . $_SERVER['REMOTE_ADDR'];
 		}
 
 		if (isset($_SERVER['REMOTE_ADDR']))
 		{
-			$httpHeaders[] = 'HTTP_X_FORWARDED_FOR: ' . $_SERVER['REMOTE_ADDR'];
+			$httpHeaders[] = 'X-FORWARDED-FOR: ' . $_SERVER['REMOTE_ADDR'];
 		}
 
 		if (isset($_SERVER['SERVER_ADDR']))
@@ -547,12 +547,12 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 		$uri = JURI::getInstance();
 		if ($uri->isSSL() == true)
 		{
-			$httpHeaders[] = 'HTTP_FRONT_END_HTTPS: On';
+			$httpHeaders[] = 'FRONT-END-HTTPS: On';
 		}
 
 		if ($uri->isSSL() == true)
 		{
-			$httpHeaders[] = 'HTTP_X_FORWARD_PROTO: https';
+			$httpHeaders[] = 'X-FORWARD-PROTO: https';
 		}
 
 		// Add some extra HTTP headers for HTTP Keep Alive
