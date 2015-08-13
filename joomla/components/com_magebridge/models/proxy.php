@@ -1169,7 +1169,7 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 			return true;
 		}
 
-		if (preg_match('/^downloadable\/download\/link\/id/', MageBridgeUrlHelper::getRequest()))
+		if (preg_match('/downloadable\/download\/link\/id/', MageBridgeUrlHelper::getRequest()))
 		{
 			return true;
 		}
@@ -1180,6 +1180,12 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 		}
 
 		if (!empty($data) && preg_match('/\<\/rss\>$/', $data))
+		{
+			return true;
+		}
+
+
+		if (!empty($data) && strstr($data, '<?xml version'))
 		{
 			return true;
 		}
@@ -1232,24 +1238,30 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 		$spoof = $this->canSpoofHeaders($data);
 
 		// Set the original HTTP headers
-		if ($spoof == true)
+		if ($spoof == false)
 		{
-			if (!empty($this->head['headers']))
+			return false;
+		}
+
+		if (empty($this->head['headers']))
+		{
+			return false;
+		}
+
+		$headers = $this->convertHeaderStringToArray($this->head['headers']);
+
+		if (count($headers) <= 1)
+		{
+			return false;
+		}
+
+		foreach ($headers as $header)
+		{
+			$header = trim($header);
+
+			if ($this->allowHttpHeader($header))
 			{
-				$headers = $this->convertHeaderStringToArray($this->head['headers']);
-
-				if (count($headers) > 1)
-				{
-					foreach ($headers as $header)
-					{
-						$header = trim($header);
-
-						if ($this->allowHttpHeader($header))
-						{
-							header($header);
-						}
-					}
-				}
+				header($header);
 			}
 		}
 	}
