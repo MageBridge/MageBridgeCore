@@ -99,6 +99,9 @@ class MageBridgeUrlHelper
 					// Build a list of current variables
 					$currentVars = array('option', 'view', 'layout', 'format', 'request', 'Itemid', 'lang', 'tmpl');
 
+                    // Add the form token to the current variables
+                    $currentsVars[] = JSession::getFormToken();
+
 					// If the request is set, filter all rubbish
 					if (!empty($request))
 					{
