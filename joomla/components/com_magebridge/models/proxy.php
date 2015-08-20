@@ -943,21 +943,21 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 	/**
 	 * Determine whether handling of file downloads is required
 	 *
-	 * @return bool
+	 * @return int
 	 */
-	protected function isFileDownloadsRequired()
+	protected function getFileDownloadsId()
 	{
 		if (!preg_match('/^downloadable\/download\/link\/id\/([a-zA-Z0-9]+)/', MageBridgeUrlHelper::getRequest(), $match))
 		{
-			return true;
+			return 0;
 		}
 
 		if (empty($match[1]))
 		{
-			return false;
+			return 0;
 		}
 
-		return true;
+		return $match[1];
 	}
 
 	/**
@@ -970,14 +970,14 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 	protected function handleFileDownloads($handle)
 	{
 		// Do not continue, if we have no match
-		if ($id = $this->isFileDownloadsRequired())
+		if (!$id = $this->getFileDownloadsId())
 		{
 			return false;
 		}
 
 		// Construct the temporary cached files to use
-		$tmp_body = $this->config->get('tmp_path') . '/' . $id[1];
-		$tmp_header = $this->config->get('tmp_path') . '/' . $id[1] . '_header';
+		$tmp_body = $this->config->get('tmp_path') . '/' . $id;
+		$tmp_header = $this->config->get('tmp_path') . '/' . $id . '_header';
 
 		// Check whether the cached files exist, otherwise create them
 		if (!file_exists($tmp_body) || !file_exists($tmp_header) || filesize($tmp_body) == 0 || filesize($tmp_header) == 0)
@@ -1045,7 +1045,7 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 			@unlink($tmp_header);
 			$this->setRedirect($location);
 
-			return;
+			return false;
 		}
 
 		// Parse the headers into an usable array
@@ -1065,6 +1065,11 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 			foreach ($headers as $header)
 			{
 				$header = trim($header);
+
+				if (empty($header))
+				{
+					continue;
+				}
 
 				if ($this->allowHttpHeader($header))
 				{
@@ -1202,7 +1207,7 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 	{
 		$header = strtolower($header);
 
-		if (preg_match('/^(http|cache|expires|pragma|content|etag|last-modified)/', $header))
+		if (preg_match('/^(http|cache|date|expires|pragma|content|etag|last-modified)/', $header))
 		{
 			return true;
 		}
