@@ -71,9 +71,9 @@ class Yireo_MageBridge_Model_Core
         $this->_meta['api_key'] = $this->getMetaData('api_key');
 
         //Mage::getSingleton('magebridge/debug')->trace('Dump of meta', $this->_meta);
-        Mage::getSingleton('magebridge/debug')->trace('Dump of request', $this->_request);
+        //Mage::getSingleton('magebridge/debug')->trace('Dump of request', $this->_request);
         //Mage::getSingleton('magebridge/debug')->trace('Dump of GET', $_GET);
-        Mage::getSingleton('magebridge/debug')->trace('HTTP referer', (isset($_SERVER['HTTP_REFERER'])) ? $_SERVER['HTTP_REFERER'] : null);
+        //Mage::getSingleton('magebridge/debug')->trace('HTTP referer', (isset($_SERVER['HTTP_REFERER'])) ? $_SERVER['HTTP_REFERER'] : null);
 
         // Overwrite the default error-handling by routing all magebridge/debug
         set_error_handler('Yireo_MageBridge_ErrorHandler');

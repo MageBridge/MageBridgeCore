@@ -28,6 +28,11 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 	protected $head = array();
 
 	/**
+	 * Body of content
+	 */
+	protected $body = '';
+
+	/**
 	 * Content fetched through the proxy
 	 */
 	protected $data = '';
@@ -580,12 +585,20 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 		}
 
 		// Automatically handle file uploads
-		$tmp_files = MageBridgeProxyHelper::upload();
+		$tmp_files = $this->helper->upload();
+
 		if (!empty($tmp_files))
 		{
 			foreach ($tmp_files as $name => $tmp_file)
 			{
-				$arguments[$name] = '@' . $tmp_file;
+				if (class_exists('CurlFile'))
+				{
+					$arguments[$name] = new CurlFile($tmp_file['tmp_name'], $tmp_file['type']);
+				}
+				else
+				{
+					$arguments[$name] = '@' . $tmp_file['tmp_name'];
+				}
 			}
 		}
 
@@ -596,6 +609,7 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 			curl_setopt($handle, CURLOPT_POST, true);
 			curl_setopt($handle, CURLOPT_POSTFIELDS, $arguments);
 			$httpHeaders[] = 'Expect:';
+			//print_r($arguments);exit;
 		}
 
 		// Add the HTTP headers
@@ -614,10 +628,11 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 		{
 			$size = round($size / 1024, 2) . 'Kb';
 		}
+
 		$this->debug->profiler('CURL response size: ' . $size);
 
 		// Cleanup the temporary uploads
-		MageBridgeProxyHelper::cleanup($tmp_files);
+		$this->helper->cleanup($tmp_files);
 
 		// Separate the headers from the body
 		$this->head['last_url'] = curl_getinfo($handle, CURLINFO_EFFECTIVE_URL);

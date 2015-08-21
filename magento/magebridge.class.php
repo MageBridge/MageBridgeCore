@@ -311,6 +311,7 @@ class MageBridge
     {
         Mage::getSingleton('magebridge/debug')->notice('Session: '.session_id());
         Mage::getSingleton('magebridge/debug')->notice('Request: '.$_SERVER['REQUEST_URI']);
+        Mage::getSingleton('magebridge/debug')->trace('FILES', $_FILES);
 
         // Handle SSO
         if(Mage::getSingleton('magebridge/user')->doSSO() == true) {

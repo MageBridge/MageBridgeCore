@@ -150,10 +150,22 @@ class MageBridgeUrlHelper
 					{
 						foreach ($getVars as $name => $value)
 						{
-							if (!in_array($name, $currentVars) && !preg_match('/^quot;/', $name))
-							{
-								$get[$name] = $value;
-							}
+                            if (in_array($name, $currentVars))
+                            {
+                                continue;
+                            }
+
+                            if (preg_match('/^quot;/', $name))
+                            {
+                                continue;
+                            }
+								
+                            if (strlen($name) == 32 && $value == 1)
+                            {
+                                continue;
+                            }
+								
+                            $get[$name] = $value;
 						}
 					}
 

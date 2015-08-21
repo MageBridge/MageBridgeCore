@@ -64,9 +64,9 @@ abstract class MageBridgeModelProxyAbstract
 
 		$this->debug = MageBridgeModelDebug::getInstance();
 
-		$this->helper = new MageBridgeProxyHelper();
-
 		$this->app = JFactory::getApplication();
+
+		$this->helper = new MageBridgeProxyHelper($this->app);
 
 		$this->input = $this->app->input;
 
