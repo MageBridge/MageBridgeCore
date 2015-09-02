@@ -491,7 +491,7 @@ class MageBridgeTemplateHelper
 			return false;
 		}
 
-		if (self::isPage('checkout/**') || self::isPage('onestepcheckout/**') || self::isPage('firecheckout/**'))
+		if (self::isPage('checkout/**') || self::isPage('onestepcheckout/**') || self::isPage('firecheckout') || self::isPage('onepage'))
 		{
 			return true;
 		}

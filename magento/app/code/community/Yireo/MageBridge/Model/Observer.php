@@ -71,7 +71,7 @@ class Yireo_MageBridge_Model_Observer extends Mage_Core_Model_Abstract
             return $this;
         }
 
-        $address = $observer->getEvent()->getObject();
+        $address = $observer->getEvent()->getCustomerAddress();
         $arguments = array(
             'address' => Mage::helper('magebridge/event')->getAddressArray($address),
         );

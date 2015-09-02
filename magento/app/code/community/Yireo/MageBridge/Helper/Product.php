@@ -49,14 +49,26 @@ class Yireo_MageBridge_Helper_Product extends Mage_Core_Helper_Abstract
         $p['product_id'] = $p['entity_id'];
         $p['category_ids'] = $product->getCategoryIds();
         $p['label'] = htmlentities($product->getName());
+
         if($product->getCustomImageSize() > 1) {
-            $p['thumbnail'] = (string)Mage::helper('catalog/image')->init($product, 'thumbnail')->resize($product->getCustomImageSize());
-            $p['image'] = (string)Mage::helper('catalog/image')->init($product, 'image')->resize($product->getCustomImageSize());
-            $p['small_image'] = (string)Mage::helper('catalog/image')->init($product, 'small_image')->resize($product->getCustomImageSize());
+            $p['image'] = $this->getImageUrl($product, 'image', $product->getCustomImageSize());
+            $p['image_data'] = $this->getImageData($product, 'image', $product->getCustomImageSize());
+            $p['small_image'] = $this->getImageUrl($product, 'small_image', $product->getCustomImageSize());
+            $p['small_image_data'] = $this->getImageData($product, 'small_image', $product->getCustomImageSize());
+            $p['thumbnail'] = $this->getImageUrl($product, 'thumbnail', $product->getCustomImageSize());
+            $p['thumbnail_data'] = $this->getImageData($product, 'thumbnail', $product->getCustomImageSize());
+            $p['full_image_data'] = $this->getImageData($product, 'image');
+            $p['custom_image_size'] = $product->getCustomImageSize();
+
         } else {
-            $p['thumbnail'] = $product->getThumbnailUrl();
             $p['image'] = $product->getImageUrl();
+            $p['image_data'] = $this->getImageData($product, 'image', array(265, 265));
             $p['small_image'] = $product->getSmallImageUrl();
+            $p['small_image_data'] = $this->getImageData($product, 'small_image', array(88, 77));
+            $p['thumbnail'] = $product->getThumbnailUrl();
+            $p['thumbnail_data'] = $this->getImageData($product, 'thumbnail', array(75, 75));
+            $p['full_image_data'] = $this->getImageData($product, 'image');
+            $p['custom_image_size'] = 0;
         }
 
         // Determine the normal price
@@ -150,5 +162,39 @@ class Yireo_MageBridge_Helper_Product extends Mage_Core_Helper_Abstract
         unset($p['attribute_set_id']);
 
         return $p;
+    }
+
+    public function getImageUrl($product, $attributeName, $size)
+    {
+        $imageData = $this->getImageData($product, $attributeName, $size);
+        return $imageData['url'];
+    }
+
+    public function getImageData($product, $attributeName, $size)
+    {
+        $imageHelper = Mage::helper('catalog/image');
+        $imageHelper->init($product, $attributeName);
+
+        $originalWidth = $imageHelper->getOriginalWidth();
+        $originalHeight = $imageHelper->getOriginalHeight();
+
+        if (count($size) == 1) {
+            $imageWidth = $size[0];
+            $imageHeight = $size[0];
+        } elseif (count($size) == 2) {
+            $imageWidth = $size[0];
+            $imageHeight = $size[1];
+        } else {
+            $imageWidth = $originalWidth;
+            $imageHeight = $originalHeight;
+        }
+
+        $imageUrl = (string) $imageHelper->resize($imageWidth, $imageHeight);
+    
+        return array(
+            'url' => $imageUrl,
+            'width' => $imageWidth,
+            'height' => $imageHeight,
+        );
     }
 }
