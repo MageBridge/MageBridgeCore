@@ -784,9 +784,9 @@ class MageBridgeUrlHelper
 
 		// Default pages to be served with SSL
 		$pages = array(
-			'checkout/**',
-			'customer/**',
-			'wishlist/**',);
+			'checkout/*',
+			'customer/*',
+			'wishlist/*',);
 
 		// Extra payment-pages to be served with SSL
 		$payment_urls = explode(',', MagebridgeModelConfig::load('payment_urls'));
@@ -799,7 +799,7 @@ class MageBridgeUrlHelper
 
 				if (!empty($url))
 				{
-					$pages[] = $url . '/**';
+					$pages[] = $url . '/*';
 				}
 			}
 		}

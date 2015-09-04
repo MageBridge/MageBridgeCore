@@ -389,7 +389,9 @@ class MageBridgeTemplateHelper
 
 				$page = preg_replace('/\/$/', '', $page); // Strip the backslash in the end
 				$page = str_replace('/', '\/', $page); // Transform this string for use within preg_match
-				$page = preg_replace('/\*/', '\\\*', $page); // Escape any remaining characters
+                $page = preg_replace('/\.\*$/', '', $page); // Remove .* at end of string
+                $page = preg_replace('/\*$/', '', $page); // Remove * at end of string
+                $page = preg_replace('/\*/', '\\\*', $page); // Escape any remaining characters
 
 				if (preg_match('/^' . $page . '/', $request))
 				{
@@ -409,7 +411,7 @@ class MageBridgeTemplateHelper
 	 */
 	static public function isCatalogPage()
 	{
-		return self::isPage('catalog/**');
+		return self::isPage('catalog/*');
 	}
 
 	/**
@@ -420,7 +422,7 @@ class MageBridgeTemplateHelper
 	 */
 	static public function isProductPage()
 	{
-		return self::isPage('catalog/product/**') || self::isPage('checkout/cart/configure/id/**');
+		return self::isPage('catalog/product/*') || self::isPage('checkout/cart/configure/id/*');
 	}
 
 	/**
@@ -431,7 +433,7 @@ class MageBridgeTemplateHelper
 	 */
 	static public function isCategoryPage()
 	{
-		return self::isPage('catalog/category/**');
+		return self::isPage('catalog/category/*');
 	}
 
 	/**
@@ -442,7 +444,7 @@ class MageBridgeTemplateHelper
 	 */
 	static public function isCustomerPage()
 	{
-		if (self::isPage('customer/**') || self::isPage('sales/**') || self::isPage('review/customer/**') || self::isPage('tag/customer/**') || self::isPage('wishlist/**') || self::isPage('oauth/customer_token/**') || self::isPage('newsletter/manage/**') || self::isPage('downloadable/customer/**'))
+		if (self::isPage('customer/*') || self::isPage('sales/*') || self::isPage('review/customer/*') || self::isPage('tag/customer/*') || self::isPage('wishlist/*') || self::isPage('oauth/customer_token/*') || self::isPage('newsletter/manage/*') || self::isPage('downloadable/customer/*'))
 		{
 			return true;
 		}
@@ -491,7 +493,7 @@ class MageBridgeTemplateHelper
 			return false;
 		}
 
-		if (self::isPage('checkout/**') || self::isPage('onestepcheckout/**') || self::isPage('firecheckout') || self::isPage('onepage'))
+		if (self::isPage('checkout/*') || self::isPage('onestepcheckout/*') || self::isPage('firecheckout') || self::isPage('onepage'))
 		{
 			return true;
 		}
@@ -507,7 +509,7 @@ class MageBridgeTemplateHelper
 	 */
 	static public function isSalesPage()
 	{
-		return self::isPage('sales/**');
+		return self::isPage('sales/*');
 	}
 
 	/**
@@ -518,7 +520,7 @@ class MageBridgeTemplateHelper
 	 */
 	static public function isWishlistPage()
 	{
-		return self::isPage('wishlist/**');
+		return self::isPage('wishlist/*');
 	}
 
 	/**
