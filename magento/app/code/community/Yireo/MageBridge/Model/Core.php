@@ -118,9 +118,12 @@ class Yireo_MageBridge_Model_Core
             $modules = (array)Mage::getConfig()->getNode('modules')->children();
             if (array_key_exists('Mage_Persistent', $modules)) {
                 $persistentHelper = Mage::helper('persistent/session');
-                $customer = Mage::getModel('customer/customer')->load($persistentHelper->getSession()->getCustomerId());
-                if ($customer->getId() > 0) {
-                    Mage::getSingleton('customer/session')->setCustomerAsLoggedIn($customer)->renewSession();
+                $persistentCustomerId = (int) $persistentHelper->getSession()->getCustomerId();
+                if (!empty($persistentCustomerId)) {
+                    $customer = Mage::getModel('customer/customer')->load($persistentCustomerId);
+                    if ($customer->getId() > 0) {
+                        Mage::getSingleton('customer/session')->setCustomerAsLoggedIn($customer)->renewSession();
+                    }
                 }
             }
         }
