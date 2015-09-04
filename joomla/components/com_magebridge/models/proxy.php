@@ -92,7 +92,7 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 		}
 
 		// Check whether the Content-Type is indicating non-bridge output
-		if (!empty($this->head['headers']) && preg_match('/Content-Type: (application|text)\/(xml|javascript|octetstream)/', $this->head['headers']))
+		if (!empty($this->head['headers']) && preg_match('/Content-Type: (application|text)\/(xml|javascript|json|octetstream)/', $this->head['headers']))
 		{
 			$this->debug->trace('Detecting non-HTML output in HTTP headers', $this->head['headers']);
 			
@@ -181,7 +181,11 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 		header('Content-Encoding: none');
 		header('Content-Length: ' . YireoHelper::strlen($response));
 
-		if (preg_match('/^\{\"/', $response))
+		if (!empty($this->head['info']['content_type']))
+		{
+			header('Content-Type: '.$this->head['info']['content_type']);
+		}
+		elseif (preg_match('/^\{\"/', $response))
 		{
 			header('Content-Type: application/javascript');
 		}
@@ -270,7 +274,6 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 			// Increase the counter to make sure endless redirects don't happen
 			$this->count++;
 
-			//$this->debug->trace( 'Proxy headers', $this->head );
 			//$this->debug->trace( 'Proxy raw response', $raw );
 			//$this->debug->trace( 'Proxy decoded response', $decoded );
 			// Check whether the current URL is listed for direct output
