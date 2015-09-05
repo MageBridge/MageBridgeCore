@@ -17,3 +17,6 @@ defined('_JEXEC') or die('Restricted access');
 <td>
 	<?php echo $item->sku; ?>
 </td>
+<td>
+    <?php echo implode(', ', $item->params->get('allowed_status')); ?>
+</td>
