@@ -57,7 +57,7 @@ class Yireo_MageBridge_Helper_Product extends Mage_Core_Helper_Abstract
             $p['small_image_data'] = $this->getImageData($product, 'small_image', $product->getCustomImageSize());
             $p['thumbnail'] = $this->getImageUrl($product, 'thumbnail', $product->getCustomImageSize());
             $p['thumbnail_data'] = $this->getImageData($product, 'thumbnail', $product->getCustomImageSize());
-            $p['full_image_data'] = $this->getImageData($product, 'image');
+            $p['full_image_data'] = $this->getImageData($product, 'image', $product->getCustomImageSize());
             $p['custom_image_size'] = $product->getCustomImageSize();
 
         } else {
@@ -178,12 +178,15 @@ class Yireo_MageBridge_Helper_Product extends Mage_Core_Helper_Abstract
         $originalWidth = $imageHelper->getOriginalWidth();
         $originalHeight = $imageHelper->getOriginalHeight();
 
-        if (count($size) == 1) {
+        if (is_array($size) && count($size) == 1) {
             $imageWidth = $size[0];
             $imageHeight = $size[0];
-        } elseif (count($size) == 2) {
+        } elseif (is_array($size) && count($size) == 2) {
             $imageWidth = $size[0];
             $imageHeight = $size[1];
+        } elseif (!empty($size)) {
+            $imageWidth = $size;
+            $imageHeight = $size;
         } else {
             $imageWidth = $originalWidth;
             $imageHeight = $originalHeight;
