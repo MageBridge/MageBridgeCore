@@ -90,7 +90,14 @@ class Yireo_MageBridge_Model_Core
         }
 
         // Optionally disable form_key security
+        $disableFormKey = false;
         if (Mage::getStoreConfig('magebridge/settings/disable_form_key') == 1) {
+            $disableFormKey = true;
+        } elseif (strstr($this->getRequestUrl(), 'checkout/cart/add')) {
+            $disableFormKey = true;
+        }
+
+        if ($disableFormKey) {
             $formKey = Mage::getSingleton('core/session')->getFormKey();
             $request = Mage::app()->getRequest();
             $request->setPathInfo(preg_replace('/\/form_key\/([^\/]+)/', '', $request->getPathInfo()));
@@ -973,6 +980,7 @@ class Yireo_MageBridge_Model_Core
 
             // Preset some HTTP-headers
             header('X-MageBridge-Customer: ' . Mage::getModel('customer/session')->getCustomer()->getEmail());
+            header('X-MageBridge-Form-Key: ' . Mage::getSingleton('core/session')->getFormKey());
             // Note: Do not use the Magento API for this, because it is not used by magebridge.class.php > output
 
             yireo_benchmark('MB_Core::getFrontController() - end');

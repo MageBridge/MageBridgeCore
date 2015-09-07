@@ -715,6 +715,13 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 			MageBridgeModelUser::getInstance()->postlogin($value, null, true, true);
 		}
 
+		// Process the X-MageBridge-Form-Key header
+		if ($this->getHeader('X-MageBridge-Form-Key') != null)
+		{
+			$value = $this->getHeader('X-MageBridge-Form-Key');
+			MageBridgeModelBridge::getInstance()->addSessionData('form_key', $value);
+		}
+
 		// Log other Status Codes than 200
 		if ($this->head['http_code'] != 200)
 		{
