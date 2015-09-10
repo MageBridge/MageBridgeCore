@@ -22,6 +22,11 @@ class MageBridgeBlockHelper
 		$formToken = JHtml::_( 'form.token' );
 		$data = str_replace('</form>', $formToken . '</form>', $data);
 
+        return $data;
+    }
+
+	static public function parseJdocTags($data)
+	{
 		$replace = array();
 		$matches = array();
 

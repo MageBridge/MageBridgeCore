@@ -638,6 +638,7 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 		$this->helper->cleanup($tmp_files);
 
 		// Separate the headers from the body
+		$this->head['header_found'] = false;
 		$this->head['last_url'] = curl_getinfo($handle, CURLINFO_EFFECTIVE_URL);
 		$this->head['http_code'] = curl_getinfo($handle, CURLINFO_HTTP_CODE);
 		$this->head['size'] = curl_getinfo($handle, CURLINFO_HEADER_SIZE);
@@ -658,6 +659,8 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 		if (strpos($data, $separator) > 0)
 		{
 			$dataSegments = explode($separator, $data);
+		    $this->head['header_found'] = true;
+
 			foreach ($dataSegments as $dataSegmentIndex => $dataSegment)
 			{
 				// Check for a segment that seems to contain HTTP-headers
@@ -676,6 +679,14 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 				unset($dataSegments[$dataSegmentIndex]);
 			}
 		}
+
+        // Exit when no proper headers have been found
+        if ($this->head['header_found'] == false)
+        {
+			$this->debug->warning('CURL contains no HTTP headers');
+
+            return null;
+        }
 
 		if (empty($this->head['http_code']))
 		{

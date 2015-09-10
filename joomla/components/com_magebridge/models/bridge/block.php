@@ -95,10 +95,13 @@ class MageBridgeModelBridgeBlock extends MageBridgeModelBridgeSegment
 			}
 		}
 
+        // Parse blocks
+		$block_data = MageBridgeBlockHelper::parseBlock($block_data);
+
 		// Replace Joomla! jdoc:include tags
 		if (MagebridgeModelConfig::load('enable_jdoc_tags') == 1)
 		{
-			$block_data = MageBridgeBlockHelper::parseBlock($block_data);
+			$block_data = MageBridgeBlockHelper::parseJdocTags($block_data);
 		}
 
 		// Run Content Plugins on this block-html
