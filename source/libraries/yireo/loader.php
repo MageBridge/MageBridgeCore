@@ -64,6 +64,9 @@ if(!function_exists('YireoLibraryLoader')) {
             case 'YireoViewHomeAjax':
                 $filename = 'view/home_ajax';
                 break;
+            case 'YireoViewItem':
+                $filename = 'view/item';
+                break;
             case 'YireoViewList':
                 $filename = 'view/list';
                 break;

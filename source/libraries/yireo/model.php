@@ -312,8 +312,18 @@ class YireoModel extends YireoCommonModel
     public function initLimit($limit = null) 
     {
         if (is_numeric($limit) == false) {
-            $limit = $this->getFilter('list_limit', $this->app->getCfg('list_limit')); 
+            $limit = $this->getFilter('list_limit', JFactory::getConfig()->get('list_limit')); 
         }
+
+        if (empty($limit)) {
+            $this->_limit_query = true;
+            $total = $this->getTotal();
+
+            if ($total > 3000) {
+                $limit = 500;
+            }
+        }
+
         $this->setState('limit', $limit);
     }
 
@@ -422,7 +432,7 @@ class YireoModel extends YireoCommonModel
                 // Check to see if the data is published
                 $stateField = $this->_tbl->getStateField();
                 if ($this->app->isSite() && isset($data->$stateField) && $data->$stateField == 0) {
-                    JError::raiseError(404, JText::_('LIB_YIREO_MODEL_NOT_FOUND'));
+                    throw new BadFunctionCallException(JText::_('LIB_YIREO_MODEL_NOT_FOUND'), 500);
                     return;
                 }
 
@@ -591,7 +601,7 @@ class YireoModel extends YireoCommonModel
             // The original database-query included a LIMIT statement, so we need a second query
             } else {
                 $query = $this->buildQuery();
-                $query = preg_replace('/^(.*)FROM/sm', 'SELECT COUNT(*) FROM', $query);
+                $query = preg_replace('/^(.*)FROM/mi', 'SELECT COUNT(`'.$this->_tbl_alias.'`.`'.$this->_tbl_key.'`) FROM', $query, 1);
                 $query = preg_replace('/LIMIT(.*)$/', '', $query);
                 $query = preg_replace('/ORDER\ BY(.*)$/m', '', $query);
 
@@ -743,14 +753,14 @@ class YireoModel extends YireoCommonModel
         }
 
         // Automatically set some data
-        $data['modified'] = (method_exists('JDate', 'toSql')) ? $now->toSql() : $now->toMySQL();
-        $data['modified_date'] = (method_exists('JDate', 'toSql')) ? $now->toSql() : $now->toMySQL();
+        $data['modified'] = $now->toSql();
+        $data['modified_date'] = $now->toSql();
         $data['modified_by'] = $uid;
 
         // Set the creation date if the item is new
         if (empty($data['id']) || $data['id'] == 0) {
-            $data['created'] = (method_exists('JDate', 'toSql')) ? $now->toSql() : $now->toMySQL();
-            $data['created_date'] = (method_exists('JDate', 'toSql')) ? $now->toSql() : $now->toMySQL();
+            $data['created'] = $now->toSql();
+            $data['created_date'] = $now->toSql();
             $data['created_by'] = $uid;
         }
 
@@ -835,7 +845,7 @@ class YireoModel extends YireoCommonModel
             $cids = implode( ',', $cid );
             $query = 'DELETE FROM '.$this->_tbl_name.' WHERE '.$this->_tbl_key.' IN ( '.$cids.' )';
             $this->_db->setQuery( $query );
-            if (!$this->_db->query()) {
+            if (!$this->_db->execute()) {
                 $this->setError($this->_db->getErrorMsg());
                 return false;
             }
@@ -969,7 +979,7 @@ class YireoModel extends YireoCommonModel
         $value = ($value == 1) ? 0 : 1;
         $query = 'UPDATE `'.$this->_tbl_name.'` SET `'.$name.'`='.$value.' WHERE `'.$this->_tbl_key.'`='.(int)$id;
         $this->_db->setQuery($query);
-        $this->_db->query();
+        $this->_db->execute();
         return true;
     }
 
@@ -1569,11 +1579,16 @@ class YireoModel extends YireoCommonModel
      */
     public function getDbResult($query, $type = 'object')
     {
-        if($this->_cache == true) {
-            $cache = JFactory::getCache('lib_yireo_model');
-            $rs = $cache->call(array($this, '_getDbResult'), $query, $type);
-        } else {
-            $rs = $this->_getDbResult($query, $type);
+        try {
+            if($this->_cache == true) {
+                $cache = JFactory::getCache('lib_yireo_model');
+                $rs = $cache->call(array($this, '_getDbResult'), $query, $type);
+            } else {
+                $rs = $this->_getDbResult($query, $type);
+            }
+        } catch(Exception $e) {
+            JError::raiseWarning( 'DB error', $this->_db->getErrorMsg());
+            return false;
         }
 
         return $rs;

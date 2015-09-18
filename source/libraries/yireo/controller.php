@@ -121,7 +121,7 @@ class YireoCommonController extends YireoAbstractController
             return $controller;
         }
 
-        throw new Exception(JText::_('LIB_YIREO_NO_CONTROLLER_FOUND'));
+        throw new BadFunctionCallException(JText::_('LIB_YIREO_NO_CONTROLLER_FOUND'), 500);
     }
 }
 
@@ -237,7 +237,7 @@ class YireoController extends YireoCommonController
 
         // Allow or disallow frontend editing
         if ($this->_app->isSite() && in_array($this->_jinput->getCmd('task', 'display'), $this->_allow_tasks) == false) {
-            JError::raiseError(500, JText::_('LIB_YIREO_CONTROLLER_ILLEGAL_REQUEST'));
+            throw new BadFunctionCallException(JText::_('LIB_YIREO_CONTROLLER_ILLEGAL_REQUEST'), 500);
         }
 
         // Check for ACLs in backend
@@ -555,7 +555,7 @@ class YireoController extends YireoCommonController
         // Get the ID-list
         $cid = $this->getIds();
         if (count( $cid ) < 1) {
-            JError::raiseError(500, JText::_('LIB_YIREO_CONTROLLER_ITEM_SELECT_DELETE'));
+            throw new BadFunctionCallException(JText::_('LIB_YIREO_CONTROLLER_ITEM_SELECT_DELETE'), 500);
         }
 
         // Remove all selected items
@@ -593,7 +593,7 @@ class YireoController extends YireoCommonController
         // Get the ID-list
         $cid = $this->getIds();
         if (count( $cid ) < 1) {
-            JError::raiseError(500, JText::_('LIB_YIREO_CONTROLLER_ITEM_SELECT_PUBLISH'));
+            throw new BadFunctionCallException(JText::_('LIB_YIREO_CONTROLLER_ITEM_SELECT_PUBLISH'), 500);
         }
 
         // Use the model to publish this entry
@@ -631,7 +631,7 @@ class YireoController extends YireoCommonController
         // Get the ID-list
         $cid = $this->getIds();
         if (count( $cid ) < 1) {
-            JError::raiseError(500, JText::_('LIB_YIREO_CONTROLLER_ITEM_SELECT_UNPUBLISH'));
+            throw new BadFunctionCallException(JText::_('LIB_YIREO_CONTROLLER_ITEM_SELECT_UNPUBLISH'), 500);
         }
 
         // Use the model to unpublish this entry

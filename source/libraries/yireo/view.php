@@ -331,7 +331,7 @@ class YireoCommonView extends YireoAbstractView
 	 * @access     protected
 	 * @subpackage Yireo
 	 *
-	 * @param string  $path
+	 * @param string $path
 	 * @param boolean $first
 	 *
 	 * @return bool
@@ -707,31 +707,32 @@ class YireoView extends YireoCommonView
 			{
 				$params->set('created', $this->item->created);
 			}
+
 			if (isset($this->item->created_by))
 			{
 				$params->set('created_by', $this->item->created_by);
 			}
+
 			if (isset($this->item->modified))
 			{
 				$params->set('modified', $this->item->modified);
 			}
+
 			if (isset($this->item->modified_by))
 			{
 				$params->set('modified_by', $this->item->modified_by);
 			}
-			$this->assignRef('params', $params);
+
+			$this->params = $params;
 		}
 
 		// Load the form if it's there
 		$form = $this->get('Form');
+
 		if (!empty($form))
 		{
-			$this->assignRef('form', $form);
+			$this->form = $form;
 		}
-
-		// Assign common variables
-		$this->assignRef('lists', $this->lists);
-		$this->assignRef('user', $this->user);
 	}
 
 	/**
@@ -803,11 +804,6 @@ class YireoView extends YireoCommonView
 		$this->lists['order'] = $this->getFilter('order', null, 'string');
 		$this->lists['order_Dir'] = $this->getFilter('order_Dir');
 		$this->lists['state'] = JHTML::_('grid.state', $this->getFilter('state'));
-
-		// Assign all variables to the layout
-		$this->assignRef('items', $this->items);
-		$this->assignRef('total', $this->total);
-		$this->assignRef('pagination', $this->pagination);
 
 		return $this->items;
 	}
@@ -882,9 +878,6 @@ class YireoView extends YireoCommonView
 				}
 			}
 		}
-
-		// Assign this item
-		$this->assignRef('item', $this->item);
 
 		// Automatically hit this item
 		if ($this->application->isSite())
@@ -1130,7 +1123,10 @@ class YireoView extends YireoCommonView
 	 */
 	public function getImageTag($name = null)
 	{
-		$paths = array('/media/' . $this->_option . '/images/' . $name, '/media/lib_yireo/images/' . $name, '/images/' . $name,);
+		$paths = array(
+			'/media/' . $this->_option . '/images/' . $name,
+			'/media/lib_yireo/images/' . $name,
+			'/images/' . $name,);
 
 		foreach ($paths as $path)
 		{
@@ -1185,8 +1181,24 @@ class YireoView extends YireoCommonView
 			return false;
 		}
 
+		$name = $this->getLayoutPrefix() . $name;
+
+		// Merge current object variables
+		$variables = array_merge($variables, get_object_vars($this));
+
 		$basePath = null;
 		$layout = new JLayoutFile($name, $basePath);
+
 		echo $layout->render($variables);
+	}
+
+	/**
+	 * Return a common prefix for all layouts in this component
+	 *
+	 * @return string
+	 */
+	public function getLayoutPrefix()
+	{
+		return '';
 	}
 }

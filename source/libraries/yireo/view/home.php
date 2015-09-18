@@ -72,7 +72,7 @@ class YireoViewHome extends YireoView
 
         // Generate the backend feeds
         $backend_feed = $this->params->get('backend_feed', 1);
-        $this->assignRef( 'backend_feed', $backend_feed);
+        $this->backend_feed = $backend_feed;
         if ($backend_feed == 1) {
             $this->ajax('index.php?option='.$this->_option.'&view=home&format=ajax&layout=feeds', 'latest_news');
             $this->ajax('index.php?option='.$this->_option.'&view=home&format=ajax&layout=promotion', 'promotion');
@@ -84,7 +84,7 @@ class YireoViewHome extends YireoView
 
         // Get the current version
         $current_version = YireoHelper::getCurrentVersion();
-        $this->assignRef( 'current_version', $current_version );
+        $this->current_version = $current_version;
 
         parent::display($tpl);
     }
