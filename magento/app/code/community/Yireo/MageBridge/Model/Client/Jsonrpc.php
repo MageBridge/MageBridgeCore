@@ -45,12 +45,22 @@ class Yireo_MageBridge_Model_Client_Jsonrpc extends Yireo_MageBridge_Model_Clien
             'params' => $params,
             'id' => $id,
         );
-        $post = Zend_Json_Encoder::encode($post);
+
+        // Interpret the URL
+        $urlQuery = parse_url($url, PHP_URL_QUERY);
+        parse_str($urlQuery, $urlParams);
+
+        foreach($urlParams as $urlParamName => $urlParamValue) {
+            //Mage::getSingleton('magebridge/debug')->trace('JSON-RPC POST-value '.$urlParamName, $urlParamValue);
+            $post = array_merge(array($urlParamName => $urlParamValue), $post);
+        }
+
+        $encodedPost = Zend_Json_Encoder::encode($post);
 
         // Initialize a CURL-client
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $encodedPost);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 30);
