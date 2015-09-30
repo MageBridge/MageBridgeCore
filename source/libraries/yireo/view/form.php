@@ -54,7 +54,7 @@ class YireoViewForm extends YireoView
      * @param null
      * @return null
      */
-    public function __construct()
+    public function __construct($config = array())
     {
         // Add the Yireo form fields
         jimport('joomla.form.form');
@@ -63,7 +63,7 @@ class YireoViewForm extends YireoView
 		JForm::addFieldPath(JPATH_COMPONENT_ADMINISTRATOR.'/fields');
 
         // Call the parent constructor
-        $rt = parent::__construct();
+        $rt = parent::__construct($config);
 
         // Detect the editor field
         if (empty($this->_editor_field) && !empty($this->_table)) {

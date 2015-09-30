@@ -1,12 +1,12 @@
-<?php
+<?php 
 /**
  * Joomla! Yireo Lib
  *
- * @author    Yireo
- * @package   YireoLib
+ * @author Yireo
+ * @package YireoLib
  * @copyright Copyright 2015
- * @license   GNU Public License
- * @link      http://www.yireo.com/
+ * @license GNU Public License
+ * @link http://www.yireo.com/
  */
 
 // Check to ensure this file is included in Joomla!
@@ -18,20 +18,19 @@ jimport('joomla.utilities.utility');
 <?php echo $this->loadTemplate('script'); ?>
 
 <form method="post" name="adminForm" id="adminForm">
-	<div class="row-fluid">
-		<div class="span6">
-			<?php echo $this->loadTemplate('fieldset', array('fieldset' => 'basic')); ?>
-		</div>
-		<div class="span6">
-			<?php echo $this->loadTemplate('fieldset', array('fieldset' => 'other')); ?>
-			<?php echo $this->loadTemplate('fieldset', array('fieldset' => 'params')); ?>
-		</div>
-	</div>
-	<div class="row-fluid">
-		<div class="span12">
-			<?php echo $this->loadTemplate('fieldset', array('fieldset' => 'editor')); ?>
-		</div>
-	</div>
-	<?php echo $this->loadTemplate('custom'); ?>
-	<?php echo $this->loadTemplate('formend'); ?>
+<div class="row-fluid">
+    <div class="span6">
+        <?php echo $this->loadTemplate('fieldset', array('fieldset' => 'basic')); ?>
+    </div>
+    <div class="span6">
+        <?php echo $this->loadTemplate('fieldset', array('fieldset' => 'other')); ?>
+        <?php echo $this->loadTemplate('fieldset', array('fieldset' => 'params')); ?>
+    </div>
+</div>
+<div class="row-fluid">
+    <div class="span12">
+        <?php echo $this->loadTemplate('fieldset', array('fieldset' => 'editor')); ?>
+    </div>
+</div>
+<?php echo $this->loadTemplate('formend'); ?>
 </form>

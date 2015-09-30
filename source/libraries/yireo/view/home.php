@@ -36,12 +36,12 @@ class YireoViewHome extends YireoView
      * @param null
      * @return null
      */
-    public function __construct()
+    public function __construct($config = array())
     {
         $this->loadToolbar = false;
 
         // Call the parent constructor
-        parent::__construct();
+        parent::__construct($config);
 
         // Load bootstrap
         YireoHelper::bootstrap();
@@ -72,7 +72,7 @@ class YireoViewHome extends YireoView
 
         // Generate the backend feeds
         $backend_feed = $this->params->get('backend_feed', 1);
-        $this->backend_feed = $backend_feed;
+        $this->assignRef( 'backend_feed', $backend_feed);
         if ($backend_feed == 1) {
             $this->ajax('index.php?option='.$this->_option.'&view=home&format=ajax&layout=feeds', 'latest_news');
             $this->ajax('index.php?option='.$this->_option.'&view=home&format=ajax&layout=promotion', 'promotion');
@@ -84,7 +84,7 @@ class YireoViewHome extends YireoView
 
         // Get the current version
         $current_version = YireoHelper::getCurrentVersion();
-        $this->current_version = $current_version;
+        $this->assignRef( 'current_version', $current_version );
 
         parent::display($tpl);
     }

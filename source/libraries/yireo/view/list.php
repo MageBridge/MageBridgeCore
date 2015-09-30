@@ -56,13 +56,13 @@ class YireoViewList extends YireoView
 	 *
 	 * @subpackage Yireo
 	 */
-	public function __construct()
+	public function __construct($config = array())
 	{
 		// Do not load the toolbar automatically
 		$this->loadToolbar = false;
 
 		// Call the parent constructor
-		return parent::__construct();
+		return parent::__construct($config);
 	}
 
 	/**
