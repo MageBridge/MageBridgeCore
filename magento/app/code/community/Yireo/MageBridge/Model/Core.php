@@ -774,6 +774,7 @@ class Yireo_MageBridge_Model_Core
         $currentCategoryId = Mage::helper('magebridge/core')->getCurrentCategoryId();
         $currentCategoryPath = Mage::helper('magebridge/core')->getCurrentCategoryPath();
         $currentProductId = Mage::helper('magebridge/core')->getCurrentProductId();
+        $currentProductSku = Mage::helper('magebridge/core')->getCurrentProductSku();
 
         // Construct extra data
         $store = Mage::app()->getStore($this->getStore());
@@ -798,6 +799,7 @@ class Yireo_MageBridge_Model_Core
             'current_category_id' => $currentCategoryId,
             'current_category_path' => $currentCategoryPath,
             'current_product_id' => $currentProductId,
+            'current_product_sku' => $currentProductSku,
             'referer' => Mage::app()->getRequest()->getServer('HTTP_REFERER'),
             'controller' => Mage::app()->getRequest()->getControllerName(),
             'action' => Mage::app()->getRequest()->getActionName(),
