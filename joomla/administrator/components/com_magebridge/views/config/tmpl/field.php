@@ -1,5 +1,5 @@
 <?php 
-/*
+/**
  * Joomla! component MageBridge
  *
  * @author Yireo (info@yireo.com)
@@ -19,12 +19,12 @@ $oldFieldLabel = $field->label;
 $fieldLabel = JText::_('COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_'.$field->fieldname);
 ?>
 <div class="control-group">
-    <div class="control-label">
-        <label id="<?php echo $field->id; ?>-lbl" for="<?php echo $field->id; ?>" class="hasTooltip" title="<?php echo $fieldTooltip; ?>"><?php echo $fieldLabel; ?></label>
-    </div>
-    <div class="controls">
-        <?php echo $field->input; ?>
-    </div>
+	<div class="control-label">
+		<label id="<?php echo $field->id; ?>-lbl" for="<?php echo $field->id; ?>" class="hasTooltip" title="<?php echo $fieldTooltip; ?>"><?php echo $fieldLabel; ?></label>
+	</div>
+	<div class="controls">
+		<?php echo $field->input; ?>
+	</div>
 </div>
 <?php endif; ?>
 <div style="clear:both"></div>

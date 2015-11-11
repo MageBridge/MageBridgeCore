@@ -1,5 +1,5 @@
 <?php 
-/*
+/**
  * Joomla! component MageBridge
  *
  * @author Yireo (info@yireo.com)

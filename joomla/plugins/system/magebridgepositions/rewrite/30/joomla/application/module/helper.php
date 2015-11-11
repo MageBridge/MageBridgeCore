@@ -1,10 +1,10 @@
 <?php
 /**
- * @package     Joomla.Platform
+ * @package	 Joomla.Platform
  * @subpackage  Application
  *
  * @copyright   Copyright (C) 2005 - 2012 Open Source Matters, Inc. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE
+ * @license	 GNU General Public License version 2 or later; see LICENSE
  */
 
 defined('JPATH_PLATFORM') or die;
@@ -16,9 +16,9 @@ define('MAGEBRIDGE_MODULEHELPER_OVERRIDE', true);
 /**
  * Module helper class
  *
- * @package     Joomla.Platform
+ * @package	 Joomla.Platform
  * @subpackage  Application
- * @since       11.1
+ * @since	   11.1
  */
 abstract class JModuleHelper
 {
@@ -53,21 +53,21 @@ abstract class JModuleHelper
 			}
 		}
 
-        if(is_object($result) && isset($result->position) && MageBridgeTemplateHelper::allowPosition($result->position) == false) $result = null;
+		if(is_object($result) && isset($result->position) && MageBridgeTemplateHelper::allowPosition($result->position) == false) $result = null;
 
 		// If we didn't find it, and the name is mod_something, create a dummy object
 		if (is_null($result) && substr($name, 0, 4) == 'mod_')
 		{
-			$result            = new stdClass;
-			$result->id        = 0;
-			$result->title     = '';
-			$result->module    = $name;
+			$result			= new stdClass;
+			$result->id		= 0;
+			$result->title	 = '';
+			$result->module	= $name;
 			$result->position  = '';
 			$result->content   = '';
 			$result->showtitle = 0;
 			$result->control   = '';
-			$result->params    = '';
-			$result->user      = 0;
+			$result->params	= '';
+			$result->user	  = 0;
 		}
 
 		return $result;
@@ -87,7 +87,7 @@ abstract class JModuleHelper
 		$position = strtolower($position);
 		$result = array();
 
-        if(!empty($position) && MageBridgeTemplateHelper::allowPosition($position) == false) return $result;
+		if(!empty($position) && MageBridgeTemplateHelper::allowPosition($position) == false) return $result;
 
 		$modules =& JModuleHelper::_load();
 
@@ -144,7 +144,7 @@ abstract class JModuleHelper
 	{
 		static $chrome;
 
-        if(is_object($module) && isset($module->position) && MageBridgeTemplateHelper::allowPosition($module->position) == false) return null;
+		if(is_object($module) && isset($module->position) && MageBridgeTemplateHelper::allowPosition($module->position) == false) return null;
 
 		if (constant('JDEBUG'))
 		{
@@ -406,14 +406,14 @@ abstract class JModuleHelper
 	 *
 	 * Caching modes:
 	 * To be set in XML:
-	 * 'static'      One cache file for all pages with the same module parameters
+	 * 'static'	  One cache file for all pages with the same module parameters
 	 * 'oldstatic'   1.5 definition of module caching, one cache file for all pages
 	 * with the same module id and user aid,
-	 * 'itemid'      Changes on itemid change, to be called from inside the module:
-	 * 'safeuri'     Id created from $cacheparams->modeparams array,
-	 * 'id'          Module sets own cache id's
+	 * 'itemid'	  Changes on itemid change, to be called from inside the module:
+	 * 'safeuri'	 Id created from $cacheparams->modeparams array,
+	 * 'id'		  Module sets own cache id's
 	 *
-	 * @param   object  $module        Module object
+	 * @param   object  $module		Module object
 	 * @param   object  $moduleparams  Module parameters
 	 * @param   object  $cacheparams   Module cache parameters - id or url parameters, depending on the module cache mode
 	 *

@@ -23,34 +23,34 @@ require_once JPATH_COMPONENT.'/view.php';
  */
 class MageBridgeViewAjax extends MageBridgeView
 {
-    /*
-     * Method to display the requested view
-     */
-    public function display($tpl = null)
-    {
-        // Determine which block to display
-        $blockName = JRequest::getString('block');
+	/**
+	 * Method to display the requested view
+	 */
+	public function display($tpl = null)
+	{
+		// Determine which block to display
+		$blockName = JFactory::getApplication()->input->getString('block');
 
-        // Fetch the block
-        if (!empty($blockName)) {
+		// Fetch the block
+		if (!empty($blockName)) {
 
-            // Get the register and add the block-request
-            $register = MageBridgeModelRegister::getInstance();
-            $register->clean();
-            $register->add('block', $blockName);
+			// Get the register and add the block-request
+			$register = MageBridgeModelRegister::getInstance();
+			$register->clean();
+			$register->add('block', $blockName);
 
-            // Build the bridge
-            MageBridgeModelDebug::getInstance()->notice('Building AJAX view for block "'.$blockName.'"' );
-            $bridge = MageBridgeModelBridge::getInstance();
-            $bridge->build();
+			// Build the bridge
+			MageBridgeModelDebug::getInstance()->notice('Building AJAX view for block "'.$blockName.'"' );
+			$bridge = MageBridgeModelBridge::getInstance();
+			$bridge->build();
 
-            // Query the bridge for the block
-            $block = $bridge->getBlock($blockName);
-            print $block;
+			// Query the bridge for the block
+			$block = $bridge->getBlock($blockName);
+			print $block;
 
-        }
+		}
 
-        // Close the application
-        JFactory::getApplication()->close();
-    }
+		// Close the application
+		JFactory::getApplication()->close();
+	}
 }

@@ -2,23 +2,23 @@
 /**
  * Joomla! component MageBridge
  *
- * @author    Yireo (info@yireo.com)
+ * @author	Yireo (info@yireo.com)
  * @package   MageBridge
  * @copyright Copyright 2015
  * @license   GNU Public License
- * @link      http://www.yireo.com
+ * @link	  http://www.yireo.com
  */
 
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
-/*
+/**
  * Helper for dealing with Joomla!/Magento customer
  */
 
 class MageBridgeUserHelper
 {
-	/*
+	/**
 	 * Helper-method to return the default Joomla! usergroup ID
 	 *
 	 * @param null
@@ -39,7 +39,7 @@ class MageBridgeUserHelper
 		return $group_id;
 	}
 
-	/*
+	/**
 	 * Helper-method to return the default Joomla! usergroup name
 	 *
 	 * @deprecated
@@ -51,7 +51,7 @@ class MageBridgeUserHelper
 		return null;
 	}
 
-	/*
+	/**
 	 * Helper-method to determine whether an user is a backend user
 	 *
 	 * @param mixed $user User object or identifier
@@ -95,7 +95,7 @@ class MageBridgeUserHelper
 		return false;
 	}
 
-	/*
+	/**
 	 * Helper-method to return the Magento customergroup based on the current Joomla! usergroup
 	 *
 	 * @param null
@@ -145,7 +145,7 @@ class MageBridgeUserHelper
 		return null;
 	}
 
-	/*
+	/**
 	 * Helper-method to return the Joomla! usergroup based on the current Magento customergroup
 	 *
 	 * @param null
@@ -209,7 +209,7 @@ class MageBridgeUserHelper
 		return $current_groups;
 	}
 
-	/*
+	/**
 	 * Helper-method to convert user data into a valid user record
 	 *
 	 * @param mixed $user User data

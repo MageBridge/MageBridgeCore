@@ -2,11 +2,11 @@
 /**
  * Joomla! component MageBridge
  *
- * @author    Yireo (info@yireo.com)
+ * @author	Yireo (info@yireo.com)
  * @package   MageBridge
  * @copyright Copyright 2015
  * @license   GNU Public License
- * @link      http://www.yireo.com
+ * @link	  http://www.yireo.com
  */
 
 // No direct access
@@ -22,7 +22,7 @@ require_once JPATH_COMPONENT . '/view.php';
  */
 class MageBridgeViewCatalog extends MageBridgeView
 {
-	/*
+	/**
 	 * Method to display the requested view
 	 */
 	public function display($tpl = null)
@@ -68,11 +68,11 @@ class MageBridgeViewCatalog extends MageBridgeView
 			}
 		}
 
-        // Add the qty parameter
-        $qty = JFactory::getApplication()->input->getInt('qty');
-        if (!empty($qty)) {
-            $request .= 'qty/'.$qty.'/';
-        }
+		// Add the qty parameter
+		$qty = JFactory::getApplication()->input->getInt('qty');
+		if (!empty($qty)) {
+			$request .= 'qty/'.$qty.'/';
+		}
 
 		// Check for the redirect parameter
 		$redirect = $this->input->getString('redirect');

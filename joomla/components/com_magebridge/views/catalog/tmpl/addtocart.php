@@ -13,10 +13,10 @@
 defined('_JEXEC') or die('Restricted access');
 ?>
 <?php if (!empty($this->block)) : ?>
-    <div id="magebridge-content">
-        <?php echo $this->block; ?>
-    </div>
-    <div style="clear:both"></div>
+	<div id="magebridge-content">
+		<?php echo $this->block; ?>
+	</div>
+	<div style="clear:both"></div>
 <?php else: ?>
-    <?php echo JText::_($this->getOfflineMessage()); ?>
+	<?php echo JText::_($this->getOfflineMessage()); ?>
 <?php endif; ?>

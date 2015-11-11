@@ -13,9 +13,9 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Server
+ * @package	Zend_Server
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @license	http://framework.zend.com/license/new-bsd	 New BSD License
  */
 
 defined('_JEXEC') or die('Restricted access');
@@ -36,70 +36,70 @@ require_once 'Zend/Server/Reflection/Parameter.php';
  * Contains accessors for the return value and all method arguments.
  *
  * @category   Zend
- * @package    Zend_Server
+ * @package	Zend_Server
  * @subpackage Reflection
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @license	http://framework.zend.com/license/new-bsd	 New BSD License
  * @version $Id: Prototype.php 20096 2010-01-06 02:05:09Z bkarwin $
  */
 class Zend_Server_Reflection_Prototype
 {
-    /**
-     * Constructor
-     *
-     * @param Zend_Server_Reflection_ReturnValue $return
-     * @param array $params
-     * @return void
-     */
-    public function __construct(Zend_Server_Reflection_ReturnValue $return, $params = null)
-    {
-        $this->_return = $return;
+	/**
+	 * Constructor
+	 *
+	 * @param Zend_Server_Reflection_ReturnValue $return
+	 * @param array $params
+	 * @return void
+	 */
+	public function __construct(Zend_Server_Reflection_ReturnValue $return, $params = null)
+	{
+		$this->_return = $return;
 
-        if (!is_array($params) && (null !== $params)) {
-            require_once 'Zend/Server/Reflection/Exception.php';
-            throw new Zend_Server_Reflection_Exception('Invalid parameters');
-        }
+		if (!is_array($params) && (null !== $params)) {
+			require_once 'Zend/Server/Reflection/Exception.php';
+			throw new Zend_Server_Reflection_Exception('Invalid parameters');
+		}
 
-        if (is_array($params)) {
-            foreach ($params as $param) {
-                if (!$param instanceof Zend_Server_Reflection_Parameter) {
-                    require_once 'Zend/Server/Reflection/Exception.php';
-                    throw new Zend_Server_Reflection_Exception('One or more params are invalid');
-                }
-            }
-        }
+		if (is_array($params)) {
+			foreach ($params as $param) {
+				if (!$param instanceof Zend_Server_Reflection_Parameter) {
+					require_once 'Zend/Server/Reflection/Exception.php';
+					throw new Zend_Server_Reflection_Exception('One or more params are invalid');
+				}
+			}
+		}
 
-        $this->_params = $params;
-    }
+		$this->_params = $params;
+	}
 
-    /**
-     * Retrieve return type
-     *
-     * @return string
-     */
-    public function getReturnType()
-    {
-        return $this->_return->getType();
-    }
+	/**
+	 * Retrieve return type
+	 *
+	 * @return string
+	 */
+	public function getReturnType()
+	{
+		return $this->_return->getType();
+	}
 
-    /**
-     * Retrieve the return value object
-     *
-     * @access public
-     * @return Zend_Server_Reflection_ReturnValue
-     */
-    public function getReturnValue()
-    {
-        return $this->_return;
-    }
+	/**
+	 * Retrieve the return value object
+	 *
+	 * @access public
+	 * @return Zend_Server_Reflection_ReturnValue
+	 */
+	public function getReturnValue()
+	{
+		return $this->_return;
+	}
 
-    /**
-     * Retrieve method parameters
-     *
-     * @return array Array of {@link Zend_Server_Reflection_Parameter}s
-     */
-    public function getParameters()
-    {
-        return $this->_params;
-    }
+	/**
+	 * Retrieve method parameters
+	 *
+	 * @return array Array of {@link Zend_Server_Reflection_Parameter}s
+	 */
+	public function getParameters()
+	{
+		return $this->_params;
+	}
 }

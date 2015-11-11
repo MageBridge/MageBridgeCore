@@ -13,9 +13,9 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Server
+ * @package	Zend_Server
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @license	http://framework.zend.com/license/new-bsd	 New BSD License
  */
 
 defined('_JEXEC') or die('Restricted access');
@@ -29,10 +29,10 @@ require_once 'Zend/Server/Exception.php';
  * Zend_Server_Reflection exceptions
  *
  * @category   Zend
- * @package    Zend_Server
+ * @package	Zend_Server
  * @subpackage Reflection
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @license	http://framework.zend.com/license/new-bsd	 New BSD License
  * @version $Id: Exception.php 20096 2010-01-06 02:05:09Z bkarwin $
  */
 class Zend_Server_Reflection_Exception extends Zend_Server_Exception

@@ -23,36 +23,36 @@ require_once JPATH_COMPONENT.'/view.php';
  */
 class MageBridgeViewCms extends MageBridgeView
 {
-    /*
-     * Method to display the requested view
-     */
-    public function display($tpl = null)
-    {
-        // Load the parameters
-        $params = MageBridgeHelper::getParams();
+	/**
+	 * Method to display the requested view
+	 */
+	public function display($tpl = null)
+	{
+		// Load the parameters
+		$params = MageBridgeHelper::getParams();
 
-        // Load the request
-        $request = $params->get('request');
-        if (empty($request)) {
-            $request = JRequest::getString('request');
-        }
+		// Load the request
+		$request = $params->get('request');
+		if (empty($request)) {
+			$request = JFactory::getApplication()->input->getString('request');
+		}
 
-        // Remove the dummy ID from the request
-        $request = preg_replace('/^([0-9]+)\:/', '', $request);
+		// Remove the dummy ID from the request
+		$request = preg_replace('/^([0-9]+)\:/', '', $request);
 
-        // Set the request
-        $this->setRequest($request);
+		// Set the request
+		$this->setRequest($request);
 
-        // Reuse this request to set the Canonical URL
-        if (MagebridgeModelConfig::load('enable_canonical') == 1) {
-            $uri = MageBridgeUrlHelper::route($request);
-            $document = JFactory::getDocument();
-            $document->setMetaData('canonical', $uri);
-        }
+		// Reuse this request to set the Canonical URL
+		if (MagebridgeModelConfig::load('enable_canonical') == 1) {
+			$uri = MageBridgeUrlHelper::route($request);
+			$document = JFactory::getDocument();
+			$document->setMetaData('canonical', $uri);
+		}
 
-        // Set which block to display
-        $this->setBlock('content');
+		// Set which block to display
+		$this->setBlock('content');
 
-        parent::display($tpl);
-    }
+		parent::display($tpl);
+	}
 }

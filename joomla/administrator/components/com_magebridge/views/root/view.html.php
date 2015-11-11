@@ -23,12 +23,12 @@ require_once JPATH_COMPONENT.'/view.php';
  */
 class MageBridgeViewRoot extends MageBridgeView
 {
-    /*
-     * Method to display the requested view
-     */
-    public function display($tpl = null)
-    {
-        JToolBarHelper::title( JText::_('MageBridge') . ': ' . JText::_('Magento Admin Panel'), 'yireo' );
-        parent::display($tpl);
-    }
+	/**
+	 * Method to display the requested view
+	 */
+	public function display($tpl = null)
+	{
+		JToolBarHelper::title( JText::_('MageBridge') . ': ' . JText::_('Magento Admin Panel'), 'yireo' );
+		parent::display($tpl);
+	}
 }

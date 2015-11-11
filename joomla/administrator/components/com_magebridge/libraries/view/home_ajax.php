@@ -39,7 +39,7 @@ class YireoViewHomeAjax extends YireoView
         switch ($this->jinput->get('layout')) {
             case 'feeds':
                 $feeds = $this->fetchFeeds('http://www.yireo.com/blog?format=feed&type=rss', 3);
-                $this->assignRef( 'feeds', $feeds);
+                $this->feeds = $feeds;
                 break;
             case 'promotion':
                 $html = YireoHelper::fetchRemote('http://www.yireo.com/advertizement.php', $this->_option);

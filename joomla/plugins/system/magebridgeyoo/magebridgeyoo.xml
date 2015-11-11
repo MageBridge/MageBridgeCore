@@ -2,12 +2,12 @@
 <extension version="2.5" type="plugin" group="system" method="upgrade">
     <name>PLG_SYSTEM_MAGEBRIDGEYOO</name>
     <author>Yireo</author>
-    <creationDate>July 2015</creationDate>
+    <creationDate>October 2015</creationDate>
     <copyright>Copyright (C) 2015 Yireo.com. All rights reserved.</copyright>
     <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
     <authorEmail>info@yireo.com</authorEmail>
     <authorUrl>www.yireo.com</authorUrl>
-    <version>1.9.5324</version>
+    <version>1.9.5362</version>
     <description>PLG_SYSTEM_MAGEBRIDGEYOO_DESC</description>
 
     <files>

@@ -23,175 +23,170 @@ require_once JPATH_COMPONENT.'/libraries/view/form.php';
  */
 class MageBridgeViewCheck extends YireoView
 {
-    protected $loadToolbar = false;
+	protected $loadToolbar = false;
 
-    /*
-     * List of all checks
-     */
-    private $_checks = array();
+	/**
+	 * List of all checks
+	 */
+	private $_checks = array();
 
-    /*
-     * Display method
-     *
-     * @param string $tpl
-     * @return null
-     */
-    public function display($tpl = null)
-    {
-        if (JRequest::getCmd('layout') == 'browser') {
-            $this->displayBrowser($tpl);
+	/**
+	 * Display method
+	 *
+	 * @param string $tpl
+	 * @return null
+	 */
+	public function display($tpl = null)
+	{
+		if (JFactory::getApplication()->input->getCmd('layout') == 'browser') {
+			$this->displayBrowser($tpl);
 
-        } elseif (JRequest::getCmd('layout') == 'product') {
-            $this->displayProduct($tpl);
+		} elseif (JFactory::getApplication()->input->getCmd('layout') == 'product') {
+			$this->displayProduct($tpl);
 
-        } elseif (JRequest::getCmd('layout') == 'result') {
-            $this->displayResult($tpl);
+		} elseif (JFactory::getApplication()->input->getCmd('layout') == 'result') {
+			$this->displayResult($tpl);
 
-        } else {
-            $this->displayDefault($tpl);
-        }
-    }
+		} else {
+			$this->displayDefault($tpl);
+		}
+	}
 
-    /*
-     * Display method
-     *
-     * @param string $tpl
-     * @return null
-     */
-    public function displayDefault($tpl)
-    {
-        // Initalize common elements
-        MageBridgeViewHelper::initialize('Check');
+	/**
+	 * Display method
+	 *
+	 * @param string $tpl
+	 * @return null
+	 */
+	public function displayDefault($tpl)
+	{
+		// Initalize common elements
+		MageBridgeViewHelper::initialize('Check');
 
-        // Load libraries
-        JHTML::_('behavior.tooltip');
+		// Load libraries
+		JHTML::_('behavior.tooltip');
 
-        JToolBarHelper::custom( 'refresh', 'preview.png', 'preview_f2.png', 'Refresh', false );
+		JToolBarHelper::custom( 'refresh', 'preview.png', 'preview_f2.png', 'Refresh', false );
 
-        $checks = $this->get('checks');
-        $this->assignRef('checks', $checks);
-        parent::display($tpl);
-    }
+		$this->checks = $this->get('checks');
 
-    /*
-     * Display method
-     *
-     * @param string $tpl
-     * @return null
-     */
-    public function displayProduct($tpl)
-    {
-        // Load the form if it's there
-        $this->getModel()->setFormName('check_product');
-        $this->_viewParent = 'form';
-        $form = $this->get('Form');
-        if(!empty($form)) {
-            $this->assignRef('form', $form);
-        }
+		parent::display($tpl);
+	}
 
-        // Initalize common elements
-        MageBridgeViewHelper::initialize('PRODUCT_RELATION_TEST');
+	/**
+	 * Display method
+	 *
+	 * @param string $tpl
+	 * @return null
+	 */
+	public function displayProduct($tpl)
+	{
+		// Load the form if it's there
+		$this->getModel()->setFormName('check_product');
+		$this->_viewParent = 'form';
+		$this->form = $this->get('Form');
 
-        JToolBarHelper::custom('check_product', 'preview.png', 'preview_f2.png', 'Run', false);
+		// Initalize common elements
+		MageBridgeViewHelper::initialize('PRODUCT_RELATION_TEST');
 
-        parent::display('product');
-    }
+		JToolBarHelper::custom('check_product', 'preview.png', 'preview_f2.png', 'Run', false);
 
-    /*
-     * Display method
-     *
-     * @param string $tpl
-     * @return null
-     */
-    public function displayBrowser($tpl)
-    {
-        // Initalize common elements
-        MageBridgeViewHelper::initialize('Internal Browse Test');
+		parent::display('product');
+	}
 
-        JToolBarHelper::custom( 'refresh', 'preview.png', 'preview_f2.png', 'Browse', false );
+	/**
+	 * Display method
+	 *
+	 * @param string $tpl
+	 * @return null
+	 */
+	public function displayBrowser($tpl)
+	{
+		// Initalize common elements
+		MageBridgeViewHelper::initialize('Internal Browse Test');
 
-        $url = MagebridgeModelConfig::load('url').'magebridge.php';
-        $host = MagebridgeModelConfig::load('host');
+		JToolBarHelper::custom( 'refresh', 'preview.png', 'preview_f2.png', 'Browse', false );
 
-        $this->assignRef('url', $url);
-        $this->assignRef('host', $host);
-        parent::display('browser');
-    }
+		$this->url = MagebridgeModelConfig::load('url').'magebridge.php';
+		$this->host = MagebridgeModelConfig::load('host');
 
-    /*
-     * Display method
-     *
-     * @param string $tpl
-     * @return null
-     */
-    public function displayResult($tpl)
-    {
-        // Fetch configuration data
-        $url = MagebridgeModelConfig::load('url').'magebridge.php';
-        $host = MagebridgeModelConfig::load('host');
+		parent::display('browser');
+	}
 
-        // Do basic resolving on the host if it is not an IP-address
-        if (preg_match('/^([0-9\.]+)$/', $host) == false) {
-            $host = preg_replace('/\:[0-9]+$/', '', $host);
-            if (gethostbyname($host) == $host) {
-                die('ERROR: Failed to resolve hostname "'.$host.'" in DNS');
-            }
-        }
+	/**
+	 * Display method
+	 *
+	 * @param string $tpl
+	 * @return null
+	 */
+	public function displayResult($tpl)
+	{
+		// Fetch configuration data
+		$url = MagebridgeModelConfig::load('url').'magebridge.php';
+		$host = MagebridgeModelConfig::load('host');
 
-        // Try to open a socket to port 80
-        if (fsockopen($host, 80, $errno, $errmsg, 5) == false) {
-            die('ERROR: Failed to open a connection to host "'.$host.'" on port 80. Perhaps a firewall is in the way?');
-        }
+		// Do basic resolving on the host if it is not an IP-address
+		if (preg_match('/^([0-9\.]+)$/', $host) == false) {
+			$host = preg_replace('/\:[0-9]+$/', '', $host);
+			if (gethostbyname($host) == $host) {
+				die('ERROR: Failed to resolve hostname "'.$host.'" in DNS');
+			}
+		}
 
-        // Fetch content through the proxy
-        $responses = array();
+		// Try to open a socket to port 80
+		if (fsockopen($host, 80, $errno, $errmsg, 5) == false) {
+			die('ERROR: Failed to open a connection to host "'.$host.'" on port 80. Perhaps a firewall is in the way?');
+		}
 
-        // Fetch various responses
-        $responses[] = $this->fetchContent('Basic bridge connection succeeded', $url, array('mbtest' => 1));
-        $responses[] = $this->fetchContent('API authentication succeeded', $url, array('mbauthtest' => 1));
-        echo implode('<br/>', $responses);
-        exit;
-    }
+		// Fetch content through the proxy
+		$responses = array();
 
-    protected function fetchContent($label, $url, $params)
-    {
-        // Initialize the proxy
-        $proxy = MageBridgeModelProxy::getInstance();
-        $proxy->setAllowRedirects(false);
-        $content = $proxy->getRemote($url, $params, 'post');
+		// Fetch various responses
+		$responses[] = $this->fetchContent('Basic bridge connection succeeded', $url, array('mbtest' => 1));
+		$responses[] = $this->fetchContent('API authentication succeeded', $url, array('mbauthtest' => 1));
+		echo implode('<br/>', $responses);
+		exit;
+	}
 
-        // Detect proxy errors
-        $proxy_error = $proxy->getProxyError();
-        if (!empty($proxy_error)) {
-            die('ERROR: Proxy error: '.$proxy_error);
-        }
+	protected function fetchContent($label, $url, $params)
+	{
+		// Initialize the proxy
+		$proxy = MageBridgeModelProxy::getInstance();
+		$proxy->setAllowRedirects(false);
+		$content = $proxy->getRemote($url, $params, 'post');
 
-        // Detect the HTTP status
-        $http_status = $proxy->getHttpStatus();
-        if ($http_status != 200) {
-            die('ERROR: Encountered a HTTP Status '.$http_status);
-        }
+		// Detect proxy errors
+		$proxy_error = $proxy->getProxyError();
+		if (!empty($proxy_error)) {
+			die('ERROR: Proxy error: '.$proxy_error);
+		}
 
-        // Parse the content
-        if (!empty($content)) {
+		// Detect the HTTP status
+		$http_status = $proxy->getHttpStatus();
+		if ($http_status != 200) {
+			die('ERROR: Encountered a HTTP Status '.$http_status);
+		}
 
-            // Detect HTML-page
-            if (preg_match('/\<\/html\>$/', $content)) {
-                die('ERROR: Data contains HTML not JSON');
-            }
+		// Parse the content
+		if (!empty($content)) {
 
-            $data = json_decode($content, true);
-            if (!empty($data)) {
-                if (array_key_exists('meta', $data)) {
-                    return 'SUCCESS: '.$label;
-                }
-                die('ERROR: JSON response contains unknown data: '.var_export($data, true));
+			// Detect HTML-page
+			if (preg_match('/\<\/html\>$/', $content)) {
+				die('ERROR: Data contains HTML not JSON');
+			}
 
-            } else {
-                die('ERROR: Failed to decode JSON');
-            }
-        } else {
-            die('ERROR: Empty content');
-        }
-    }
+			$data = json_decode($content, true);
+			if (!empty($data)) {
+				if (array_key_exists('meta', $data)) {
+					return 'SUCCESS: '.$label;
+				}
+				die('ERROR: JSON response contains unknown data: '.var_export($data, true));
+
+			} else {
+				die('ERROR: Failed to decode JSON');
+			}
+		} else {
+			die('ERROR: Empty content');
+		}
+	}
 }

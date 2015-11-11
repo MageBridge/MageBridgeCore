@@ -18,6 +18,6 @@ defined('_JEXEC') or die('Restricted access');
 </script>
 
 <div id="magebridge-cart" class="magebridge-module">
-    <center><img src="<?php echo MageBridgeAjaxHelper::getLoaderImage(); ?>" /></center>
+	<center><img src="<?php echo MageBridgeAjaxHelper::getLoaderImage(); ?>" /></center>
 </div>
 <div style="clear:both"></div>

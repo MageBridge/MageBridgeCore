@@ -19,27 +19,27 @@ defined('_JEXEC') or die('Restricted access');
 */
 class TableLog extends YireoTable
 {
-    /**
-     * Constructor
-     *
-     * @param JDatabase $db
-     * @return null
-     */
-    public function __construct(& $db) 
-    {
-        parent::__construct('#__magebridge_log', 'id', $db);
-    }
+	/**
+	 * Constructor
+	 *
+	 * @param JDatabase $db
+	 * @return null
+	 */
+	public function __construct(& $db) 
+	{
+		parent::__construct('#__magebridge_log', 'id', $db);
+	}
 
-    /**
-     * Helper-method to get the default ORDER BY value (depending on the present fields)
-     *
-     * @access public
-     * @param null
-     * @return array
-     */
-    public function getDefaultOrderBy()
-    {
-        return false;
-    }
+	/**
+	 * Helper-method to get the default ORDER BY value (depending on the present fields)
+	 *
+	 * @access public
+	 * @param null
+	 * @return array
+	 */
+	public function getDefaultOrderBy()
+	{
+		return false;
+	}
 }
 

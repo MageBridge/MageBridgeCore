@@ -71,7 +71,7 @@ class Yireo_MageBridge_Model_Observer extends Mage_Core_Model_Abstract
             return $this;
         }
 
-        $address = $observer->getEvent()->getObject();
+        $address = $observer->getEvent()->getCustomerAddress();
         $arguments = array(
             'address' => Mage::helper('magebridge/event')->getAddressArray($address),
         );
@@ -922,15 +922,17 @@ class Yireo_MageBridge_Model_Observer extends Mage_Core_Model_Abstract
 
         // Gather the pending logs
         $logs = array();
+        /*
         foreach(Mage::getSingleton('magebridge/debug')->getData() as $log) {
             foreach(array('type', 'message', 'section', 'time') as $index) {
                 if(!isset($log[$index])) $log[$index] = '';
             }
             $logs[] = $log;
         }
+        */
 
         // Clean the logs for now
-        Mage::getSingleton('magebridge/debug')->clean();
+        //Mage::getSingleton('magebridge/debug')->clean();
 
         // Initialize the API call
         $rt = Mage::getSingleton('magebridge/client')->call('magebridge.event', array($event, $arguments, $logs));

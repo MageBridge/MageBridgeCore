@@ -40,7 +40,8 @@ class plgSystemMageBridgePre extends JPlugin
 			// If the user is already logged in, remove the cookie
 			if (JFactory::getUser()->id > 0)
 			{
-				setcookie('mb_postlogin', '', time() - 3600, '/', '.' . JURI::getInstance()->toString(array('host')));
+				setcookie('mb_postlogin', '', time() - 3600, '/', '.' . JURI::getInstance()
+						->toString(array('host')));
 			}
 
 			// Otherwise decrypt the cookie and use it here
@@ -53,7 +54,7 @@ class plgSystemMageBridgePre extends JPlugin
 		}
 
 		// Perform a postlogin if needed
-		$post = $application->input->get('post');
+		$post = $application->input->post->getArray();
 
 		if (empty($post))
 		{
@@ -61,12 +62,14 @@ class plgSystemMageBridgePre extends JPlugin
 
 			if (empty($customer_email))
 			{
-				$customer_email = MageBridgeModelBridge::getInstance()->getSessionData('customer/email');
+				$customer_email = MageBridgeModelBridge::getInstance()
+					->getSessionData('customer/email');
 			}
 
 			if (!empty($customer_email))
 			{
-				MageBridge::getUser()->postlogin($customer_email, null, $postlogin_userevents);
+				MageBridge::getUser()
+					->postlogin($customer_email, null, $postlogin_userevents);
 			}
 		}
 	}

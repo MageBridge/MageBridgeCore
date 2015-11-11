@@ -13,10 +13,10 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Json
+ * @package	Zend_Json
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Http.php 20096 2010-01-06 02:05:09Z bkarwin $
+ * @license	http://framework.zend.com/license/new-bsd	 New BSD License
+ * @version	$Id: Http.php 20096 2010-01-06 02:05:09Z bkarwin $
  */
 
 defined('_JEXEC') or die('Restricted access');
@@ -28,41 +28,41 @@ require_once 'Zend/Json/Server/Request.php';
 
 /**
  * @category   Zend
- * @package    Zend_Json
+ * @package	Zend_Json
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @license	http://framework.zend.com/license/new-bsd	 New BSD License
  */
 class Zend_Json_Server_Request_Http extends Zend_Json_Server_Request
 {
-    /**
-     * Raw JSON pulled from POST body
-     * @var string
-     */
-    protected $_rawJson;
+	/**
+	 * Raw JSON pulled from POST body
+	 * @var string
+	 */
+	protected $_rawJson;
 
-    /**
-     * Constructor
-     *
-     * Pull JSON request from raw POST body and use to populate request.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $json = file_get_contents('php://input');
-        $this->_rawJson = $json;
-        if (!empty($json)) {
-            $this->loadJson($json);
-        }
-    }
+	/**
+	 * Constructor
+	 *
+	 * Pull JSON request from raw POST body and use to populate request.
+	 *
+	 * @return void
+	 */
+	public function __construct()
+	{
+		$json = file_get_contents('php://input');
+		$this->_rawJson = $json;
+		if (!empty($json)) {
+			$this->loadJson($json);
+		}
+	}
 
-    /**
-     * Get JSON from raw POST body
-     *
-     * @return string
-     */
-    public function getRawJson()
-    {
-        return $this->_rawJson;
-    }
+	/**
+	 * Get JSON from raw POST body
+	 *
+	 * @return string
+	 */
+	public function getRawJson()
+	{
+		return $this->_rawJson;
+	}
 }

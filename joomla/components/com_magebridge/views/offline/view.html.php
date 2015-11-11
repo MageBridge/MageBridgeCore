@@ -23,13 +23,13 @@ require_once JPATH_COMPONENT.'/view.php';
  */
 class MageBridgeViewOffline extends MageBridgeView
 {
-    /*
-     * Method to display the requested view
-     */
-    public function display($tpl = null)
-    {
-        $this->assignRef('offline_message', $this->getOfflineMessage());
+	/**
+	 * Method to display the requested view
+	 */
+	public function display($tpl = null)
+	{
+		$this->offline_message = $this->getOfflineMessage();
 
-        parent::display($tpl);
-    }
+		parent::display($tpl);
+	}
 }

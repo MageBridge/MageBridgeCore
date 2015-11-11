@@ -6,6 +6,6 @@ abstract class JHtmlBehavior extends \Joomla\JHtmlBehavior
 {
 	public static function modal($selector = 'a.modal', $params = array())
 	{
-        return;
-    }
+		return;
+	}
 }

@@ -139,7 +139,10 @@ class Yireo_MageBridge_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function getApiUrl($arguments = null, $store = null)
     {
-        if(empty($store)) $store = self::getStore();
+        if(empty($store)) {
+            $store = self::getStore();
+        }
+
         $apiUrl = Mage::getSingleton('magebridge/core')->getMetaData('api_url');
         if(empty($apiUrl)) {
             $apiUrl = Mage::getStoreConfig('magebridge/joomla/api_url', $store);
@@ -165,11 +168,15 @@ class Yireo_MageBridge_Helper_Data extends Mage_Core_Helper_Abstract
      * @param null
      * @return string
      */
-    public function getApiUser()
+    public function getApiUser($store = null)
     {
+        if(empty($store)) {
+            $store = self::getStore();
+        }
+
         $value = Mage::getSingleton('magebridge/core')->getMetaData('api_user');
         if(empty($value)) {
-            $value = Mage::getStoreConfig('magebridge/joomla/api_user', self::getStore());
+            $value = Mage::getStoreConfig('magebridge/joomla/api_user', $store);
         } 
         return $value;
     }
@@ -181,11 +188,15 @@ class Yireo_MageBridge_Helper_Data extends Mage_Core_Helper_Abstract
      * @param null
      * @return string
      */
-    public function getApiKey()
+    public function getApiKey($store = null)
     {
+        if(empty($store)) {
+            $store = self::getStore($store);
+        }
+
         $value = Mage::getSingleton('magebridge/core')->getMetaData('api_key');
         if(empty($value)) {
-            $value = Mage::getStoreConfig('magebridge/joomla/api_key', self::getStore());
+            $value = Mage::getStoreConfig('magebridge/joomla/api_key', $store);
         } 
         return $value;
     }

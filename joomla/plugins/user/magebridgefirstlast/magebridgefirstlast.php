@@ -2,46 +2,59 @@
 /**
  * User Plugin for Joomla! - MageBridge First Last name
  *
- * @author Yireo (info@yireo.com)
+ * @author    Yireo (info@yireo.com)
  * @copyright Copyright 2015 Yireo
- * @license GNU Public License version 3 or later
- * @link http://www.yireo.com/software/magebridge
+ * @license   GNU Public License version 3 or later
+ * @link      http://www.yireo.com/software/magebridge
  */
 
 defined('_JEXEC') or die;
 
 jimport('joomla.plugin.plugin');
-class plgUserMagebridgefirstlast extends JPlugin
+
+class PlgUserMagebridgefirstlast extends JPlugin
 {
+	/**
+	 * @var array
+	 */
+	protected $allowedContext = array(
+		'com_users.profile',
+		'com_users.user',
+		'com_users.registration',
+		'com_admin.profile',);
+
 	/**
 	 * Constructor
 	 *
-	 * @access public
 	 * @param object $subject
-	 * @param array $config
+	 * @param array  $config
 	 */
 	public function __construct(& $subject, $config)
 	{
 		parent::__construct($subject, $config);
+
 		$this->loadLanguage();
 	}
 
-    protected $allowedContext = array(
-        'com_users.profile',
-        'com_users.user',
-        'com_users.registration',
-        'com_admin.profile',
-    );
-
+	/**
+	 * Event onContentPrepareForm
+	 *
+	 * @param JForm $form
+	 * @param array $data
+	 *
+	 * @return bool
+	 */
 	public function onContentPrepareForm($form, $data)
 	{
 		if (!($form instanceof JForm))
 		{
 			$this->_subject->setError('JERROR_NOT_A_FORM');
+
 			return false;
 		}
 
 		$context = $form->getName();
+
 		if (!in_array($context, $this->allowedContext))
 		{
 			return true;
@@ -53,6 +66,14 @@ class plgUserMagebridgefirstlast extends JPlugin
 		return true;
 	}
 
+	/**
+	 * Event onContentPrepareData
+	 *
+	 * @param string $context
+	 * @param array  $data
+	 *
+	 * @return bool
+	 */
 	public function onContentPrepareData($context, $data)
 	{
 		if (!in_array($context, $this->allowedContext))
@@ -73,14 +94,17 @@ class plgUserMagebridgefirstlast extends JPlugin
 				catch (RuntimeException $e)
 				{
 					$this->_subject->setError($e->getMessage());
+
 					return false;
 				}
 
 				$data->magebridgefirstlast = array();
+
 				foreach ($fields as $field)
 				{
 					$fieldName = str_replace('magebridgefirstlast.', '', $field[0]);
 					$data->magebridgefirstlast[$fieldName] = json_decode($field[1], true);
+
 					if ($data->magebridgefirstlast[$fieldName] === null)
 					{
 						$data->magebridgefirstlast[$fieldName] = $field[1];
@@ -89,24 +113,35 @@ class plgUserMagebridgefirstlast extends JPlugin
 			}
 		}
 
-        if (empty($data->magebridgefirstlast['firstname']) && empty($data->magebridgefirstlast['lastname']) && !empty($data->name))
-        {
-            $name = explode(' ', $data->name);
-            if (count($name) >= 2)
-            {
-                $data->magebridgefirstlast['firstname'] = trim(array_shift($name));
-                $data->magebridgefirstlast['lastname'] = trim(implode(' ', $name));
-            }
-        }
+		if (empty($data->magebridgefirstlast['firstname']) && empty($data->magebridgefirstlast['lastname']) && !empty($data->name))
+		{
+			$name = explode(' ', $data->name);
 
-        if (!empty($data->magebridgefirstlast['firstname']) && !empty($data->magebridgefirstlast['lastname']) && empty($data->name))
-        {
-            $data->name = $data->magebridgefirstlast['firstname'].' '.$data->magebridgefirstlast['lastname'];
-        }
+			if (count($name) >= 2)
+			{
+				$data->magebridgefirstlast['firstname'] = trim(array_shift($name));
+				$data->magebridgefirstlast['lastname'] = trim(implode(' ', $name));
+			}
+		}
+
+		if (!empty($data->magebridgefirstlast['firstname']) && !empty($data->magebridgefirstlast['lastname']) && empty($data->name))
+		{
+			$data->name = $data->magebridgefirstlast['firstname'] . ' ' . $data->magebridgefirstlast['lastname'];
+		}
 
 		return true;
 	}
 
+	/**
+	 * Event onUserAfterSave
+	 *
+	 * @param array  $data
+	 * @param bool   $isNew
+	 * @param bool   $result
+	 * @param JError $error
+	 *
+	 * @return bool
+	 */
 	public function onUserAfterSave($data, $isNew, $result, $error)
 	{
 		$userId = JArrayHelper::getValue($data, 'id', 0, 'int');
@@ -115,31 +150,43 @@ class plgUserMagebridgefirstlast extends JPlugin
 		{
 			try
 			{
-                $this->deleteFields($userId);
+				$this->deleteFields($userId);
 
-                $ordering = 0;
+				$ordering = 0;
+
 				foreach ($data['magebridgefirstlast'] as $fieldName => $fieldValue)
 				{
-                    $this->insertField($userId, $fieldName, $fieldValue, $ordering);
-                    $ordering++;
+					$this->insertField($userId, $fieldName, $fieldValue, $ordering);
+					$ordering++;
 				}
 
 			}
 			catch (RuntimeException $e)
 			{
 				$this->_subject->setError($e->getMessage());
+
 				return false;
 			}
 		}
 
-        // @todo: Add a setting for this
-        if(!empty($data['magebridgefirstlast']['firstname']) && !empty($data['magebridgefirstlast']['lastname'])) {
-            $this->setUserName($data['id'], $data['magebridgefirstlast']['firstname'], $data['magebridgefirstlast']['lastname']);
-        }
+		// @todo: Add a setting for this
+		if (!empty($data['magebridgefirstlast']['firstname']) && !empty($data['magebridgefirstlast']['lastname']))
+		{
+			$this->setUserName($data['id'], $data['magebridgefirstlast']['firstname'], $data['magebridgefirstlast']['lastname']);
+		}
 
 		return true;
 	}
 
+	/**
+	 * Event onUserAfterDelete
+	 *
+	 * @param JUser  $user
+	 * @param bool   $success
+	 * @param string $msg
+	 *
+	 * @return bool
+	 */
 	public function onUserAfterDelete($user, $success, $msg)
 	{
 		if (!$success)
@@ -153,11 +200,12 @@ class plgUserMagebridgefirstlast extends JPlugin
 		{
 			try
 			{
-                $this->deleteFields($userId);
+				$this->deleteFields($userId);
 			}
 			catch (Exception $e)
 			{
 				$this->_subject->setError($e->getMessage());
+
 				return false;
 			}
 		}
@@ -165,87 +213,123 @@ class plgUserMagebridgefirstlast extends JPlugin
 		return true;
 	}
 
+	/**
+	 * Event onUserLoad
+	 *
+	 * @param JUser $user
+	 *
+	 * @return bool
+	 */
 	public function onUserLoad($user)
 	{
-        if (empty($user) || empty($user->id))
-        {
-            return false;
-        }
+		if (empty($user) || empty($user->id))
+		{
+			return false;
+		}
 
 		try
 		{
-            $fields = $this->getFields($user->id);
+			$fields = $this->getFields($user->id);
 		}
 		catch (Exception $e)
 		{
 			$this->_subject->setError($e->getMessage());
+
 			return false;
 		}
 
-        foreach($fields as $field)
-        {
+		foreach ($fields as $field)
+		{
 			$fieldName = str_replace('magebridgefirstlast.', '', $field[0]);
-            $fieldValue = $field[1];
-            $user->set($fieldName, $fieldValue);
-        }
-    }
+			$fieldValue = $field[1];
+			$user->set($fieldName, $fieldValue);
+		}
+	}
 
-    protected function getFields($userId)
-    {
+	/**
+	 * Method to get all profile fields from user
+	 *
+	 * @param int $userId
+	 *
+	 * @return mixed
+	 */
+	protected function getFields($userId)
+	{
 		$db = JFactory::getDbo();
-        $query = $db->getQuery(true);
+		$query = $db->getQuery(true);
 
-        $columns = array('profile_key', 'profile_value');
-        $query->select($db->quoteName($columns));
-        $query->from($db->quoteName('#__user_profiles'));
-        $query->where($db->quoteName('profile_key').' LIKE '.$db->quote('magebridgefirstlast.%'));
-        $query->where($db->quoteName('user_id').' = '.(int)$userId);
-        $query->order('ordering ASC');
+		$columns = array('profile_key', 'profile_value');
+		$query->select($db->quoteName($columns));
+		$query->from($db->quoteName('#__user_profiles'));
+		$query->where($db->quoteName('profile_key') . ' LIKE ' . $db->quote('magebridgefirstlast.%'));
+		$query->where($db->quoteName('user_id') . ' = ' . (int) $userId);
+		$query->order('ordering ASC');
 
 		$db->setQuery($query);
 
 		$results = $db->loadRowList();
-        return $results;
-    }
 
-    protected function deleteFields($userId)
-    {
-        $db = JFactory::getDbo();
+		return $results;
+	}
+
+	/**
+	 * Delete all profile fields belonging to specific user
+	 *
+	 * @param int $userId
+	 */
+	protected function deleteFields($userId)
+	{
+		$db = JFactory::getDbo();
 
 		$query = $db->getQuery(true)
 			->delete($db->quoteName('#__user_profiles'))
-			->where($db->quoteName('user_id').' = '.(int)$userId)
-			->where($db->quoteName('profile_key').' LIKE '.$db->quote('magebridgefirstlast.%'));
+			->where($db->quoteName('user_id') . ' = ' . (int) $userId)
+			->where($db->quoteName('profile_key') . ' LIKE ' . $db->quote('magebridgefirstlast.%'));
 		$db->setQuery($query);
 
 		$db->execute();
-    }
+	}
 
-    protected function insertField($userId, $name, $value, $ordering)
-    {
-        $db = JFactory::getDbo();
+	/**
+	 * Insert a specific profile fields belonging to specific user
+	 *
+	 * @param int    $userId
+	 * @param string $name
+	 * @param string $value
+	 * @param int    $ordering
+	 */
+	protected function insertField($userId, $name, $value, $ordering)
+	{
+		$db = JFactory::getDbo();
 
-        $columns = array('user_id', 'profile_key', 'profile_value', 'ordering');
-        $values = array($userId, $db->quote('magebridgefirstlast.'.$name), $db->quote($value), $ordering);
+		$columns = array('user_id', 'profile_key', 'profile_value', 'ordering');
+		$values = array($userId, $db->quote('magebridgefirstlast.' . $name), $db->quote($value), $ordering);
 
-	    $query = $db->getQuery(true)
-            ->insert($db->quoteName('#__user_profiles'))
-            ->columns($db->quoteName($columns))
-            ->values(implode(',', $values));
+		$query = $db->getQuery(true)
+			->insert($db->quoteName('#__user_profiles'))
+			->columns($db->quoteName($columns))
+			->values(implode(',', $values));
 		$db->setQuery($query);
 
 		$db->execute();
-    }
+	}
 
-    protected function setUserName($userId, $firstname, $lastname)
-    {
-        $db = JFactory::getDbo();
-	    $query = $db->getQuery(true)
-            ->update($db->quoteName('#__users'))
-            ->set($db->quoteName('name').'='.$db->quote($firstname.' '.$lastname))
-            ->where($db->quoteName('id').'='.(int)$userId);
+	/**
+	 * Set the username
+	 *
+	 * @param int    $userId
+	 * @param string $firstname
+	 * @param string $lastname
+	 */
+	protected function setUserName($userId, $firstname, $lastname)
+	{
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true)
+			->update($db->quoteName('#__users'))
+			->set($db->quoteName('name') . '=' . $db->quote($firstname . ' ' . $lastname))
+			->where($db->quoteName('id') . '=' . (int) $userId);
 		$db->setQuery($query);
 
 		$db->execute();
-    }
+	}
 }
