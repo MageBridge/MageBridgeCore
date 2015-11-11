@@ -187,6 +187,7 @@ class MageBridgeModelBridgeHeaders extends MageBridgeModelBridgeSegment
 		if (!empty($headers['description']))
 		{
 			$metaDescription = $headers['description'];
+			$metaDescription = str_replace('&nbsp;', ' ', $metaDescription);
 			$metaDescription = strip_tags($metaDescription);
 			$metaDescription = htmlspecialchars($metaDescription);
 			$document->setMetaData('description', $metaDescription);
