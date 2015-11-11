@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * Joomla! component MageBridge
  *
  * @author Yireo (info@yireo.com)
@@ -13,6 +13,6 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 
 <div id="ajaxelement">
-    <div class="loader" style="padding-top:150px;">
-    </div>
+	<div class="loader" style="padding-top:150px;">
+	</div>
 </div>

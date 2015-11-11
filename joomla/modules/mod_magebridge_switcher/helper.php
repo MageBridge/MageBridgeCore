@@ -2,11 +2,11 @@
 /**
  * Joomla! module MageBridge: Store switcher
  *
- * @author    Yireo (info@yireo.com)
+ * @author	Yireo (info@yireo.com)
  * @package   MageBridge
  * @copyright Copyright 2015
  * @license   GNU Public License
- * @link      http://www.yireo.com
+ * @link	  http://www.yireo.com
  */
 
 // No direct access
@@ -73,7 +73,7 @@ class ModMageBridgeSwitcherHelper
 	 *
 	 * @access public
 	 *
-	 * @param array     $stores
+	 * @param array	 $stores
 	 * @param JRegistry $params
 	 *
 	 * @return string
@@ -194,7 +194,7 @@ class ModMageBridgeSwitcherHelper
 	 *
 	 * @access public
 	 *
-	 * @param array     $stores
+	 * @param array	 $stores
 	 * @param JRegistry $params
 	 *
 	 * @return string
@@ -237,7 +237,7 @@ class ModMageBridgeSwitcherHelper
 						}
 						else
 						{
-							$request = JRequest::getString('request');
+							$request = JFactory::getApplication()->input->getString('request');
 						}
 
 						// Construct the Store View URL
@@ -261,7 +261,7 @@ class ModMageBridgeSwitcherHelper
 	/**
 	 * Generate a simple list of store languages
 	 *
-	 * @param array     $stores
+	 * @param array	 $stores
 	 * @param JRegistry $params
 	 *
 	 * @return string

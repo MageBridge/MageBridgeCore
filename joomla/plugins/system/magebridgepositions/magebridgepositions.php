@@ -63,7 +63,7 @@ class plgSystemMageBridgePositions extends JPlugin
 		// Import the custom module helper - this is needed to make it possible to flush certain positions
 		if ($loadModuleHelper == true)
 		{
-			$rewrite_path = __DIR__ .'/';
+			$rewrite_path = __DIR__ . '/';
 
 			if (MageBridgeHelper::isJoomlaVersion('2.5'))
 			{
@@ -81,7 +81,7 @@ class plgSystemMageBridgePositions extends JPlugin
 					{
 						@include_once($rewrite_path . '31/cms/application/module/helper.php');
 					}
-					elseif(MageBridgeHelper::isJoomlaVersion(array('3.2', '3.3')))
+					elseif (MageBridgeHelper::isJoomlaVersion(array('3.2', '3.3')))
 					{
 						@include_once($rewrite_path . '32/cms/application/module/helper.php');
 					}
@@ -112,71 +112,103 @@ class plgSystemMageBridgePositions extends JPlugin
 				}
 			}
 
-    		$modules = array_values($modules);
+			$modules = array_values($modules);
 		}
-    }
+	}
 
-    public function onRenderModule(&$module, &$attribs)
-    {
+	public function onRenderModule(&$module, &$attribs)
+	{
 		if ($this->allowPosition($module->position) == false)
-        {
-            $module = null;
-            return;
-        }
-    }
+		{
+			$module = null;
 
-    private function allowPosition($position)
-    {
+			return;
+		}
+	}
+
+	private function allowPosition($position)
+	{
 		// Don't do anything if MageBridge is not enabled
 		if ($this->isEnabled() == false)
 		{
 			return true;
 		}
 
-        // If the position is empty, default to true
-        $position = trim($position);
+		// If the position is empty, default to true
+		$position = trim($position);
 
-        if (empty($position))
-        {
-            return true;
-        }
+		if (empty($position))
+		{
+			return true;
+		}
 
-        // Check for a certain page
-        if (MageBridgeTemplateHelper::isHomePage()) {
-            $setting = 'flush_positions_home';
-        } else if (MageBridgeTemplateHelper::isCustomerPage()) {
-            $setting = 'flush_positions_customer';
-        } else if (MageBridgeTemplateHelper::isProductPage()) {
-            $setting = 'flush_positions_product';
-        } else if (MageBridgeTemplateHelper::isCategoryPage()) {
-            $setting = 'flush_positions_category';
-        } else if (MageBridgeTemplateHelper::isCartPage()) {
-            $setting = 'flush_positions_cart';
-        } else if (MageBridgeTemplateHelper::isCheckoutPage()) {
-            $setting = 'flush_positions_checkout';
-        } else {
-            $setting = null;
-        }
-    
-        // If the page-check returns empty, default to true
-        if (empty($setting))
-        {
-            return true;
-        }
+		// Check for a certain page
+		if (MageBridgeTemplateHelper::isHomePage())
+		{
+			$setting = 'flush_positions_home';
+		}
+		else
+		{
+			if (MageBridgeTemplateHelper::isCustomerPage())
+			{
+				$setting = 'flush_positions_customer';
+			}
+			else
+			{
+				if (MageBridgeTemplateHelper::isProductPage())
+				{
+					$setting = 'flush_positions_product';
+				}
+				else
+				{
+					if (MageBridgeTemplateHelper::isCategoryPage())
+					{
+						$setting = 'flush_positions_category';
+					}
+					else
+					{
+						if (MageBridgeTemplateHelper::isCartPage())
+						{
+							$setting = 'flush_positions_cart';
+						}
+						else
+						{
+							if (MageBridgeTemplateHelper::isCheckoutPage())
+							{
+								$setting = 'flush_positions_checkout';
+							}
+							else
+							{
+								$setting = null;
+							}
+						}
+					}
+				}
+			}
+		}
 
-        // Check for flushing of positions within the MageBridge configuration
-        $array = explode(',', $this->params->get($setting));
-        if (!empty($array)) {
-            foreach ($array as $a) {
-                if ($position == trim($a)) {
-                    return false;
-                }
-            }
-        }
+		// If the page-check returns empty, default to true
+		if (empty($setting))
+		{
+			return true;
+		}
 
-        // Default to true
-        return true;
-    }
+		// Check for flushing of positions within the MageBridge configuration
+		$array = explode(',', $this->params->get($setting));
+		if (!empty($array))
+		{
+			foreach ($array as $a)
+			{
+				if ($position == trim($a))
+				{
+					return false;
+				}
+			}
+		}
+
+		// Default to true
+		return true;
+	}
 
 	/**
 	 * Simple check to see if MageBridge exists
@@ -189,7 +221,9 @@ class plgSystemMageBridgePositions extends JPlugin
 	 */
 	private function isEnabled()
 	{
-		if (!JFactory::getApplication()->isSite())
+		if (!JFactory::getApplication()
+			->isSite()
+		)
 		{
 			return false;
 		}
@@ -197,11 +231,11 @@ class plgSystemMageBridgePositions extends JPlugin
 		// Import the MageBridge autoloader
 		include_once JPATH_SITE . '/components/com_magebridge/helpers/loader.php';
 
-        // Check for the MageBridgeTemplateHelper class
-        if (class_exists('MageBridgeTemplateHelper') == false)
-        {
-            return false;
-        }
+		// Check for the MageBridgeTemplateHelper class
+		if (class_exists('MageBridgeTemplateHelper') == false)
+		{
+			return false;
+		}
 
 		// Check for the file only
 		if (is_file(JPATH_SITE . '/components/com_magebridge/models/config.php'))

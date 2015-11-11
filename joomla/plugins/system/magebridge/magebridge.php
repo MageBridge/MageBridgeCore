@@ -8,8 +8,8 @@
  * @license   GNU Public License
  * @link      http://www.yireo.com
  *
- * @todo: plgSystemMageBridgeHelperJavascript
- * @todo: plgSystemMageBridgeHelperSsl
+ * @todo      : plgSystemMageBridgeHelperJavascript
+ * @todo      : plgSystemMageBridgeHelperSsl
  */
 
 // Check to ensure this file is included in Joomla!
@@ -21,7 +21,7 @@ jimport('joomla.plugin.plugin');
 /**
  * MageBridge System Plugin
  */
-class plgSystemMageBridge extends JPlugin
+class PlgSystemMageBridge extends JPlugin
 {
 	/**
 	 * List of console messages
@@ -40,10 +40,11 @@ class plgSystemMageBridge extends JPlugin
 	{
 		parent::__construct($subject, $config);
 
-        $this->replaceClasses();
-
 		$this->app = JFactory::getApplication();
+		$this->input = $this->app->input;
 		$this->doc = JFactory::getDocument();
+
+		$this->replaceClasses();
 
 		$this->loadLanguage();
 	}
@@ -74,11 +75,11 @@ class plgSystemMageBridge extends JPlugin
 		// Perform actions on the frontend
 		if ($this->app->isSite())
 		{
-            // Deny iframes
-            if ($this->params->get('deny_iframe'))
-            {
-                header('X-Frame-Options: DENY');
-            }
+			// Deny iframes
+			if ($this->params->get('deny_iframe'))
+			{
+				header('X-Frame-Options: DENY');
+			}
 
 			// Hard-spoof all MageBridge SEF URLs (for sh404SEF)
 			if ($this->getParam('spoof_sef', 0) == 1)
@@ -91,10 +92,10 @@ class plgSystemMageBridge extends JPlugin
 				if (substr($current_url, 0, strlen($bridge_url)) == $bridge_url)
 				{
 					$request = substr_replace($current_url, '', 0, strlen($bridge_url));
-					JRequest::setVar('option', 'com_magebridge');
-					JRequest::setVar('view', 'root');
-					JRequest::setVar('Itemid', $root_item_id);
-					JRequest::setVar('request', $request);
+					$this->input->set('option', 'com_magebridge');
+					$this->input->set('view', 'root');
+					$this->input->set('Itemid', $root_item_id);
+					$this->input->set('request', $request);
 				}
 			}
 
@@ -210,7 +211,7 @@ class plgSystemMageBridge extends JPlugin
 		);
 
 		if (MageBridgeTemplateHelper::isPage($pages)) {
-			JRequest::setVar('tmpl', 'component');
+			$this->input->set('tmpl', 'component');
 		}
 		*/
 
@@ -218,17 +219,17 @@ class plgSystemMageBridge extends JPlugin
 		if ($this->app->isSite() && $this->doc->getType() == 'html')
 		{
 			// Handle JavaScript conflicts
-			$disable_js_mootools = $this->loadConfig('disable_js_mootools');
+			$disableJsMootools = $this->loadConfig('disable_js_mootools');
 
-			if ($disable_js_mootools == 1)
+			if ($disableJsMootools == 1)
 			{
-				$headdata = $this->doc->getHeadData();
+				$headData = $this->doc->getHeadData();
 
-				if (isset($headdata['script']))
+				if (isset($headData['script']))
 				{
-					foreach ($headdata['script'] as $index => $headscript)
+					foreach ($headData['script'] as $index => $headScript)
 					{
-						if (preg_match('/window\.addEvent/', $headscript))
+						if (preg_match('/window\.addEvent/', $headScript))
 						{
 							//$this->console[] = 'MageBridge removed inline MooTools scripts';
 							//unset($headdata['script'][$index]); // @todo: Make sure this does NOT remove all custom-tags
@@ -236,7 +237,7 @@ class plgSystemMageBridge extends JPlugin
 						}
 					}
 
-					$this->doc->setHeadData($headdata);
+					$this->doc->setHeadData($headData);
 				}
 			}
 
@@ -281,7 +282,8 @@ class plgSystemMageBridge extends JPlugin
 
 		if (method_exists($bridge, 'storeHttpReferer'))
 		{
-			MageBridge::getBridge()->storeHttpReferer();
+			MageBridge::getBridge()
+				->storeHttpReferer();
 		}
 	}
 
@@ -293,7 +295,7 @@ class plgSystemMageBridge extends JPlugin
 		}
 
 
-		if ($this->app->isAdmin() && $this->doc->getType() == 'html' && JRequest::getCmd('option') == 'com_magebridge' && JRequest::getCmd('view') == 'root')
+		if ($this->app->isAdmin() && $this->doc->getType() == 'html' && $this->input->getCmd('option') == 'com_magebridge' && $this->input->getCmd('view') == 'root')
 		{
 			return true;
 		}
@@ -314,8 +316,8 @@ class plgSystemMageBridge extends JPlugin
 	{
 		if ($this->app->isSite())
 		{
-            return;
-        }
+			return;
+		}
 
 		jimport('joomla.form.form');
 		JForm::addFieldPath(JPATH_ADMINISTRATOR . '/components/com_magebridge/fields');
@@ -351,11 +353,13 @@ class plgSystemMageBridge extends JPlugin
 	{
 		// Initialize variables
 		$uri = JURI::getInstance();
-		$post = JRequest::get('post');
+		$post = $this->input->post->getArray();
 		$enabled = $this->getParam('enable_nonsef_redirect', 1);
 
 		// Redirect non-SEF URLs to their SEF-equivalent
-		if ($enabled == 1 && empty($post) && $this->app->getCfg('sef') == 1 && JRequest::getCmd('option') == 'com_magebridge')
+		if ($enabled == 1 && empty($post) && JFactory::getConfig()
+				->get('sef') == 1 && $this->input->getCmd('option') == 'com_magebridge'
+		)
 		{
 			$request = str_replace($uri->base(), '', $uri->toString());
 
@@ -408,10 +412,10 @@ class plgSystemMageBridge extends JPlugin
 	{
 		// Initialize variables
 		$enabled = $this->getParam('enable_urlreplacement_redirect', 1);
-		$post = JRequest::get('post');
+		$post = $this->input->post->getArray();
 
 		// Exit if disabled or if we are not within the MageBridge component
-		if ($enabled == 0 || !empty($post) || JRequest::getCmd('option') != 'com_magebridge')
+		if ($enabled == 0 || !empty($post) || $this->input->getCmd('option') != 'com_magebridge')
 		{
 			return;
 		}
@@ -435,7 +439,7 @@ class plgSystemMageBridge extends JPlugin
 				}
 
 				$source = str_replace('/', '\/', $source);
-                $source = preg_replace('/^(http|https)/', '', $source);
+				$source = preg_replace('/^(http|https)/', '', $source);
 
 				// Prepare the destination URL
 				if (preg_match('/^index\.php\?option=/', $destination))
@@ -479,8 +483,8 @@ class plgSystemMageBridge extends JPlugin
 	{
 		// Initialize variables
 		$enabled = $this->getParam('enable_comuser_redirect', 0);
-		$post = JRequest::get('post');
-		$option = JRequest::getCmd('option');
+		$post = $this->input->post->getArray();
+		$option = $this->input->getCmd('option');
 
 		// Redirect com_user links
 		if ($enabled == 1 && empty($post) && in_array($option, array('com_user', 'com_users')))
@@ -506,7 +510,8 @@ class plgSystemMageBridge extends JPlugin
 	 */
 	private function getBaseUrl()
 	{
-		$url = MageBridge::getBridge()->getMagentoUrl();
+		$url = MageBridge::getBridge()
+			->getMagentoUrl();
 
 		return preg_replace('/^(https|http):\/\//', '', $url);
 	}
@@ -522,7 +527,8 @@ class plgSystemMageBridge extends JPlugin
 	 */
 	private function getBaseJsUrl()
 	{
-		$url = MageBridge::getBridge()->getSessionData('base_js_url');
+		$url = MageBridge::getBridge()
+			->getSessionData('base_js_url');
 		$url = preg_replace('/^(https|http):\/\//', '', $url);
 		$url = preg_replace('/(js|js\/)$/', '', $url);
 
@@ -542,14 +548,15 @@ class plgSystemMageBridge extends JPlugin
 	private function handleJavaScript()
 	{
 		// Get MageBridge variables
-		$disable_js_mootools = $this->loadConfig('disable_js_mootools');
-		$disable_js_footools = $this->loadConfig('disable_js_footools');
-		$disable_js_frototype = $this->loadConfig('disable_js_frototype');
+		$disableJsMootools = $this->loadConfig('disable_js_mootools');
+		$disableJsFootools = $this->loadConfig('disable_js_footools');
+		$disableJsFrototype = $this->loadConfig('disable_js_frototype');
 		$disable_js_jquery = $this->loadConfig('disable_js_jquery');
 		$disable_js_prototype = $this->loadConfig('disable_js_prototype');
 		$disable_js_custom = $this->loadConfig('disable_js_custom');
 		$disable_js_all = $this->loadConfig('disable_js_all');
-		$magento_js = MageBridgeModelBridgeHeaders::getInstance()->getScripts();
+		$magento_js = MageBridgeModelBridgeHeaders::getInstance()
+			->getScripts();
 
 		$uri = JURI::getInstance();
 		$foo_script = JURI::root(true) . '/media/com_magebridge/js/foo.js';
@@ -586,7 +593,8 @@ class plgSystemMageBridge extends JPlugin
 		}
 
 		// Load the whitelist
-		$whitelist = JFactory::getConfig()->get('magebridge.script.whitelist');
+		$whitelist = JFactory::getConfig()
+			->get('magebridge.script.whitelist');
 
 		if (!is_array($whitelist))
 		{
@@ -606,13 +614,14 @@ class plgSystemMageBridge extends JPlugin
 		}
 
 		// Load the blacklist
-		$blacklist = JFactory::getConfig()->get('magebridge.script.blacklist');
+		$blacklist = JFactory::getConfig()
+			->get('magebridge.script.blacklist');
 
 		// Only parse the body, if MageBridge has loaded the ProtoType library and only if configured
-		if ($has_prototype == true && ($disable_js_all > 0 || $disable_js_mootools == 1 || !empty($disable_js_custom)))
+		if ($has_prototype == true && ($disable_js_all > 0 || $disableJsMootools == 1 || !empty($disable_js_custom)))
 		{
 			// Disable MooTools (and caption) and replace it with FooTools
-			if ($disable_js_mootools == 1 && $disable_js_footools == 0)
+			if ($disableJsMootools == 1 && $disableJsFootools == 0)
 			{
 				$this->console[] = 'MageBridge removed MooTools core and replaced it with FooTools';
 				$footools_tag = '<script type="text/javascript" src="' . $footools_script . '"></script>';
@@ -774,31 +783,33 @@ class plgSystemMageBridge extends JPlugin
 
 					// Disable MooTools
 				}
-				else if ($disable_js_mootools == 1)
+				else
 				{
-
-					$mootools_scripts = array(
-						'media/system/js/modal.js',
-						'media/system/js/validate.js',
-						'beez_20/javascript/hide.js',
-						'md_stylechanger.js',
-						'media/com_finder/js/autocompleter.js',
-					);
-
-					if (MageBridgeHelper::isJoomla25())
+					if ($disableJsMootools == 1)
 					{
-						$mootools_scripts[] = 'media/system/js/caption.js';
-					}
 
-					if (preg_match('/mootools/', $script))
-					{
-						$remove = true;
-					}
-					foreach ($mootools_scripts as $js)
-					{
-						if (preg_match('/' . str_replace('/', '\/', $js) . '$/', $script))
+						$mootools_scripts = array(
+							'media/system/js/modal.js',
+							'media/system/js/validate.js',
+							'beez_20/javascript/hide.js',
+							'md_stylechanger.js',
+							'media/com_finder/js/autocompleter.js',);
+
+						if (MageBridgeHelper::isJoomla25())
+						{
+							$mootools_scripts[] = 'media/system/js/caption.js';
+						}
+
+						if (preg_match('/mootools/', $script))
 						{
 							$remove = true;
+						}
+						foreach ($mootools_scripts as $js)
+						{
+							if (preg_match('/' . str_replace('/', '\/', $js) . '$/', $script))
+							{
+								$remove = true;
+							}
 						}
 					}
 				}
@@ -818,21 +829,24 @@ class plgSystemMageBridge extends JPlugin
 
 						// Comment the tag
 					}
-					else if ($filter == 'comment')
-					{
-
-						if (!in_array($tag, $commented))
-						{
-							$commented[] = $tag;
-							$body = str_replace($tag, '<!-- MB: ' . $tag . ' -->', $body);
-						}
-
-						// Replace the script with the foo-script
-					}
 					else
 					{
-						$this->console[] = 'MageBridge removed ' . $script;
-						$body = str_replace($script, $foo_script, $body);
+						if ($filter == 'comment')
+						{
+
+							if (!in_array($tag, $commented))
+							{
+								$commented[] = $tag;
+								$body = str_replace($tag, '<!-- MB: ' . $tag . ' -->', $body);
+							}
+
+							// Replace the script with the foo-script
+						}
+						else
+						{
+							$this->console[] = 'MageBridge removed ' . $script;
+							$body = str_replace($script, $foo_script, $body);
+						}
 					}
 				}
 			}
@@ -857,7 +871,7 @@ class plgSystemMageBridge extends JPlugin
 		{
 
 			// Add FrotoType to the page
-			if ($disable_js_frototype == 0)
+			if ($disableJsFrototype == 0)
 			{
 
 				$body = JResponse::getBody();
@@ -883,9 +897,11 @@ class plgSystemMageBridge extends JPlugin
 	private function handleSsoChecks()
 	{
 		return;
-		if (JRequest::getCmd('task') == 'login')
+		
+		if ($this->input->getCmd('task') == 'login')
 		{
-			$user =& JFactory::getUser();
+			$user = JFactory::getUser();
+
 			if (!$user->guest)
 			{
 				MageBridgeModelUserSSO::checkSSOLogin();
@@ -933,9 +949,9 @@ class plgSystemMageBridge extends JPlugin
 
 		// Add a CB profile-sync
 		if ($this->getParam('spoof_cb_events')) {
-			if (JRequest::getCmd('option') == 'com_comprofiler'
-				&& JRequest::getCmd('task') == 'saveUserEdit'
-				&& JFactory::getUser()->id == JRequest::getInt('id', 0, 'post')) {
+			if ($this->input->getCmd('option') == 'com_comprofiler'
+				&& $this->input->getCmd('task') == 'saveUserEdit'
+				&& JFactory::getUser()->id == $this->input->getInt('id', 0, 'post')) {
 
 				$tasks[] = 'cnsync';
 			}
@@ -943,10 +959,10 @@ class plgSystemMageBridge extends JPlugin
 
 		// Add a JomSocial profile-sync
 		if ($this->getParam('spoof_jomsocial_events')) {
-			if (JRequest::getCmd('option') == 'com_community'
-				&& JRequest::getCmd('view') == 'profile'
-				&& in_array(JRequest::getCmd('task'), array('edit', 'editDetails'))
-				&& JRequest::getCmd('action', null, 'post') == 'save') {
+			if ($this->input->getCmd('option') == 'com_community'
+				&& $this->input->getCmd('view') == 'profile'
+				&& in_array($this->input->getCmd('task'), array('edit', 'editDetails'))
+				&& $this->input->getCmd('action', null, 'post') == 'save') {
 
 				$tasks[] = 'jomsocialsync';
 			}
@@ -969,33 +985,43 @@ class plgSystemMageBridge extends JPlugin
 	private function redirectSSL()
 	{
 		// Get system variables
-		$uri = JFactory::getURI();
+		$uri = JURI::getInstance();
 		$enforce_ssl = $this->loadConfig('enforce_ssl');
 		$from_http_to_https = $this->getParam('enable_ssl_redirect', 1);
 		$from_https_to_http = $this->getParam('enable_nonssl_redirect', 1);
-		$post = JRequest::get('post');
+		$post = $this->input->post->getArray();
 
 		// Match situation where we don't want to redirect
 		if (!empty($post))
 		{
 			return false;
 		}
-		else if (in_array(JRequest::getCmd('view'), array('ajax', 'jsonrpc')))
+		else
 		{
-			return false;
-		}
-		else if (in_array(JRequest::getCmd('task'), array('ajax', 'json')))
-		{
-			return false;
-		}
-		else if (in_array(JRequest::getCmd('controller'), array('ajax', 'jsonrpc')))
-		{
-			return false;
+			if (in_array($this->input->getCmd('view'), array('ajax', 'jsonrpc')))
+			{
+				return false;
+			}
+			else
+			{
+				if (in_array($this->input->getCmd('task'), array('ajax', 'json')))
+				{
+					return false;
+				}
+				else
+				{
+					if (in_array($this->input->getCmd('controller'), array('ajax', 'jsonrpc')))
+					{
+						return false;
+					}
+				}
+			}
 		}
 
 		// Check the Menu-Item settings
 		$menu = $this->app->getMenu();
 		$active = $menu->getActive();
+
 		if (!empty($active))
 		{
 			$secureMenuItem = ($active->params->get('secure', 0) == 1) ? true : false;
@@ -1008,7 +1034,6 @@ class plgSystemMageBridge extends JPlugin
 		// Check if SSL should be forced
 		if ($uri->isSSL() == false && $this->getParam('enable_ssl_redirect', 1) == 1)
 		{
-
 			// Determine whether to do a redirect
 			$redirect = false;
 
@@ -1019,49 +1044,53 @@ class plgSystemMageBridge extends JPlugin
 
 				// Set the redirect for the entire Joomla! site
 			}
-			else if ($enforce_ssl == 1)
+			else
 			{
-				$redirect = true;
-
-				// Set the redirect for MageBridge only
-			}
-			else if ($enforce_ssl == 2)
-			{
-
-				// MageBridge links
-				if (JRequest::getCmd('option') == 'com_magebridge')
+				if ($enforce_ssl == 1)
 				{
+					$redirect = true;
 
-					// Prevent redirection when doing Single Sign On
-					if (JRequest::getCmd('task') != 'login')
-					{
-						$redirect = true;
-					}
-
-					// non-MageBridge links
+					// Set the redirect for MageBridge only
 				}
 				else
 				{
-					if ($secureMenuItem == 1)
+					if ($enforce_ssl == 2)
 					{
-						$redirect = true;
+						// MageBridge links
+						if ($this->input->getCmd('option') == 'com_magebridge')
+						{
+
+							// Prevent redirection when doing Single Sign On
+							if ($this->input->getCmd('task') != 'login')
+							{
+								$redirect = true;
+							}
+						}
+						else
+						{
+							if ($secureMenuItem == 1)
+							{
+								$redirect = true;
+							}
+						}
 					}
-				}
-
-				// Set the redirect for specific MageBridge pages which should be served through SSL
-			}
-			else if ($enforce_ssl == 3)
-			{
-
-				if (JRequest::getCmd('option') == 'com_magebridge')
-				{
-					$redirect = (MageBridgeUrlHelper::isSSLPage()) ? true : false;
-				}
-				else
-				{
-					if ($secureMenuItem == 1)
+					else
 					{
-						$redirect = true;
+						if ($enforce_ssl == 3)
+						{
+
+							if ($this->input->getCmd('option') == 'com_magebridge')
+							{
+								$redirect = (MageBridgeUrlHelper::isSSLPage()) ? true : false;
+							}
+							else
+							{
+								if ($secureMenuItem == 1)
+								{
+									$redirect = true;
+								}
+							}
+						}
 					}
 				}
 			}
@@ -1076,62 +1105,74 @@ class plgSystemMageBridge extends JPlugin
 
 			// Check if non-SSL should be forced
 		}
-		else if ($uri->isSSL() == true && $this->getParam('enable_nonssl_redirect', 1) == 1)
+		else
 		{
-
-			// Determine whether to do a redirect
-			$redirect = false;
-			$components = array('com_magebridge', 'com_scriptmerge');
-
-			// Set the redirect if SSL is disabled
-			if ($enforce_ssl == 0)
+			if ($uri->isSSL() == true && $this->getParam('enable_nonssl_redirect', 1) == 1)
 			{
-				$redirect = true;
 
-				// Do not redirect if SSL is set for the entire site
-			}
-			else if ($enforce_ssl == 1)
-			{
+				// Determine whether to do a redirect
 				$redirect = false;
+				$components = array('com_magebridge', 'com_scriptmerge');
 
-				// Do redirect if SSL is set for the shop only
-			}
-			else if ($enforce_ssl == 2)
-			{
-
-				if (!in_array(JRequest::getCmd('option'), $components))
+				// Set the redirect if SSL is disabled
+				if ($enforce_ssl == 0)
 				{
 					$redirect = true;
-					if ($secureMenuItem == 1)
-					{
-						$redirect = false;
-					}
-				}
 
-				// Set the redirect if SSL is only enabled for MageBridge
-			}
-			else if ($enforce_ssl == 3)
-			{
-
-				if (JRequest::getCmd('option') == 'com_magebridge')
-				{
-					$redirect = (MageBridgeUrlHelper::isSSLPage()) ? false : true;
+					// Do not redirect if SSL is set for the entire site
 				}
 				else
 				{
-					$redirect = true;
-					if ($secureMenuItem == 1)
+					if ($enforce_ssl == 1)
 					{
 						$redirect = false;
+
+						// Do redirect if SSL is set for the shop only
+					}
+					else
+					{
+						if ($enforce_ssl == 2)
+						{
+
+							if (!in_array($this->input->getCmd('option'), $components))
+							{
+								$redirect = true;
+								if ($secureMenuItem == 1)
+								{
+									$redirect = false;
+								}
+							}
+
+							// Set the redirect if SSL is only enabled for MageBridge
+						}
+						else
+						{
+							if ($enforce_ssl == 3)
+							{
+
+								if ($this->input->getCmd('option') == 'com_magebridge')
+								{
+									$redirect = (MageBridgeUrlHelper::isSSLPage()) ? false : true;
+								}
+								else
+								{
+									$redirect = true;
+									if ($secureMenuItem == 1)
+									{
+										$redirect = false;
+									}
+								}
+							}
+						}
 					}
 				}
-			}
 
-			if ($redirect == true)
-			{
-				$uri->setScheme('http');
-				$this->app->redirect($uri->toString());
-				$this->app->close();
+				if ($redirect == true)
+				{
+					$uri->setScheme('http');
+					$this->app->redirect($uri->toString());
+					$this->app->close();
+				}
 			}
 		}
 	}
@@ -1148,18 +1189,16 @@ class plgSystemMageBridge extends JPlugin
 	private function spoofMagentoLoginForm()
 	{
 		// Fetch important variables
-		$login = JRequest::getVar('login', array(), 'post', 'array');
-		$option = JRequest::getCmd('option');
+		$login = $this->input->getVar('login', array(), 'post', 'array');
+		$option = $this->input->getCmd('option');
 
 		// Detect a Magento login-POST
 		if ($option == 'com_magebridge' && !empty($login['username']) && !empty($login['password']))
 		{
-
 			// Convert the Magento POST into Joomla! POST-credentials
 			$credentials = array(
 				'username' => $login['username'],
-				'password' => $login['password'],
-			);
+				'password' => $login['password'],);
 
 			// Try to login into the Joomla! application
 			$rt = $this->app->login($credentials);
@@ -1206,14 +1245,16 @@ class plgSystemMageBridge extends JPlugin
 	 */
 	private function doRedirect($name = '', $value = '', $redirect = null)
 	{
-		if (JRequest::getCmd($name) == $value)
+		if ($this->input->getCmd($name) == $value)
 		{
-			$return = base64_decode(JRequest::getString('return'));
+			$return = base64_decode($this->input->getString('return'));
+
 			if (!empty($return))
 			{
 				$return = MageBridgeEncryptionHelper::base64_encode($return);
 				$redirect .= '/referer/' . $return . '/';
 			}
+
 			header('Location: ' . MageBridgeUrlHelper::route($redirect));
 			exit;
 		}
@@ -1256,57 +1297,60 @@ class plgSystemMageBridge extends JPlugin
 		return false;
 	}
 
-    /**
-     * Method to override existing classes with MageBridge customized classes
-     *
-     * @return bool
-     */
-    protected function replaceClasses()
-    {
-        if ($this->params->get('override_core', 1) == 0)
-        {
-            return false;
-        }
+	/**
+	 * Method to override existing classes with MageBridge customized classes
+	 *
+	 * @return bool
+	 */
+	protected function replaceClasses()
+	{
+		if ($this->params->get('override_core', 1) == 0)
+		{
+			return false;
+		}
 
-        $overrides = array(
-            'JHtmlBehavior' => array(
-                'original' => JPATH_LIBRARIES . '/cms/html/behavior.php',
-                'override' => __DIR__ . '/overrides/html/behavior.php',
-            ),
-        );
+		if ($this->app->isSite() == false)
+		{
+			return false;
+		}
 
-        foreach ($overrides as $originalClass => $override)
-        {
-            if (file_exists($override['original']) == false)
-            {
-                continue;
-            }
+		$overrides = array(
+			'JHtmlBehavior' => array(
+				'original' => JPATH_LIBRARIES . '/cms/html/behavior.php',
+				'override' => __DIR__ . '/overrides/html/behavior.php',),);
 
-            if (file_exists($override['override']) == false)
-            {
-                continue;
-            }
+		foreach ($overrides as $originalClass => $override)
+		{
+			if (file_exists($override['original']) == false)
+			{
+				continue;
+			}
 
-            $originalContent = file_get_contents($override['original']);
+			if (file_exists($override['override']) == false)
+			{
+				continue;
+			}
 
-            if (empty($originalContent))
-            {
-                continue;
-            }
+			$originalContent = file_get_contents($override['original']);
 
-            $originalContent = str_replace('<?php', "namespace Joomla;", $originalContent);
-            $originalContent = preg_replace('/\J([a-zA-Z0-9]+)::/', "\\J$1::", $originalContent);
-            eval($originalContent);
+			if (empty($originalContent))
+			{
+				continue;
+			}
 
-            if (class_exists('\Joomla\\' . $originalClass) == false)
-            {
-                continue;
-            }
+			$originalContent = str_replace('<?php', "namespace Joomla;", $originalContent);
+			$originalContent = preg_replace('/\J([a-zA-Z0-9]+)::/', "\\J$1::", $originalContent);
+			eval($originalContent);
 
-            require_once $override['override'];
-        }
+			if (class_exists('\Joomla\\' . $originalClass) == false)
+			{
+				continue;
+			}
 
-        return true;
-    }
+			require_once $override['override'];
+		}
+
+		return true;
+	}
 }
 

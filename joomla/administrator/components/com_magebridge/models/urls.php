@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * Joomla! component MageBridge
  *
  * @author Yireo (info@yireo.com)
@@ -12,21 +12,21 @@
 // Check to ensure this file is included in Joomla!  
 defined('_JEXEC') or die();
 
-/*
+/**
  * MageBridge URLs model
  */
 class MagebridgeModelUrls extends YireoModel
 {
-    /**
-     * Constructor method
-     *
-     * @access public
-     * @param null
-     * @return null
-     */
-    public function __construct()
-    {
-        $this->_search = array('source', 'destination');
-        parent::__construct('url');
-    }
+	/**
+	 * Constructor method
+	 *
+	 * @access public
+	 * @param null
+	 * @return null
+	 */
+	public function __construct()
+	{
+		$this->_search = array('source', 'destination');
+		parent::__construct('url');
+	}
 }

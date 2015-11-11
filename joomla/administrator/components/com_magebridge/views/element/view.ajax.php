@@ -23,34 +23,34 @@ require_once 'view.common.php';
  */
 class MageBridgeViewElement extends MageBridgeViewCommon
 {
-    /*
-     * Display method
-     *
-     * @param string $tpl
-     * @return null
-     */
-    public function display($tpl = null)
-    {
-        // Determine the layout and data 
-        switch(JRequest::getCmd('type')) {
+	/**
+	 * Display method
+	 *
+	 * @param string $tpl
+	 * @return null
+	 */
+	public function display($tpl = null)
+	{
+		// Determine the layout and data 
+		switch(JFactory::getApplication()->input->getCmd('type')) {
 
-            case 'product':
-                $this->doProductLayout();
-                break;
+			case 'product':
+				$this->doProductLayout();
+				break;
 
-            case 'customer':
-                $this->doCustomerLayout();
-                break;
+			case 'customer':
+				$this->doCustomerLayout();
+				break;
 
-            case 'widget':
-                $this->doWidgetLayout();
-                break;
+			case 'widget':
+				$this->doWidgetLayout();
+				break;
 
-            default:
-            case 'category':
-                $this->doCategoryLayout();
-                break;
-        }
+			default:
+			case 'category':
+				$this->doCategoryLayout();
+				break;
+		}
 
 		parent::display($tpl);
 	}

@@ -1,5 +1,5 @@
 <?php 
-/*
+/**
  * Joomla! component MageBridge
  *
  * @author Yireo (info@yireo.com)
@@ -15,9 +15,9 @@ $form = $this->params_form;
 ?>
 <table class="admintable">
 <?php foreach($form->getFieldset('params') as $field): ?>
-    <tr>
-        <td class="key"><?php echo $field->label; ?></td>
-        <td class="value"><?php echo $field->input; ?></td>
-    </tr>
+	<tr>
+		<td class="key"><?php echo $field->label; ?></td>
+		<td class="value"><?php echo $field->input; ?></td>
+	</tr>
 <?php endforeach; ?>
 </table>

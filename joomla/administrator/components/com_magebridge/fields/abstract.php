@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * Joomla! component MageBridge
  *
  * @author Yireo (info@yireo.com)
@@ -20,41 +20,41 @@ jimport('joomla.html.html');
 jimport('joomla.access.access');
 jimport('joomla.form.formfield');
 
-/*
+/**
  * Generic Form Field-class 
  */
 abstract class MagebridgeFormFieldAbstract extends JFormField
 {
-    /*
-     * Method to wrap the protected getInput() method
-     *
-     * @param null
-     * @return string
-     */
-    public function getHtmlInput()
-    {
-        return $this->getInput();
-    }
+	/**
+	 * Method to wrap the protected getInput() method
+	 *
+	 * @param null
+	 * @return string
+	 */
+	public function getHtmlInput()
+	{
+		return $this->getInput();
+	}
 
-    /*
-     * Method to set the name
-     *
-     * @param mixed $value
-     * @return null
-     */
-    public function setName($value = null)
-    {
-        $this->name = $value;
-    }
+	/**
+	 * Method to set the name
+	 *
+	 * @param mixed $value
+	 * @return null
+	 */
+	public function setName($value = null)
+	{
+		$this->name = $value;
+	}
 
-    /*
-     * Method to set the value
-     *
-     * @param mixed $value
-     * @return null
-     */
-    public function setValue($value = null)
-    {
-        $this->value = $value;
-    }
+	/**
+	 * Method to set the value
+	 *
+	 * @param mixed $value
+	 * @return null
+	 */
+	public function setValue($value = null)
+	{
+		$this->value = $value;
+	}
 }

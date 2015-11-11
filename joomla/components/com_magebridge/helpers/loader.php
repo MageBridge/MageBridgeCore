@@ -2,11 +2,11 @@
 /**
  * Joomla! component MageBridge
  *
- * @author    Yireo (info@yireo.com)
+ * @author	Yireo (info@yireo.com)
  * @package   MageBridge
  * @copyright Copyright 2015
  * @license   GNU Public License
- * @link      http://www.yireo.com
+ * @link	  http://www.yireo.com
  */
 
 // Check to ensure this file is included in Joomla!
@@ -34,7 +34,7 @@ if (function_exists('__autoload'))
 // Add our own loader-function to SPL
 spl_autoload_register('MageBridge_Autoload::load');
 
-/*
+/**
  * Loader-class to load all other MageBridge classes
  */
 

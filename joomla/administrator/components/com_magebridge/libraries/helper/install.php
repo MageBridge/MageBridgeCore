@@ -60,7 +60,7 @@ class YireoHelperInstall
         }
 
         // Check if the downloaded file exists
-        $tmp_path = JFactory::getApplication()->getCfg('tmp_path');
+        $tmp_path = JFactory::getConfig()->get('tmp_path');
         $package_path = $tmp_path.'/'.$package_file;
         if (!is_file($package_path)) {
             JError::raiseWarning('SOME_ERROR_CODE', JText::sprintf('LIB_YIREO_HELPER_INSTALL_DOWNLOAD_FILE_NOT_EXIST', $package_path));
@@ -89,7 +89,7 @@ class YireoHelperInstall
 
         // Get the name of downloaded package
         if (!is_file($package['packagefile'])) {
-            $package['packagefile'] = JFactory::getApplication()->getCfg('tmp_path').'/'.$package['packagefile'];
+            $package['packagefile'] = JFactory::getConfig()->get('tmp_path').'/'.$package['packagefile'];
         }
 
         // Clean up the installation
@@ -123,9 +123,9 @@ class YireoHelperInstall
 
         // Set the target path if not given
         if (empty($file)) {
-            $file = $app->getCfg('tmp_path').'/'.JInstallerHelper::getFilenameFromURL($url);
+            $file = JFactory::getConfig()->get('tmp_path').'/'.JInstallerHelper::getFilenameFromURL($url);
         } else {
-            $file = $app->getCfg('tmp_path').'/'.basename($file);
+            $file = JFactory::getConfig()->get('tmp_path').'/'.basename($file);
         }
 
         // Open the remote server socket for reading
@@ -153,6 +153,17 @@ class YireoHelperInstall
 
         // Return the name of the downloaded package
         return basename($file);
+    }
+
+    static public function hasLibraryInstalled($library)
+    {
+        if(is_dir(JPATH_SITE.'/libraries/'.$library)) {
+            $query = 'SELECT `name` FROM `#__extensions` WHERE `type`="library" AND `element`="'.$library.'"';
+            $db = JFactory::getDBO();
+            $db->setQuery($query);
+            return (bool)$db->loadObject();
+        }
+        return false;
     }
 
     static public function hasPluginInstalled($plugin, $group)
@@ -187,7 +198,7 @@ class YireoHelperInstall
         $db->setQuery($query);
 
         try {
-            $db->query();
+            $db->execute();
             JError::raiseNotice('SOME_ERROR_CODE', JText::sprintf('LIB_YIREO_HELPER_INSTALL_ENABLE_PLUGIN_SUCCESS', $label));
         } catch(Exception $e) {
             JError::raiseWarning('SOME_ERROR_CODE', JText::sprintf('LIB_YIREO_HELPER_INSTALL_ENABLE_PLUGIN_FAIL', $label));
@@ -201,6 +212,19 @@ class YireoHelperInstall
         return true;
     }
     
+    static public function autoInstallLibrary($library, $url, $label)
+    {
+        // If the library is already installed, exit
+        if(self::hasLibraryInstalled($library)) {
+            return true;
+        }
+
+        // Otherwise first, try to install the library
+        if(self::installExtension($url, $label) == false) {
+            JError::raiseWarning('SOME_ERROR_CODE', JText::sprintf('LIB_YIREO_HELPER_INSTALL_MISSING', $label));
+        }
+    }
+
     static public function autoInstallEnablePlugin($plugin, $group, $url, $label)
     {
         // If the plugin is already installed, enable it

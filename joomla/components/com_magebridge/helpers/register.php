@@ -2,11 +2,11 @@
 /**
  * Joomla! component MageBridge
  *
- * @author    Yireo (info@yireo.com)
+ * @author	Yireo (info@yireo.com)
  * @package   MageBridge
  * @copyright Copyright 2015
  * @license   GNU Public License
- * @link      http://www.yireo.com
+ * @link	  http://www.yireo.com
  */
 
 // No direct access
@@ -18,13 +18,13 @@ require_once JPATH_SITE . '/components/com_magebridge/helpers/loader.php';
 // Import the general module-helper
 jimport('joomla.application.module.helper');
 
-/*
+/**
  * Helper for handling the register
  */
 
 class MageBridgeRegisterHelper extends JModuleHelper
 {
-	/*
+	/**
 	 * Pre-register the modules, because they are loaded after the component output
 	 *
 	 * @param null
@@ -48,7 +48,7 @@ class MageBridgeRegisterHelper extends JModuleHelper
 		}
 
 		// Don't preload anything if the current output contains only the component-area
-		if (in_array(JRequest::getCmd('tmpl'), array('component', 'raw')))
+		if (in_array(JFactory::getApplication()->input->getCmd('tmpl'), array('component', 'raw')))
 		{
 			return null;
 		}
@@ -82,10 +82,10 @@ class MageBridgeRegisterHelper extends JModuleHelper
 					$user = JFactory::getUser();
 
 					// Check whether caching returns a valid module-output
-					if ($params->get('cache', 0) && $app->getCfg('caching'))
+					if ($params->get('cache', 0) && JFactory::getConfig()->get('caching'))
 					{
 						$cache = JFactory::getCache($module->module);
-						$cache->setLifeTime($params->get('cache_time', $app->getCfg('cachetime') * 60));
+						$cache->setLifeTime($params->get('cache_time', JFactory::getConfig()->get('cachetime') * 60));
 						$contents = $cache->get(array('JModuleHelper', 'renderModule'), array(
 							$module,
 							$params->toArray()), $module->id . $user->get('aid', 0));

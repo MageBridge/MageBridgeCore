@@ -1,5 +1,5 @@
 <?php 
-/*
+/**
  * Joomla! component MageBridge
  *
  * @author Yireo (info@yireo.com)
@@ -20,16 +20,16 @@ $fieldsetCount = count($form->getFieldsets('actions'));
 <?php if($fieldCount == 0) continue; ?>
 <fieldset class="adminform">
 <legend>
-    <?php echo JText::_('COM_MAGEBRIDGE_VIEW_PRODUCT_FIELDSET_ACTIONS'); ?>: 
-    <?php echo (!empty($fieldset->label)) ? JText::_($fieldset->label) : $fieldset->name; ?>
+	<?php echo JText::_('COM_MAGEBRIDGE_VIEW_PRODUCT_FIELDSET_ACTIONS'); ?>: 
+	<?php echo (!empty($fieldset->label)) ? JText::_($fieldset->label) : $fieldset->name; ?>
 </legend>
 <table class="admintable">
-    <?php foreach($form->getFieldset($fieldset->name) as $field): ?>
-    <tr>
-        <td class="key"><?php echo $field->label; ?></td>
-        <td class="value"><?php echo $field->input; ?></td>
-    </tr>
-    <?php endforeach; ?>
+	<?php foreach($form->getFieldset($fieldset->name) as $field): ?>
+	<tr>
+		<td class="key"><?php echo $field->label; ?></td>
+		<td class="value"><?php echo $field->input; ?></td>
+	</tr>
+	<?php endforeach; ?>
 </table>
 </fieldset>
 <?php endforeach; ?>

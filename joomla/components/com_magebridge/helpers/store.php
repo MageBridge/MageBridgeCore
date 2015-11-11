@@ -2,28 +2,28 @@
 /**
  * Joomla! component MageBridge
  *
- * @author    Yireo (info@yireo.com)
+ * @author	Yireo (info@yireo.com)
  * @package   MageBridge
  * @copyright Copyright 2015
  * @license   GNU Public License
- * @link      http://www.yireo.com
+ * @link	  http://www.yireo.com
  */
 
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
-/*
+/**
  * Block helper for usage in Joomla!
  */
 
 class MageBridgeStoreHelper
 {
-	/*
+	/**
 	 * Instance variable
 	 */
 	protected static $_instance = null;
 
-	/*
+	/**
 	 * Singleton
 	 *
 	 * @access public
@@ -42,7 +42,7 @@ class MageBridgeStoreHelper
 		return self::$_instance;
 	}
 
-	/*
+	/**
 	 * Method to get the current Magento application-type
 	 *
 	 * @param null
@@ -58,7 +58,7 @@ class MageBridgeStoreHelper
 		return $this->app_type;
 	}
 
-	/*
+	/**
 	 * Method to get the current Magento application-value
 	 *
 	 * @param null
@@ -74,7 +74,7 @@ class MageBridgeStoreHelper
 		return $this->app_value;
 	}
 
-	/*
+	/**
 	 * Method to get the current Magento application-type
 	 *
 	 * @param null
@@ -178,7 +178,7 @@ class MageBridgeStoreHelper
 		// Never use a Store View or Store Group in the backend
 		if ($application->isAdmin())
 		{
-			if (JRequest::getCmd('view') == 'root')
+			if (JFactory::getApplication()->input->getCmd('view') == 'root')
 			{
 				$this->app_type = 'website';
 				$this->app_value = 'admin';

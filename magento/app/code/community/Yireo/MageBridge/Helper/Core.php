@@ -62,4 +62,20 @@ class Yireo_MageBridge_Helper_Core extends Mage_Core_Helper_Abstract
         }
         return 0;
     }
+
+    /*
+     * Return the current product SKU
+     *
+     * @access public
+     * @param null
+     * @return int
+     */
+    public function getCurrentProductSku()
+    {
+        $product = Mage::registry('current_product');
+        if(!empty($product)) {
+            return $product->getSku();
+        }
+        return '';
+    }
 }

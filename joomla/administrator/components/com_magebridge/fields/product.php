@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * Joomla! component MageBridge
  *
  * @author Yireo (info@yireo.com)
@@ -15,18 +15,18 @@ defined('JPATH_BASE') or die();
 // Import the MageBridge autoloader
 require_once JPATH_SITE . '/components/com_magebridge/helpers/loader.php';
 
-/*
+/**
  * Form Field-class for choosing a specific Magento product in a modal box
  */
 
 class MagebridgeFormFieldProduct extends MagebridgeFormFieldAbstract
 {
-	/*
+	/**
 	 * Form field type
 	 */
 	public $type = 'MageBridge product';
 
-	/*
+	/**
 	 * Method to get the HTML of this element
 	 *
 	 * @param null
@@ -36,7 +36,7 @@ class MagebridgeFormFieldProduct extends MagebridgeFormFieldAbstract
 	{
 		$name = $this->name;
 		$value = $this->value;
-        $id = preg_replace('/([^0-9a-zA-Z]+)/', '_', $name);
+		$id = preg_replace('/([^0-9a-zA-Z]+)/', '_', $name);
 
 		// Are the API widgets enabled?
 		if (MagebridgeModelConfig::load('api_widgets') == true)
@@ -58,22 +58,10 @@ class MagebridgeFormFieldProduct extends MagebridgeFormFieldAbstract
 			$link .= '&amp;type=product&amp;object=' . $id. '&amp;return=' . $returnType . '&amp;current=' . $value;
 
 			$html = array();
-			if (YireoHelper::isJoomla25())
-			{
-				$html[] = '<div style="float: left;">';
-				$html[] = '<input type="text" id="' . $id. '" name="' . $name . '" value="' . $title . '" />';
-				$html[] = '</div>';
-				$html[] = '<div class="button2-left"><div class="blank">';
-				$html[] = '<a class="modal btn" title="' . JText::_('JSELECT') . '"  href="' . $link . '" rel="{handler: \'iframe\', size: {x:800, y:450}}">' . JText::_('JSELECT') . '</a>';
-				$html[] = '</div></div>' . "\n";
-			}
-			else
-			{
-				$html[] = '<span class="input-append">';
-				$html[] = '<input type="text" class="input-medium" id="' . $id . '" name="' . $name . '" value="' . $title . '" size="35" />';
-				$html[] = '<a class="modal btn" href="' . $link . '" rel="{handler: \'iframe\', size: {x: 800, y: 450}}"><i class="icon-file"></i> ' . JText::_('JSELECT') . '</a>';
-				$html[] = '</span>';
-			}
+			$html[] = '<span class="input-append">';
+			$html[] = '<input type="text" class="input-medium" id="' . $id . '" name="' . $name . '" value="' . $title . '" size="35" />';
+			$html[] = '<a class="modal btn" role="button" href="' . $link . '" rel="{handler: \'iframe\', size: {x: 800, y: 450}}"><i class="icon-file"></i> ' . JText::_('JSELECT') . '</a>';
+			$html[] = '</span>';
 
 			$html = implode("\n", $html);
 

@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * Joomla! component MageBridge
  *
  * @author Yireo (info@yireo.com)
@@ -15,18 +15,18 @@ defined('JPATH_BASE') or die();
 // Import the MageBridge autoloader
 require_once JPATH_SITE . '/components/com_magebridge/helpers/loader.php';
 
-/*
+/**
  * Form Field-class for choosing a specific Magento category in a modal box
  */
 
 class MagebridgeFormFieldCategory extends MagebridgeFormFieldAbstract
 {
-	/*
+	/**
 	 * Form field type
 	 */
 	public $type = 'MageBridge Category';
 
-	/*
+	/**
 	 * Method to get the HTML of this element
 	 *
 	 * @param null
@@ -36,7 +36,7 @@ class MagebridgeFormFieldCategory extends MagebridgeFormFieldAbstract
 	{
 		$name = $this->name;
 		$value = $this->value;
-        $id = preg_replace('/([^0-9a-zA-Z]+)/', '_', $name);
+		$id = preg_replace('/([^0-9a-zA-Z]+)/', '_', $name);
 
 		// Are the API widgets enabled?
 		if (MagebridgeModelConfig::load('api_widgets') == true)
@@ -69,7 +69,7 @@ class MagebridgeFormFieldCategory extends MagebridgeFormFieldAbstract
 			{
 				$html[] = '<span class="input-append">';
 				$html[] = '<input type="text" class="input-medium" id="' . $id . '" name="' . $name . '" value="' . $title . '" size="35" />';
-				$html[] = '<a class="modal btn" href="' . $link . '" rel="{handler: \'iframe\', size: {x: 800, y: 450}}"><i class="icon-file"></i> ' . JText::_('JSELECT') . '</a>';
+				$html[] = '<a class="modal btn" role="button" href="' . $link . '" rel="{handler: \'iframe\', size: {x: 800, y: 450}}"><i class="icon-file"></i> ' . JText::_('JSELECT') . '</a>';
 				$html[] = '</span>';
 			}
 

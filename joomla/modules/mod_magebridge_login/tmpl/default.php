@@ -2,11 +2,11 @@
 /**
  * Joomla! module MageBridge Login
  *
- * @author    Yireo (info@yireo.com)
+ * @author	Yireo (info@yireo.com)
  * @package   MageBridge
  * @copyright Copyright 2015
  * @license   GNU Public License
- * @link      http://www.yireo.com/
+ * @link	  http://www.yireo.com/
  */
 
 // No direct access
@@ -33,7 +33,7 @@ $autocomplete = ($params->get('allow_autocomplete', 1) == 1) ? null : 'autocompl
 			<input type="hidden" name="option" value="<?php echo $component ?>"/>
 			<input type="hidden" name="task" value="<?php echo $task_logout ?>"/>
 			<input type="hidden" name="return" value="<?php echo $return_url ?>"/>
-			<input type="hidden" name="language" value="<?php echo JRequest::getCmd('language'); ?>"/>
+			<input type="hidden" name="language" value="<?php echo JFactory::getApplication()->input->getCmd('language'); ?>"/>
 			<?php echo JHTML::_('form.token'); ?>
 		</form>
 	</div>
@@ -74,7 +74,7 @@ $autocomplete = ($params->get('allow_autocomplete', 1) == 1) ? null : 'autocompl
 				<input type="hidden" name="option" value="<?php echo $component ?>"/>
 				<input type="hidden" name="task" value="<?php echo $task_login ?>"/>
 				<input type="hidden" name="return" value="<?php echo $return_url ?>"/>
-				<input type="hidden" name="language" value="<?php echo JRequest::getCmd('language'); ?>"/>
+				<input type="hidden" name="language" value="<?php echo JFactory::getApplication()->input->getCmd('language'); ?>"/>
 				<?php echo JHTML::_('form.token'); ?>
 			</div>
 		</form>

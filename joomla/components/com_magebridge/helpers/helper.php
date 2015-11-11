@@ -2,23 +2,23 @@
 /**
  * Joomla! component MageBridge
  *
- * @author    Yireo (info@yireo.com)
+ * @author	Yireo (info@yireo.com)
  * @package   MageBridge
  * @copyright Copyright 2015
  * @license   GNU Public License
- * @link      http://www.yireo.com
+ * @link	  http://www.yireo.com
  */
 
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
-/*
+/**
  * General helper for usage in Joomla!
  */
 
 class MageBridgeHelper
 {
-	/*
+	/**
 	 * Helper-method to get help-URLs for usage in the content
 	 *
 	 * @param string $name
@@ -80,7 +80,7 @@ class MageBridgeHelper
 		return null;
 	}
 
-	/*
+	/**
 	 * Helper-method to display Yireo.com-links
 	 *
 	 * @param string $name
@@ -94,7 +94,7 @@ class MageBridgeHelper
 		return $help['link'];
 	}
 
-	/*
+	/**
 	 * Helper-method to display Yireo.com-links
 	 *
 	 * @param string $name
@@ -110,7 +110,7 @@ class MageBridgeHelper
 		return '<a href="' . $help['link'] . '"' . $target . '>' . $title . '</a>';
 	}
 
-	/*
+	/**
 	 * Helper-method to insert notices into the application
 	 *
 	 * @param string $text
@@ -134,7 +134,7 @@ class MageBridgeHelper
 		}
 	}
 
-	/*
+	/**
 	 * Helper-method to filter the original Magento content from unneeded/unwanted bits
 	 *
 	 * @param string $content
@@ -281,7 +281,7 @@ class MageBridgeHelper
 		return $content;
 	}
 
-	/*
+	/**
 	 * Helper-method to merge the original Magento URL into the Joomla! URL
 	 *
 	 * @param string $url
@@ -342,7 +342,7 @@ class MageBridgeHelper
 		return $url;
 	}
 
-	/*
+	/**
 	 * Helper-method to parse the comma-seperated setting "disable_css_mage" into an array
 	 *
 	 * @param null
@@ -371,7 +371,7 @@ class MageBridgeHelper
 		return $disable_css;
 	}
 
-	/*
+	/**
 	 * Helper-method to find out if some kind of CSS-file is disabled or not
 	 *
 	 * @param string $css
@@ -398,7 +398,7 @@ class MageBridgeHelper
 		return ($allow == 3) ? true : false;
 	}
 
-	/*
+	/**
 	 * Helper-method to parse the comma-seperated setting "disable_js_mage" into an array
 	 *
 	 * @param null
@@ -427,7 +427,7 @@ class MageBridgeHelper
 		return $disable_js;
 	}
 
-	/*
+	/**
 	 * Helper-method to find out if some kind of JS-file is disabled or not
 	 *
 	 * @param string $js
@@ -453,7 +453,7 @@ class MageBridgeHelper
 		return false;
 	}
 
-	/*
+	/**
 	 * Helper-method to get the current Joomla! core version
 	 *
 	 * @param null
@@ -467,7 +467,7 @@ class MageBridgeHelper
 		return $version->getShortVersion();
 	}
 
-	/*
+	/**
 	 * Helper-method to get the current Joomla! core version
 	 *
 	 * @param $version string|array
@@ -494,7 +494,7 @@ class MageBridgeHelper
 		return false;
 	}
 
-	/*
+	/**
 	 * Helper-method to get the current Joomla! core version
 	 *
 	 * @param null
@@ -505,7 +505,7 @@ class MageBridgeHelper
 		return self::isJoomlaVersion(array('3.0', '3.1', '3.2', '3.3', '3.4', '3.5'));
 	}
 
-	/*
+	/**
 	 * Helper-method to get the current Joomla! core version
 	 *
 	 * @param null
@@ -516,7 +516,7 @@ class MageBridgeHelper
 		return self::isJoomlaVersion(array('1.6', '1.7', '2.5'));
 	}
 
-	/*
+	/**
 	 * Helper-method to get the current Joomla! core version
 	 *
 	 * @param null
@@ -527,7 +527,7 @@ class MageBridgeHelper
 		return self::isJoomlaVersion('1.7');
 	}
 
-	/*
+	/**
 	 * Helper-method to get the current Joomla! core version
 	 *
 	 * @param null
@@ -538,7 +538,7 @@ class MageBridgeHelper
 		return self::isJoomlaVersion('1.6');
 	}
 
-	/*
+	/**
 	 * Helper-method to get the current Joomla! core version
 	 *
 	 * @param null
@@ -549,7 +549,7 @@ class MageBridgeHelper
 		return self::isJoomlaVersion('1.5');
 	}
 
-	/*
+	/**
 	 * Helper-method to get the component parameters
 	 *
 	 * @param null
@@ -557,12 +557,12 @@ class MageBridgeHelper
 	 */
 	static public function getParams()
 	{
-		$params = JFactory::getApplication()->getMenu('site')->getParams(JRequest::getInt('Itemid'));
+		$params = JFactory::getApplication()->getMenu('site')->getParams(JFactory::getApplication()->input->getInt('Itemid'));
 
 		return $params;
 	}
 
-	/*
+	/**
 	 * Helper-method to convert an array to a MySQL string
 	 *
 	 * @param null
@@ -581,7 +581,7 @@ class MageBridgeHelper
 		return implode(',', $sql);
 	}
 
-	/*
+	/**
 	 * Helper-method to convert a CSV-string to an array
 	 *
 	 * @param null

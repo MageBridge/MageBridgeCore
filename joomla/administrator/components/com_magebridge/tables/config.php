@@ -19,14 +19,14 @@ defined('_JEXEC') or die('Restricted access');
 */
 class TableConfig extends YireoTable
 {
-    /**
-     * Constructor
-     *
-     * @param JDatabase $db
-     * @return null
-     */
-    public function __construct(& $db) {
-        parent::__construct('#__magebridge_config', 'id', $db);
-    }
+	/**
+	 * Constructor
+	 *
+	 * @param JDatabase $db
+	 * @return null
+	 */
+	public function __construct(& $db) {
+		parent::__construct('#__magebridge_config', 'id', $db);
+	}
 }
 

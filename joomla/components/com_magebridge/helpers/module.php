@@ -2,11 +2,11 @@
 /**
  * Joomla! component MageBridge
  *
- * @author    Yireo (info@yireo.com)
+ * @author	Yireo (info@yireo.com)
  * @package   MageBridge
  * @copyright Copyright 2015
  * @license   GNU Public License
- * @link      http://www.yireo.com
+ * @link	  http://www.yireo.com
  */
 
 // No direct access
@@ -15,13 +15,13 @@ defined('_JEXEC') or die('Restricted access');
 // Import the general module-helper
 jimport('joomla.application.module.helper');
 
-/*
+/**
  * Helper for usage in Joomla!/MageBridge modules and templates
  */
 
 class MageBridgeModuleHelper extends JModuleHelper
 {
-	/*
+	/**
 	 * Load all MageBridge-modules
 	 *
 	 * @param null
@@ -29,7 +29,7 @@ class MageBridgeModuleHelper extends JModuleHelper
 	 */
 	static public function loadMageBridgeModules()
 	{
-		if (MagebridgeModelConfig::load('preload_all_modules') == 0 && JRequest::getInt('Itemid') != 0)
+		if (MagebridgeModelConfig::load('preload_all_modules') == 0 && JFactory::getApplication()->input->getInt('Itemid') != 0)
 		{
 			static $modules = null;
 			if (is_array($modules) == false)
@@ -64,7 +64,7 @@ class MageBridgeModuleHelper extends JModuleHelper
 		return $modules;
 	}
 
-	/*
+	/**
 	 * Fetch the content from the bridge
 	 *
 	 * @param string $function

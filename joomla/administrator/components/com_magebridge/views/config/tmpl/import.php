@@ -1,5 +1,5 @@
 <?php 
-/*
+/**
  * Joomla! component MageBridge
  *
  * @author Yireo (info@yireo.com)
@@ -15,14 +15,14 @@ defined('_JEXEC') or die('Restricted access');
 <form enctype="multipart/form-data" method="post" name="adminForm" id="adminForm">
 <table>
 <tr>
-    <td nowrap="nowrap">
-    </td>
+	<td nowrap="nowrap">
+	</td>
 </tr>
 </table>
 <div id="editcell">
-    <input type="hidden" name="max_file_size" value="100000" />
-    Choose a file to upload: <input name="xml" type="file" /><br />
-    <input type="submit" value="Upload XML-file" />
+	<input type="hidden" name="max_file_size" value="100000" />
+	Choose a file to upload: <input name="xml" type="file" /><br />
+	<input type="submit" value="Upload XML-file" />
 </div>
 
 <input type="hidden" name="option" value="com_magebridge" />

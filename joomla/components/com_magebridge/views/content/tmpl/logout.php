@@ -15,7 +15,7 @@ defined('_JEXEC') or die('Restricted access');
 <?php if ($this->params->get('intermediate_page') != 1 && !empty($this->block)) { ?>
 
 <div id="magebridge-content">
-    <?php echo $this->block; ?>
+	<?php echo $this->block; ?>
 </div>
 <div style="clear:both"></div>
 
@@ -23,7 +23,7 @@ defined('_JEXEC') or die('Restricted access');
 
 <div id="magebridge-content">
 <div class="page-head">
-    <h3><?php echo $this->escape($this->params->get('page_title')); ?></h3>
+	<h3><?php echo $this->escape($this->params->get('page_title')); ?></h3>
 </div>
 <p><?php echo $this->escape($this->params->get('page_text')); ?></p>
 <form action="<?php echo $this->logout_url; ?>" method="post" name="logout" id="logout">

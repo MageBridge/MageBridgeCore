@@ -1,5 +1,5 @@
 <?php 
-/*
+/**
  * Joomla! component MageBridge
  *
  * @author Yireo (info@yireo.com)
@@ -17,17 +17,17 @@ $form = $this->form;
 <ul class="nav nav-tabs" id="configTabs">
 <?php $i = 0; ?>
 <?php foreach($form->getFieldsets() as $fieldset): ?>
-    <li><a href="#<?php echo $fieldset->name;?>" data-toggle="tab" class="<?php if($i == 0) echo 'active'; ?>"><?php echo JText::_($fieldset->label);?></a></li>
-    <?php $i++; ?>
+	<li><a href="#<?php echo $fieldset->name;?>" data-toggle="tab" class="<?php if($i == 0) echo 'active'; ?>"><?php echo JText::_($fieldset->label);?></a></li>
+	<?php $i++; ?>
 <?php endforeach; ?>
 </ul>
 
 <div class="span10">
-    <div class="tab-content">
-    <?php foreach($form->getFieldsets() as $fieldset): ?>
-        <?php echo $this->printFieldset($form, $fieldset); ?>
-    <?php endforeach; ?>
-    </div>
+	<div class="tab-content">
+	<?php foreach($form->getFieldsets() as $fieldset): ?>
+		<?php echo $this->printFieldset($form, $fieldset); ?>
+	<?php endforeach; ?>
+	</div>
 </div>
 
 <input type="hidden" name="option" value="com_magebridge" />
@@ -37,5 +37,5 @@ $form = $this->form;
 </form>
 
 <script type="text/javascript">
-    jQuery('#configTabs a:first').tab('show'); // Select first tab
+	jQuery('#configTabs a:first').tab('show'); // Select first tab
 </script>

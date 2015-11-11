@@ -2,12 +2,12 @@
 <extension type="module" version="2.5" client="site" method="upgrade">
 	<name>MOD_MAGEBRIDGE_SWITCHER</name>
 	<author>Yireo</author>
-	<creationDate>July 2015</creationDate>
+	<creationDate>${dateMonth}</creationDate>
 	<copyright>Copyright (C) 2015 Yireo.com. All rights reserved.</copyright>
 	<license>GNU/GPL</license>
 	<authorEmail>development@yireo.com</authorEmail>
 	<authorUrl>www.yireo.com</authorUrl>
-	<version>1.9.5324</version>
+	<version>1.9.5362</version>
 	<description>MOD_MAGEBRIDGE_SWITCHER_DESC</description>
 
 	<files folder="site">

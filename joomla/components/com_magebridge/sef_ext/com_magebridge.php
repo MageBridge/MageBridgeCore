@@ -25,33 +25,33 @@ $segments[] = $component_prefix;
 
 // Set the alias if it is not present
 if (!empty($vars['request'])) {
-    $request = explode('/', urldecode($vars['request']));
-    if (!empty($request)) {
-        foreach ($request as $r) {
-            if (!empty($r)) $segments[] = $r;
-        }
-    } else {
-        $segments[] = $vars['request'];
-    }
+	$request = explode('/', urldecode($vars['request']));
+	if (!empty($request)) {
+		foreach ($request as $r) {
+			if (!empty($r)) $segments[] = $r;
+		}
+	} else {
+		$segments[] = $vars['request'];
+	}
 } else if ($vars['view'] == 'content' && !empty($vars['layout'])) {
-    $segments[] = 'content';
-    $segments[] = $vars['layout'];
+	$segments[] = 'content';
+	$segments[] = $vars['layout'];
 }
 
 // Add the extra segments
 $system = array('Itemid', 'lang', 'option', 'request', 'view', 'layout', 'task');
 if (!empty($vars)) {
-    foreach ($vars as $name => $value) {
-        if (!in_array($name, $system)) {
-            $segments[] = "$name-$value";
-        }
-    }
+	foreach ($vars as $name => $value) {
+		if (!in_array($name, $system)) {
+			$segments[] = "$name-$value";
+		}
+	}
 }
 
 
 // Convert the segments into the URL-string
 if (count($segments) > 0) {
-    $string = sef_404::sefGetLocation($string, $segments, null);
+	$string = sef_404::sefGetLocation($string, $segments, null);
 }
 
 // End

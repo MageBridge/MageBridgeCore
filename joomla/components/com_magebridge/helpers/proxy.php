@@ -12,29 +12,34 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
-/*
+/**
  * Helper for proxy
  */
-
 class MageBridgeProxyHelper
 {
-	/*
+	/**
+	 * @param $app JApplicationSite
+	 */
+	public function __construct($app)
+	{
+		$this->app = $app;
+	}
+	
+	/**
 	 * Proxy uploads
 	 *
-	 * @param null
-	 * @return bool
+	 * @return array
 	 */
-	public static function upload()
+	public function upload()
 	{
 		// Don't do anything outside of the MageBridge component
-		if (JRequest::getCmd('option') != 'com_magebridge')
+		if ($this->app->input->getCmd('option') != 'com_magebridge')
 		{
 			return array();
 		}
 
 		// Define some variables
-		$application = JFactory::getApplication();
-		$tmp_files = array();
+		$tmpFiles = array();
 
 		// Automatically handle file uploads
 		if (!empty($_FILES))
@@ -47,12 +52,12 @@ class MageBridgeProxyHelper
 				}
 
 				// Detect file upload problems
-				$error_msg = null;
+				$errorMessage = null;
 				switch ($file['error'])
 				{
 					case 1:
 					case 2:
-						$error_msg = JText::sprintf('Upload of %s exceeded the maximum size [%d]', $file['name'], $file['error']);
+						$errorMessage = JText::sprintf('Upload of %s exceeded the maximum size [%d]', $file['name'], $file['error']);
 						break;
 
 					case 3:
@@ -60,46 +65,49 @@ class MageBridgeProxyHelper
 					case 6:
 					case 7:
 					case 8:
-						$error_msg = JText::sprintf('Error when uploading file %s [%d]', $file['name'], $file['error']);
+						$errorMessage = JText::sprintf('Error when uploading file %s [%d]', $file['name'], $file['error']);
 						break;
 				}
 
-				// Move the uploaded file to the Joomla! tmp-directory
+				// @todo: Why re-upload file to Joomla? Why not directly to Magento using tmp file?
+
+				// Move the uploaded file to the Joomla tmp-directory
 				if (is_readable($file['tmp_name']))
 				{
-
 					// Upload the specific file
 					jimport('joomla.filesystem.file');
-					$tmp_file = JFactory::getApplication()->getCfg('tmp_path') . '/' . $file['name'];
-					JFile::upload($file['tmp_name'], $tmp_file);
+					$tmpFile = $this->getUploadPath() . '/' . $file['name'];
+					JFile::upload($file['tmp_name'], $tmpFile);
 
 					// Check if the file is there
-					if (!is_file($tmp_file) || !is_readable($tmp_file))
+					if (!is_file($tmpFile) || !is_readable($tmpFile))
 					{
-						$error_msg = JText::sprintf('Unable to read uploaded file %s', $tmp_file);
+						$errorMessage = JText::sprintf('Unable to read uploaded file %s', $tmpFile);
 					}
 					else
 					{
-						if (!filesize($tmp_file) > 0)
+						if (!filesize($tmpFile) > 0)
 						{
-							$error_msg = JText::sprintf('Uploaded file %s is empty', $tmp_file);
+							$errorMessage = JText::sprintf('Uploaded file %s is empty', $tmpFile);
 						}
 						else
 						{
-							$tmp_files[$name] = $tmp_file;
+							$file['tmp_name'] = $tmpFile;
+							$tmpFiles[$name] = $file;
+							continue;
 						}
 					}
 				}
 				else
 				{
-					$error_msg = JText::sprintf('Uploaded file %s is not readable', $tmp_file);
+					$errorMessage = JText::sprintf('Uploaded file %s is not readable', $file['tmp_name']);
 				}
 
 				// Handle errors
-				if (!empty($error_msg))
+				if (!empty($errorMessage))
 				{
 					// See if we can redirect back to the same old page
-					$request = JRequest::getString('request');
+					$request = JFactory::getApplication()->input->getString('request');
 
 					if (preg_match('/\/uenc\/([a-zA-Z0-9\,\-\_]+)/', $request, $uenc))
 					{
@@ -108,41 +116,53 @@ class MageBridgeProxyHelper
 						if (!empty($uenc) && !empty($page))
 						{
 							// Remove the old file
-							self::cleanup($tmp_files);
+							$this->cleanup($tmpFiles);
 
 							// Redirect to the old page
-							$application->redirect($page, $error_msg, 'error');
-							$application->close();
+							$this->app->redirect($page, $errorMessage, 'error');
+							$this->app->close();
 
-							return;
+							return array();
 						}
 					}
 
 					// If no redirect could be given, do not handle this at all, but just set an error
-					$application->enqueueMessage($error_msg, 'error');
+					$this->app->enqueueMessage($errorMessage, 'error');
 				}
 			}
 		}
 
-		return $tmp_files;
+		return $tmpFiles;
 	}
 
-	/*
+	/**
+	 * Get the upload path
+	 *
+	 * @return string
+	 */
+	public function getUploadPath()
+	{
+		$config = JFactory::getConfig();
+		
+		return $config->get('tmp_path');
+	}
+
+	/**
 	 * Cleanup temporary uploads
 	 *
-	 * @param null
+	 * @param $tmpFiles array
+	 *
 	 * @return bool
 	 */
-	public static function cleanup($tmp_files)
+	public function cleanup($tmpFiles)
 	{
-		if (count($tmp_files) > 0)
+		if (count($tmpFiles) > 0)
 		{
-			foreach ($tmp_files as $tmp_file)
+			foreach ($tmpFiles as $tmpFile)
 			{
-				if (is_file($tmp_file))
+				if (is_file($tmpFile))
 				{
-					jimport('joomla.filesystem.file');
-					JFile::delete($tmp_file);
+					unlink($tmpFile);
 				}
 			}
 		}

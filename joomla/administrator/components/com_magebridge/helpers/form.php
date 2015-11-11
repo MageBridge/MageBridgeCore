@@ -17,45 +17,45 @@ defined('_JEXEC') or die();
  */
 class MageBridgeFormHelper
 {
-    /*
-     * Method to get the HTML of a certain field
-     *
-     * @param null
-     * @return string
-     */
-    static public function getField($type, $name, $value = null, $array = 'magebridge')
-    {
-        jimport('joomla.form.helper');
-        jimport('joomla.form.form');
+	/**
+	 * Method to get the HTML of a certain field
+	 *
+	 * @param null
+	 * @return string
+	 */
+	static public function getField($type, $name, $value = null, $array = 'magebridge')
+	{
+		jimport('joomla.form.helper');
+		jimport('joomla.form.form');
 
-        $fileType = preg_replace('/^magebridge\./', '', $type);
-        include_once JPATH_ADMINISTRATOR.'/components/com_magebridge/fields/'.$fileType.'.php';
+		$fileType = preg_replace('/^magebridge\./', '', $type);
+		include_once JPATH_ADMINISTRATOR.'/components/com_magebridge/fields/'.$fileType.'.php';
 
-        $form = new JForm('magebridge');
-        $field = JFormHelper::loadFieldType($type);
-        if (is_object($field) == false) {
-            $message = JText::sprintf('COM_MAGEBRIDGE_UNKNOWN_FIELD', $type);
-            JFactory::getApplication()->enqueueMessage($message, 'error');
-            return null;
-        }
+		$form = new JForm('magebridge');
+		$field = JFormHelper::loadFieldType($type);
+		if (is_object($field) == false) {
+			$message = JText::sprintf('COM_MAGEBRIDGE_UNKNOWN_FIELD', $type);
+			JFactory::getApplication()->enqueueMessage($message, 'error');
+			return null;
+		}
 
-        $field->setName($name);
-        $field->setValue($value);
+		$field->setName($name);
+		$field->setValue($value);
    
-        return $field->getHtmlInput();
-    }
+		return $field->getHtmlInput();
+	}
 
-    /*
-     * Get an object-list of all Joomla! usergroups
-     *
-     * @param null
-     * @return string
-     */
-    static public function getUsergroupOptions()
-    {
-        $query = 'SELECT `id` AS `value`, `title` AS `text` FROM `#__usergroups` WHERE `parent_id` > 0';
-        $db = JFactory::getDBO();
-        $db->setQuery($query);
-        return $db->loadObjectList();
-    }
+	/**
+	 * Get an object-list of all Joomla! usergroups
+	 *
+	 * @param null
+	 * @return string
+	 */
+	static public function getUsergroupOptions()
+	{
+		$query = 'SELECT `id` AS `value`, `title` AS `text` FROM `#__usergroups` WHERE `parent_id` > 0';
+		$db = JFactory::getDBO();
+		$db->setQuery($query);
+		return $db->loadObjectList();
+	}
 }

@@ -14,7 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 <?php if (!empty($this->block)) { ?>
 <div id="magebridge-content" class="magebridge-content magebridge-catalog magebridge-product">
-    <?php echo $this->block; ?>
+	<?php echo $this->block; ?>
 </div>
 <div style="clear:both"></div>
 <?php } else { ?>

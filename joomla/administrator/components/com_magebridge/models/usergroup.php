@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * Joomla! component MageBridge
  *
  * @author Yireo (info@yireo.com)
@@ -15,21 +15,21 @@ defined('_JEXEC') or die();
 // Import Joomla! libraries
 jimport('joomla.utilities.date');
 
-/*
+/**
  * MageBridge Usergroup model
  */
 class MagebridgeModelUsergroup extends YireoModel
 {
-    /**
-     * Constructor method
-     *
-     * @access public
-     * @param null
-     * @return null
-     */
-    public function __construct()
-    {
-        $this->_orderby_title = 'description';
-        parent::__construct('usergroup');
-    }
+	/**
+	 * Constructor method
+	 *
+	 * @access public
+	 * @param null
+	 * @return null
+	 */
+	public function __construct()
+	{
+		$this->_orderby_title = 'description';
+		parent::__construct('usergroup');
+	}
 }
