@@ -109,6 +109,7 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 	 */
 	protected function sendDirectOutputUrlResponse($response)
 	{
+        $this->spoofHeaders($response);
 		header('Content-Encoding: none');
 		print $response;
 
