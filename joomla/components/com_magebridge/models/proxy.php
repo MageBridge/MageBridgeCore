@@ -92,7 +92,7 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 		}
 
 		// Check whether the Content-Type is indicating non-bridge output
-		if (!empty($this->head['headers']) && preg_match('/Content-Type: (application|text)\/(xml|javascript|json|octetstream)/', $this->head['headers']))
+		if (!empty($this->head['headers']) && preg_match('/Content-Type: (application|text)\/(xml|javascript|json|octetstream|pdf|x-pdf)/', $this->head['headers']))
 		{
 			$this->debug->trace('Detecting non-HTML output in HTTP headers', $this->head['headers']);
 			
@@ -110,6 +110,7 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 	protected function sendDirectOutputUrlResponse($response)
 	{
         $this->spoofHeaders($response);
+
 		header('Content-Encoding: none');
 		print $response;
 
@@ -267,7 +268,6 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 
 			// Fetch the data by using POST
 			$rawResponse = $this->getRemote($this->bridge->getMagentoBridgeUrl(), $data, MagebridgeModelConfig::load('method'), true);
-			$rawResponse = trim($rawResponse);
 
 			// Decode the reply
 			$decodedResponse = $this->decode($rawResponse);
@@ -1244,7 +1244,7 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 	{
 		$header = strtolower($header);
 
-		if (preg_match('/^(http|cache|date|expires|pragma|content|etag|last-modified)/', $header))
+		if (preg_match('/^(http|cache|date|expires|pragma|content|etag|last-modified|x-magebridge)/', $header))
 		{
 			return true;
 		}
@@ -1290,7 +1290,7 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 		}
 
 		// Spoof the bridged Content-Type header anyway
-		if (preg_match('/Content-Type: (.*)/', $this->head['headers'], $match))
+		if (preg_match('/content-type: (.*)/i', $this->head['headers'], $match))
         {
 			header($match[0]);
 		}
