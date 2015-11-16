@@ -151,4 +151,58 @@ class Yireo_MageBridge_OutputController extends Mage_Core_Controller_Front_Actio
             echo 'No GET variable "test" given';
         }
     }
+
+    /**
+     * Output test 11
+     *
+     * @access public
+     * @param null
+     * @return null
+     */
+    public function test11Action()
+    {
+        $zipname = BP . '/skin/frontend/base/default/magebridge/test/test.zip';
+
+        if (file_exists($zipname) == false) {
+            die('File does not exist: ' . $zipname);
+        }
+
+        header('X-MageBridge-Test: test11');
+        header('Content-Disposition: attachment; filename="' . basename($zipname) . '";');
+        header('Content-Length: ' . filesize($zipname));
+        header('Content-type: application/octet-stream');
+        header('Pragma: public');
+        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+        header('Last-Modified: ' . date('r'));
+
+        echo file_get_contents($zipname);
+        exit;
+    }
+
+    /**
+     * Output test 12
+     *
+     * @access public
+     * @param null
+     * @return null
+     */
+    public function test12Action()
+    {
+        $pdfname = BP . '/skin/frontend/base/default/magebridge/test/test.pdf';
+
+        if (file_exists($pdfname) == false) {
+            die('File does not exist');
+        }
+
+        header('X-MageBridge-Test: test12');
+        header('Content-Disposition: inline; filename="'. basename($pdfname) . '";');
+        header('Content-Length: ' . filesize($pdfname));
+        header('Content-type: application/pdf');
+        header('Pragma: public');
+        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+        header('Last-Modified: '.date('r'));
+
+        echo file_get_contents($pdfname);
+        exit;
+    }
 }
