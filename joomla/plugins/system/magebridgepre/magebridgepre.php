@@ -54,7 +54,10 @@ class plgSystemMageBridgePre extends JPlugin
 		}
 
 		// Perform a postlogin if needed
-		$post = $application->input->post->getArray();
+        if (YireoHelper::isJoomla35())
+        {
+    		$post = $application->input->post->getArray();
+        }
 
 		if (empty($post))
 		{
