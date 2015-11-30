@@ -1,3 +1,16 @@
-# Modman file
+magento/app/code/community/Yireo/JoomlaApi app/code/community/Yireo/JoomlaApi
 magento/app/code/community/Yireo/MageBridge app/code/community/Yireo/MageBridge
+magento/app/code/community/Yireo/MageBridgeRedirect app/code/community/Yireo/MageBridgeRedirect
+magento/app/code/community/Yireo/MageBridgeTheme app/code/community/Yireo/MageBridgeTheme
+magento/app/design/adminhtml/default/default/layout/magebridge.xml app/design/adminhtml/default/default/layout/magebridge.xml
+magento/app/design/adminhtml/default/default/template/magebridge app/design/adminhtml/default/default/template/magebridge
+magento/app/design/frontend/default/default/template/magebridge app/design/frontend/default/default/template/magebridge
+magento/app/design/frontend/default/magebridge app/design/frontend/default/magebridge
+magento/app/etc/modules/Yireo_JoomlaApi.xml app/etc/modules/Yireo_JoomlaApi.xml
 magento/app/etc/modules/Yireo_MageBridge.xml app/etc/modules/Yireo_MageBridge.xml
+magento/app/etc/modules/Yireo_MageBridgeRedirect.xml app/etc/modules/Yireo_MageBridgeRedirect.xml
+magento/app/etc/modules/Yireo_MageBridgeTheme.xml app/etc/modules/Yireo_MageBridgeTheme.xml
+magento/js/magebridge js/magebridge
+magento/magebridge.class.php magebridge.class.php
+magento/magebridge.php magebridge.php
+magento/skin/adminhtml/default/default/images/magebridge skin/adminhtml/default/default/images/magebridge
