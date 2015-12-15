@@ -180,8 +180,8 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 		}
 
 		// Output the raw content
-		header('Content-Encoding: none');
-		header('Content-Length: ' . YireoHelper::strlen($response));
+		//header('Content-Encoding: none');
+		//header('Content-Length: ' . YireoHelper::strlen($response));
 
 		if (!empty($this->head['info']['content_type']))
 		{
