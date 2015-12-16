@@ -152,6 +152,13 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 	 */
 	protected function sendNonBridgeOutputResponse($response, $decodedResponse)
 	{
+        // Detect Content-Type
+        $contentType = null;
+        if (preg_match('/Content-Type: (.*)/i', $this->head['headers'], $match)) {
+            $contentType = strtolower(trim($match[1]));
+            $this->head['info']['content_type'] = $contentType;
+        }
+
 		// Spoof the current HTTP-headers
 		$this->spoofHeaders($response);
 
@@ -179,9 +186,21 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 			$response = MageBridgeHelper::filterContent($response);
 		}
 
-		// Output the raw content
-		//header('Content-Encoding: none');
-		//header('Content-Length: ' . YireoHelper::strlen($response));
+        // Output the raw content
+        $skipContentTypes = array('application/pdf');
+        if (!in_array($contentType, $skipContentTypes)) {
+
+            // Detect HTML and parse it anyway
+            if (preg_match('/<\/html>$/', $response))
+            {
+                $response = MageBridgeHelper::filterContent($response);
+            }
+
+            header('Content-Length: ' . YireoHelper::strlen($response));
+        }
+
+        // Nothing is compressed with this bridge
+        header('Content-Encoding: none');
 
 		if (!empty($this->head['info']['content_type']))
 		{
