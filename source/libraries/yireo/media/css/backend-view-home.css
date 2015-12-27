@@ -1,0 +1,78 @@
+/**
+ * Yireo Library for Joomla!
+ *
+ * @author Yireo
+ * @package Yireo
+ * @copyright Copyright 2013
+ * @link http://www.yireo.com/
+ */
+
+div.shadedbox {
+    margin-right: 20px;
+    margin-bottom: 10px;
+    padding: 10px;
+    border:1px solid #DADADA;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+    background: #ffffff;
+    background: -moz-radial-gradient(center, ellipse cover,  #ffffff 50%, #e5e5e5 87%);
+    background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(50%,#ffffff), color-stop(87%,#e5e5e5));
+    background: -webkit-radial-gradient(center, ellipse cover,  #ffffff 50%,#e5e5e5 87%);
+    background: -o-radial-gradient(center, ellipse cover,  #ffffff 50%,#e5e5e5 87%);
+    background: -ms-radial-gradient(center, ellipse cover,  #ffffff 50%,#e5e5e5 87%);
+    background: radial-gradient(ellipse at center,  #ffffff 50%,#e5e5e5 87%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#e5e5e5',GradientType=1 );
+}
+
+div.version {
+    padding: 20px;
+}
+
+div#logo {
+    text-align: center;
+    margin-top: 20px;
+}
+
+div#promotion h3.teaser {
+    font-size:400%;
+    line-height:100%;
+    font-weight:normal;
+    border:0;
+    color:#d20000;
+    text-align:center;
+    margin: 0;
+    padding: 0;
+}
+
+div#promotion p.link {
+    font-size: 130%;
+    font-weight: bold;
+    line-height:10%;
+    margin-top: 20px;
+    text-align:center;
+}
+
+div#cpanel div.icon {
+    text-align: center;
+    margin-right: 15px;
+    float: left;
+    margin-bottom: 15px;
+    height: 74px;
+    width: 125px;
+    -webkit-box-shadow: inset 0 1px 0 rgba(255,255,255,.2), 0 1px 2px rgba(0,0,0,.05);
+    -moz-box-shadow: inset 0 1px 0 rgba(255,255,255,.2), 0 1px 2px rgba(0,0,0,.05);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.2), 0 1px 2px rgba(0,0,0,.05);
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+}
+
+div#cpanel div.icon:hover {
+    background-color: rgba(0,0,0,.02);
+}
+
+div#cpanel div.icon span {
+    display: block;
+    text-align: center;
+}
