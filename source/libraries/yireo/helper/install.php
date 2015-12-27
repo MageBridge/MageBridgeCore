@@ -60,7 +60,7 @@ class YireoHelperInstall
         }
 
         // Check if the downloaded file exists
-        $tmp_path = JFactory::getConfig()->get('tmp_path');
+        $tmp_path = JFactory::getApplication()->getCfg('tmp_path');
         $package_path = $tmp_path.'/'.$package_file;
         if (!is_file($package_path)) {
             JError::raiseWarning('SOME_ERROR_CODE', JText::sprintf('LIB_YIREO_HELPER_INSTALL_DOWNLOAD_FILE_NOT_EXIST', $package_path));
@@ -89,7 +89,7 @@ class YireoHelperInstall
 
         // Get the name of downloaded package
         if (!is_file($package['packagefile'])) {
-            $package['packagefile'] = JFactory::getConfig()->get('tmp_path').'/'.$package['packagefile'];
+            $package['packagefile'] = JFactory::getApplication()->getCfg('tmp_path').'/'.$package['packagefile'];
         }
 
         // Clean up the installation
@@ -123,9 +123,9 @@ class YireoHelperInstall
 
         // Set the target path if not given
         if (empty($file)) {
-            $file = JFactory::getConfig()->get('tmp_path').'/'.JInstallerHelper::getFilenameFromURL($url);
+            $file = $app->getCfg('tmp_path').'/'.JInstallerHelper::getFilenameFromURL($url);
         } else {
-            $file = JFactory::getConfig()->get('tmp_path').'/'.basename($file);
+            $file = $app->getCfg('tmp_path').'/'.basename($file);
         }
 
         // Open the remote server socket for reading
@@ -198,7 +198,7 @@ class YireoHelperInstall
         $db->setQuery($query);
 
         try {
-            $db->execute();
+            $db->query();
             JError::raiseNotice('SOME_ERROR_CODE', JText::sprintf('LIB_YIREO_HELPER_INSTALL_ENABLE_PLUGIN_SUCCESS', $label));
         } catch(Exception $e) {
             JError::raiseWarning('SOME_ERROR_CODE', JText::sprintf('LIB_YIREO_HELPER_INSTALL_ENABLE_PLUGIN_FAIL', $label));

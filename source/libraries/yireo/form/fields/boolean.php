@@ -18,62 +18,64 @@ include_once JPATH_LIBRARIES . '/joomla/form/fields/radio.php';
 /*
  * Form Field-class for showing a yes/no field
  */
-
-class YireoFormFieldBoolean extends JFormFieldRadio
+if (!class_exists('YireoFormFieldBoolean'))
 {
-	/*
-	 * Form field type
-	 */
-	public $type = 'Boolean';
+    class YireoFormFieldBoolean extends JFormFieldRadio
+    {
+        /*
+         * Form field type
+         */
+        public $type = 'Boolean';
 
-	public function setup(SimpleXMLElement $element, $value, $group = null)
-	{
-		$rt = parent::setup($element, $value, $group);
+        public function setup(SimpleXMLElement $element, $value, $group = null)
+        {
+            $rt = parent::setup($element, $value, $group);
 
-		$this->element['description'] = $this->element['label'] . '_DESC';
-		$this->description = $this->element['label'] . '_DESC';
-		$this->global = (isset($this->element['global'])) ? $this->element['global'] : 0;
+            $this->element['description'] = $this->element['label'] . '_DESC';
+            $this->description = $this->element['label'] . '_DESC';
+            $this->global = (isset($this->element['global'])) ? $this->element['global'] : 0;
 
-		return $rt;
-	}
+            return $rt;
+        }
 
-	/*
-	 * Method to construct the HTML of this element
-	 *
-	 * @param null
-	 * @return string
-	 */
-	protected function getInput()
-	{
-		$classes = array(
-			'radio',
-			'btn-group',
-			'btn-group-yesno'
-		);
+        /*
+         * Method to construct the HTML of this element
+         *
+         * @param null
+         * @return string
+         */
+        protected function getInput()
+        {
+            $classes = array(
+                'radio',
+                'btn-group',
+                'btn-group-yesno'
+            );
 
-		if (in_array($this->fieldname, array('published', 'enabled', 'state')))
-		{
-			$classes[] = 'jpublished';
-		}
+            if (in_array($this->fieldname, array('published', 'enabled', 'state')))
+            {
+                $classes[] = 'jpublished';
+            }
 
-		$this->class = implode(' ', $classes);
+            $this->class = implode(' ', $classes);
 
-		return parent::getInput();
-	}
+            return parent::getInput();
+        }
 
-	protected function getOptions()
-	{
-		$options = parent::getOptions();
+        protected function getOptions()
+        {
+            $options = parent::getOptions();
 
-		if ($this->global != 0)
-		{
-			array_unshift($options, JHtml::_('select.option', $this->global, JText::_('JGLOBAL')));
-		}
+            if ($this->global != 0)
+            {
+                array_unshift($options, JHtml::_('select.option', $this->global, JText::_('JGLOBAL')));
+            }
 
-		array_unshift($options, JHtml::_('select.option', '1', JText::_('JYES')));
-		array_unshift($options, JHtml::_('select.option', '0', JText::_('JNO')));
+            array_unshift($options, JHtml::_('select.option', '1', JText::_('JYES')));
+            array_unshift($options, JHtml::_('select.option', '0', JText::_('JNO')));
 
 
-		return $options;
-	}
+            return $options;
+        }
+    }
 }

@@ -18,48 +18,51 @@ include_once JPATH_LIBRARIES.'/joomla/form/fields/text.php';
 /*
  * Form Field-class for showing a yes/no field
  */
-class YireoFormFieldText extends JFormFieldText
+if (!class_exists('YireoFormFieldText'))
 {
-	public function setup(SimpleXMLElement $element, $value, $group = null)
+    class YireoFormFieldText extends JFormFieldText
     {
-        $rt = parent::setup($element, $value, $group);
-
-        $label = (string)$this->element['label'];
-
-        if (empty($label))
+        public function setup(SimpleXMLElement $element, $value, $group = null)
         {
-            $option = JFactory::getApplication()->input->getCmd('option');
-            $prefix = $option;
+            $rt = parent::setup($element, $value, $group);
 
-            if ($option == 'com_plugins')
+            $label = (string)$this->element['label'];
+
+            if (empty($label))
             {
-                $prefix = $this->form->getData()->get('name');
+                $option = JFactory::getApplication()->input->getCmd('option');
+                $prefix = $option;
+
+                if ($option == 'com_plugins')
+                {
+                    $prefix = $this->form->getData()->get('name');
+                }
+
+                $label = strtoupper($prefix . '_' . $this->fieldname);
             }
 
-            $label = strtoupper($prefix . '_' . $this->fieldname);
+            $this->element['label'] = $label;
+            $this->element['description'] = $label.'_DESC';
+            $this->description = $label.'_DESC';
+
+            return $rt;
         }
 
-        $this->element['label'] = $label;
-        $this->element['description'] = $label.'_DESC';
-        $this->description = $label.'_DESC';
+        /*
+         * Method to construct the HTML of this element
+         *
+         * @param null
+         * @return string
+         */
+        protected function getInput()
+        {
+            $classes = array(
+                'inputbox', 
+            );
+            
+            $this->class = $this->class . ' ' . implode(' ', $classes);
 
-        return $rt;
-    }
-
-    /*
-     * Method to construct the HTML of this element
-     *
-     * @param null
-     * @return string
-     */
-	protected function getInput()
-	{
-        $classes = array(
-            'inputbox', 
-        );
-        
-        $this->class = $this->class . ' ' . implode(' ', $classes);
-
-        return parent::getInput();
+            return parent::getInput();
+        }
     }
 }

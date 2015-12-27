@@ -121,7 +121,7 @@ class YireoCommonController extends YireoAbstractController
             return $controller;
         }
 
-        throw new BadFunctionCallException(JText::_('LIB_YIREO_NO_CONTROLLER_FOUND'), 500);
+        throw new Exception(JText::_('LIB_YIREO_NO_CONTROLLER_FOUND'));
     }
 }
 
@@ -237,7 +237,7 @@ class YireoController extends YireoCommonController
 
         // Allow or disallow frontend editing
         if ($this->_app->isSite() && in_array($this->_jinput->getCmd('task', 'display'), $this->_allow_tasks) == false) {
-            throw new BadFunctionCallException(JText::_('LIB_YIREO_CONTROLLER_ILLEGAL_REQUEST'), 500);
+            JError::raiseError(500, JText::_('LIB_YIREO_CONTROLLER_ILLEGAL_REQUEST'));
         }
 
         // Check for ACLs in backend
@@ -555,7 +555,7 @@ class YireoController extends YireoCommonController
         // Get the ID-list
         $cid = $this->getIds();
         if (count( $cid ) < 1) {
-            throw new BadFunctionCallException(JText::_('LIB_YIREO_CONTROLLER_ITEM_SELECT_DELETE'), 500);
+            JError::raiseError(500, JText::_('LIB_YIREO_CONTROLLER_ITEM_SELECT_DELETE'));
         }
 
         // Remove all selected items
@@ -593,7 +593,7 @@ class YireoController extends YireoCommonController
         // Get the ID-list
         $cid = $this->getIds();
         if (count( $cid ) < 1) {
-            throw new BadFunctionCallException(JText::_('LIB_YIREO_CONTROLLER_ITEM_SELECT_PUBLISH'), 500);
+            JError::raiseError(500, JText::_('LIB_YIREO_CONTROLLER_ITEM_SELECT_PUBLISH'));
         }
 
         // Use the model to publish this entry
@@ -631,7 +631,7 @@ class YireoController extends YireoCommonController
         // Get the ID-list
         $cid = $this->getIds();
         if (count( $cid ) < 1) {
-            throw new BadFunctionCallException(JText::_('LIB_YIREO_CONTROLLER_ITEM_SELECT_UNPUBLISH'), 500);
+            JError::raiseError(500, JText::_('LIB_YIREO_CONTROLLER_ITEM_SELECT_UNPUBLISH'));
         }
 
         // Use the model to unpublish this entry
@@ -1005,9 +1005,20 @@ class YireoController extends YireoCommonController
             return $this->id;
         }
 
-        // Fetch the ID-list and return the first entry of it
         $cid = $this->_jinput->get('cid', array(0), null, 'array');
-        return (int)$cid[0];
+        $id = (int)$cid[0];
+        if (!empty($id)) {
+            $this->id = $id;
+            return $this->id;
+        }
+
+        $id = $this->_jinput->getInt('id');
+        if (!empty($id)) {
+            $this->id = $id;
+            return $this->id;
+        }
+
+        return $this->id;
     }
 
     /**

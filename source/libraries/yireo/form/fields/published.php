@@ -18,53 +18,56 @@ include_once JPATH_LIBRARIES.'/joomla/form/fields/radio.php';
 /*
  * Form Field-class for showing a yes/no field
  */
-class YireoFormFieldPublished extends JFormFieldRadio
+if (!class_exists('YireoFormFieldPublished'))
 {
-    /*
-     * Form field type
-     */
-    public $type = 'Published';
-
-	public function setup(SimpleXMLElement $element, $value, $group = null)
+    class YireoFormFieldPublished extends JFormFieldRadio
     {
-        $rt = parent::setup($element, $value, $group);
+        /*
+         * Form field type
+         */
+        public $type = 'Published';
 
-        $this->element['label'] = 'JPUBLISHED';
-        $this->element['required'] = 1;
-        $this->required = 1;
+        public function setup(SimpleXMLElement $element, $value, $group = null)
+        {
+            $rt = parent::setup($element, $value, $group);
 
-        return $rt;
-    }
+            $this->element['label'] = 'JPUBLISHED';
+            $this->element['required'] = 1;
+            $this->required = 1;
 
-    /*
-     * Method to construct the HTML of this element
-     *
-     * @param null
-     * @return string
-     */
-	protected function getInput()
-	{
-        $classes = array(
-            'radio', 
-            'btn-group',
-            'btn-group-yesno'
-        );
-        
-        if (in_array($this->fieldname, array('published', 'enabled', 'state'))) {
-            $classes[] = 'jpublished';
+            return $rt;
         }
 
-        $this->class = implode(' ', $classes);
+        /*
+         * Method to construct the HTML of this element
+         *
+         * @param null
+         * @return string
+         */
+        protected function getInput()
+        {
+            $classes = array(
+                'radio', 
+                'btn-group',
+                'btn-group-yesno'
+            );
+            
+            if (in_array($this->fieldname, array('published', 'enabled', 'state'))) {
+                $classes[] = 'jpublished';
+            }
 
-        return parent::getInput();
-    }
-    
-	protected function getOptions()
-	{
-        $options = array(
-            JHtml::_('select.option', '0', JText::_('JUNPUBLISHED')),
-            JHtml::_('select.option', '1', JText::_('JPUBLISHED')),
-        );
-        return $options;
+            $this->class = implode(' ', $classes);
+
+            return parent::getInput();
+        }
+        
+        protected function getOptions()
+        {
+            $options = array(
+                JHtml::_('select.option', '0', JText::_('JUNPUBLISHED')),
+                JHtml::_('select.option', '1', JText::_('JPUBLISHED')),
+            );
+            return $options;
+        }
     }
 }

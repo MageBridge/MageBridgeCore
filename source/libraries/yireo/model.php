@@ -311,17 +311,12 @@ class YireoModel extends YireoCommonModel
      */
     public function initLimit($limit = null) 
     {
-        if (is_numeric($limit) == false) {
-            $limit = $this->getFilter('list_limit', JFactory::getConfig()->get('list_limit')); 
+        if (empty($limit)) {
+            $limit = $this->getFilter('list_limit');
         }
 
         if (empty($limit)) {
-            $this->_limit_query = true;
-            $total = $this->getTotal();
-
-            if ($total > 3000) {
-                $limit = 500;
-            }
+            $limit = $this->app->getUserStateFromRequest($this->getFilterName('limit'), 'list_limit', $this->app->getCfg('list_limit'), 'int');
         }
 
         $this->setState('limit', $limit);
@@ -338,8 +333,9 @@ class YireoModel extends YireoCommonModel
     public function initLimitstart($limitstart = null) 
     {
         if (is_numeric($limitstart) == false) {
-            $limitstart = $this->app->getUserStateFromRequest($this->_option_id.'limitstart', 'limitstart', 0, 'int');
+            $limitstart = $this->app->getUserStateFromRequest($this->getFilterName('limitstart'), 'limitstart', 0, 'int');
         }
+
         $this->setState('limitstart', $limitstart);
     }
 
@@ -357,9 +353,15 @@ class YireoModel extends YireoCommonModel
     public function getFilter($filter = '', $default = '', $type = 'cmd', $option = '') 
     {
         if ($this->_allow_filter == false) return null;
-        if (empty($option)) $option = $this->_option_id;
-        $value = $this->app->getUserStateFromRequest( $option.'filter_'.$filter, 'filter_'.$filter, $default, $type );
+        $value = $this->app->getUserStateFromRequest($this->getFilterName($filter), 'filter_'.$filter, $default, $type);
         return $value;
+    }
+
+    public function getFilterName($filter, $option = null)
+    {
+        if (empty($option)) $option = $this->_option_id;
+        
+        return $option.'filter_'.$filter;
     }
 
     /**
@@ -432,7 +434,7 @@ class YireoModel extends YireoCommonModel
                 // Check to see if the data is published
                 $stateField = $this->_tbl->getStateField();
                 if ($this->app->isSite() && isset($data->$stateField) && $data->$stateField == 0) {
-                    throw new BadFunctionCallException(JText::_('LIB_YIREO_MODEL_NOT_FOUND'), 500);
+                    JError::raiseError(404, JText::_('LIB_YIREO_MODEL_NOT_FOUND'));
                     return;
                 }
 
@@ -601,7 +603,7 @@ class YireoModel extends YireoCommonModel
             // The original database-query included a LIMIT statement, so we need a second query
             } else {
                 $query = $this->buildQuery();
-                $query = preg_replace('/^(.*)FROM/mi', 'SELECT COUNT(`'.$this->_tbl_alias.'`.`'.$this->_tbl_key.'`) FROM', $query, 1);
+                $query = preg_replace('/^(.*)FROM/sm', 'SELECT COUNT(*) FROM', $query);
                 $query = preg_replace('/LIMIT(.*)$/', '', $query);
                 $query = preg_replace('/ORDER\ BY(.*)$/m', '', $query);
 
@@ -753,14 +755,14 @@ class YireoModel extends YireoCommonModel
         }
 
         // Automatically set some data
-        $data['modified'] = $now->toSql();
-        $data['modified_date'] = $now->toSql();
+        $data['modified'] = (method_exists('JDate', 'toSql')) ? $now->toSql() : $now->toMySQL();
+        $data['modified_date'] = (method_exists('JDate', 'toSql')) ? $now->toSql() : $now->toMySQL();
         $data['modified_by'] = $uid;
 
         // Set the creation date if the item is new
         if (empty($data['id']) || $data['id'] == 0) {
-            $data['created'] = $now->toSql();
-            $data['created_date'] = $now->toSql();
+            $data['created'] = (method_exists('JDate', 'toSql')) ? $now->toSql() : $now->toMySQL();
+            $data['created_date'] = (method_exists('JDate', 'toSql')) ? $now->toSql() : $now->toMySQL();
             $data['created_by'] = $uid;
         }
 
@@ -845,7 +847,7 @@ class YireoModel extends YireoCommonModel
             $cids = implode( ',', $cid );
             $query = 'DELETE FROM '.$this->_tbl_name.' WHERE '.$this->_tbl_key.' IN ( '.$cids.' )';
             $this->_db->setQuery( $query );
-            if (!$this->_db->execute()) {
+            if (!$this->_db->query()) {
                 $this->setError($this->_db->getErrorMsg());
                 return false;
             }
@@ -979,7 +981,7 @@ class YireoModel extends YireoCommonModel
         $value = ($value == 1) ? 0 : 1;
         $query = 'UPDATE `'.$this->_tbl_name.'` SET `'.$name.'`='.$value.' WHERE `'.$this->_tbl_key.'`='.(int)$id;
         $this->_db->setQuery($query);
-        $this->_db->execute();
+        $this->_db->query();
         return true;
     }
 
@@ -1579,16 +1581,11 @@ class YireoModel extends YireoCommonModel
      */
     public function getDbResult($query, $type = 'object')
     {
-        try {
-            if($this->_cache == true) {
-                $cache = JFactory::getCache('lib_yireo_model');
-                $rs = $cache->call(array($this, '_getDbResult'), $query, $type);
-            } else {
-                $rs = $this->_getDbResult($query, $type);
-            }
-        } catch(Exception $e) {
-            JError::raiseWarning( 'DB error', $this->_db->getErrorMsg());
-            return false;
+        if($this->_cache == true) {
+            $cache = JFactory::getCache('lib_yireo_model');
+            $rs = $cache->call(array($this, '_getDbResult'), $query, $type);
+        } else {
+            $rs = $this->_getDbResult($query, $type);
         }
 
         return $rs;
