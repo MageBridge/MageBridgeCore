@@ -32,11 +32,13 @@
                 </rewrite>
             </page>
 
+            <!--
             <core>
                 <rewrite>
                     <text_list>Yireo_MageBridge_Block_TextList</text_list>
                 </rewrite>
             </core>
+            -->
 
             <checkout>
                 <rewrite>

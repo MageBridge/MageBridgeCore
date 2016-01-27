@@ -8,10 +8,10 @@
  * @license Open Source License
  * @link http://www.yireo.com
  */
-
 /*
  * MageBridge class for the menu-block
  */
+
 class Yireo_MageBridge_Block_Menu extends Mage_Core_Block_Template
 {
     /*
@@ -24,7 +24,7 @@ class Yireo_MageBridge_Block_Menu extends Mage_Core_Block_Template
     public function _construct()
     {
         parent::_construct();
-        $this->setData('area','adminhtml');
+        $this->setData('area', 'adminhtml');
         $this->setTemplate('magebridge/menu.phtml');
     }
 
@@ -64,17 +64,17 @@ class Yireo_MageBridge_Block_Menu extends Mage_Core_Block_Template
         $current_action = $this->getRequest()->getActionName();
 
         // Parse the array into usable URLs and CSS-classes
-        foreach($items as $index => $item) {
+        foreach ($items as $index => $item) {
 
             // Set the CSS-class
-            if($item['action'] == $current_action) {
+            if ($item['action'] == $current_action) {
                 $item['class'] = 'active';
             } else {
                 $item['class'] = 'inactive';
             }
-        
+
             // Set the URL
-            $item['url'] = $url->getUrl('adminhtml/magebridge/'.$item['action']);
+            $item['url'] = $url->getUrl('adminhtml/magebridge/' . $item['action']);
 
             $items[$index] = $item;
         }

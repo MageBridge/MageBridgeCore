@@ -8,10 +8,10 @@
  * @license Open Source License
  * @link http://www.yireo.com
  */
-
 /*
  * MageBridge class for the log-block
  */
+
 class Yireo_MageBridge_Block_Log extends Mage_Core_Block_Template
 {
     /*
@@ -24,7 +24,7 @@ class Yireo_MageBridge_Block_Log extends Mage_Core_Block_Template
     public function _construct()
     {
         parent::_construct();
-        $this->setData('area','adminhtml');
+        $this->setData('area', 'adminhtml');
         $this->setTemplate('magebridge/log.phtml');
     }
 
@@ -38,7 +38,7 @@ class Yireo_MageBridge_Block_Log extends Mage_Core_Block_Template
     public function getHeader($title = null)
     {
         $type = $this->getRequest()->getParam('type');
-        return 'MageBridge - '.ucfirst($type).' Log';
+        return 'MageBridge - ' . ucfirst($type) . ' Log';
     }
 
     /*
@@ -63,22 +63,22 @@ class Yireo_MageBridge_Block_Log extends Mage_Core_Block_Template
     public function getContent()
     {
         $type = $this->getRequest()->getParam('type');
-        switch($type) {
+        switch ($type) {
             case 'system':
-                $file = BP.DS.'var'.DS.'log'.DS.'system.log';
+                $file = BP . DS . 'var' . DS . 'log' . DS . 'system.log';
                 break;
             case 'exception':
-                $file = BP.DS.'var'.DS.'log'.DS.'exception.log';
+                $file = BP . DS . 'var' . DS . 'log' . DS . 'exception.log';
                 break;
             default:
-                $file = BP.DS.'var'.DS.'log'.DS.'magebridge.log';
+                $file = BP . DS . 'var' . DS . 'log' . DS . 'magebridge.log';
                 break;
         }
 
-        if(is_readable($file)) {
+        if (is_readable($file)) {
             $content = @file_get_contents($file);
         } else {
-            $content = $file.' does not exists or is not readable';
+            $content = $file . ' does not exists or is not readable';
         }
 
         return htmlentities($content);

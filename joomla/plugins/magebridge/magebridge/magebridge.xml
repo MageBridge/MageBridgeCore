@@ -2,8 +2,8 @@
 <extension version="2.5" type="plugin" group="magebridge" method="upgrade">
     <name>PLG_MAGEBRIDGE_MAGEBRIDGE</name>
     <author>Yireo</author>
-    <creationDate>November 2015</creationDate>
-    <copyright>Copyright (C) 2015 Yireo.com. All rights reserved.</copyright>
+    <creationDate>January 2016</creationDate>
+    <copyright>Copyright (C) 2016 Yireo.com. All rights reserved.</copyright>
     <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
     <authorEmail>info@yireo.com</authorEmail>
     <authorUrl>www.yireo.com</authorUrl>

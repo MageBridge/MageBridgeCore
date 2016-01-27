@@ -8,10 +8,10 @@
  * @license Open Source License
  * @link http://www.yireo.com
  */
-
 /*
  * MageBridge class for the license-block
  */
+
 class Yireo_MageBridge_Block_License extends Mage_Core_Block_Template
 {
     /*
@@ -24,7 +24,7 @@ class Yireo_MageBridge_Block_License extends Mage_Core_Block_Template
     public function _construct()
     {
         parent::_construct();
-        $this->setData('area','adminhtml');
+        $this->setData('area', 'adminhtml');
         $this->setTemplate('magebridge/license.phtml');
     }
 
@@ -49,7 +49,7 @@ class Yireo_MageBridge_Block_License extends Mage_Core_Block_Template
      */
     public function getHeader($title = null)
     {
-        return 'MageBridge - '.$this->__($title);
+        return 'MageBridge - ' . $this->__($title);
     }
 
     /*

@@ -8,10 +8,10 @@
  * @license Open Source License
  * @link http://www.yireo.com
  */
-
 /*
  * MageBridge class for the updates-block
  */
+
 class Yireo_MageBridge_Block_Updates extends Mage_Core_Block_Template
 {
     /*
@@ -37,14 +37,14 @@ class Yireo_MageBridge_Block_Updates extends Mage_Core_Block_Template
     public function getSetting($key = '')
     {
         static $data;
-        if(empty($data)) {
+        if (empty($data)) {
             $data = array(
                 'license_key' => Mage::helper('magebridge')->getLicenseKey(),
                 'enabled' => Mage::helper('magebridge')->enabled(),
             );
         }
 
-        if(isset($data[$key])) {
+        if (isset($data[$key])) {
             return $data[$key];
         } else {
             return null;
@@ -60,7 +60,7 @@ class Yireo_MageBridge_Block_Updates extends Mage_Core_Block_Template
      */
     public function getHeader($title = null)
     {
-        return 'MageBridge - '.$this->__($title);
+        return 'MageBridge - ' . $this->__($title);
     }
 
     /*

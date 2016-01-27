@@ -17,8 +17,6 @@ class Yireo_MageBridge_Block_Breadcrumbs extends Mage_Page_Block_Html_Breadcrumb
     /*
      * Extra helper method to get the current breadcrumbs
      *
-     * @access public
-     * @param null
      * @return array
      */
     public function getCrumbs()

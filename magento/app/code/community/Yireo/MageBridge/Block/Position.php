@@ -8,10 +8,10 @@
  * @license Open Source License
  * @link http://www.yireo.com
  */
-
 /*
  * MageBridge class for the position-block
  */
+
 class Yireo_MageBridge_Block_Position extends Mage_Core_Block_Template
 {
     /*
@@ -24,7 +24,7 @@ class Yireo_MageBridge_Block_Position extends Mage_Core_Block_Template
     public function _construct()
     {
         parent::_construct();
-        if(Mage::helper('magebridge')->isBridge()) {
+        if (Mage::helper('magebridge')->isBridge()) {
             $this->setTemplate('magebridge/position.phtml');
         }
     }
@@ -51,7 +51,7 @@ class Yireo_MageBridge_Block_Position extends Mage_Core_Block_Template
     public function getPosition()
     {
         $position = $this->position;
-        if(empty($position)) {
+        if (empty($position)) {
             $position = $this->getNameInLayout();
         }
         return $position;
@@ -61,15 +61,17 @@ class Yireo_MageBridge_Block_Position extends Mage_Core_Block_Template
      * Render block HTML
      *
      * @access public
+     *
      * @param null
+     *
      * @return string
      */
     protected function _toHtml()
     {
-        if(Mage::helper('magebridge')->isBridge()) {
+        if (Mage::helper('magebridge')->isBridge()) {
             return parent::_toHtml();
         }
-        
+
         $result = Mage::getSingleton('magebridge/client')->call('magebridge.position', array($this->getPosition(), $this->getStyle()));
         return $result;
     }

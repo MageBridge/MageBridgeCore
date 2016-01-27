@@ -8,10 +8,10 @@
  * @license Open Source License
  * @link http://www.yireo.com
  */
-
 /*
  * MageBridge class for the settings-block
  */
+
 class Yireo_MageBridge_Block_Settings extends Mage_Core_Block_Template
 {
     /*
@@ -24,7 +24,7 @@ class Yireo_MageBridge_Block_Settings extends Mage_Core_Block_Template
     public function _construct()
     {
         parent::_construct();
-        $this->setData('area','adminhtml');
+        $this->setData('area', 'adminhtml');
         $this->setTemplate('magebridge/settings.phtml');
     }
 
@@ -37,7 +37,7 @@ class Yireo_MageBridge_Block_Settings extends Mage_Core_Block_Template
      */
     public function getHeader($title = null)
     {
-        return 'MageBridge - '.$this->__($title);
+        return 'MageBridge - ' . $this->__($title);
     }
 
     /*
@@ -104,7 +104,9 @@ class Yireo_MageBridge_Block_Settings extends Mage_Core_Block_Template
      * Render block HTML
      *
      * @access protected
+     *
      * @param null
+     *
      * @return mixed
      */
     protected function _toHtml()
@@ -112,21 +114,21 @@ class Yireo_MageBridge_Block_Settings extends Mage_Core_Block_Template
         $accordion = $this->getLayout()->createBlock('adminhtml/widget_accordion')->setId('magebridge');
 
         $accordion->addItem('joomla', array(
-            'title'   => Mage::helper('adminhtml')->__('Joomla! API Connections'),
+            'title' => Mage::helper('adminhtml')->__('Joomla! API Connections'),
             'content' => $this->getLayout()->createBlock('magebridge/settings_joomla')->toHtml(),
-            'open'    => true,
+            'open' => true,
         ));
 
         $accordion->addItem('events', array(
-            'title'   => Mage::helper('adminhtml')->__('Event Forwarding'),
+            'title' => Mage::helper('adminhtml')->__('Event Forwarding'),
             'content' => $this->getLayout()->createBlock('magebridge/settings_events')->toHtml(),
-            'open'    => true,
+            'open' => true,
         ));
 
         $accordion->addItem('other', array(
-            'title'   => Mage::helper('adminhtml')->__('Other Settings'),
+            'title' => Mage::helper('adminhtml')->__('Other Settings'),
             'content' => $this->getLayout()->createBlock('magebridge/settings_other')->toHtml(),
-            'open'    => true,
+            'open' => true,
         ));
 
         $this->setChild('accordion', $accordion);
@@ -135,17 +137,17 @@ class Yireo_MageBridge_Block_Settings extends Mage_Core_Block_Template
             $this->getLayout()->createBlock('adminhtml/widget_button')
                 ->setData(array(
                     'label' => Mage::helper('catalog')->__('Reset Events'),
-                    'onclick' => 'magebridgeForm.submit(\''.$this->getResetEventsUrl().'\')',
+                    'onclick' => 'magebridgeForm.submit(\'' . $this->getResetEventsUrl() . '\')',
                     'class' => 'delete'
                 ))
         );
 
-        if(Mage::helper('magebridge')->useJoomlaMap()) {
+        if (Mage::helper('magebridge')->useJoomlaMap()) {
             $this->setChild('resetusermap_button',
                 $this->getLayout()->createBlock('adminhtml/widget_button')
                     ->setData(array(
                         'label' => Mage::helper('catalog')->__('Reset Usermap'),
-                        'onclick' => 'magebridgeForm.submit(\''.$this->getResetUsermapUrl().'\')',
+                        'onclick' => 'magebridgeForm.submit(\'' . $this->getResetUsermapUrl() . '\')',
                         'class' => 'delete'
                     ))
             );
@@ -155,7 +157,7 @@ class Yireo_MageBridge_Block_Settings extends Mage_Core_Block_Template
             $this->getLayout()->createBlock('adminhtml/widget_button')
                 ->setData(array(
                     'label' => Mage::helper('catalog')->__('Reset API'),
-                    'onclick' => 'magebridgeForm.submit(\''.$this->getResetApiUrl().'\')',
+                    'onclick' => 'magebridgeForm.submit(\'' . $this->getResetApiUrl() . '\')',
                     'class' => 'delete'
                 ))
         );
