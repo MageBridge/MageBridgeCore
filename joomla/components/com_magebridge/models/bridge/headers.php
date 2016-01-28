@@ -246,7 +246,11 @@ class MageBridgeModelBridgeHeaders extends MageBridgeModelBridgeSegment
 		// * 3 = Disable all CSS except for the CSS listed under "disable_css_custom"
 		$disable_css_all = MagebridgeModelConfig::load('disable_css_all');
 
-		if ($disable_css_all != 1 && !empty($headers['items'])) {
+        if ($disable_css_all != 1 && !empty($headers['merge_css'])) {
+            $this->_stylesheets[] = $headers['merge_css'];
+            $document->addStylesheet($headers['merge_css']);
+
+        } elseif ($disable_css_all != 1 && !empty($headers['items'])) {
 			foreach ($headers['items'] as $item) {
 				if ($item['type'] == 'skin_css' || $item['type'] == 'css') {
 
