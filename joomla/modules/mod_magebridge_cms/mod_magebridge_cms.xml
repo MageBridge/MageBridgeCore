@@ -26,11 +26,11 @@
 		<fields name="params">
 			<fieldset name="basic">
 		        <field name="block" type="text" default="" label="MOD_MAGEBRIDGE_CMS_BLOCK" description="MOD_MAGEBRIDGE_CMS_BLOCK_DESC" />
-        		<field name="load_css" type="list" default="1" label="MOD_MAGEBRIDGE_LOAD_CSS" description="MOD_MAGEBRIDGE_LOAD_CSS_DESC">
+        		<field name="load_css" type="radio" class="btn-group" default="1" label="MOD_MAGEBRIDGE_LOAD_CSS" description="MOD_MAGEBRIDGE_LOAD_CSS_DESC">
 		        	<option value="0">JNO</option>
         			<option value="1">JYES</option>
 		        </field>
-        		<field name="load_js" type="list" default="1" label="MOD_MAGEBRIDGE_LOAD_JS" description="MOD_MAGEBRIDGE_LOAD_JS_DESC">
+        		<field name="load_js" type="radio" class="btn-group" default="1" label="MOD_MAGEBRIDGE_LOAD_JS" description="MOD_MAGEBRIDGE_LOAD_JS_DESC">
 		        	<option value="0">JNO</option>
         			<option value="1">JYES</option>
 		        </field>

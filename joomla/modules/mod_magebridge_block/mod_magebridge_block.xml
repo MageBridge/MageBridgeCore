@@ -55,11 +55,11 @@
         		</field>
 		        <field name="custom" type="text" default="" label="MOD_MAGEBRIDGE_BLOCK_CUSTOM" description="MOD_MAGEBRIDGE_BLOCK_CUSTOM_DESC" />
 				<field name="layout" type="modulelayout" label="JFIELD_ALT_LAYOUT_LABEL" description="JFIELD_ALT_MODULE_LAYOUT_DESC" default="_:default" />
-        		<field name="load_css" type="list" default="1" label="MOD_MAGEBRIDGE_LOAD_CSS" description="MOD_MAGEBRIDGE_LOAD_CSS_DESC">
+        		<field name="load_css" type="radio" class="btn-group" default="1" label="MOD_MAGEBRIDGE_LOAD_CSS" description="MOD_MAGEBRIDGE_LOAD_CSS_DESC">
 		        	<option value="0">JNO</option>
         			<option value="1">JYES</option>
 		        </field>
-        		<field name="load_js" type="list" default="1" label="MOD_MAGEBRIDGE_LOAD_JS" description="MOD_MAGEBRIDGE_LOAD_JS_DESC">
+        		<field name="load_js" type="radio" class="btn-group" default="1" label="MOD_MAGEBRIDGE_LOAD_JS" description="MOD_MAGEBRIDGE_LOAD_JS_DESC">
 		        	<option value="0">JNO</option>
         			<option value="1">JYES</option>
 		        </field>
