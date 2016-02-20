@@ -726,49 +726,7 @@ class MageBridgeTemplateHelper
 		}
 
 		// Check for a certain page
-		if (MageBridgeTemplateHelper::isHomePage())
-		{
-			$setting = 'flush_positions_home';
-		}
-		else
-		{
-			if (MageBridgeTemplateHelper::isCustomerPage())
-			{
-				$setting = 'flush_positions_customer';
-			}
-			else
-			{
-				if (MageBridgeTemplateHelper::isProductPage())
-				{
-					$setting = 'flush_positions_product';
-				}
-				else
-				{
-					if (MageBridgeTemplateHelper::isCategoryPage())
-					{
-						$setting = 'flush_positions_category';
-					}
-					else
-					{
-						if (MageBridgeTemplateHelper::isCartPage())
-						{
-							$setting = 'flush_positions_cart';
-						}
-						else
-						{
-							if (MageBridgeTemplateHelper::isCheckoutPage())
-							{
-								$setting = 'flush_positions_checkout';
-							}
-							else
-							{
-								$setting = '';
-							}
-						}
-					}
-				}
-			}
-		}
+        $setting = self::getFlushSettingByPage();
 
 		// If the page-check returns empty, default to true
 		if (empty($setting))
@@ -777,7 +735,12 @@ class MageBridgeTemplateHelper
 		}
 
 		// Check for flushing of positions within the MageBridge configuration
-		$array = explode(',', MagebridgeModelConfig::load($setting));
+		$globalArray = explode(',', MagebridgeModelConfig::load($setting));
+        $plugin = JPluginHelper::getPlugin('system', 'magebridgepositions'); 
+        $pluginParams = json_decode($plugin->params, true);
+        $pluginArray = (isset($pluginParams[$setting])) ? explode(',', $pluginParams[$setting]) : array();
+
+        $array = array_merge($globalArray, $pluginArray);
 
 		if (!empty($array))
 		{
@@ -793,6 +756,39 @@ class MageBridgeTemplateHelper
 		// Default to true
 		return true;
 	}
+
+	static public function getFlushSettingByPage()
+	{
+		if (MageBridgeTemplateHelper::isHomePage())
+		{
+			return 'flush_positions_home';
+		}
+		
+        if (MageBridgeTemplateHelper::isCustomerPage())
+		{
+			return 'flush_positions_customer';
+        }
+
+		if (MageBridgeTemplateHelper::isProductPage())
+		{
+			return 'flush_positions_product';
+		}
+					
+        if (MageBridgeTemplateHelper::isCategoryPage())
+		{
+			return 'flush_positions_category';
+		}
+						
+        if (MageBridgeTemplateHelper::isCartPage())
+		{
+			return 'flush_positions_cart';
+		}
+							
+        if (MageBridgeTemplateHelper::isCheckoutPage())
+		{
+			return 'flush_positions_checkout';
+		}
+    }
 
 	/**
 	 * Function to load a Magento stylesheet

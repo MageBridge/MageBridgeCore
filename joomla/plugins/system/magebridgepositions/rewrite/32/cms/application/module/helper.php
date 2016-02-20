@@ -53,7 +53,10 @@ abstract class JModuleHelper
 			}
 		}
 
-		if(is_object($result) && isset($result->position) && MageBridgeTemplateHelper::allowPosition($result->position) == false) $result = null;
+		if(is_object($result) && isset($result->position) && MageBridgeTemplateHelper::allowPosition($result->position) == false)
+        {
+            $result = null;
+        }
 
 		// If we didn't find it, and the name is mod_something, create a dummy object
 		if (is_null($result) && substr($name, 0, 4) == 'mod_')
@@ -87,7 +90,10 @@ abstract class JModuleHelper
 		$result = array();
 		$input  = JFactory::getApplication()->input;
 
-		if(!empty($position) && MageBridgeTemplateHelper::allowPosition($position) == false) return $result;
+		if(!empty($position) && MageBridgeTemplateHelper::allowPosition($position) == false)
+        {
+            return $result;
+        }
 
 		$modules =& static::load();
 
@@ -147,7 +153,10 @@ abstract class JModuleHelper
 	{
 		static $chrome;
 
-		if(is_object($module) && isset($module->position) && MageBridgeTemplateHelper::allowPosition($module->position) == false) return null;
+		if(is_object($module) && isset($module->position) && MageBridgeTemplateHelper::allowPosition($module->position) == false)
+        {
+            return null;
+        }
 
 		if (defined('JDEBUG'))
 		{
