@@ -88,7 +88,7 @@ class plgSystemMageBridgePositions extends JPlugin
 					
         if (MageBridgeHelper::isJoomlaVersion(array('3.2', '3.3', '3.4', '3.5')))
 		{
-			@include_once($rewrite_path . '32/cms/application/module/helper.php');
+			include_once($rewrite_path . '32/cms/application/module/helper.php');
             return true;
 		}
 
