@@ -7,7 +7,7 @@
 	<license>GNU/GPL</license>
 	<authorEmail>development@yireo.com</authorEmail>
 	<authorUrl>www.yireo.com</authorUrl>
-	<version>1.9.5370</version>
+	<version>1.9.5374</version>
 	<description>MOD_MAGEBRIDGE_MENU_DESC</description>
 
 	<files folder="site">
@@ -70,15 +70,15 @@
                 </field>
            	</fieldset>
 			<fieldset name="styling" label="MOD_MAGEBRIDGE_MENU_FIELDSET_STYLING">
-        		<field name="css_level" type="list" default="0" label="MOD_MAGEBRIDGE_MENU_FIELD_CSS_LEVEL" description="MOD_MAGEBRIDGE_MENU_FIELD_CSS_LEVEL_DESC">
+        		<field name="css_level" type="radio" class="btn-group" default="0" label="MOD_MAGEBRIDGE_MENU_FIELD_CSS_LEVEL" description="MOD_MAGEBRIDGE_MENU_FIELD_CSS_LEVEL_DESC">
 		        	<option value="1">JYES</option>
         			<option value="0">JNO</option>
         		</field>
-        		<field name="css_firstlast" type="list" default="0" label="MOD_MAGEBRIDGE_MENU_FIELD_CSS_FIRSTLAST" description="MOD_MAGEBRIDGE_MENU_FIELD_CSS_FIRSTLAST_DESC">
+        		<field name="css_firstlast" type="radio" class="btn-group" default="0" label="MOD_MAGEBRIDGE_MENU_FIELD_CSS_FIRSTLAST" description="MOD_MAGEBRIDGE_MENU_FIELD_CSS_FIRSTLAST_DESC">
 		        	<option value="1">JYES</option>
         			<option value="0">JNO</option>
 		        </field>
-        		<field name="css_evenodd" type="list" default="0" label="MOD_MAGEBRIDGE_MENU_FIELD_CSS_EVENODD" description="MOD_MAGEBRIDGE_MENU_FIELD_CSS_EVENODD_DESC">
+        		<field name="css_evenodd" type="radio" class="btn-group" default="0" label="MOD_MAGEBRIDGE_MENU_FIELD_CSS_EVENODD" description="MOD_MAGEBRIDGE_MENU_FIELD_CSS_EVENODD_DESC">
 		        	<option value="1">JYES</option>
         			<option value="0">JNO</option>
 		        </field>

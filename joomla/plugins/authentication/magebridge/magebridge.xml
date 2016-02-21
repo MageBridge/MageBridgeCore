@@ -2,12 +2,12 @@
 <extension version="2.5" type="plugin" group="authentication" method="upgrade">
     <name>PLG_AUTHENTICATION_MAGEBRIDGE</name>
     <author>Yireo</author>
-    <creationDate>January 2016</creationDate>
+    <creationDate>February 2016</creationDate>
     <copyright>Copyright (C) 2016 Yireo.com. All rights reserved.</copyright>
     <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
     <authorEmail>info@yireo.com</authorEmail>
     <authorUrl>www.yireo.com</authorUrl>
-    <version>1.9.5370</version>
+    <version>1.9.5374</version>
     <description>PLG_AUTHENTICATION_MAGEBRIDGE_DESC</description>
 
     <files>

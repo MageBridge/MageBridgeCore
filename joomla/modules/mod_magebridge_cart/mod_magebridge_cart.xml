@@ -7,7 +7,7 @@
 	<license>GNU/GPL</license>
 	<authorEmail>development@yireo.com</authorEmail>
 	<authorUrl>www.yireo.com</authorUrl>
-	<version>1.9.5370</version>
+	<version>1.9.5374</version>
 	<description>MOD_MAGEBRIDGE_CART_DESC</description>
 
 	<files folder="site">
@@ -26,11 +26,11 @@
 		<fields name="params">
 			<fieldset name="basic">
 				<field name="layout" type="modulelayout" label="JFIELD_ALT_LAYOUT_LABEL" description="JFIELD_ALT_MODULE_LAYOUT_DESC" default="_:default" />
-        		<field name="load_css" type="list" default="1" label="MOD_MAGEBRIDGE_LOAD_CSS" description="MOD_MAGEBRIDGE_LOAD_CSS_DESC">
+        		<field name="load_css" type="radio" class="btn-group" default="1" label="MOD_MAGEBRIDGE_LOAD_CSS" description="MOD_MAGEBRIDGE_LOAD_CSS_DESC">
 		        	<option value="0">JNO</option>
         			<option value="1">JYES</option>
 		        </field>
-        		<field name="load_js" type="list" default="1" label="MOD_MAGEBRIDGE_LOAD_JS" description="MOD_MAGEBRIDGE_LOAD_JS">
+        		<field name="load_js" type="radio" class="btn-group" default="1" label="MOD_MAGEBRIDGE_LOAD_JS" description="MOD_MAGEBRIDGE_LOAD_JS">
 		        	<option value="0">JNO</option>
         			<option value="1">JYES</option>
 		        </field>
