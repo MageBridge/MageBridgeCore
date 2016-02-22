@@ -17,7 +17,7 @@
 		<folder>tmpl</folder>
 	</files>
 
-    <languages folder="site/language">
+    <languages folder="site/language/en-GB">
         <language tag="en-GB">en-GB.mod_magebridge_block.ini</language>
         <language tag="en-GB">en-GB.mod_magebridge_block.sys.ini</language>
     </languages>
