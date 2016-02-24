@@ -24,19 +24,8 @@ require_once dirname(__FILE__) . '/loader.php';
  *
  * @package Yireo
  */
-if (YireoHelper::isJoomla25())
+class YireoAbstractView extends JViewLegacy
 {
-	jimport('joomla.application.component.view');
-
-	class YireoAbstractView extends JView
-	{
-	}
-}
-else
-{
-	class YireoAbstractView extends JViewLegacy
-	{
-	}
 }
 
 /**
@@ -66,16 +55,12 @@ class YireoCommonView extends YireoAbstractView
 	 */
 	protected $_task = null;
 
-
 	/**
 	 * Main constructor method
 	 *
-	 * @access     public
 	 * @subpackage Yireo
 	 *
 	 * @param array $config
-	 *
-	 * @return null
 	 */
 	public function __construct($config = array())
 	{
@@ -95,6 +80,7 @@ class YireoCommonView extends YireoAbstractView
 		$this->_option = (!empty($config['option'])) ? $config['option'] : $this->jinput->getCmd('option');
 		$this->_name = $this->_view;
 		$this->_option_id = $this->_option . '_' . $this->_view . '_';
+
 		if ($this->application->isSite())
 		{
 			$this->_option_id .= $this->jinput->getInt('Itemid') . '_';
@@ -107,7 +93,6 @@ class YireoCommonView extends YireoAbstractView
 	/**
 	 * Helper-method to set the page title
 	 *
-	 * @access     protected
 	 * @subpackage Yireo
 	 *
 	 * @param string $title
@@ -117,9 +102,11 @@ class YireoCommonView extends YireoAbstractView
 	protected function setTitle($title = null, $class = 'logo')
 	{
 		$component_title = YireoHelper::getData('title');
+
 		if (empty($title))
 		{
 			$views = YireoHelper::getData('views');
+
 			if (!empty($views))
 			{
 				foreach ($views as $view => $view_title)
@@ -156,18 +143,16 @@ class YireoCommonView extends YireoAbstractView
 	 *
 	 * @subpackage Yireo
 	 *
-	 * @param string $title
-	 *
 	 * @return null
 	 */
 	public function setMenu()
 	{
 		$menuitems = YireoHelper::getData('menu', $this->_option);
+
 		if (!empty($menuitems))
 		{
 			foreach ($menuitems as $view => $title)
 			{
-
 				if (strstr($view, '|'))
 				{
 					$v = explode('|', $view);
@@ -183,7 +168,6 @@ class YireoCommonView extends YireoAbstractView
 
 				if (is_dir(JPATH_ADMINISTRATOR . '/components/' . $this->_option . '/views/' . $view))
 				{
-
 					if ($this->_view == $view && $this->jinput->getCmd('layout') == $layout)
 					{
 						$active = true;
@@ -201,12 +185,13 @@ class YireoCommonView extends YireoAbstractView
 					}
 
 					$url = 'index.php?option=' . $this->_option . '&view=' . $view;
+
 					if ($layout)
 					{
 						$url .= '&layout=' . $layout;
 					}
-					JSubMenuHelper::addEntry(JText::_($titleLabel), $url, $active);
 
+					JSubMenuHelper::addEntry(JText::_($titleLabel), $url, $active);
 				}
 				else
 				{
@@ -222,7 +207,6 @@ class YireoCommonView extends YireoAbstractView
 	/**
 	 * Add a specific CSS-stylesheet to this page
 	 *
-	 * @access     public
 	 * @subpackage Yireo
 	 *
 	 * @param string $stylesheet
@@ -237,28 +221,24 @@ class YireoCommonView extends YireoAbstractView
 		if (file_exists(JPATH_SITE . '/templates/' . $template . '/css/' . $this->_option . '/' . $prefix . $stylesheet))
 		{
 			$this->document->addStyleSheet(JURI::root() . 'templates/' . $template . '/css/' . $this->_option . '/' . $prefix . $stylesheet);
-
 		}
 		else
 		{
 			if (file_exists(JPATH_SITE . '/media/' . $this->_option . '/css/' . $prefix . $stylesheet))
 			{
 				$this->document->addStyleSheet(JURI::root() . 'media/' . $this->_option . '/css/' . $prefix . $stylesheet);
-
 			}
 			else
 			{
 				if (file_exists(JPATH_SITE . '/templates/' . $template . '/css/' . $this->_option . '/' . $stylesheet))
 				{
 					$this->document->addStyleSheet(JURI::root() . 'templates/' . $template . '/css/' . $this->_option . '/' . $stylesheet);
-
 				}
 				else
 				{
 					if (file_exists(JPATH_SITE . '/media/' . $this->_option . '/css/' . $stylesheet))
 					{
 						$this->document->addStyleSheet(JURI::root() . 'media/' . $this->_option . '/css/' . $stylesheet);
-
 					}
 					else
 					{
@@ -275,7 +255,6 @@ class YireoCommonView extends YireoAbstractView
 	/**
 	 * Add a specific JavaScript-script to this page
 	 *
-	 * @access     public
 	 * @subpackage Yireo
 	 *
 	 * @param string $script
@@ -290,28 +269,24 @@ class YireoCommonView extends YireoAbstractView
 		if (file_exists(JPATH_SITE . '/templates/' . $template . '/js/' . $this->_option . '/' . $prefix . $script))
 		{
 			$this->document->addScript(JURI::root() . 'templates/' . $template . '/js/' . $this->_option . '/' . $prefix . $script);
-
 		}
 		else
 		{
 			if (file_exists(JPATH_SITE . '/media/' . $this->_option . '/js/' . $prefix . $script))
 			{
 				$this->document->addScript(JURI::root() . 'media/' . $this->_option . '/js/' . $prefix . $script);
-
 			}
 			else
 			{
 				if (file_exists(JPATH_SITE . '/templates/' . $template . '/js/' . $this->_option . '/' . $script))
 				{
 					$this->document->addScript(JURI::root() . 'templates/' . $template . '/js/' . $this->_option . '/' . $script);
-
 				}
 				else
 				{
 					if (file_exists(JPATH_SITE . '/media/' . $this->_option . '/js/' . $script))
 					{
 						$this->document->addScript(JURI::root() . 'media/' . $this->_option . '/js/' . $script);
-
 					}
 					else
 					{
@@ -328,10 +303,9 @@ class YireoCommonView extends YireoAbstractView
 	/**
 	 * Add a folder to the template-search path
 	 *
-	 * @access     protected
 	 * @subpackage Yireo
 	 *
-	 * @param string $path
+	 * @param string  $path
 	 * @param boolean $first
 	 *
 	 * @return bool
@@ -354,19 +328,16 @@ class YireoCommonView extends YireoAbstractView
 		if ($first)
 		{
 			array_unshift($this->templatePaths, $path);
-
-			// Add this path to the end of the array
 		}
 		else
 		{
+			// Add this path to the end of the array
 			$this->templatePaths[] = $path;
 		}
 	}
 
 	/**
 	 * An override of the original JView-function to allow template-files across multiple layouts
-	 *
-	 * @access public
 	 *
 	 * @param string $file
 	 * @param array  $variables
@@ -388,7 +359,6 @@ class YireoCommonView extends YireoAbstractView
 		// Construct the paths where to locate a specific template
 		if ($this->application->isSite() == false)
 		{
-
 			// Reset the template-paths
 			$this->templatePaths = array();
 
@@ -403,11 +373,9 @@ class YireoCommonView extends YireoAbstractView
 			$this->addNewTemplatePath(JPATH_ADMINISTRATOR . '/components/' . $this->_option . '/lib/view/' . $this->_viewParent, false);
 			$this->addNewTemplatePath(JPATH_ADMINISTRATOR . '/components/' . $this->_option . '/libraries/view/' . $this->_viewParent . '/' . $versionFolder, false);
 			$this->addNewTemplatePath(JPATH_ADMINISTRATOR . '/components/' . $this->_option . '/libraries/view/' . $this->_viewParent, false);
-
 		}
 		else
 		{
-
 			$template = $this->application->getTemplate();
 
 			// Local layout
@@ -434,6 +402,7 @@ class YireoCommonView extends YireoAbstractView
 		{
 			$file = 'default.php';
 		}
+
 		$templatePaths = $this->templatePaths;
 
 		// Deal with any subfolders (not recommended, but still possible)
@@ -441,6 +410,7 @@ class YireoCommonView extends YireoAbstractView
 		{
 			$fileParts = explode('/', $file);
 			$file = array_pop($fileParts);
+
 			foreach ($templatePaths as $templatePathIndex => $templatePath)
 			{
 				foreach ($fileParts as $filePart)
@@ -455,6 +425,7 @@ class YireoCommonView extends YireoAbstractView
 		{
 			$file = $file . '.php';
 		}
+
 		jimport('joomla.filesystem.path');
 		$template = JPath::find($templatePaths, $file);
 
@@ -466,9 +437,9 @@ class YireoCommonView extends YireoAbstractView
 		}
 
 		$output = null;
+
 		if ($template != false)
 		{
-
 			// Include the variables here
 			if (!empty($variables))
 			{
@@ -544,12 +515,9 @@ class YireoView extends YireoCommonView
 	/**
 	 * Main constructor method
 	 *
-	 * @access     public
 	 * @subpackage Yireo
 	 *
 	 * @param array $config
-	 *
-	 * @return null
 	 */
 	public function __construct($config = array())
 	{
@@ -573,6 +541,7 @@ class YireoView extends YireoCommonView
 		if ($this->_single === null)
 		{
 			$className = get_class($this);
+
 			if (preg_match('/s$/', $className))
 			{
 				$this->_single = false;
@@ -585,6 +554,7 @@ class YireoView extends YireoCommonView
 
 		// Insert the model & table
 		$this->_model = $this->getModel();
+
 		if (!empty($this->_model))
 		{
 			$this->_table = $this->_model->getTable();
@@ -593,7 +563,6 @@ class YireoView extends YireoCommonView
 		// Add some backend-elements
 		if ($this->application->isAdmin())
 		{
-
 			// Automatically set the title
 			$this->setTitle();
 			$this->setMenu();
@@ -606,14 +575,17 @@ class YireoView extends YireoCommonView
 				{
 					JToolBarHelper::custom('savenew', 'save.png', 'save.png', 'LIB_YIREO_VIEW_TOOLBAR_SAVENEW', false, true);
 				}
+
 				if ($this->params->get('toolbar_show_saveandcopy', 1))
 				{
 					JToolBarHelper::custom('saveandcopy', 'copy.png', 'copy.png', 'LIB_YIREO_VIEW_TOOLBAR_SAVEANDCOPY', false, true);
 				}
+
 				if ($this->params->get('toolbar_show_saveascopy', 1))
 				{
 					JToolBarHelper::custom('saveascopy', 'copy.png', 'copy.png', 'LIB_YIREO_VIEW_TOOLBAR_SAVEASCOPY', false, true);
 				}
+
 				JToolBarHelper::save();
 				JToolBarHelper::apply();
 
@@ -634,12 +606,10 @@ class YireoView extends YireoCommonView
 	/**
 	 * Main display method
 	 *
-	 * @access     public
 	 * @subpackage Yireo
 	 *
 	 * @param string $tpl
 	 *
-	 * @return null
 	 */
 	public function display($tpl = null)
 	{
@@ -647,32 +617,31 @@ class YireoView extends YireoCommonView
 		{
 			$this->prepareDisplay();
 		}
+
 		if (empty($tpl))
 		{
 			$tpl = $this->getLayout();
 		}
+
 		parent::display($tpl);
 	}
 
 	/**
 	 * Method to prepare for displaying
 	 *
-	 * @access     public
 	 * @subpackage Yireo
-	 *
-	 * @param null
-	 *
-	 * @return null
 	 */
 	public function prepareDisplay()
 	{
 		// Include extra component-related CSS
 		$this->addCss('default.css');
 		$this->addCss('view-' . $this->_view . '.css');
+
 		if (YireoHelper::isJoomla25() == true)
 		{
 			$this->addCss('j25.css');
 		}
+
 		if (YireoHelper::isJoomla35() == true)
 		{
 			$this->addCss('j35.css');
@@ -684,6 +653,7 @@ class YireoView extends YireoCommonView
 
 		// Fetch parameters if they exist
 		$params = null;
+
 		if (!empty($this->item->params))
 		{
 			if (file_exists(JPATH_COMPONENT . '/models/' . $this->_name . '.xml'))
@@ -738,7 +708,6 @@ class YireoView extends YireoCommonView
 	/**
 	 * Helper-method to set a specific filter
 	 *
-	 * @access     public
 	 * @subpackage Yireo
 	 *
 	 * @param string $filter
@@ -754,6 +723,7 @@ class YireoView extends YireoCommonView
 		{
 			$option = $this->_option_id;
 		}
+
 		$value = $this->application->getUserStateFromRequest($option . 'filter_' . $filter, 'filter_' . $filter, $default, $type);
 
 		return $value;
@@ -778,15 +748,16 @@ class YireoView extends YireoCommonView
 		{
 			foreach ($this->items as $index => $item)
 			{
-
 				// Clean data
 				if ($this->autoclean == true)
 				{
 					JFilterOutput::objectHTMLSafe($item, ENT_QUOTES, 'text');
+
 					if (isset($item->text))
 					{
 						$item->text = htmlspecialchars($item->text);
 					}
+
 					if (isset($item->description))
 					{
 						$item->description = htmlspecialchars($item->description);
@@ -838,11 +809,9 @@ class YireoView extends YireoCommonView
 		// If there is a key, fetch the data
 		if ($this->item->isNew == false)
 		{
-
 			// Extra checks in the backend
 			if ($this->application->isAdmin())
 			{
-
 				// Fail if checked-out not by current user
 				if (method_exists($this->model, 'isCheckedOut') && $this->model->isCheckedOut($this->user->get('id')))
 				{
@@ -863,14 +832,17 @@ class YireoView extends YireoCommonView
 				if ($this->autoclean == true)
 				{
 					JFilterOutput::objectHTMLSafe($this->item, ENT_QUOTES, 'text');
+
 					if (isset($this->item->title))
 					{
 						$this->item->title = htmlspecialchars($this->item->title);
 					}
+
 					if (isset($this->item->text))
 					{
 						$this->item->text = htmlspecialchars($this->item->text);
 					}
+
 					if (isset($this->item->description))
 					{
 						$this->item->description = htmlspecialchars($this->item->description);
@@ -1055,14 +1027,12 @@ class YireoView extends YireoCommonView
 	public function getGridHeader($type, $title)
 	{
 		$html = null;
+
 		if ($type == 'orderby')
 		{
 			$field = $this->get('OrderByDefault');
 			$html .= JHTML::_('grid.sort', $title, $field, $this->lists['order_Dir'], $this->lists['order']);
 			$html .= JHTML::_('grid.order', $this->items);
-		}
-		else
-		{
 		}
 
 		return $html;
@@ -1081,6 +1051,7 @@ class YireoView extends YireoCommonView
 	public function getGridCell($type, $item, $i = 0, $n = 0)
 	{
 		$html = null;
+
 		if ($type == 'reorder')
 		{
 			$field = $this->get('OrderByDefault');
@@ -1157,6 +1128,7 @@ class YireoView extends YireoCommonView
 
 				return false;
 			}
+
 			$name = strtolower($match[3]);
 		}
 
