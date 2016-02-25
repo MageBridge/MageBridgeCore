@@ -202,7 +202,7 @@ class MageBridgeModelBridgeHeaders extends MageBridgeModelBridgeSegment
 		if (MagebridgeModelConfig::load('enable_canonical') == 1) { 
 			if (!empty($headers['items'])) {
 				foreach ($headers['items'] as $item) {
-					if ($item['type'] == 'link_rel' && !empty($item['name'] && stripos($item['params'], 'rel="canonical"') !== false)) {
+					if ($item['type'] == 'link_rel' && !empty($item['name']) && stripos($item['params'], 'rel="canonical"') !== false) {
 						$document->addHeadLink($item['name'], 'canonical');
 					}
 				}
