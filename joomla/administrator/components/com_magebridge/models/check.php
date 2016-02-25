@@ -175,7 +175,7 @@ class MagebridgeModelCheck extends YireoCommonModel
 		$result = (function_exists('curl_init')) ? self::CHECK_OK : self::CHECK_ERROR;
 		$this->addResult('compatibility', 'CURL', $result, JText::_('COM_MAGEBRIDGE_CHECK_CURL'));
 
-		$result = (function_exists('mcrypt_cfb')) ? self::CHECK_OK : self::CHECK_ERROR;
+		$result = (function_exists('mcrypt_get_iv_size')) ? self::CHECK_OK : self::CHECK_ERROR;
 		$this->addResult('compatibility', 'mcrypt', $result, JText::_('COM_MAGEBRIDGE_CHECK_MCRYPT'));
 
 		$result = (ini_get('magic_quotes_gpc')) ? self::CHECK_ERROR : self::CHECK_OK;

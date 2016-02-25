@@ -78,7 +78,7 @@ class MageBridgeEncryptionHelper
 		}
 
 		// Check for mcrypt
-		if (!function_exists('mcrypt_get_iv_size') || !function_exists('mcrypt_cfb')) {
+		if (!function_exists('mcrypt_get_iv_size')) {
 			return $data;
 		}
 
@@ -125,35 +125,18 @@ class MageBridgeEncryptionHelper
 		$encrypted = MageBridgeEncryptionHelper::base64_decode($array[0], true);
 		$key = MageBridgeEncryptionHelper::getSaltedKey($array[1]);
 
-		// PHP 5.5 version
-		if(version_compare(PHP_VERSION, '5.5.0') >= 0) {
+        try {
 
-			try {
+            $td = mcrypt_module_open(MCRYPT_CAST_256, '', 'ecb', '');
+            $iv = substr($key, 0, mcrypt_get_iv_size(MCRYPT_CAST_256,MCRYPT_MODE_CFB));
+            mcrypt_generic_init($td, $key, $iv);
+            $decrypted = mdecrypt_generic($td, $encrypted);
+            $decrypted = trim($decrypted);
+            return $decrypted;
 
-				$td = mcrypt_module_open(MCRYPT_CAST_256, '', 'ecb', '');
-				$iv = substr($key, 0, mcrypt_get_iv_size(MCRYPT_CAST_256,MCRYPT_MODE_CFB));
-				mcrypt_generic_init($td, $key, $iv);
-				$decrypted = mdecrypt_generic($td, $encrypted);
-				$decrypted = trim($decrypted);
-				return $decrypted;
-
-			} catch(Exception $e) {
-				Mage::getSingleton('magebridge/debug')->error("Error while decrypting: ".$e->getMessage());
-				return null;
-			}
-
-		} else {
-
-			try {
-				$iv = substr($key, 0, mcrypt_get_iv_size(MCRYPT_CAST_256,MCRYPT_MODE_CFB));
-				$decrypted = @mcrypt_cfb(MCRYPT_CAST_256, $key, $encrypted, MCRYPT_DECRYPT, $iv);
-				$decrypted = trim($decrypted);
-				return $decrypted;
-
-			} catch(Exception $e) {
-				Mage::getSingleton('magebridge/debug')->error("Error while decrypting: ".$e->getMessage());
-				return null;
-			}
-		}
+        } catch(Exception $e) {
+            Mage::getSingleton('magebridge/debug')->error("Error while decrypting: ".$e->getMessage());
+            return null;
+        }
 	}
 }
