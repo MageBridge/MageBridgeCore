@@ -73,7 +73,7 @@ class MageBridgeModelBridge
 				'scheme',
 				'host',
 				'port'));
-			
+
 			return $baseUri . '/administrator/index.php?option=com_magebridge&view=root&format=raw&request=' . $request;
 		}
 		else
@@ -203,7 +203,7 @@ class MageBridgeModelBridge
 	 * Method to handle Magento events
 	 *
 	 * @param array $data
-	 * 
+	 *
 	 * @return mixed
 	 */
 	public function setEvents($data = null)
@@ -277,7 +277,7 @@ class MageBridgeModelBridge
 	 * Method to get the category tree
 	 *
 	 * @param array $arguments
-	 * 
+	 *
 	 * @return array
 	 */
 	public function getCatalogTree($arguments = null)
@@ -289,7 +289,7 @@ class MageBridgeModelBridge
 	 * Method to get the products by tag
 	 *
 	 * @param array $tags
-	 * 
+	 *
 	 * @return array
 	 */
 	public function getProductsByTags($tags = array())
@@ -652,7 +652,7 @@ class MageBridgeModelBridge
 	 *
 	 * @param string $httpReferer
 	 * @param string $type
-	 * 
+	 *
 	 * @return string
 	 */
 	public function setHttpReferer($httpReferer = null, $type = 'magento')
@@ -745,7 +745,7 @@ class MageBridgeModelBridge
 	 *
 	 * @deprecated Use getSessionData() instead
 	 *
-	 * @param string $name
+	 * @param string  $name
 	 * @param boolean $allow_cache
 	 *
 	 * @return mixed
@@ -758,7 +758,7 @@ class MageBridgeModelBridge
 	/**
 	 * Helper-method to return the Magento configuration
 	 *
-	 * @param string $name
+	 * @param string  $name
 	 * @param boolean $allow_cache
 	 *
 	 * @return mixed
@@ -806,7 +806,7 @@ class MageBridgeModelBridge
 	 * Helper-method to set a specific value in MageBridge session
 	 *
 	 * @param string $name
-	 * @param mixed $value
+	 * @param mixed  $value
 	 *
 	 * @return mixed
 	 */

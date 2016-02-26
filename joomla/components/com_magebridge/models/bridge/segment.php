@@ -2,11 +2,11 @@
 /**
  * Joomla! component MageBridge
  *
- * @author Yireo (info@yireo.com)
- * @package MageBridge
+ * @author    Yireo (info@yireo.com)
+ * @package   MageBridge
  * @copyright Copyright 2015
- * @license GNU Public License
- * @link http://www.yireo.com
+ * @license   GNU Public License
+ * @link      http://www.yireo.com
  */
 
 // No direct access
@@ -15,8 +15,20 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Bridge-segment class
  */
-class MageBridgeModelBridgeSegment 
+class MageBridgeModelBridgeSegment
 {
+	/** @var  MageBridgeModelRegister */
+	protected $register;
+
+	/** @var MageBridgeModelBridge */
+	protected $bridge;
+
+	/** @var  JApplicationCms */
+	protected $app;
+
+	/** @var  JDocumentHtml */
+	protected $doc;
+
 	/**
 	 * Instance variable
 	 */
@@ -26,17 +38,35 @@ class MageBridgeModelBridgeSegment
 	 * Singleton
 	 *
 	 * @param string $name
+	 *
 	 * @return object
 	 */
 	public static function getInstance($name = null)
 	{
 		static $_instances = array();
-		if ($name == null) $name = 'MageBridgeModelBridgeSegment';
 
-		if (!isset(self::$_instances[$name])) {
+		if ($name == null)
+		{
+			$name = 'MageBridgeModelBridgeSegment';
+		}
+
+		if (!isset(self::$_instances[$name]))
+		{
 			self::$_instances[$name] = new $name();
 		}
+
 		return self::$_instances[$name];
+	}
+
+	/**
+	 * Constructor
+	 */
+	public function __construct()
+	{
+		$this->register = MageBridge::getRegister();
+		$this->bridge = MageBridge::getBridge();
+		$this->app = JFactory::getApplication();
+		$this->doc = JFactory::getDocument();
 	}
 
 	/**
@@ -44,23 +74,25 @@ class MageBridgeModelBridgeSegment
 	 *
 	 * @param string $type
 	 * @param string $name
-	 * @param mixed $arguments
+	 * @param mixed  $arguments
+	 *
 	 * @return array
 	 */
 	/**public function getResponseData($type = null, $name = null, $arguments = null, $id = null)
-	{
-		return MageBridgeModelRegister::getInstance()->getData($type, $name, $arguments, $id);
-	}*/
+	 * {
+	 * return $this->register->getData($type, $name, $arguments, $id);
+	 * }*/
 
 	/**
 	 * Method to get something specific from the build
 	 *
 	 * @param string $id
+	 *
 	 * @return array|bool
 	 */
 	public function getResponseById($id = null)
 	{
-		return MageBridgeModelRegister::getInstance()->getById($id);
+		return $this->register->getById($id);
 	}
 
 	/**
@@ -68,11 +100,12 @@ class MageBridgeModelBridgeSegment
 	 *
 	 * @param string $type
 	 * @param string $name
-	 * @param mixed $arguments
+	 * @param mixed  $arguments
+	 *
 	 * @return array|bool
 	 */
-	protected function getResponse($type = '', $name  = null, $arguments = null, $id = null)
+	protected function getResponse($type = '', $name = null, $arguments = null, $id = null)
 	{
-		return MageBridgeModelRegister::getInstance()->get($type, $name, $arguments, $id);
+		return $this->register->get($type, $name, $arguments, $id);
 	}
 }
