@@ -69,7 +69,7 @@ class MageBridgeModelUser
 		}
 
 		// Try to fetch the user-record from the database
-		$query = 'SELECT `id` FROM #__users WHERE email=' . $db->quote(email);
+		$query = 'SELECT `id` FROM #__users WHERE email=' . $db->quote('email');
 		$db->setQuery( $query );
 		$result = $db->loadResult();
 

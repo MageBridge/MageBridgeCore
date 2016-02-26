@@ -93,6 +93,7 @@ class MagebridgeModelConfig extends YireoAbstractModel
 			'disable_js_all' => 1, // Disable Joomla! JS
 			'replace_jquery' => 1, // Replace Magento jQuery with Joomla
 			'merge_js' => 0,
+			'merge_css' => 0,
 			'use_google_api' => 0,
 			'use_protoaculous' => 0,
 			'use_protoculous' => 0,
