@@ -58,7 +58,9 @@ try {
 
     // Switch debugging
     if($magebridge->getMeta('debug')) {
-        //Varien_Profiler::enable();
+        ini_set('display_errors', 1);
+        ini_set('log_errors', 1);
+        Varien_Profiler::enable();
         Mage::setIsDeveloperMode(true);
     }
 
