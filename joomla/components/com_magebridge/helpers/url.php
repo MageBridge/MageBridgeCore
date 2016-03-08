@@ -32,21 +32,30 @@ class MageBridgeUrlHelper
 	 *
 	 * @param string $request
 	 *
-	 * @return string
+	 * @return bool
 	 */
 	static public function setRequest($request = null)
 	{
 		$request = trim($request);
 
-		if (!empty($request))
-		{
-			self::$request = $request;
-		}
+        if (empty($request))
+        {
+            return false;
+        }
 
-		if (!empty($request) && empty(self::$original_request))
+        if ($request == 'magebridge.php')
+        {
+            return false;
+        }
+
+		self::$request = $request;
+
+		if (empty(self::$original_request))
 		{
 			self::$original_request = $request;
 		}
+
+        return true;
 	}
 
 	/**
@@ -68,10 +77,10 @@ class MageBridgeUrlHelper
 	{
 		$app = JFactory::getApplication();
 		$input = $app->input;
+        $bridge = MageBridgeModelBridge::getInstance();
 
 		// Always override the current request with whatever comes from the bridge
-		self::setRequest(MageBridgeModelBridge::getInstance()
-			->getSessionData('request', false));
+		self::setRequest($bridge->getSessionData('request', false));
 
 		// If the request is not set by Magento, and if it is not set earlier in MageBridge, set it
 		if (empty(self::$request))
@@ -184,11 +193,7 @@ class MageBridgeUrlHelper
 			}
 
 			$request = trim($request);
-
-			if (!empty($request))
-			{
-				self::$request = $request;
-			}
+		    self::setRequest($request);
 		}
 
 		return self::$request;
