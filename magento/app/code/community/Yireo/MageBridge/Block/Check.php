@@ -238,9 +238,6 @@ class Yireo_MageBridge_Block_Check extends Mage_Core_Block_Template
         $result = (!self::isMagebridgeClass('block', 'checkout/onepage_success')) ? self::CHECK_ERROR : self::CHECK_OK;
         $this->addResult('overrides', 'Override success-page', $result, 'Core-block "checkout/onepage_success" should be overwritten by MageBridge');
 
-        $result = (!self::isMagebridgeClass('block', 'core/text_list')) ? self::CHECK_ERROR : self::CHECK_OK;
-        $this->addResult('overrides', 'Override text-block', $result, 'Core-block "core/text_list" should be overwritten by MageBridge');
-
         return $this->mb_system_checks;
     }
 

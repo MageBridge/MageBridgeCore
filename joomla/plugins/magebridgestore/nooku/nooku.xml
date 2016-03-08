@@ -2,12 +2,12 @@
 <extension version="2.5" type="plugin" group="magebridgestore" method="upgrade">
 	<name>PLG_MAGEBRIDGESTORE_NOOKU</name>
 	<author>Yireo</author>
-	<creationDate>February 2016</creationDate>
+	<creationDate>March 2016</creationDate>
 	<copyright>Copyright (C) 2016 Yireo.com. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<authorEmail>info@yireo.com</authorEmail>
 	<authorUrl>www.yireo.com</authorUrl>
-	<version>1.9.5379</version>
+	<version>1.9.5381</version>
 	<description>PLG_MAGEBRIDGESTORE_NOOKU_DESC</description>
 
 	<files>
