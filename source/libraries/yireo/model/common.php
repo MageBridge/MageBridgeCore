@@ -29,7 +29,7 @@ class YireoCommonModel extends YireoAbstractModel
 	 *
 	 * @protected int
 	 */
-	protected $_skip_table = true;
+	protected $skip_table = true;
 
 	/*
 	 * Boolean to allow forms in the frontend
@@ -97,30 +97,26 @@ class YireoCommonModel extends YireoAbstractModel
 	/**
 	 * Constructor
 	 *
-	 * @access     public
-	 * @subpackage Yireo
-	 *
 	 * @param string $tableAlias
 	 *
-	 * @return null
+	 * @return mixed
 	 */
 	public function __construct($tableAlias = null)
 	{
-		// Import use full variables from JFactory
+		// Initialize variables
+		$this->init();
 		$this->db = JFactory::getDBO();
-		$this->app = JFactory::getApplication();
-		$this->application = $this->app;
-		$this->jinput = $this->app->input;
 		$this->user = JFactory::getUser();
 
 		// Create the option-namespace
 		$classParts = explode('Model', get_class($this));
-		$this->_view = (!empty($classParts[1])) ? strtolower($classParts[1]) : $this->jinput->getCmd('view');
+		$this->_view = (!empty($classParts[1])) ? strtolower($classParts[1]) : $this->input->getCmd('view');
 		$this->_option = $this->getOption();
 		$this->_option_id = $this->_option . '_' . $this->_view . '_';
+
 		if ($this->app->isSite())
 		{
-			$this->_option_id .= $this->jinput->getInt('Itemid') . '_';
+			$this->_option_id .= $this->input->getInt('Itemid') . '_';
 		}
 
 		$this->_component = preg_replace('/^com_/', '', $this->_option);
@@ -136,10 +132,7 @@ class YireoCommonModel extends YireoAbstractModel
 	/**
 	 * Method to get data
 	 *
-	 * @access     public
-	 * @subpackage Yireo
-	 *
-	 * @param null
+	 * @param bool $forceNew
 	 *
 	 * @return array
 	 */
@@ -224,9 +217,6 @@ class YireoCommonModel extends YireoAbstractModel
 	/**
 	 * Override the default method to allow for skipping table creation
 	 *
-	 * @access     public
-	 * @subpackage Yireo
-	 *
 	 * @param string $name
 	 * @param string $prefix
 	 * @param array  $options
@@ -235,7 +225,7 @@ class YireoCommonModel extends YireoAbstractModel
 	 */
 	public function getTable($name = '', $prefix = 'Table', $options = array())
 	{
-		if ($this->_skip_table == true)
+		if ($this->skip_table == true)
 		{
 			return null;
 		}
@@ -256,11 +246,6 @@ class YireoCommonModel extends YireoAbstractModel
 	/**
 	 * Method to determine the component-name
 	 *
-	 * @access     protected
-	 * @subpackage Yireo
-	 *
-	 * @param null
-	 *
 	 * @return string
 	 */
 	protected function getOption()
@@ -269,7 +254,7 @@ class YireoCommonModel extends YireoAbstractModel
 		$comPart = (!empty($classParts[0])) ? $classParts[0] : null;
 		$comPart = preg_replace('/([A-Z])/', '_\\1', $comPart);
 		$comPart = strtolower(preg_replace('/^_/', '', $comPart));
-		$option = (!empty($comPart) && $comPart != 'yireo') ? 'com_' . $comPart : $this->jinput->getCmd('option');
+		$option = (!empty($comPart) && $comPart != 'yireo') ? 'com_' . $comPart : $this->input->getCmd('option');
 
 		return $option;
 	}

@@ -29,7 +29,7 @@ class YireoModel extends YireoCommonModel
 	 *
 	 * @protected int
 	 */
-	protected $_single = null;
+	protected $single = null;
 
 	/**
 	 * Boolean to allow for caching
@@ -64,7 +64,7 @@ class YireoModel extends YireoCommonModel
 	 *
 	 * @protected int
 	 */
-	protected $_skip_table = false;
+	protected $skip_table = false;
 
 	/**
 	 * Category total
@@ -113,7 +113,7 @@ class YireoModel extends YireoCommonModel
 	 *
 	 * @protected array
 	 */
-	protected $_search = array();
+	protected $search = array();
 
 	/**
 	 * Order-by segments
@@ -181,12 +181,9 @@ class YireoModel extends YireoCommonModel
 	/**
 	 * Constructor
 	 *
-	 * @access     public
-	 * @subpackage Yireo
-	 *
 	 * @param string $tableAlias
 	 *
-	 * @return null
+	 * @return mixed
 	 */
 	public function __construct($tableAlias = null)
 	{
@@ -198,14 +195,17 @@ class YireoModel extends YireoCommonModel
 		{
 			$this->_tbl_prefix = $this->_component . 'Table';
 		}
+
 		// @todo: Set this in a metadata array
 		$this->_tbl_alias = $tableAlias;
 		$this->_tbl = $this->getTable($tableAlias);
+
 		if ($this->_tbl)
 		{
 			$this->_tbl_name = $this->_tbl->getTableName();
 			$this->_tbl_key = $this->_tbl->getKeyName();
 		}
+
 		$this->_entity = $tableAlias;
 		$this->_form_name = $tableAlias;
 
@@ -214,16 +214,19 @@ class YireoModel extends YireoCommonModel
 		{
 			$this->_orderby_default = $this->_tbl->getDefaultOrderBy();
 		}
+
 		if (empty($this->_orderby_title))
 		{
 			if ($this->_tbl->hasField('title'))
 			{
 				$this->_orderby_title = 'title';
 			}
+
 			if ($this->_tbl->hasField('label'))
 			{
 				$this->_orderby_title = 'label';
 			}
+
 			if ($this->_tbl->hasField('name'))
 			{
 				$this->_orderby_title = 'name';
@@ -260,40 +263,42 @@ class YireoModel extends YireoCommonModel
 		}
 
 		// Determine whether this model is single or not
-		if ($this->_single == null)
+		if ($this->single == null)
 		{
 			$className = get_class($this);
+
 			if (preg_match('/s$/', $className))
 			{
-				$this->_single = false;
+				$this->single = false;
 			}
 			else
 			{
-				$this->_single = true;
+				$this->single = true;
 			}
 		}
 
 		// Initialize the ID for single records
 		if ($this->isSingular())
 		{
+			$cid = $this->input->get('cid', array(0), '', 'array');
 
-			$cid = $this->jinput->get('cid', array(0), '', 'array');
 			if (!empty($cid) && count($cid) > 0)
 			{
 				$this->setId((int) $cid[0]);
 			}
 
-			$id = $this->jinput->getInt('id', 0);
+			$id = $this->input->getInt('id', 0);
+
 			if (!empty($id) && $id > 0)
 			{
 				$this->setId((int) $id);
 			}
 
-			// Multiple records
+			
 		}
+		// Multiple records
 		else
 		{
-
 			// Initialize limiting
 			$this->initLimit();
 			$this->initLimitstart();
@@ -301,6 +306,7 @@ class YireoModel extends YireoCommonModel
 			// Initialize ordering
 			$filter_order = $this->getFilter('order', '{tableAlias}.' . $this->_orderby_default, 'string');
 			$filter_order_Dir = $this->getFilter('order_Dir');
+
 			if (!empty($filter_order_Dir))
 			{
 				$filter_order_Dir = ' ' . strtoupper($filter_order_Dir);
@@ -317,11 +323,6 @@ class YireoModel extends YireoCommonModel
 	/**
 	 * Method to get the identifier
 	 *
-	 * @access     public
-	 * @subpackage Yireo
-	 *
-	 * @param null
-	 *
 	 * @return int
 	 */
 	public function getId()
@@ -332,17 +333,13 @@ class YireoModel extends YireoCommonModel
 	/**
 	 * Method to set the identifier
 	 *
-	 * @access     public
-	 * @subpackage Yireo
-	 *
 	 * @param int  $id
 	 * @param bool $reinit
-	 *
-	 * @return null
 	 */
 	public function setId($id = 0, $reinit = true)
 	{
 		$this->_id = $id;
+
 		if ($reinit)
 		{
 			$this->_data = null;
@@ -351,13 +348,8 @@ class YireoModel extends YireoCommonModel
 
 	/**
 	 * Method to initialize the limit parameter
-	 *
-	 * @access     public
-	 * @subpackage Yireo
-	 *
-	 * @param null
-	 *
-	 * @return null
+	 * 
+	 * @param string $limit
 	 */
 	public function initLimit($limit = null)
 	{
@@ -375,14 +367,9 @@ class YireoModel extends YireoCommonModel
 	}
 
 	/**
-	 * Method to initialize the limitstart parameter
-	 *
-	 * @access     public
-	 * @subpackage Yireo
-	 *
-	 * @param null
-	 *
-	 * @return null
+	 * Method to initialize the limitstart parameter\
+	 * 
+	 * @param string $limitstart
 	 */
 	public function initLimitstart($limitstart = null)
 	{
@@ -397,9 +384,6 @@ class YireoModel extends YireoCommonModel
 	/**
 	 * Method to get a filter from the user-state
 	 *
-	 * @access     public
-	 * @subpackage Yireo
-	 *
 	 * @param string $filter
 	 * @param string $default
 	 * @param string $type
@@ -413,11 +397,20 @@ class YireoModel extends YireoCommonModel
 		{
 			return null;
 		}
+
 		$value = $this->app->getUserStateFromRequest($this->getFilterName($filter), 'filter_' . $filter, $default, $type);
 
 		return $value;
 	}
 
+	/**
+	 * Get the current filter name
+	 *
+	 * @param      $filter
+	 * @param null $option
+	 *
+	 * @return string
+	 */
 	public function getFilterName($filter, $option = null)
 	{
 		if (empty($option))
@@ -430,9 +423,6 @@ class YireoModel extends YireoCommonModel
 
 	/**
 	 * Method to override a default user-state value
-	 *
-	 * @access     public
-	 * @subpackage Yireo
 	 *
 	 * @param string $key
 	 * @param mixed  $value
@@ -449,10 +439,7 @@ class YireoModel extends YireoCommonModel
 	/**
 	 * Method to get data
 	 *
-	 * @access     public
-	 * @subpackage Yireo
-	 *
-	 * @param null
+	 * @param bool $forceNew
 	 *
 	 * @return array
 	 */
@@ -461,7 +448,6 @@ class YireoModel extends YireoCommonModel
 		// Load the data if they are not just set or if the force-flag is set
 		if ($this->_data === null || $forceNew == self::FORCE_NEW)
 		{
-
 			// Load some empty data-set
 			$this->getEmpty();
 
@@ -471,13 +457,11 @@ class YireoModel extends YireoCommonModel
 			// Singular model
 			if ($this->isSingular() && $this->getId() > 0)
 			{
-
 				$query = $this->buildQuery();
 				$data = $this->getDbResult($query, 'object');
 
 				if (!empty($data))
 				{
-
 					// Prepare the column-fields
 					if (!empty($this->_columnFields))
 					{
@@ -533,49 +517,36 @@ class YireoModel extends YireoCommonModel
 			{
 				if ($this->isSingular() == false)
 				{
-
 					$query = $this->buildQuery();
 					$data = $this->getDbResult($query, 'objectList');
 
 					if (!empty($data))
 					{
-
 						// Prepare these data
 						foreach ($data as $index => $item)
 						{
-
 							// Frontend permissions
 							if ($this->app->isSite() && isset($item->access) && is_numeric($item->access))
 							{
 								$accessLevels = $this->user->getAuthorisedViewLevels();
-								if (YireoHelper::isJoomla25())
+
+								if ($item->access > 0 && !in_array($item->access, $accessLevels))
 								{
-									if (!array_key_exists($item->access, $accessLevels) || $accessLevels[$item->access] == 0)
-									{
-										unset($data[$index]);
-										continue;
-									}
-								}
-								else
-								{
-									if ($item->access > 0 && !in_array($item->access, $accessLevels))
-									{
-										unset($data[$index]);
-										continue;
-									}
+									unset($data[$index]);
+									continue;
 								}
 							}
 
 							// Backend permissions
 							if ($this->app->isAdmin() && (bool) $this->_tbl->hasAssetId() == true)
 							{
-
 								// Get the ID
 								$key = $this->getPrimaryKey();
 								$id = $item->$key;
 
 								// Determine the owner
 								$owner = 0;
+
 								if (!empty($item->created_by))
 								{
 									$owner = (int) $item->created_by;
@@ -600,6 +571,7 @@ class YireoModel extends YireoCommonModel
 
 								// Determine authorisation
 								$authorise = false;
+
 								if ($canEdit)
 								{
 									$authorise = true;
@@ -644,6 +616,7 @@ class YireoModel extends YireoCommonModel
 							{
 								$publish_up = $item->params->get('publish_up');
 								$publish_down = $item->params->get('publish_down');
+
 								if (!empty($publish_up) && strtotime($publish_up) > time())
 								{
 									unset($data[$index]);
@@ -689,6 +662,7 @@ class YireoModel extends YireoCommonModel
 						{
 							$this->_total = count($data);
 						}
+
 						$this->_data = $data;
 					}
 				}
@@ -714,11 +688,6 @@ class YireoModel extends YireoCommonModel
 	/**
 	 * Method to get the total number of records
 	 *
-	 * @access     public
-	 * @subpackage Yireo
-	 *
-	 * @param null
-	 *
 	 * @return int
 	 */
 	public function getTotal()
@@ -726,7 +695,6 @@ class YireoModel extends YireoCommonModel
 		// Lets load the content if it doesn't already exist
 		if (empty($this->_total))
 		{
-
 			// The original database-query did NOT include a LIMIT statement
 			if ($this->_limit_query == false)
 			{
@@ -751,11 +719,6 @@ class YireoModel extends YireoCommonModel
 
 	/**
 	 * Method to get a pagination object for the fetched records
-	 *
-	 * @access     public
-	 * @subpackage Yireo
-	 *
-	 * @param null
 	 *
 	 * @return JPagination
 	 */
@@ -787,9 +750,6 @@ class YireoModel extends YireoCommonModel
 	/**
 	 * Tests if an item is checked out
 	 *
-	 * @access     public
-	 * @subpackage Yireo
-	 *
 	 * @param int $uid
 	 *
 	 * @return bool
@@ -813,9 +773,6 @@ class YireoModel extends YireoCommonModel
 
 	/**
 	 * Method to checkin/unlock the table
-	 *
-	 * @access     public
-	 * @subpackage Yireo
 	 *
 	 * @param null
 	 *
@@ -843,9 +800,6 @@ class YireoModel extends YireoCommonModel
 
 	/**
 	 * Method to checkout/lock the table
-	 *
-	 * @access     public
-	 * @subpackage Yireo
 	 *
 	 * @param int $uid
 	 *
@@ -882,9 +836,6 @@ class YireoModel extends YireoCommonModel
 	/**
 	 * Method to store the model
 	 *
-	 * @access     public
-	 * @subpackage Yireo
-	 *
 	 * @param mixed $data
 	 *
 	 * @return bool
@@ -907,6 +858,7 @@ class YireoModel extends YireoCommonModel
 
 		// Convert the JForm array into the default data-set
 		$fieldgroups = array('text', 'basic', 'item');
+
 		foreach ($fieldgroups as $fieldgroup)
 		{
 			if (!empty($data[$fieldgroup]) && is_array($data[$fieldgroup]))
@@ -915,6 +867,7 @@ class YireoModel extends YireoCommonModel
 				{
 					$data[$name] = $value;
 				}
+
 				unset($data[$fieldgroup]);
 			}
 		}
@@ -937,6 +890,7 @@ class YireoModel extends YireoCommonModel
 		{
 			$publish_up = strtotime($data['params']['publish_up']);
 			$publish_down = strtotime($data['params']['publish_down']);
+
 			if ($publish_up >= $publish_down)
 			{
 				$data['params']['publish_down'] = null;
@@ -1042,6 +996,7 @@ class YireoModel extends YireoCommonModel
 
 		// Try to fetch the last ID from the table
 		$id = $this->_tbl->getLastInsertId();
+
 		if ((!isset($this->_id) || !$this->_id > 0) && $id > 0)
 		{
 			$this->_id = $id;
@@ -1052,9 +1007,6 @@ class YireoModel extends YireoCommonModel
 
 	/**
 	 * Method to remove multiple items
-	 *
-	 * @access     public
-	 * @subpackage Yireo
 	 *
 	 * @param array $cid
 	 *
@@ -1068,6 +1020,7 @@ class YireoModel extends YireoCommonModel
 			$cids = implode(',', $cid);
 			$query = 'DELETE FROM ' . $this->_tbl_name . ' WHERE ' . $this->_tbl_key . ' IN ( ' . $cids . ' )';
 			$this->_db->setQuery($query);
+
 			if (!$this->_db->query())
 			{
 				$this->setError($this->_db->getErrorMsg());
@@ -1081,9 +1034,6 @@ class YireoModel extends YireoCommonModel
 
 	/**
 	 * Method to (un)publish an item
-	 *
-	 * @access     public
-	 * @subpackage Yireo
 	 *
 	 * @param array $cid
 	 * @param int   $publish
@@ -1104,9 +1054,6 @@ class YireoModel extends YireoCommonModel
 
 	/**
 	 * Method to move an item
-	 *
-	 * @access     public
-	 * @subpackage Yireo
 	 *
 	 * @param mixed  $direction
 	 * @param string $field_name
@@ -1145,9 +1092,6 @@ class YireoModel extends YireoCommonModel
 	/**
 	 * Method to reorder items
 	 *
-	 * @access     public
-	 * @subpackage Yireo
-	 *
 	 * @param array  $cid
 	 * @param string $order
 	 *
@@ -1160,7 +1104,6 @@ class YireoModel extends YireoCommonModel
 		// update ordering values
 		for ($i = 0; $i < count($cid); $i++)
 		{
-
 			// Load the table
 			$this->_tbl->load((int) $cid[$i]);
 
@@ -1179,9 +1122,11 @@ class YireoModel extends YireoCommonModel
 
 			// Save the ordering
 			$ordering = $this->_tbl->getDefaultOrderBy();
+
 			if ($this->_tbl->$ordering != $order[$i])
 			{
 				$this->_tbl->$ordering = $order[$i];
+
 				if (!$this->_tbl->store())
 				{
 					$this->setError($this->_db->getErrorMsg());
@@ -1193,6 +1138,7 @@ class YireoModel extends YireoCommonModel
 
 		// Execute updateOrder for each parent group
 		$groupings = array_unique($groupings);
+
 		foreach ($groupings as $fieldName => $group)
 		{
 			$this->_tbl->reorder($fieldName . ' = ' . (int) $group);
@@ -1204,7 +1150,6 @@ class YireoModel extends YireoCommonModel
 	/**
 	 * Method to increment the hit counter for the item
 	 *
-	 * @access public
 	 * @return bool
 	 */
 	public function hit()
@@ -1222,7 +1167,10 @@ class YireoModel extends YireoCommonModel
 	/**
 	 * Method to toggle a certain field
 	 *
-	 * @access public
+	 * @param int    $id
+	 * @param string $name
+	 * @param string $value
+	 *
 	 * @return bool
 	 */
 	public function toggle($id, $name, $value)
@@ -1231,6 +1179,7 @@ class YireoModel extends YireoCommonModel
 		{
 			return false;
 		}
+
 		if (empty($name))
 		{
 			return false;
@@ -1239,16 +1188,13 @@ class YireoModel extends YireoCommonModel
 		$value = ($value == 1) ? 0 : 1;
 		$query = 'UPDATE `' . $this->_tbl_name . '` SET `' . $name . '`=' . $value . ' WHERE `' . $this->_tbl_key . '`=' . (int) $id;
 		$this->_db->setQuery($query);
-		$this->_db->query();
+		$this->_db->execute();
 
 		return true;
 	}
 
 	/**
 	 * Method to build the query
-	 *
-	 * @access     protected
-	 * @subpackage Yireo
 	 *
 	 * @param string $query
 	 *
@@ -1274,6 +1220,7 @@ class YireoModel extends YireoCommonModel
 		{
 			$limitstart = $this->getState('limitstart');
 			$limit = $this->getState('limit');
+
 			if (!(empty($limit) && empty($limitStart)))
 			{
 				$limitString = ' LIMIT ' . $limitstart . ',' . $limit;
@@ -1296,12 +1243,14 @@ class YireoModel extends YireoCommonModel
 			// Build the fields-string to avoid a *
 			$fields = $this->_tbl->getDatabaseFields();
 			$fieldsStrings = array();
+
 			foreach ($fields as $field)
 			{
 				if ($this->app->isSite() && in_array($field, $skipFrontendFields))
 				{
 					continue;
 				}
+
 				$fieldsStrings[] = '`{tableAlias}`.`' . $field . '`';
 			}
 
@@ -1354,21 +1303,18 @@ class YireoModel extends YireoCommonModel
 	/**
 	 * Method to build the query ORDER BY segment
 	 *
-	 * @access     protected
-	 * @subpackage Yireo
-	 *
-	 * @param null
-	 *
 	 * @return string
 	 */
 	protected function buildQueryOrderBy()
 	{
 		$this->_orderby = array_unique($this->_orderby);
+
 		if (count($this->_orderby))
 		{
 			foreach ($this->_orderby as $index => $orderby)
 			{
 				$orderby = trim($orderby);
+
 				if (empty($orderby))
 				{
 					unset($this->_orderby[$index]);
@@ -1387,21 +1333,18 @@ class YireoModel extends YireoCommonModel
 	/**
 	 * Method to build the query GROUP BY segment
 	 *
-	 * @access     protected
-	 * @subpackage Yireo
-	 *
-	 * @param null
-	 *
 	 * @return string
 	 */
 	protected function buildQueryGroupBy()
 	{
 		$this->_groupby = array_unique($this->_groupby);
+
 		if (count($this->_groupby))
 		{
 			foreach ($this->_groupby as $index => $groupby)
 			{
 				$groupby = trim($groupby);
+
 				if (empty($groupby))
 				{
 					unset($this->_groupby[$index]);
@@ -1420,11 +1363,6 @@ class YireoModel extends YireoCommonModel
 	/**
 	 * Method to build the query WHERE segment
 	 *
-	 * @access     protected
-	 * @subpackage Yireo
-	 *
-	 * @param null
-	 *
 	 * @return string
 	 */
 	protected function buildQueryWhere()
@@ -1437,10 +1375,12 @@ class YireoModel extends YireoCommonModel
 
 		// Automatically add a WHERE-statement if the state-filter is used
 		$state = $this->getFilter('state');
+
 		if ($state == 'U' || $state == 'P')
 		{
 			$state = ($state == 'U') ? 0 : 1;
 			$stateField = $this->_tbl->getStateField();
+
 			if (!empty($stateField))
 			{
 				$this->addWhere('`' . $this->_tbl_alias . '`.`' . $stateField . '` = ' . $state);
@@ -1451,6 +1391,7 @@ class YireoModel extends YireoCommonModel
 		if ($this->app->isSite())
 		{
 			$stateField = $this->_tbl->getStateField();
+
 			if (!empty($stateField))
 			{
 				$this->addWhere($this->_tbl_alias . '.' . $stateField . ' = 1');
@@ -1459,19 +1400,23 @@ class YireoModel extends YireoCommonModel
 
 		// Automatically add a WHERE-statement if the search-filter is used
 		$search = $this->getFilter('search');
-		if (!empty($this->_search) && !empty($search))
+
+		if (!empty($this->search) && !empty($search))
 		{
 			$where_search = array();
-			foreach ($this->_search as $column)
+
+			foreach ($this->search as $column)
 			{
 				if (strstr($column, '.') == false && strstr($column, '`') == false)
 				{
 					$column = "`" . $column . "`";
 				}
+
 				if (strstr($column, '.') == false)
 				{
 					$column = "`" . $this->_tbl_alias . "`." . $column;
 				}
+
 				$where_search[] = "$column LIKE '%$search%'";
 			}
 		}
@@ -1485,19 +1430,12 @@ class YireoModel extends YireoCommonModel
 		{
 			return ' WHERE ' . implode(' AND ', $this->_where) . "\n";
 		}
-		else
-		{
-			return '';
-		}
+
+		return '';
 	}
 
 	/**
 	 * Method to build an extra query segment
-	 *
-	 * @access     protected
-	 * @subpackage Yireo
-	 *
-	 * @param null
 	 *
 	 * @return string
 	 */
@@ -1507,29 +1445,24 @@ class YireoModel extends YireoCommonModel
 		{
 			return ' ' . implode(' ', $this->_extra) . "\n";
 		}
-		else
-		{
-			return '';
-		}
+
+		return '';
 	}
 
 	/**
 	 * Method to add a new ORDER BY argument
 	 *
-	 * @access     protected
-	 * @subpackage Yireo
-	 *
 	 * @param string $orderby
-	 *
-	 * @return null
 	 */
 	public function addOrderby($orderby = null)
 	{
 		$orderby = trim($orderby);
+
 		if (empty($orderby))
 		{
 			return;
 		}
+
 		if ($orderby == '{tableAlias}.')
 		{
 			return;
@@ -1541,10 +1474,12 @@ class YireoModel extends YireoCommonModel
 			{
 				$orderby = '{tableAlias}.' . $orderby;
 			}
+
 			if (strstr($orderby, 'accesslevel'))
 			{
 				$orderby = str_replace('{tableAlias}.', '', $orderby);
 			}
+
 			$this->_orderby[] = $orderby;
 		}
 	}
@@ -1552,20 +1487,17 @@ class YireoModel extends YireoCommonModel
 	/**
 	 * Method to add a new GROUP BY argument
 	 *
-	 * @access     protected
-	 * @subpackage Yireo
-	 *
 	 * @param string $groupby
-	 *
-	 * @return null
 	 */
 	public function addGroupby($groupby = null)
 	{
 		$groupby = trim($groupby);
+
 		if (empty($groupby))
 		{
 			return;
 		}
+
 		if ($groupby == '{tableAlias}.')
 		{
 			return;
@@ -1577,6 +1509,7 @@ class YireoModel extends YireoCommonModel
 			{
 				$groupby = '{tableAlias}.' . $groupby;
 			}
+
 			$this->_groupby[] = $groupby;
 		}
 	}
@@ -1584,19 +1517,14 @@ class YireoModel extends YireoCommonModel
 	/**
 	 * Method to add a new WHERE argument
 	 *
-	 * @access     protected
-	 * @subpackage Yireo
-	 *
 	 * @param mixed  $where WHERE statement in the form of an array ($name, $value) or string
 	 * @param string $type  Type of WHERE statement. Either "is" or "like".
-	 *
-	 * @return null
 	 */
 	public function addWhere($where, $type = 'is')
 	{
 		if ($this->_allow_filter == false)
 		{
-			return null;
+			return;
 		}
 
 		if (is_array($where))
@@ -1620,12 +1548,7 @@ class YireoModel extends YireoCommonModel
 	/**
 	 * Method to add an extra query argument
 	 *
-	 * @access     protected
-	 * @subpackage Yireo
-	 *
 	 * @param string $extra
-	 *
-	 * @return null
 	 */
 	public function addExtra($extra = null)
 	{
@@ -1638,11 +1561,6 @@ class YireoModel extends YireoCommonModel
 	/**
 	 * Method to get the current primary key
 	 *
-	 * @access     public
-	 * @subpackage Yireo
-	 *
-	 * @param null
-	 *
 	 * @return string
 	 */
 	public function getPrimaryKey()
@@ -1652,11 +1570,6 @@ class YireoModel extends YireoCommonModel
 
 	/**
 	 * Method to get the ordering query
-	 *
-	 * @access     public
-	 * @subpackage Yireo
-	 *
-	 * @param null
 	 *
 	 * @return string
 	 */
@@ -1669,14 +1582,12 @@ class YireoModel extends YireoCommonModel
 			return $query;
 
 		}
-		else
-		{
-			if ($this->_orderby_default == 'lft')
-			{
-				$query = 'SELECT `lft` AS `value`, `' . $this->_orderby_title . '` AS `text`' . ' FROM `' . $this->_tbl_name . '`' . ' ORDER BY `lft`';
 
-				return $query;
-			}
+		if ($this->_orderby_default == 'lft')
+		{
+			$query = 'SELECT `lft` AS `value`, `' . $this->_orderby_title . '` AS `text`' . ' FROM `' . $this->_tbl_name . '`' . ' ORDER BY `lft`';
+
+			return $query;
 		}
 
 		return null;
@@ -1684,11 +1595,6 @@ class YireoModel extends YireoCommonModel
 
 	/**
 	 * Method to get empty fields
-	 *
-	 * @access     protected
-	 * @subpackage Yireo
-	 *
-	 * @param null
 	 *
 	 * @return array
 	 */
@@ -1710,11 +1616,6 @@ class YireoModel extends YireoCommonModel
 	/**
 	 * Method to initialise the data
 	 *
-	 * @access     protected
-	 * @subpackage Yireo
-	 *
-	 * @param null
-	 *
 	 * @return bool
 	 */
 	protected function getEmpty()
@@ -1730,14 +1631,14 @@ class YireoModel extends YireoCommonModel
 			{
 				$this->_data = array();
 
+				return true;
 			}
-			else
+
+			$this->_data = (object) $this->_tbl->getProperties();
+
+			foreach ($data as $name => $value)
 			{
-				$this->_data = (object) $this->_tbl->getProperties();
-				foreach ($data as $name => $value)
-				{
-					$this->_data->$name = $value;
-				}
+				$this->_data->$name = $value;
 			}
 
 			return true;
@@ -1748,9 +1649,6 @@ class YireoModel extends YireoCommonModel
 
 	/**
 	 * Check whether this record can be edited
-	 *
-	 * @access     protected
-	 * @subpackage Yireo
 	 *
 	 * @param array $data
 	 *
@@ -1763,25 +1661,18 @@ class YireoModel extends YireoCommonModel
 		{
 			return $this->user->authorise('core.edit.state', $this->_option . '.' . $this->_entity . '.' . (int) $this->getId());
 		}
-		else
-		{
-			return $this->user->authorise('core.edit.state', $this->_option);
-		}
+
+		return $this->user->authorise('core.edit.state', $this->_option);
 	}
 
 	/**
 	 * Method to determine whether this model is singular or not
 	 *
-	 * @access     public
-	 * @subpackage Yireo
-	 *
-	 * @param null
-	 *
 	 * @return bool
 	 */
 	public function isSingular()
 	{
-		if (isset($this->_single) && (bool) $this->_single == true)
+		if (isset($this->single) && (bool) $this->single == true)
 		{
 			return true;
 		}
@@ -1791,11 +1682,6 @@ class YireoModel extends YireoCommonModel
 
 	/**
 	 * Method to determine whether this model is plural or not
-	 *
-	 * @access     public
-	 * @subpackage Yireo
-	 *
-	 * @param null
 	 *
 	 * @return bool
 	 */
@@ -1812,12 +1698,7 @@ class YireoModel extends YireoCommonModel
 	/**
 	 * Method to override the parameters
 	 *
-	 * @access     public
-	 * @subpackage Yireo
-	 *
 	 * @param mixed
-	 *
-	 * @return null
 	 */
 	public function setParams($params = null)
 	{
@@ -1830,11 +1711,6 @@ class YireoModel extends YireoCommonModel
 	/**
 	 * Method to get the default ORDER BY value
 	 *
-	 * @access     public
-	 * @subpackage Yireo
-	 *
-	 * @param null
-	 *
 	 * @return string
 	 */
 	public function getOrderByDefault()
@@ -1844,11 +1720,6 @@ class YireoModel extends YireoCommonModel
 
 	/**
 	 * Method to get a debug-message of the latest query
-	 *
-	 * @access     protected
-	 * @subpackage Yireo
-	 *
-	 * @param null
 	 *
 	 * @return string
 	 */
@@ -1860,12 +1731,7 @@ class YireoModel extends YireoCommonModel
 	/**
 	 * Method to temporarily store an object in the current session
 	 *
-	 * @access     public
-	 * @subpackage Yireo
-	 *
-	 * @param null
-	 *
-	 * @return string
+	 * @param array $data
 	 */
 	public function saveTmpSession($data)
 	{
@@ -1875,13 +1741,6 @@ class YireoModel extends YireoCommonModel
 
 	/**
 	 * Method to temporarily store an object in the current session
-	 *
-	 * @access     public
-	 * @subpackage Yireo
-	 *
-	 * @param null
-	 *
-	 * @return string
 	 */
 	public function loadTmpSession()
 	{
@@ -1889,6 +1748,7 @@ class YireoModel extends YireoCommonModel
 		{
 			$session = JFactory::getSession();
 			$data = $session->get($this->_option_id);
+
 			if (!empty($data))
 			{
 				foreach ($data as $name => $value)
@@ -1900,19 +1760,10 @@ class YireoModel extends YireoCommonModel
 				}
 			}
 		}
-
-		return;
 	}
 
 	/**
 	 * Method to temporarily store an object in the current session
-	 *
-	 * @access     public
-	 * @subpackage Yireo
-	 *
-	 * @param null
-	 *
-	 * @return string
 	 */
 	public function resetTmpSession()
 	{
@@ -1923,16 +1774,11 @@ class YireoModel extends YireoCommonModel
 	/**
 	 * Method to reset all filters
 	 *
-	 * @access     public
-	 * @subpackage Yireo
-	 *
-	 * @param null
-	 *
 	 * @return string
 	 */
 	public function resetFilters()
 	{
-		$this->_search = null;
+		$this->search = null;
 		$this->_where = array();
 		$this->_orderby = array();
 		$this->setState('limitstart', 0);
@@ -1942,16 +1788,12 @@ class YireoModel extends YireoCommonModel
 	/**
 	 * Method to check if any errors are set
 	 *
-	 * @access     public
-	 * @subpackage Yireo
-	 *
-	 * @param null
-	 *
 	 * @return boolean
 	 */
 	public function hasErrors()
 	{
 		$errors = $this->getErrors();
+
 		if (!empty($errors))
 		{
 			return true;
@@ -1963,12 +1805,7 @@ class YireoModel extends YireoCommonModel
 	/**
 	 * Method to set whether filtering is allowed
 	 *
-	 * @access     public
-	 * @subpackage Yireo
-	 *
 	 * @param boolean
-	 *
-	 * @return null
 	 */
 	public function setAllowFilter($bool)
 	{
@@ -1978,12 +1815,7 @@ class YireoModel extends YireoCommonModel
 	/**
 	 * Method to set whether the query should use LIMIT or not
 	 *
-	 * @access     public
-	 * @subpackage Yireo
-	 *
 	 * @param boolean
-	 *
-	 * @return null
 	 */
 	public function setLimitQuery($bool)
 	{
@@ -1993,13 +1825,10 @@ class YireoModel extends YireoCommonModel
 	/**
 	 * Method to fetch database-results
 	 *
-	 * @access     public
-	 * @subpackage Yireo
-	 *
 	 * @param string $query
 	 * @param string $type : object|objectList|result
 	 *
-	 * @return null
+	 * @return mixed
 	 */
 	public function getDbResult($query, $type = 'object')
 	{
@@ -2019,13 +1848,10 @@ class YireoModel extends YireoCommonModel
 	/**
 	 * Method to fetch database-results
 	 *
-	 * @access     public
-	 * @subpackage Yireo
-	 *
 	 * @param string $query
 	 * @param string $type : object|objectList|result
 	 *
-	 * @return null
+	 * @return mixed
 	 */
 	public function _getDbResult($query, $type = 'object')
 	{
@@ -2050,12 +1876,6 @@ class YireoModel extends YireoCommonModel
 		else
 		{
 			$rs = $this->_db->loadObject();
-		}
-
-		// Print an error when an error occurs
-		if (isset($this->_debug) && $this->_debug == true && $this->_db->getErrorMsg())
-		{
-			JError::raiseWarning('DB error', $this->_db->getErrorMsg());
 		}
 
 		// Return the result

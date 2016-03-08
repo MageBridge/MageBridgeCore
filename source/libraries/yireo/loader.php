@@ -55,13 +55,20 @@ if (!function_exists('YireoLibraryLoader'))
 			case 'YireoCommonModel':
 				$filename = 'model/common';
 				break;
+			case 'YireoDataModel':
+				$filename = 'model/data';
+				break;
 			case 'YireoServiceModel':
 				$filename = 'model/service';
 				break;
 			case 'YireoView':
-			case 'YireoCommonView':
-			case 'YireoAbstractView':
 				$filename = 'view';
+				break;
+			case 'YireoCommonView':
+				$filename = 'view/common';
+				break;
+			case 'YireoAbstractView':
+				$filename = 'view/abstract';
 				break;
 			case 'YireoViewItem':
 				$filename = 'view/item';
@@ -79,13 +86,13 @@ if (!function_exists('YireoLibraryLoader'))
 				$filename = 'view/list';
 				break;
 			case 'YireoController':
-			case 'YireoCommonController':
-			case 'YireoAbstractController':
 				$filename = 'controller';
 				break;
-			case 'YireoController':
+			case 'YireoCommonController':
+				$filename = 'controller/common';
+				break;
 			case 'YireoAbstractController':
-				$filename = 'controller';
+				$filename = 'controller/abstract';
 				break;
 			case 'YireoTable':
 				$filename = 'table';

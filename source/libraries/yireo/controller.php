@@ -17,122 +17,6 @@ defined('_JEXEC') or die();
 require_once dirname(__FILE__) . '/loader.php';
 
 /**
- * Yireo Abstract Controller
- *
- * @package Yireo
- */
-class YireoAbstractController extends JControllerLegacy
-{
-}
-
-/**
- * Yireo Common Controller
- *
- * @package Yireo
- */
-class YireoCommonController extends YireoAbstractController
-{
-	/**
-	 * Value of the last message
-	 *
-	 * @protected string
-	 */
-	protected $msg = '';
-
-	/**
-	 * Type of the last message
-	 *
-	 * @protected string
-	 * @values    error|notice|message
-	 */
-	protected $msg_type = '';
-
-	/**
-	 * Constructor
-	 */
-	public function __construct()
-	{
-		// Define variables
-		$this->_app = JFactory::getApplication();
-		$this->_application = $this->_app;
-		$this->_jinput = $this->_app->input;
-
-		// Add extra model-paths
-		$option = $this->_jinput->getCmd('option');
-
-		if ($this->_app->isSite())
-		{
-			$this->addModelPath(JPATH_ADMINISTRATOR . '/components/' . $option . '/models');
-			$this->addModelPath(JPATH_SITE . '/components/' . $option . '/models');
-		}
-		else
-		{
-			$this->addModelPath(JPATH_ADMINISTRATOR . '/components/' . $option . '/models');
-		}
-
-		// Load additional language-files
-		YireoHelper::loadLanguageFile();
-
-		// Call the parent constructor
-		parent::__construct();
-	}
-
-	/**
-	 * @param $option
-	 * @param $name
-	 *
-	 * @return mixed
-	 * @throws Exception
-	 */
-	static public function getControllerInstance($option, $name)
-	{
-		// Check for a child controller
-		if (is_file(JPATH_COMPONENT . '/controllers/' . $name . '.php'))
-		{
-			require_once JPATH_COMPONENT . '/controllers/' . $name . '.php';
-
-			$controllerClass = ucfirst($option) . 'Controller' . ucfirst($name);
-
-			if (class_exists($controllerClass))
-			{
-				$controller = new $controllerClass;
-
-				return $controller;
-			}
-		}
-
-		return self::getDefaultControllerInstance($option, $name);
-	}
-
-	/**
-	 * @param $option
-	 * @param $name
-	 *
-	 * @return mixed
-	 * @throws Exception
-	 */
-	static public function getDefaultControllerInstance($option, $name)
-	{
-		// Require the base controller
-		if (is_file(JPATH_COMPONENT . '/controller.php'))
-		{
-			require_once JPATH_COMPONENT . '/controller.php';
-		}
-
-		$controllerClass = ucfirst($option) . 'Controller';
-
-		if (class_exists($controllerClass))
-		{
-			$controller = new $controllerClass;
-
-			return $controller;
-		}
-
-		throw new Exception(JText::_('LIB_YIREO_NO_CONTROLLER_FOUND'));
-	}
-}
-
-/**
  * Yireo Controller
  *
  * @package Yireo
@@ -163,6 +47,13 @@ class YireoController extends YireoCommonController
 	 * @constant
 	 */
 	const PHP_SUPPORTED_VERSION = '5.4.0';
+
+	/**
+	 * Unique identifier
+	 *
+	 * @var int
+	 */
+	protected $id = 0;
 
 	/**
 	 * Value of the default View to use
@@ -216,12 +107,6 @@ class YireoController extends YireoCommonController
 
 	/**
 	 * Constructor
-	 *
-	 * @subpackage Yireo
-	 *
-	 * @param null
-	 *
-	 * @return null
 	 */
 	public function __construct()
 	{
@@ -265,12 +150,10 @@ class YireoController extends YireoCommonController
 	/**
 	 * Display the current page
 	 *
-	 * @access     public
-	 * @subpackage Yireo
+	 * @param bool $cachable
+	 * @param bool $urlparams
 	 *
-	 * @param null
-	 *
-	 * @return null
+	 * @return JControllerLegacy
 	 */
 	public function display($cachable = false, $urlparams = false)
 	{
@@ -285,18 +168,11 @@ class YireoController extends YireoCommonController
 			$this->showPhpSupported();
 		}
 
-		parent::display($cachable, $urlparams);
+		return parent::display($cachable, $urlparams);
 	}
 
 	/**
 	 * Handle the task 'add'
-	 *
-	 * @access     public
-	 * @subpackage Yireo
-	 *
-	 * @param null
-	 *
-	 * @return null
 	 */
 	public function add()
 	{
@@ -306,13 +182,6 @@ class YireoController extends YireoCommonController
 
 	/**
 	 * Handle the task 'edit'
-	 *
-	 * @access     public
-	 * @subpackage Yireo
-	 *
-	 * @param null
-	 *
-	 * @return null
 	 */
 	public function edit()
 	{
@@ -326,13 +195,6 @@ class YireoController extends YireoCommonController
 
 	/**
 	 * Handle the task 'copy'
-	 *
-	 * @access     public
-	 * @subpackage Yireo
-	 *
-	 * @param null
-	 *
-	 * @return null
 	 */
 	public function copy()
 	{
@@ -342,6 +204,8 @@ class YireoController extends YireoCommonController
 
 	/**
 	 * Load the POST data
+	 *
+	 * @return array
 	 */
 	public function loadPost()
 	{
@@ -362,12 +226,9 @@ class YireoController extends YireoCommonController
 	/**
 	 * Handle the task 'store'
 	 *
-	 * @access     public
-	 * @subpackage Yireo
-	 *
 	 * @param array $post
 	 *
-	 * @return null
+	 * @return int
 	 */
 	public function store($post = null)
 	{
@@ -379,8 +240,6 @@ class YireoController extends YireoCommonController
 		{
 			$post = $this->loadPost();
 		}
-
-		//print_r($post);exit;
 
 		// Fetch the ID
 		$post['id'] = $this->getId();
@@ -468,13 +327,6 @@ class YireoController extends YireoCommonController
 
 	/**
 	 * Handle the task 'save'
-	 *
-	 * @access     public
-	 * @subpackage Yireo
-	 *
-	 * @param null
-	 *
-	 * @return null
 	 */
 	public function save()
 	{
@@ -502,13 +354,6 @@ class YireoController extends YireoCommonController
 
 	/**
 	 * Handle the task 'apply'
-	 *
-	 * @access     public
-	 * @subpackage Yireo
-	 *
-	 * @param null
-	 *
-	 * @return null
 	 */
 	public function apply()
 	{
@@ -531,13 +376,6 @@ class YireoController extends YireoCommonController
 
 	/**
 	 * Handle the task 'savenew'
-	 *
-	 * @access     public
-	 * @subpackage Yireo
-	 *
-	 * @param null
-	 *
-	 * @return null
 	 */
 	public function savenew()
 	{
@@ -553,13 +391,6 @@ class YireoController extends YireoCommonController
 
 	/**
 	 * Handle the task 'saveandcopy'
-	 *
-	 * @access     public
-	 * @subpackage Yireo
-	 *
-	 * @param null
-	 *
-	 * @return null
 	 */
 	public function saveandcopy()
 	{
@@ -584,13 +415,6 @@ class YireoController extends YireoCommonController
 
 	/**
 	 * Handle the task 'saveascopy'
-	 *
-	 * @access     public
-	 * @subpackage Yireo
-	 *
-	 * @param null
-	 *
-	 * @return null
 	 */
 	public function saveascopy()
 	{
@@ -611,13 +435,6 @@ class YireoController extends YireoCommonController
 
 	/**
 	 * Handle the task 'remove'
-	 *
-	 * @access     public
-	 * @subpackage Yireo
-	 *
-	 * @param null
-	 *
-	 * @return null
 	 */
 	public function remove()
 	{
@@ -629,7 +446,7 @@ class YireoController extends YireoCommonController
 
 		if (count($cid) < 1)
 		{
-			JError::raiseError(500, JText::_('LIB_YIREO_CONTROLLER_ITEM_SELECT_DELETE'));
+			throw new Exception(JText::_('LIB_YIREO_CONTROLLER_ITEM_SELECT_DELETE'));
 		}
 
 		// Remove all selected items
@@ -659,13 +476,6 @@ class YireoController extends YireoCommonController
 
 	/**
 	 * Handle the task 'publish'
-	 *
-	 * @access     public
-	 * @subpackage Yireo
-	 *
-	 * @param null
-	 *
-	 * @return null
 	 */
 	public function publish()
 	{
@@ -677,7 +487,7 @@ class YireoController extends YireoCommonController
 
 		if (count($cid) < 1)
 		{
-			JError::raiseError(500, JText::_('LIB_YIREO_CONTROLLER_ITEM_SELECT_PUBLISH'));
+			throw new Exception(JText::_('LIB_YIREO_CONTROLLER_ITEM_SELECT_PUBLISH'));
 		}
 
 		// Use the model to publish this entry
@@ -707,13 +517,6 @@ class YireoController extends YireoCommonController
 
 	/**
 	 * Handle the task 'unpublish'
-	 *
-	 * @access     public
-	 * @subpackage Yireo
-	 *
-	 * @param null
-	 *
-	 * @return null
 	 */
 	public function unpublish()
 	{
@@ -725,7 +528,7 @@ class YireoController extends YireoCommonController
 
 		if (count($cid) < 1)
 		{
-			JError::raiseError(500, JText::_('LIB_YIREO_CONTROLLER_ITEM_SELECT_UNPUBLISH'));
+			throw new Exception(JText::_('LIB_YIREO_CONTROLLER_ITEM_SELECT_UNPUBLISH'));
 		}
 
 		// Use the model to unpublish this entry
@@ -740,12 +543,12 @@ class YireoController extends YireoCommonController
 			if (count($cid) == 1)
 			{
 				$singleName = $this->getSingleName($this->_jinput->getCmd('view'));
-				$this->msg = JText::_('LIB_YIREO_CONTROLLER_ITEM_UNPUBLISHED');
+				$this->msg = JText::sprintf('LIB_YIREO_CONTROLLER_ITEM_UNPUBLISHED', $singleName);
 			}
 			else
 			{
 				$pluralName = $this->getPluralName($this->_jinput->getCmd('view'));
-				$this->msg = JText::sprintf('LIB_YIREO_CONTROLLER_ITEM_UNPUBLISHED', count($cid));
+				$this->msg = JText::sprintf('LIB_YIREO_CONTROLLER_ITEM_UNPUBLISHED', $pluralName, count($cid));
 			}
 		}
 
@@ -755,13 +558,6 @@ class YireoController extends YireoCommonController
 
 	/**
 	 * Handle the task 'cancel'
-	 *
-	 * @access     public
-	 * @subpackage Yireo
-	 *
-	 * @param null
-	 *
-	 * @return null
 	 */
 	public function cancel()
 	{
@@ -780,13 +576,6 @@ class YireoController extends YireoCommonController
 
 	/**
 	 * Handle the task 'orderup'
-	 *
-	 * @access     public
-	 * @subpackage Yireo
-	 *
-	 * @param null
-	 *
-	 * @return null
 	 */
 	public function orderup()
 	{
@@ -803,13 +592,6 @@ class YireoController extends YireoCommonController
 
 	/**
 	 * Handle the task 'orderdown'
-	 *
-	 * @access     public
-	 * @subpackage Yireo
-	 *
-	 * @param null
-	 *
-	 * @return null
 	 */
 	public function orderdown()
 	{
@@ -826,13 +608,6 @@ class YireoController extends YireoCommonController
 
 	/**
 	 * Handle the task 'saveorder'
-	 *
-	 * @access     public
-	 * @subpackage Yireo
-	 *
-	 * @param null
-	 *
-	 * @return null
 	 */
 	public function saveorder()
 	{
@@ -881,13 +656,6 @@ class YireoController extends YireoCommonController
 
 	/**
 	 * Handle the task 'vote'
-	 *
-	 * @access     public
-	 * @subpackage Yireo
-	 *
-	 * @param null
-	 *
-	 * @return null
 	 */
 	public function vote()
 	{
@@ -924,13 +692,6 @@ class YireoController extends YireoCommonController
 
 	/**
 	 * Handle the task 'toggle'
-	 *
-	 * @access     public
-	 * @subpackage Yireo
-	 *
-	 * @param null
-	 *
-	 * @return null
 	 */
 	public function toggle()
 	{
@@ -958,11 +719,6 @@ class YireoController extends YireoCommonController
 
 	/** Helper function to set the form page
 	 *
-	 * @access     protected
-	 * @subpackage Yireo
-	 *
-	 * @param null
-	 *
 	 * @return bool
 	 */
 	protected function setEditForm()
@@ -974,7 +730,6 @@ class YireoController extends YireoCommonController
 		// If the current request does not have the right view, redirect to the right view
 		if ($current != $single)
 		{
-
 			$id = $this->getId();
 			$variables = array('task' => $this->_jinput->getCmd('task'));
 
@@ -999,11 +754,6 @@ class YireoController extends YireoCommonController
 
 	/**
 	 * Helper function to load the current model
-	 *
-	 * @access     protected
-	 * @subpackage Yireo
-	 *
-	 * @param null
 	 *
 	 * @return YireoModel
 	 */
@@ -1031,9 +781,6 @@ class YireoController extends YireoCommonController
 
 	/**
 	 * Helper function to het the plural form of a word
-	 *
-	 * @access     protected
-	 * @subpackage Yireo
 	 *
 	 * @param string $name
 	 *
@@ -1065,9 +812,6 @@ class YireoController extends YireoCommonController
 
 	/**
 	 * Helper function to get the singular form of a word
-	 *
-	 * @access     protected
-	 * @subpackage Yireo
 	 *
 	 * @param string $name
 	 *
@@ -1101,9 +845,6 @@ class YireoController extends YireoCommonController
 
 	/**
 	 * Method to set the proper redirect
-	 *
-	 * @access     protected
-	 * @subpackage Yireo
 	 *
 	 * @param string $view
 	 * @param array  $variables
@@ -1154,10 +895,7 @@ class YireoController extends YireoCommonController
 	/**
 	 * Manually set the ID
 	 *
-	 * @subpackage Yireo
-	 *
 	 * @param int
-	 * @param null
 	 */
 	protected function setId($id)
 	{
@@ -1167,7 +905,7 @@ class YireoController extends YireoCommonController
 	/**
 	 * Method to get the current ID
 	 *
-	 * @subpackage Yireo
+	 * @return int
 	 */
 	protected function getId()
 	{
@@ -1202,11 +940,6 @@ class YireoController extends YireoCommonController
 	/**
 	 * Method to get the selected IDs
 	 *
-	 * @access     protected
-	 * @subpackage Yireo
-	 *
-	 * @param null
-	 *
 	 * @return array
 	 */
 	protected function getIds()
@@ -1228,13 +961,6 @@ class YireoController extends YireoCommonController
 
 	/**
 	 * Method to check whether the current PHP version is supported
-	 *
-	 * @access     protected
-	 * @subpackage Yireo
-	 *
-	 * @param null
-	 *
-	 * @return null
 	 */
 	protected function showPhpSupported()
 	{

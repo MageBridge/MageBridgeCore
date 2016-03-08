@@ -21,8 +21,18 @@ require_once dirname(dirname(__FILE__)).'/loader.php';
  */
 class YireoHelperForm
 {
+	/**
+	 * @var array
+	 */
 	protected static $items = array();
 
+	/**
+	 * @param $table
+	 * @param $valueField
+	 * @param $textField
+	 *
+	 * @return mixed
+	 */
 	public static function options($table, $valueField, $textField)
 	{
 		$hash = md5($table);
