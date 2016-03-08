@@ -184,12 +184,14 @@ class MageBridge
             // Set the REQUEST_URI
             $_SERVER['REQUEST_URI'] = $request_uri;
             $_SERVER['HTTP_X_REWRITE_URL'] = $request_uri;
+            $_SERVER['HTTP_X_ORIGINAL_URL'] = $request_uri;
 
 
         // Set defaults otherwise
         } else {
             $_SERVER['REQUEST_URI'] = '/';
             $_SERVER['HTTP_X_REWRITE_URL'] = '/';
+            $_SERVER['HTTP_X_ORIGINAL_URL'] = '/';
         }
 
         // Mask the HTTP_USER_AGENT
