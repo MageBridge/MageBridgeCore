@@ -2,7 +2,7 @@
 <extension version="2.5" type="plugin" group="system" method="upgrade">
     <name>PLG_SYSTEM_MAGEBRIDGERT</name>
     <author>Yireo</author>
-    <creationDate>February 2016</creationDate>
+    <creationDate>March 2016</creationDate>
     <copyright>Copyright (C) 2016 Yireo.com. All rights reserved.</copyright>
     <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
     <authorEmail>info@yireo.com</authorEmail>
