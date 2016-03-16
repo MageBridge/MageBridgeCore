@@ -38,4 +38,35 @@ class Yireo_MageBridgeRedirect_Helper_Data extends Mage_Core_Helper_Abstract
         return $value;
     }
 
+    /*
+     * Helper-method to prevent redirect on specific ip v4 adresses
+     *
+     * @access public
+     * @param null
+     * @return boolean
+     */
+    public function checkIPv4()
+    {
+        $value = Mage::getStoreConfig('magebridge/redirect/magebridge_ipv4');
+        if(empty(trim($value))) $value = null;
+
+        if($value != null) {
+            $ips = explode(PHP_EOL, $value);
+            foreach ($ips as $key => &$ip) {
+            	$ip = trim($ip);
+            	if(!filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
+            		unset($ips[$key]);
+            		continue;
+            	}
+            }
+
+            $ips = array_values($ips);
+            if(in_array($_SERVER['REMOTE_ADDR'], $ips)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 }
