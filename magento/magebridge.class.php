@@ -210,13 +210,10 @@ class MageBridge
             $_SERVER['REMOTE_ADDR'] = $data['remote_addr'];
         }
 
-        // Mask the HTTP_HOST
-        //if(!empty($data['http_host'])) {
-        //    $_SERVER['HTTP_HOST'] = $data['http_host'];
-        //}
-
         // Mask the REQUEST_METHOD
-        if($_SERVER['REQUEST_METHOD'] == 'POST' && empty($_POST)) $_SERVER['REQUEST_METHOD'] = 'GET';
+        if(isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST' && empty($_POST)) {
+            $_SERVER['REQUEST_METHOD'] = 'GET';
+        }
 
         // Make sure all globals are arrays
         if(empty($_GET)) $_GET = array();
