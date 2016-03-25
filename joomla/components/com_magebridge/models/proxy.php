@@ -84,6 +84,13 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 	 */
 	protected function isNonBridgeOutput($response)
 	{
+        $bridge = MageBridge::getBridge();
+        
+        if ($bridge->isAjax())
+        {
+            return true;
+        }
+
 		if ($this->isValidResponse($response) == false)
 		{
 			$this->debug->notice('Empty decoded response suggests non-bridge output');
