@@ -517,39 +517,6 @@ class MageBridgeHelper
 	}
 
 	/**
-	 * Helper-method to get the current Joomla! core version
-	 *
-	 * @param null
-	 * @return bool
-	 */
-	static public function isJoomla17()
-	{
-		return self::isJoomlaVersion('1.7');
-	}
-
-	/**
-	 * Helper-method to get the current Joomla! core version
-	 *
-	 * @param null
-	 * @return bool
-	 */
-	static public function isJoomla16()
-	{
-		return self::isJoomlaVersion('1.6');
-	}
-
-	/**
-	 * Helper-method to get the current Joomla! core version
-	 *
-	 * @param null
-	 * @return bool
-	 */
-	static public function isJoomla15()
-	{
-		return self::isJoomlaVersion('1.5');
-	}
-
-	/**
 	 * Helper-method to get the component parameters
 	 *
 	 * @param null
