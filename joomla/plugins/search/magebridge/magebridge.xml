@@ -2,7 +2,7 @@
 <extension version="2.5" type="plugin" group="search" method="upgrade">
     <name>PLG_SEARCH_MAGEBRIDGE</name>
     <author>Yireo</author>
-    <creationDate>March 2016</creationDate>
+    <creationDate>April 2016</creationDate>
     <copyright>Copyright (C) 2016 Yireo.com. All rights reserved.</copyright>
     <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
     <authorEmail>info@yireo.com</authorEmail>
