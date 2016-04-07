@@ -54,7 +54,8 @@ class MageBridgeView extends YireoAbstractView
 	public function display($tpl = null)
 	{
 		// Add debugging
-		MageBridgeDebugHelper::addDebug();
+		$debugHelper = new MageBridgeDebugHelper;
+		$debugHelper->addDebug();
 
 		// Build the block
 		$this->block = $this->build();

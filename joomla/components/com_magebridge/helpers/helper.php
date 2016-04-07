@@ -2,11 +2,11 @@
 /**
  * Joomla! component MageBridge
  *
- * @author	Yireo (info@yireo.com)
+ * @author    Yireo (info@yireo.com)
  * @package   MageBridge
  * @copyright Copyright 2015
  * @license   GNU Public License
- * @link	  http://www.yireo.com
+ * @link      http://www.yireo.com
  */
 
 // No direct access
@@ -15,13 +15,13 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * General helper for usage in Joomla!
  */
-
 class MageBridgeHelper
 {
 	/**
 	 * Helper-method to get help-URLs for usage in the content
 	 *
 	 * @param string $name
+	 *
 	 * @return array
 	 */
 	static public function getHelpItem($name = null)
@@ -30,47 +30,59 @@ class MageBridgeHelper
 			'faq' => array(
 				'title' => 'General FAQ',
 				'link' => 'http://www.yireo.com/software/magebridge/experience/faq',
-				'internal' => 0,),
+				'internal' => 0,
+			),
 			'faq-troubleshooting' => array(
 				'title' => 'Troubleshooting FAQ',
 				'link' => 'http://www.yireo.com/tutorials/magebridge/troubleshooting/729-magebridge-faq-troubleshooting',
-				'internal' => 0,),
+				'internal' => 0,
+			),
 			'faq-troubleshooting:api-widgets' => array(
 				'title' => 'API Widgets FAQ',
 				'link' => 'http://www.yireo.com/tutorials/magebridge/troubleshooting/729-magebridge-faq-troubleshooting#api-widgets-do-not-work',
-				'internal' => 0,),
+				'internal' => 0,
+			),
 			'faq-development' => array(
 				'title' => 'Development FAQ',
 				'link' => 'http://www.yireo.com/tutorials/magebridge/development/577-magebridge-faq-development',
-				'internal' => 0,),
+				'internal' => 0,
+			),
 			'forum' => array(
 				'title' => 'MageBridge Support Form',
 				'link' => 'http://www.yireo.com/forum/',
-				'internal' => 0,),
+				'internal' => 0,
+			),
 			'tutorials' => array(
 				'title' => 'Yireo Tutorials',
 				'link' => 'http://www.yireo.com/tutorials',
-				'internal' => 0,),
+				'internal' => 0,
+			),
 			'quickstart' => array(
 				'title' => 'MageBridge Quick Start Guide',
 				'link' => 'http://www.yireo.com/tutorials/magebridge/basics/540-magebridge-quick-start-guide',
-				'internal' => 0,),
+				'internal' => 0,
+			),
 			'troubleshooting' => array(
 				'title' => 'MageBridge Troubleshooting Guide',
 				'link' => 'http://www.yireo.com/tutorials/magebridge/troubleshooting/723-magebridge-troubleshooting-guide',
-				'internal' => 0,),
+				'internal' => 0,
+			),
 			'changelog' => array(
 				'title' => 'MageBridge Changelog',
 				'link' => 'http://www.yireo.com/tutorials/magebridge/updates/975-magebridge-changelog',
-				'internal' => 0,),
+				'internal' => 0,
+			),
 			'subscriptions' => array(
 				'title' => 'your Yireo Subscriptions page',
 				'link' => 'https://www.yireo.com/shop/membership/customer/products/',
-				'internal' => 0,),
+				'internal' => 0,
+			),
 			'config' => array(
 				'title' => 'Global Configuration',
 				'link' => 'index.php?option=com_config',
-				'internal' => 1,),);
+				'internal' => 1,
+			),
+		);
 
 		if (!empty($name) && isset($links[$name]))
 		{
@@ -85,6 +97,7 @@ class MageBridgeHelper
 	 *
 	 * @param string $name
 	 * @param string $title
+	 *
 	 * @return string
 	 */
 	static public function getHelpLink($name = null)
@@ -99,6 +112,7 @@ class MageBridgeHelper
 	 *
 	 * @param string $name
 	 * @param string $title
+	 *
 	 * @return string
 	 */
 	static public function getHelpText($name = null, $title = null)
@@ -114,6 +128,7 @@ class MageBridgeHelper
 	 * Helper-method to insert notices into the application
 	 *
 	 * @param string $text
+	 *
 	 * @return string
 	 */
 	static public function help($text = null)
@@ -138,6 +153,7 @@ class MageBridgeHelper
 	 * Helper-method to filter the original Magento content from unneeded/unwanted bits
 	 *
 	 * @param string $content
+	 *
 	 * @return string
 	 */
 	static public function filterContent($content)
@@ -206,7 +222,9 @@ class MageBridgeHelper
 				}
 
 				// Extra check on HTTPS
-				if (JURI::getInstance()->isSSL() == true)
+				if (JURI::getInstance()
+						->isSSL() == true
+				)
 				{
 					$url = str_replace('http://', 'https://', $url);
 				}
@@ -218,7 +236,8 @@ class MageBridgeHelper
 				// Replace the URL in the content
 				if ($original_url != $url && $original_url . '/' != $url && !in_array($match, $replaced))
 				{
-					MageBridgeModelDebug::getInstance()->notice('Translating uenc-URL from ' . $original_url . ' to ' . $url);
+					MageBridgeModelDebug::getInstance()
+						->notice('Translating uenc-URL from ' . $original_url . ' to ' . $url);
 					$base64_url = MageBridgeEncryptionHelper::base64_encode($url);
 					$content = str_replace($match, $base64_url, $content);
 					$replaced[] = $match;
@@ -262,7 +281,9 @@ class MageBridgeHelper
 		$content = str_replace(JURI::base() . '/', JURI::base(), $content);
 
 		// Adjust wrong media-URLs
-		if (JURI::getInstance()->isSSL() == true)
+		if (JURI::getInstance()
+				->isSSL() == true
+		)
 		{
 			$non_https = preg_replace('/^https:/', 'http:', $bridge->getMagentoUrl());
 			$https = preg_replace('/^http:/', 'https:', $bridge->getMagentoUrl());
@@ -285,7 +306,8 @@ class MageBridgeHelper
 	 * Helper-method to merge the original Magento URL into the Joomla! URL
 	 *
 	 * @param string $url
-	 * @param bool $use_sef
+	 * @param bool   $use_sef
+	 *
 	 * @return string
 	 */
 	static public function filterUrl($url, $use_sef = true)
@@ -330,7 +352,8 @@ class MageBridgeHelper
 			$url = MageBridgeUrlHelper::getSefUrl($url);
 		}
 
-		$prefix = JURI::getInstance()->toString(array('scheme', 'host', 'port'));
+		$prefix = JURI::getInstance()
+			->toString(array('scheme', 'host', 'port'));
 		$path = str_replace($prefix, '', JURI::base());
 		$pos = strpos($url, $path);
 
@@ -346,6 +369,7 @@ class MageBridgeHelper
 	 * Helper-method to parse the comma-seperated setting "disable_css_mage" into an array
 	 *
 	 * @param null
+	 *
 	 * @return array
 	 */
 	static public function getDisableCss()
@@ -375,6 +399,7 @@ class MageBridgeHelper
 	 * Helper-method to find out if some kind of CSS-file is disabled or not
 	 *
 	 * @param string $css
+	 *
 	 * @return bool
 	 */
 	static public function cssIsDisabled($css)
@@ -402,6 +427,7 @@ class MageBridgeHelper
 	 * Helper-method to parse the comma-seperated setting "disable_js_mage" into an array
 	 *
 	 * @param null
+	 *
 	 * @return array
 	 */
 	static public function getDisableJs()
@@ -431,6 +457,7 @@ class MageBridgeHelper
 	 * Helper-method to find out if some kind of JS-file is disabled or not
 	 *
 	 * @param string $js
+	 *
 	 * @return bool
 	 */
 	static public function jsIsDisabled($js)
@@ -457,6 +484,7 @@ class MageBridgeHelper
 	 * Helper-method to get the current Joomla! core version
 	 *
 	 * @param null
+	 *
 	 * @return string
 	 */
 	static public function getJoomlaVersion()
@@ -471,6 +499,7 @@ class MageBridgeHelper
 	 * Helper-method to get the current Joomla! core version
 	 *
 	 * @param $version string|array
+	 *
 	 * @return bool
 	 */
 	static public function isJoomlaVersion($version = null)
@@ -498,6 +527,7 @@ class MageBridgeHelper
 	 * Helper-method to get the current Joomla! core version
 	 *
 	 * @param null
+	 *
 	 * @return bool
 	 */
 	static public function isJoomla35()
@@ -509,6 +539,7 @@ class MageBridgeHelper
 	 * Helper-method to get the current Joomla! core version
 	 *
 	 * @param null
+	 *
 	 * @return bool
 	 */
 	static public function isJoomla25()
@@ -520,11 +551,14 @@ class MageBridgeHelper
 	 * Helper-method to get the component parameters
 	 *
 	 * @param null
+	 *
 	 * @return bool
 	 */
 	static public function getParams()
 	{
-		$params = JFactory::getApplication()->getMenu('site')->getParams(JFactory::getApplication()->input->getInt('Itemid'));
+		$params = JFactory::getApplication()
+			->getMenu('site')
+			->getParams(JFactory::getApplication()->input->getInt('Itemid'));
 
 		return $params;
 	}
@@ -533,6 +567,7 @@ class MageBridgeHelper
 	 * Helper-method to convert an array to a MySQL string
 	 *
 	 * @param null
+	 *
 	 * @return bool
 	 */
 	static public function arrayToSQl($array)
@@ -552,6 +587,7 @@ class MageBridgeHelper
 	 * Helper-method to convert a CSV-string to an array
 	 *
 	 * @param null
+	 *
 	 * @return bool
 	 */
 	static public function csvToArray($csv)

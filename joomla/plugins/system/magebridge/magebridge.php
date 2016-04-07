@@ -24,6 +24,21 @@ jimport('joomla.plugin.plugin');
 class PlgSystemMageBridge extends JPlugin
 {
 	/**
+	 * @var JApplicationCms
+	 */
+	protected $app;
+
+	/**
+	 * @var JDocument
+	 */
+	protected $doc;
+
+	/**
+	 * @var JInput
+	 */
+	protected $input;
+
+	/**
 	 * List of console messages
 	 */
 	protected $console = array();
@@ -242,7 +257,8 @@ class PlgSystemMageBridge extends JPlugin
 			}
 
 			// Add the debugging bar if configured
-			MageBridgeDebugHelper::addDebug();
+			$debugHelper = new MageBridgeDebugHelper;
+			$debugHelper->addDebug();
 		}
 	}
 

@@ -24,7 +24,7 @@ class MageBridgeProxyHelper
 	{
 		$this->app = $app;
 	}
-	
+
 	/**
 	 * Proxy uploads
 	 *
@@ -143,7 +143,7 @@ class MageBridgeProxyHelper
 	public function getUploadPath()
 	{
 		$config = JFactory::getConfig();
-		
+
 		return $config->get('tmp_path');
 	}
 
