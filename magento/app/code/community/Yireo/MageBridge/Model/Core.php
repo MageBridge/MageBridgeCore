@@ -125,7 +125,7 @@ class Yireo_MageBridge_Model_Core
             $modules = (array)Mage::getConfig()->getNode('modules')->children();
             if (array_key_exists('Mage_Persistent', $modules)) {
                 $persistentHelper = Mage::helper('persistent/session');
-                $persistentCustomerId = (int) $persistentHelper->getSession()->getCustomerId();
+                $persistentCustomerId = (int)$persistentHelper->getSession()->getCustomerId();
                 if (!empty($persistentCustomerId)) {
                     $customer = Mage::getModel('customer/customer')->load($persistentCustomerId);
                     if ($customer->getId() > 0) {
@@ -135,47 +135,94 @@ class Yireo_MageBridge_Model_Core
             }
         }
 
-        // Set the current store of this request
+        $this->setCurrentStore();
+
+        $this->setContinueShoppingToPreviousUrl();
+        $this->setCustomerRedirectUrl();
+        $this->redirectContinueShoppingToPreviousUrl();
+
+        //$session = Mage::getSingleton('checkout/session');
+        //Mage::getSingleton('magebridge/debug')->notice('Quote: '.$session->getQuoteId());
+
+        return true;
+    }
+
+    /**
+     * Set the current store of this request
+     *
+     * @exception Exception
+     */
+    protected function setCurrentStore()
+    {
         try {
             Mage::app()->setCurrentStore(Mage::app()->getStore($this->getStore()));
         } catch (Exception $e) {
             Mage::getSingleton('magebridge/debug')->error('Failed to intialize store "' . $this->getStore() . '":' . $e->getMessage());
             // Do not return, but just keep on going with the default configuration
         }
+    }
 
-        // Manual hack to set the right continue-shopping URL to the HTTP_REFERER, even if it isn't "internal"
-        if (Mage::getStoreConfig('magebridge/settings/continue_shopping_to_previous') == 1) {
-            if (isset($_SERVER['HTTP_REFERER']) && !empty($_SERVER['HTTP_REFERER'])) {
-                if (strstr($this->getRequestUrl(), 'checkout/cart')) {
-                    Mage::getSingleton('checkout/session')->setContinueShoppingUrl($_SERVER['HTTP_REFERER']);
-                } elseif (strstr($this->getRequestUrl(), 'firecheckout')) {
-                    Mage::getSingleton('checkout/session')->setContinueShoppingUrl($_SERVER['HTTP_REFERER']);
-                } elseif (strstr($this->getRequestUrl(), 'checkout/onepage/success')) {
-                    Mage::getSingleton('customer/session')->setNextUrl($_SERVER['HTTP_REFERER']);
-                }
-            }
+    /**
+     * Manual hack to set the right continue-shopping URL to the HTTP_REFERER, even if it isn't "internal"
+     *
+     * @return bool
+     */
+    protected function setContinueShoppingToPreviousUrl()
+    {
+        if (Mage::getStoreConfig('magebridge/settings/continue_shopping_to_previous') != 1) {
+            return false;
         }
 
-        // Manual hack to set the right customer-redirect URL
-        if (strstr($this->getRequestUrl(), 'customer/account/loginPost') && Mage::getStoreConfig('customer/startup/redirect_dashboard') == 0) {
-
-            $location = Mage::app()->getStore()->getBaseUrl();
-            if (preg_match('/(uenc|referer)\/([^\/]+)/', $this->getRequestUrl(), $match)) {
-                $location = Mage::helper('magebridge/encryption')->base64_decode($match[2]);
-            }
-
-            $referer = null;
-            if (isset($_SERVER['HTTP_REFERER']) && !empty($_SERVER['HTTP_REFERER'])) {
-                $referer = $_SERVER['HTTP_REFERER'];
-            }
-
-            if (stristr($referer, '/checkout/') == false && stristr($referer, 'firecheckout') == false) {
-                header('X-MageBridge-Location-Customer: ' . $location);
-            }
+        if (empty($_SERVER['HTTP_REFERER'])) {
+            return false;
         }
 
+        $customerSession = Mage::getSingleton('checkout/session');
+        if (strstr($this->getRequestUrl(), 'checkout/cart')) {
+            $customerSession->setContinueShoppingUrl($_SERVER['HTTP_REFERER']);
+        } elseif (strstr($this->getRequestUrl(), 'firecheckout')) {
+            $customerSession->setContinueShoppingUrl($_SERVER['HTTP_REFERER']);
+        } elseif (strstr($this->getRequestUrl(), 'checkout/onepage/success')) {
+            $customerSession->setNextUrl($_SERVER['HTTP_REFERER']);
+        }
+    }
 
-        // Manual hack to set the right customer-redirect URL
+    /**
+     * Manual hack to set the right customer-redirect URL
+     *
+     * @throws Mage_Core_Exception
+     * @return bool
+     */
+    protected function setCustomerRedirectUrl()
+    {
+        if (!strstr($this->getRequestUrl(), 'customer/account/loginPost')) {
+            return false;
+        }
+
+        if (Mage::getStoreConfig('customer/startup/redirect_dashboard') !== 0) {
+            return false;
+        }
+
+        $location = Mage::app()->getStore()->getBaseUrl();
+        if (preg_match('/(uenc|referer)\/([^\/]+)/', $this->getRequestUrl(), $match)) {
+            $location = Mage::helper('magebridge/encryption')->base64_decode($match[2]);
+        }
+
+        $referer = null;
+        if (isset($_SERVER['HTTP_REFERER']) && !empty($_SERVER['HTTP_REFERER'])) {
+            $referer = $_SERVER['HTTP_REFERER'];
+        }
+
+        if (stristr($referer, '/checkout/') == false && stristr($referer, 'firecheckout') == false) {
+            header('X-MageBridge-Location-Customer: ' . $location);
+        }
+    }
+
+    /**
+     * Manual hack to set the right customer-redirect URL
+     */
+    protected function redirectContinueShoppingToPreviousUrl()
+    {
         $continueShoppingToPrevious = (bool)Mage::getStoreConfig('magebridge/settings/continue_shopping_to_previous');
         $redirectToCart = (bool)Mage::getStoreConfig('checkout/cart/redirect_to_cart');
 
@@ -190,11 +237,6 @@ class Yireo_MageBridge_Model_Core
                 Mage::app()->getRequest()->setParam('return_url', $location);
             }
         }
-
-        //$session = Mage::getSingleton('checkout/session');
-        //Mage::getSingleton('magebridge/debug')->notice('Quote: '.$session->getQuoteId());
-
-        return true;
     }
 
     /**
@@ -392,10 +434,14 @@ class Yireo_MageBridge_Model_Core
         foreach ($keys as $meta_key => $key) {
 
             $rt = $this->saveConfig($key, $this->getMetaData($meta_key), 'default', 0);
-            if ($rt == true) $refresh_cache = true;
+            if ($rt == true) {
+                $refresh_cache = true;
+            }
 
             $rt = $this->saveConfig($key, $this->getMetaData($meta_key), 'websites', $this->getMetaData('website'));
-            if ($rt == true) $refresh_cache = true;
+            if ($rt == true) {
+                $refresh_cache = true;
+            }
         }
 
         // Refresh the cache
@@ -435,6 +481,9 @@ class Yireo_MageBridge_Model_Core
             $current_value = (string)Mage::getConfig()->getNode('magebridge/joomla/' . $key, $scope, $scopeId);
         }
 
+        /** @var Yireo_MageBridge_Model_Debug $magebridgeDebug */
+        $magebridgeDebug = Mage::getSingleton('magebridge/debug');
+
         // Determine whether to save the current value
         $save = false;
         if (empty($current_value)) {
@@ -442,17 +491,17 @@ class Yireo_MageBridge_Model_Core
 
         } elseif (Mage::helper('magebridge')->useApiDetect() == true && $scope != 'default') {
             if ($key == 'api_url' && preg_replace('/^(http|https)\:/', '', $current_value) != preg_replace('/^(http|https)\:/', '', $value)) {
-                Mage::getSingleton('magebridge/debug')->notice('New API-value for "' . $key . '": "' . $current_value . '"; previously "' . $value . '"');
+                $magebridgeDebug->notice('New API-value for "' . $key . '": "' . $current_value . '"; previously "' . $value . '"');
                 $save = true;
             } elseif ($key != 'api_url' && $current_value != $value) {
-                Mage::getSingleton('magebridge/debug')->notice('New API-value for "' . $key . '": "' . $current_value . '"; previously "' . $value . '"');
+                $magebridgeDebug->notice('New API-value for "' . $key . '": "' . $current_value . '"; previously "' . $value . '"');
                 $save = true;
             }
         }
 
         // Save the value
         if ($save == true) {
-            Mage::getSingleton('magebridge/debug')->notice('saveConfig: magebridge/joomla/' . $key . ' = ' . $value . ' [' . $scope . '/' . $scopeId . ' ]');
+            $magebridgeDebug->notice('saveConfig: magebridge/joomla/' . $key . ' = ' . $value . ' [' . $scope . '/' . $scopeId . ' ]');
             Mage::getConfig()->saveConfig('magebridge/joomla/' . $key, $value, $scope, $scopeId);
             return true;
         }
@@ -647,7 +696,7 @@ class Yireo_MageBridge_Model_Core
             $customer = Mage::getModel('customer/customer')->load($session->getCustomerId());
             $session->setCustomer($customer);
         }
-    
+
         // Reset session if session_regenerate is used
         $session = Mage::getModel('core/session');
         if (!empty($_GET['SID']) && $session->getSessionId() != $_GET['SID']) {
