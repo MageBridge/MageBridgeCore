@@ -677,7 +677,6 @@ class YireoModel extends YireoCommonModel
 
 		if ($this->isSingular() == false && $this->_limit_query == false && $this->getState('limit') > 0)
 		{
-			echo $this->getState('limitstart');
 			$part = array_slice($this->_data, (int) $this->getState('limitstart'), $this->getState('limit'));
 
 			return $part;
