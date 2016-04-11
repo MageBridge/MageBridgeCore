@@ -18,7 +18,12 @@ defined('_JEXEC') or die('Restricted access');
 class MageBridgeProxyHelper
 {
 	/**
-	 * @param $app JApplicationSite
+	 * @var JApplicationWeb
+	 */
+	protected $app;
+
+	/**
+	 * @param $app JApplicationWeb
 	 */
 	public function __construct($app)
 	{
