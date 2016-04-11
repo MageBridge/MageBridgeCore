@@ -323,20 +323,10 @@ class MageBridgeUrlHelper
 	}
 
 	/**
-	 * Helper-method to get the Root Menu-Item
-	 *
-	 * @param null
-	 *
-	 * @return object
+	 * @return array|null
 	 */
-	static public function getRootItem()
+	static public function getRootItems()
 	{
-		// Return false, if Root Menu-Item usage is disabled
-		if (MagebridgeModelConfig::load('use_rootmenu') == false)
-		{
-			return false;
-		}
-
 		// Load the Root Menu-Items found in the Joomla! database
 		static $root_items = null;
 
@@ -356,10 +346,29 @@ class MageBridgeUrlHelper
 			}
 		}
 
+		return $root_items;
+	}
+
+	/**
+	 * Helper-method to get the Root Menu-Item
+	 *
+	 * @param null
+	 *
+	 * @return object
+	 */
+	static public function getRootItem()
+	{
+		// Return false, if Root Menu-Item usage is disabled
+		if (MagebridgeModelConfig::load('use_rootmenu') == false)
+		{
+			return false;
+		}
+
+		$root_items = self::getRootItems();
+
 		$current_item = MageBridgeUrlHelper::getCurrentItem();
 		if (!empty($root_items))
 		{
-
 			// Loop through all Root Menu-Items found, and return the one matching the current ID
 			foreach ($root_items as $root_item)
 			{
