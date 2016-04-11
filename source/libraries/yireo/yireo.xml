@@ -30,6 +30,7 @@
         <filename>model.php</filename>
         <filename>table.php</filename>
         <filename>view.php</filename>
+        <filename>yireo.xml</filename>
         <folder>controller</folder>
         <folder>form</folder>
         <folder>helper</folder>
