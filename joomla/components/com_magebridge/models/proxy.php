@@ -79,30 +79,34 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 	 * Determine whether the proxy response is non-MageBridge output
 	 *
 	 * @param string $response
-	 * 
+	 *
 	 * @return bool
 	 */
 	protected function isNonBridgeOutput($response)
 	{
-        $bridge = MageBridge::getBridge();
-        
-        if ($bridge->isAjax())
-        {
-            return true;
-        }
+		// Check whether the Content-Type is indicating bridge output
+		if (!empty($this->head['headers']) && preg_match('/Content-Type: application\/magebridge/', $this->head['headers']))
+		{
+			return false;
+		}
+
+		if ($this->bridge->isAjax())
+		{
+			return true;
+		}
 
 		if ($this->isValidResponse($response) == false)
 		{
 			$this->debug->notice('Empty decoded response suggests non-bridge output');
-			
+
 			return true;
 		}
 
 		// Check whether the Content-Type is indicating non-bridge output
-		if (!empty($this->head['headers']) && preg_match('/Content-Type: (application|text)\/(xml|javascript|json|octetstream|pdf|x-pdf)/', $this->head['headers']))
+		if ($this->isContentTypeHtml() == false)
 		{
 			$this->debug->trace('Detecting non-HTML output in HTTP headers', $this->head['headers']);
-			
+
 			return true;
 		}
 
@@ -110,13 +114,26 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 	}
 
 	/**
+	 * @return bool
+	 */
+	protected function isContentTypeHtml()
+	{
+		if (!empty($this->head['headers']) && preg_match('/Content-Type: (application|text)\/(xml|javascript|json|octetstream|pdf|x-pdf)/', $this->head['headers']))
+		{
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
 	 * Send direct output URL response
-	 * 
+	 *
 	 * @param string $response
 	 */
 	protected function sendDirectOutputUrlResponse($response)
 	{
-        $this->spoofHeaders($response);
+		$this->spoofHeaders($response);
 
 		header('Content-Encoding: none');
 		print $response;
@@ -126,10 +143,8 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 
 	/**
 	 * Try to match one of the direct output URLs
-	 *
-	 * @param string $response
 	 */
-	protected function matchDirectOutputUrls($response)
+	protected function matchDirectOutputUrls()
 	{
 		$direct_output_urls = MageBridgeHelper::csvToArray(MagebridgeModelConfig::load('direct_output'));
 		$direct_output_urls[] = 'checkout/onepage/getAdditional';
@@ -145,10 +160,50 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 				if (!empty($direct_output_url) && strstr($current_url, $direct_output_url))
 				{
 					$this->debug->trace('Detecting non-bridge output through MageBridge configuration', $direct_output_url);
-					$this->sendDirectOutputUrlResponse($response);
+
+					return true;
 				}
 			}
 		}
+
+		return false;
+	}
+
+	/**
+	 * @return null|string
+	 */
+	protected function getContentTypeFromHeader()
+	{
+		if (!preg_match('/Content-Type: (.*)/i', $this->head['headers'], $match))
+		{
+			return null;
+		}
+
+		$contentType = strtolower(trim($match[1]));
+
+		return $contentType;
+	}
+
+	/**
+	 * @param $url
+	 *
+	 * @return string
+	 */
+	protected function convertUrl($url)
+	{
+		if (!preg_match('/^index\.php\?option\=com/', $url))
+		{
+			return null;
+		}
+
+		$newUrl = MageBridgeHelper::filterUrl($url);
+
+		if (empty($newUrl))
+		{
+			return null;
+		}
+
+		return $newUrl;
 	}
 
 	/**
@@ -159,12 +214,12 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 	 */
 	protected function sendNonBridgeOutputResponse($response, $decodedResponse)
 	{
-        // Detect Content-Type
-        $contentType = null;
-        if (preg_match('/Content-Type: (.*)/i', $this->head['headers'], $match)) {
-            $contentType = strtolower(trim($match[1]));
-            $this->head['info']['content_type'] = $contentType;
-        }
+		// Detect Content-Type
+		$contentType = $this->getContentTypeFromHeader();
+		if (!empty($contentType))
+		{
+			$this->head['info']['content_type'] = $contentType;
+		}
 
 		// Spoof the current HTTP-headers
 		$this->spoofHeaders($response);
@@ -172,17 +227,11 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 		// Detect JSON and replace any URL-redirects
 		if (is_array($decodedResponse) && isset($decodedResponse['redirect']))
 		{
-			$url = $decodedResponse['redirect'];
+			$url = $this->convertUrl($decodedResponse['redirect']);
 
-			if (preg_match('/^index\.php\?option\=com/', $url))
+			if (!empty($url))
 			{
-				$newUrl = MageBridgeHelper::filterUrl($url);
-
-				if (!empty($newUrl))
-				{
-					$decodedResponse['redirect'] = $newUrl;
-				}
-
+				$decodedResponse['redirect'] = $url;
 				$this->data = $this->encode($decodedResponse);
 			}
 		}
@@ -193,25 +242,25 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 			$response = MageBridgeHelper::filterContent($response);
 		}
 
-        // Output the raw content
-        $skipContentTypes = array('application/pdf');
-        if (!in_array($contentType, $skipContentTypes)) {
+		// Output the raw content
+		$skipContentTypes = array('application/pdf');
+		if (!in_array($contentType, $skipContentTypes))
+		{
+			// Detect HTML and parse it anyway
+			if (preg_match('/<\/html>$/', $response))
+			{
+				$response = MageBridgeHelper::filterContent($response);
+			}
 
-            // Detect HTML and parse it anyway
-            if (preg_match('/<\/html>$/', $response))
-            {
-                $response = MageBridgeHelper::filterContent($response);
-            }
+			header('Content-Length: ' . YireoHelper::strlen($response));
+		}
 
-            header('Content-Length: ' . YireoHelper::strlen($response));
-        }
-
-        // Nothing is compressed with this bridge
-        header('Content-Encoding: none');
+		// Nothing is compressed with this bridge
+		header('Content-Encoding: none');
 
 		if (!empty($this->head['info']['content_type']))
 		{
-			header('Content-Type: '.$this->head['info']['content_type']);
+			header('Content-Type: ' . $this->head['info']['content_type']);
 		}
 		elseif (preg_match('/^\{\"/', $response))
 		{
@@ -305,7 +354,10 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 			//$this->debug->trace( 'Proxy raw response', $raw );
 			//$this->debug->trace( 'Proxy decoded response', $decoded );
 			// Check whether the current URL is listed for direct output
-			$this->matchDirectOutputUrls($rawResponse);
+			if ($this->matchDirectOutputUrls())
+			{
+				$this->sendDirectOutputUrlResponse($rawResponse);
+			}
 
 			// Determine whether this is non-bridge output
 			if ($this->handleNonBridgeOutput($rawResponse, $decodedResponse))
@@ -345,13 +397,13 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 		{
 			return true;
 		}
-		
+
 		// Detect non-bridge AJAX-calls
 		if ($this->app->isSite())
 		{
 			return false;
 		}
-		
+
 		if ($this->input->getCmd('option') == 'com_magebridge' && $this->input->getCmd('view') == 'root')
 		{
 			return false;
@@ -362,12 +414,12 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 
 	/**
 	 * Method to fetch data from a remote URL
-	 * 
-	 * @param string $url
-	 * @param array $arguments
-	 * @param string $type
+	 *
+	 * @param string  $url
+	 * @param array   $arguments
+	 * @param string  $type
 	 * @param boolean $runBridge
-	 * 
+	 *
 	 * @return string
 	 */
 	public function getRemote($url = '', $arguments = array(), $type = null, $runBridge = false)
@@ -442,7 +494,7 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 		{
 			$sslVersion = constant('CURL_SSLVERSION_' . $sslVersion);
 		}
-		
+
 		if (!empty($sslVersion))
 		{
 			curl_setopt($handle, CURLOPT_SSLVERSION, $sslVersion);
@@ -490,7 +542,8 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 
 			if (empty($cookieValue))
 			{
-				$cookieValue = JFactory::getSession()->get('magebridge.cookie.' . $cookieName);
+				$cookieValue = JFactory::getSession()
+					->get('magebridge.cookie.' . $cookieName);
 			}
 
 			if (empty($cookieValue))
@@ -509,12 +562,12 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 
 	/**
 	 * CURL-wrapper
-	 * 
+	 *
 	 * @param string $url
 	 * @param string $type
-	 * @param array $arguments
-	 * @param boolean @run_bridge
-	 *                
+	 * @param array  $arguments
+	 * @param        boolean @run_bridge
+	 *
 	 * @return string
 	 */
 	public function getCURL($url, $type = 'get', $arguments = null, $runBridge = false)
@@ -581,6 +634,7 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 
 		// Set SSL options
 		$uri = JURI::getInstance();
+
 		if ($uri->isSSL() == true)
 		{
 			$httpHeaders[] = 'FRONT-END-HTTPS: On';
@@ -687,7 +741,7 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 		if (strpos($data, $separator) > 0)
 		{
 			$dataSegments = explode($separator, $data);
-		    $this->head['header_found'] = true;
+			$this->head['header_found'] = true;
 
 			foreach ($dataSegments as $dataSegmentIndex => $dataSegment)
 			{
@@ -708,13 +762,13 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 			}
 		}
 
-        // Exit when no proper headers have been found
-        if ($this->head['header_found'] == false)
-        {
+		// Exit when no proper headers have been found
+		if ($this->head['header_found'] == false)
+		{
 			$this->debug->warning('CURL contains no HTTP headers');
 
-            return null;
-        }
+			return null;
+		}
 
 		if (empty($this->head['http_code']))
 		{
@@ -750,15 +804,15 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 		if ($this->getHeader('X-MageBridge-Customer') != null)
 		{
 			$value = $this->getHeader('X-MageBridge-Customer');
-			MageBridgeModelBridge::getInstance()->addSessionData('customer/email', $value);
-			MageBridgeModelUser::getInstance()->postlogin($value, null, true, true);
+			$this->bridge->addSessionData('customer/email', $value);
+			$this->user->postlogin($value, null, true, true);
 		}
 
 		// Process the X-MageBridge-Form-Key header
 		if ($this->getHeader('X-MageBridge-Form-Key') != null)
 		{
 			$value = $this->getHeader('X-MageBridge-Form-Key');
-			MageBridgeModelBridge::getInstance()->addSessionData('form_key', $value);
+			$this->bridge->addSessionData('form_key', $value);
 		}
 
 		// Log other Status Codes than 200
@@ -889,7 +943,8 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 						$expires = 0;
 					}
 
-					setcookie($cookieName, $cookieValue, $expires, '/', '.' . JURI::getInstance()->toString(array('host')));
+					$uri = JURI::getInstance();
+					setcookie($cookieName, $cookieValue, $expires, '/', '.' . $uri->toString(array('host')));
 					$_COOKIE[$cookieName] = $cookieValue;
 				}
 
@@ -929,8 +984,10 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 				$lifetime = time() + 365 * 24 * 60 * 60;
 
 				// Use domain and path set in config for cookie if it exists.
-				$cookie_domain = JFactory::getConfig()->get('cookie_domain', '');
-				$cookie_path = JFactory::getConfig()->get('cookie_path', '/');
+				$cookie_domain = JFactory::getConfig()
+					->get('cookie_domain', '');
+				$cookie_path = JFactory::getConfig()
+					->get('cookie_path', '/');
 				setcookie(JApplication::getHash('JLOGIN_REMEMBER'), $rcookie, $lifetime, $cookie_path, $cookie_domain);
 			}
 		}
@@ -959,7 +1016,7 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 			// Check for a location-override if the customer is logged in
 			if ($this->getHeader('X-MageBridge-Location-Customer') != null && $this->getHeader('X-MageBridge-Customer') != null)
 			{
-				MageBridgeModelUser::getInstance()->postlogin($this->getHeader('X-MageBridge-Customer'), null, true, true);
+				$this->user->postlogin($this->getHeader('X-MageBridge-Customer'), null, true, true);
 				$this->debug->notice('X-MageBridge-Location-Customer = ' . $this->getHeader('X-MageBridge-Location-Customer'));
 				$location = $this->getHeader('X-MageBridge-Location-Customer');
 			}
@@ -1253,7 +1310,6 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 			return true;
 		}
 
-
 		if (!empty($data) && strstr($data, '<?xml version'))
 		{
 			return true;
@@ -1318,7 +1374,7 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 
 		// Spoof the bridged Content-Type header anyway
 		if (preg_match('/content-type: (.*)/i', $this->head['headers'], $match))
-        {
+		{
 			header($match[0]);
 		}
 
@@ -1471,7 +1527,6 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 		return false;
 	}
 
-
 	/**
 	 * Method to actually redirect the browser
 	 *
@@ -1517,7 +1572,6 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 		$this->state = null;
 	}
 
-
 	/**
 	 * Method to get the current redirect count
 	 *
@@ -1553,7 +1607,8 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 	 */
 	public function getCookieFile()
 	{
-		return JFactory::getConfig()->get('log_path') . '/magento.tmp';
+		return JFactory::getConfig()
+			->get('log_path') . '/magento.tmp';
 	}
 }
 
