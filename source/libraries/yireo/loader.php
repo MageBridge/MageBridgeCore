@@ -43,6 +43,9 @@ if (!function_exists('YireoLibraryLoader'))
 		$filename = null;
 		switch ($name)
 		{
+			case 'YireoRouteQuery':
+				$filename = 'route/query';
+				break;
 			case 'YireoDispatcher':
 				$filename = 'dispatcher';
 				break;

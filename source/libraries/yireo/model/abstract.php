@@ -48,8 +48,14 @@ class YireoAbstractModel extends JModelLegacy
 
 	/**
 	 * @var JInput
+	 * @deprecated Use $this->input instead
 	 */
 	protected $_input;
+
+	/**
+	 * @var array
+	 */
+	protected $meta = array();
 
 	/**
 	 * Constructor
@@ -58,9 +64,10 @@ class YireoAbstractModel extends JModelLegacy
 	 */
 	public function __construct()
 	{
+		$rt = parent::__construct();
 		$this->init();
 
-		return parent::__construct();
+        return $rt;
 	}
 
 	/**
@@ -76,5 +83,29 @@ class YireoAbstractModel extends JModelLegacy
 		$this->application = $this->app;
 		$this->_input = $this->input;
 		$this->jinput = $this->input;
+	}
+
+	/**
+	 * @param mixed $name
+	 * @param mixed $value
+	 */
+	protected function setMeta($name, $value)
+	{
+		$this->meta[$name] = $value;
+	}
+
+	/**
+	 * @param $name
+	 *
+	 * @return bool|mixed
+	 */
+	protected function getMeta($name)
+	{
+		if (empty($this->meta[$name]))
+		{
+			return false;
+		}
+
+		return $this->meta[$name];
 	}
 }

@@ -28,28 +28,43 @@ class YireoView extends YireoCommonView
 {
 	/**
 	 * Array of HTML-lists for usage in the layout-file
+	 *
+	 * @var array
 	 */
 	protected $lists = array();
 
 	/**
 	 * Array of HTML-grid-elements for usage in the layout-file
+	 *
+	 * @var array
 	 */
 	protected $grid = array();
 
 	/**
 	 * Flag to determine whether to autoclean item-properties or not
+	 *
+	 * @var bool
 	 */
 	protected $autoclean = false;
 
 	/**
 	 * Flag to determine whether to load the menu
+	 *
+	 * @var bool
 	 */
 	protected $loadToolbar = true;
 
 	/**
 	 * Flag to prepare the display-data
+	 *
+	 * @var bool
 	 */
 	protected $prepare_display = true;
+
+	/**
+	 * @var \Joomla\Registry\Registry
+	 */
+	protected $params;
 
 	/**
 	 * Main constructor method
@@ -66,13 +81,13 @@ class YireoView extends YireoCommonView
 		// Set the parameters
 		if (empty($this->params))
 		{
-			if ($this->application->isSite() == false)
+			if ($this->app->isSite() == false)
 			{
 				$this->params = JComponentHelper::getParams($this->_option);
 			}
 			else
 			{
-				$this->params = $this->application->getParams($this->_option);
+				$this->params = $this->app->getParams($this->_option);
 			}
 		}
 

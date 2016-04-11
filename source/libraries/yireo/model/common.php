@@ -24,14 +24,24 @@ require_once dirname(dirname(__FILE__)) . '/loader.php';
  */
 class YireoCommonModel extends YireoAbstractModel
 {
-	/*
+	/**
+	 * @var JDatabaseDriver
+	 */
+	protected $db;
+
+	/**
+	 * @var JUser
+	 */
+	protected $user;
+
+	/**
 	 * Boolean to skip table-detection
 	 *
 	 * @protected int
 	 */
 	protected $skip_table = true;
 
-	/*
+	/**
 	 * Boolean to allow forms in the frontend
 	 *
 	 * @protected int
@@ -119,9 +129,10 @@ class YireoCommonModel extends YireoAbstractModel
 			$this->_option_id .= $this->input->getInt('Itemid') . '_';
 		}
 
-		$this->_component = preg_replace('/^com_/', '', $this->_option);
-		$this->_component = preg_replace('/[^A-Z0-9_]/i', '', $this->_component);
-		$this->_component = str_replace(' ', '', ucwords(str_replace('_', ' ', $this->_component)));
+		$component = preg_replace('/^com_/', '', $this->_option);
+		$component = preg_replace('/[^A-Z0-9_]/i', '', $component);
+		$component = str_replace(' ', '', ucwords(str_replace('_', ' ', $component)));
+		$this->setMeta('component', $component);
 
 		// Call the parent constructor
 		$rt = parent::__construct();

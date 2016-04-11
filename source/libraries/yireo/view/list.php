@@ -24,6 +24,11 @@ require_once dirname(dirname(__FILE__)) . '/loader.php';
 class YireoViewList extends YireoView
 {
 	/**
+	 * @var array
+	 */
+	protected $items;
+
+	/**
 	 * Identifier of the library-view
 	 * 
 	 * @var string

@@ -193,7 +193,7 @@ class YireoModel extends YireoCommonModel
 		// Set the database variables
 		if ($this->_tbl_prefix_auto == true)
 		{
-			$this->_tbl_prefix = $this->_component . 'Table';
+			$this->_tbl_prefix = $this->getMeta('component') . 'Table';
 		}
 
 		// @todo: Set this in a metadata array
@@ -398,7 +398,7 @@ class YireoModel extends YireoCommonModel
 			return null;
 		}
 
-		$value = $this->app->getUserStateFromRequest($this->getFilterName($filter), 'filter_' . $filter, $default, $type);
+		$value = $this->app->getUserStateFromRequest($this->getFilterName($filter, $option), 'filter_' . $filter, $default, $type);
 
 		return $value;
 	}
@@ -671,13 +671,14 @@ class YireoModel extends YireoCommonModel
 			// Allow to modify the data afterwards
 			if (method_exists($this, 'onDataLoadAfter'))
 			{
-				$data = $this->onDataLoadAfter($data);
+				$this->_data = $this->onDataLoadAfter($this->_data);
 			}
 		}
 
 		if ($this->isSingular() == false && $this->_limit_query == false && $this->getState('limit') > 0)
 		{
-			$part = array_slice($this->_data, $this->getState('limitstart'), $this->getState('limit'));
+			echo $this->getState('limitstart');
+			$part = array_slice($this->_data, (int) $this->getState('limitstart'), $this->getState('limit'));
 
 			return $part;
 		}
@@ -699,11 +700,10 @@ class YireoModel extends YireoCommonModel
 			if ($this->_limit_query == false)
 			{
 				$this->_total = count($this->_data);
-
-				// The original database-query included a LIMIT statement, so we need a second query
 			}
 			else
 			{
+				// The original database-query included a LIMIT statement, so we need a second query
 				$query = $this->buildQuery();
 				$query = preg_replace('/^(.*)FROM/sm', 'SELECT COUNT(*) FROM', $query);
 				$query = preg_replace('/LIMIT(.*)$/', '', $query);
@@ -1575,22 +1575,21 @@ class YireoModel extends YireoCommonModel
 	 */
 	public function getOrderingQuery()
 	{
-		if ($this->_orderby_default == 'ordering')
+		if (!in_array($this->_orderby_default, array('ordering', 'lft')))
 		{
-			$query = 'SELECT `ordering` AS `value`, `' . $this->_orderby_title . '` AS `text`' . ' FROM `' . $this->_tbl_name . '`' . ' ORDER BY `ordering`';
-
-			return $query;
-
+			return false;
 		}
 
-		if ($this->_orderby_default == 'lft')
-		{
-			$query = 'SELECT `lft` AS `value`, `' . $this->_orderby_title . '` AS `text`' . ' FROM `' . $this->_tbl_name . '`' . ' ORDER BY `lft`';
+		/** @var JDatabaseDriver $db */
+		$db = $this->db;
 
-			return $query;
-		}
+		$query = $db->getQuery(true);
+		$query->select($db->quoteName($this->_orderby_default, 'value'));
+		$query->select($db->quoteName($this->_orderby_title, 'text'));
+		$query->from($db->quoteName($this->_tbl_name));
+		$query->order($db->quoteName($this->_orderby_default));
 
-		return null;
+		return $query;
 	}
 
 	/**
@@ -1851,6 +1850,7 @@ class YireoModel extends YireoCommonModel
 	 * @param string $query
 	 * @param string $type : object|objectList|result
 	 *
+	 * @throws Exception
 	 * @return mixed
 	 */
 	public function _getDbResult($query, $type = 'object')
@@ -1861,7 +1861,7 @@ class YireoModel extends YireoCommonModel
 		// Print the query if debugging is enabled
 		if (isset($this->_debug) && $this->_debug == true)
 		{
-			JError::raiseNotice('Query', $this->getDbDebug());
+			throw new Exception($this->getDbDebug());
 		}
 
 		// Fetch the database-result
@@ -1895,6 +1895,6 @@ class YireoModel extends YireoCommonModel
 	protected function getMetadata()
 	{
 		return array(
-			'table' => $this->_entity,);
+			'table' => $this->_entity);
 	}
 }

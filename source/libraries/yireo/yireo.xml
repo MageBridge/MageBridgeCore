@@ -8,7 +8,7 @@
     <creationDate>March 2016</creationDate>
     <copyright>Copyright 2016 Yireo.com. All rights reserved.</copyright>
     <license>http://www.gnu.org/licenses/gpl-3.0.html GNU/GPL</license>
-    <version>0.1.5</version>
+    <version>0.1.6</version>
 
 	<languages folder="admin/language">
 		<language tag="en-GB">en-GB.lib_yireo.ini</language>
@@ -34,6 +34,7 @@
         <folder>form</folder>
         <folder>helper</folder>
         <folder>model</folder>
+        <folder>route</folder>
         <folder>view</folder>
     </files>
 

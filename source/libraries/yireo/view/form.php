@@ -28,21 +28,36 @@ class YireoViewForm extends YireoView
 {
 	/*
 	 * Identifier of the library-view
+	 *
+	 * @var string
 	 */
 	protected $_viewParent = 'form';
 
 	/*
 	 * Flag to determine whether this view is a single-view
+	 *
+	 * @var boolean
 	 */
 	protected $_single = true;
 
+    /**
+     * Item object
+     *
+     * @var object
+     */
+    protected $item;
+
 	/*
 	 * Array of all the form-fields
+	 *
+	 * @var array
 	 */
 	protected $_fields = array();
 
 	/*
 	 * Editor-field
+	 *
+	 * @var string
 	 */
 	protected $_editor_field = null;
 
