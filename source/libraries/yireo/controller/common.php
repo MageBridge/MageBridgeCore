@@ -23,17 +23,46 @@ require_once dirname(__FILE__) . '/../loader.php';
  */
 class YireoCommonController extends YireoAbstractController
 {
+
+	/**
+	 * @var JApplicationWeb
+	 */
+	protected $app;
+
+	/**
+	 * @var JApplicationWeb
+	 * @deprecated
+	 */
+	protected $_app;
+
+	/**
+	 * @var JApplicationWeb
+	 * @deprecated
+	 */
+	protected $_application;
+
+	/**
+	 * @var JInput
+	 */
+	protected $input;
+
+	/**
+	 * @var JInput
+	 * @deprecated
+	 */
+	protected $_jinput;
+
 	/**
 	 * Value of the last message
 	 *
-	 * @protected string
+	 * @var string
 	 */
 	protected $msg = '';
 
 	/**
 	 * Type of the last message
 	 *
-	 * @protected string
+	 * @var string
 	 * @values    error|notice|message
 	 */
 	protected $msg_type = '';
@@ -44,28 +73,39 @@ class YireoCommonController extends YireoAbstractController
 	public function __construct()
 	{
 		// Define variables
-		$this->_app = JFactory::getApplication();
-		$this->_application = $this->_app;
-		$this->_jinput = $this->_app->input;
+		$this->app = JFactory::getApplication();
+		$this->_app = $this->app;
+		$this->_application = $this->app;
+		$this->input = $this->app->input;
+		$this->_jinput = $this->input;
 
-		// Add extra model-paths
-		$option = $this->_jinput->getCmd('option');
-
-		if ($this->_app->isSite())
-		{
-			$this->addModelPath(JPATH_ADMINISTRATOR . '/components/' . $option . '/models');
-			$this->addModelPath(JPATH_SITE . '/components/' . $option . '/models');
-		}
-		else
-		{
-			$this->addModelPath(JPATH_ADMINISTRATOR . '/components/' . $option . '/models');
-		}
+		// Add model paths
+		$this->addModelPaths();
 
 		// Load additional language-files
 		YireoHelper::loadLanguageFile();
 
 		// Call the parent constructor
 		parent::__construct();
+	}
+
+	/**
+	 * Add model paths for either backend or frontend
+	 */
+	protected function addModelPaths()
+	{
+		// Add extra model-paths
+		$option = $this->input->getCmd('option');
+
+		if ($this->app->isSite())
+		{
+			$this->addModelPath(JPATH_ADMINISTRATOR . '/components/' . $option . '/models');
+			$this->addModelPath(JPATH_SITE . '/components/' . $option . '/models');
+			return;
+		}
+
+		$this->addModelPath(JPATH_ADMINISTRATOR . '/components/' . $option . '/models');
+		return;
 	}
 
 	/**
