@@ -1012,27 +1012,21 @@ class PlgSystemMageBridge extends JPlugin
 		{
 			return false;
 		}
-		else
-		{
-			if (in_array($this->input->getCmd('view'), array('ajax', 'jsonrpc')))
-			{
-				return false;
-			}
-			else
-			{
-				if (in_array($this->input->getCmd('task'), array('ajax', 'json')))
-				{
-					return false;
-				}
-				else
-				{
-					if (in_array($this->input->getCmd('controller'), array('ajax', 'jsonrpc')))
-					{
-						return false;
-					}
-				}
-			}
-		}
+
+		if (in_array($this->input->getCmd('view'), array('ajax', 'jsonrpc')))
+        {
+            return false;
+        }
+				
+        if (in_array($this->input->getCmd('task'), array('ajax', 'json')))
+        {
+            return false;
+        }
+					
+        if (in_array($this->input->getCmd('controller'), array('ajax', 'jsonrpc')))
+        {
+            return false;
+        }
 
 		// Check the Menu-Item settings
 		$menu = $this->app->getMenu();

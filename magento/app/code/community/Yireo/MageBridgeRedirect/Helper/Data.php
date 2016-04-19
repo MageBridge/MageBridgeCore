@@ -49,10 +49,14 @@ class Yireo_MageBridgeRedirect_Helper_Data extends Mage_Core_Helper_Abstract
     {
         $value = Mage::getStoreConfig('magebridge/redirect/magebridge_ipv4');
         $value = trim($value);
+<<<<<<< HEAD
 
         if(empty($value)) {
             $value = null;
         }
+=======
+        if(empty($value)) $value = null;
+>>>>>>> e45851bb576b6cb9fcff33446f0bf2f6ad981b0b
 
         if($value != null) {
             $ips = explode(PHP_EOL, $value);
