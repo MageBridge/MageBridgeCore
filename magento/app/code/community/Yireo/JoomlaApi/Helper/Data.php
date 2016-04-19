@@ -4,9 +4,9 @@
  *
  * @author Yireo
  * @package JoomlaApi
- * @copyright Copyright 2015
+ * @copyright Copyright 2016
  * @license Open Source License v3
- * @link http://www.yireo.com
+ * @link https://www.yireo.com
  */
 
 class Yireo_JoomlaApi_Helper_Data extends Mage_Core_Helper_Abstract

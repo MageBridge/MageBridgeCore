@@ -4,9 +4,9 @@
  *
  * @author    Yireo (info@yireo.com)
  * @package   MageBridge
- * @copyright Copyright 2015
+ * @copyright Copyright 2016
  * @license   GNU Public License
- * @link      http://www.yireo.com
+ * @link      https://www.yireo.com
  */
 
 // No direct access
@@ -29,47 +29,47 @@ class MageBridgeHelper
 		$links = array(
 			'faq' => array(
 				'title' => 'General FAQ',
-				'link' => 'http://www.yireo.com/software/magebridge/experience/faq',
+				'link' => 'https://www.yireo.com/software/magebridge/experience/faq',
 				'internal' => 0,
 			),
 			'faq-troubleshooting' => array(
 				'title' => 'Troubleshooting FAQ',
-				'link' => 'http://www.yireo.com/tutorials/magebridge/troubleshooting/729-magebridge-faq-troubleshooting',
+				'link' => 'https://www.yireo.com/tutorials/magebridge/troubleshooting/729-magebridge-faq-troubleshooting',
 				'internal' => 0,
 			),
 			'faq-troubleshooting:api-widgets' => array(
 				'title' => 'API Widgets FAQ',
-				'link' => 'http://www.yireo.com/tutorials/magebridge/troubleshooting/729-magebridge-faq-troubleshooting#api-widgets-do-not-work',
+				'link' => 'https://www.yireo.com/tutorials/magebridge/troubleshooting/729-magebridge-faq-troubleshooting#api-widgets-do-not-work',
 				'internal' => 0,
 			),
 			'faq-development' => array(
 				'title' => 'Development FAQ',
-				'link' => 'http://www.yireo.com/tutorials/magebridge/development/577-magebridge-faq-development',
+				'link' => 'https://www.yireo.com/tutorials/magebridge/development/577-magebridge-faq-development',
 				'internal' => 0,
 			),
 			'forum' => array(
 				'title' => 'MageBridge Support Form',
-				'link' => 'http://www.yireo.com/forum/',
+				'link' => 'https://www.yireo.com/forum/',
 				'internal' => 0,
 			),
 			'tutorials' => array(
 				'title' => 'Yireo Tutorials',
-				'link' => 'http://www.yireo.com/tutorials',
+				'link' => 'https://www.yireo.com/tutorials',
 				'internal' => 0,
 			),
 			'quickstart' => array(
 				'title' => 'MageBridge Quick Start Guide',
-				'link' => 'http://www.yireo.com/tutorials/magebridge/basics/540-magebridge-quick-start-guide',
+				'link' => 'https://www.yireo.com/tutorials/magebridge/basics/540-magebridge-quick-start-guide',
 				'internal' => 0,
 			),
 			'troubleshooting' => array(
 				'title' => 'MageBridge Troubleshooting Guide',
-				'link' => 'http://www.yireo.com/tutorials/magebridge/troubleshooting/723-magebridge-troubleshooting-guide',
+				'link' => 'https://www.yireo.com/tutorials/magebridge/troubleshooting/723-magebridge-troubleshooting-guide',
 				'internal' => 0,
 			),
 			'changelog' => array(
 				'title' => 'MageBridge Changelog',
-				'link' => 'http://www.yireo.com/tutorials/magebridge/updates/975-magebridge-changelog',
+				'link' => 'https://www.yireo.com/tutorials/magebridge/updates/975-magebridge-changelog',
 				'internal' => 0,
 			),
 			'subscriptions' => array(

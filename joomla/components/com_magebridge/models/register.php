@@ -4,9 +4,9 @@
  *
  * @author    Yireo (info@yireo.com)
  * @package   MageBridge
- * @copyright Copyright 2015
+ * @copyright Copyright 2016
  * @license   GNU Public License
- * @link      http://www.yireo.com
+ * @link      https://www.yireo.com
  *
  * The MageBridge register contains gathered data from Joomla!, and is sent through the bridge
  * to the Magento side, where it is interpreted by the MageBridge-module in Magento and completed

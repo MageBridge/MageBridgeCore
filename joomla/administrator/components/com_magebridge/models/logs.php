@@ -6,7 +6,7 @@
  * @package MageBridge
  * @copyright Copyright Yireo.com 2015
  * @license GNU Public License
- * @link http://www.yireo.com
+ * @link https://www.yireo.com
  */
 
 // Check to ensure this file is included in Joomla!  
