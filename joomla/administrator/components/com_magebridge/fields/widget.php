@@ -35,7 +35,7 @@ class MagebridgeFormFieldWidget extends MagebridgeFormFieldAbstract
 	{
 		$name = $this->name;
 		$value = $this->value;
-		$id = preg_replace('/([^0-9a-zA-Z]+)/', '_', $name);
+		$id = preg_replace('/([^0-9a-zA-Z]+)/', '_', $name); 
 
 		// Are the API widgets enabled?
 		if (MagebridgeModelConfig::load('api_widgets') == true) {
