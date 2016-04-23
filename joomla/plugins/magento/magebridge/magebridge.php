@@ -90,9 +90,8 @@ class PlgMagentoMageBridge extends JPlugin
 		$options = array('disable_bridge' => true, 'action' => 'core.login.site');
 
 		// Call the Joomla! event "onLogoutUser"
-		$eventName = (MageBridgeHelper::isJoomla15()) ? 'onLogoutUser' : 'onUserLogout';
 		JPluginHelper::importPlugin('user');
-		JFactory::getApplication()->triggerEvent($eventName, array($customer, $options));
+		JFactory::getApplication()->triggerEvent('onUserLogout', array($customer, $options));
 
 		return true;
 	}
