@@ -136,7 +136,7 @@ class Yireo_MageBridge_Model_Core
         }
 
         $this->setCurrentStore();
-
+        $this->rewriteNonSefCategoryUrls();
         $this->setContinueShoppingToPreviousUrl();
         $this->setCustomerRedirectUrl();
         $this->redirectContinueShoppingToPreviousUrl();
@@ -144,6 +144,65 @@ class Yireo_MageBridge_Model_Core
         //$session = Mage::getSingleton('checkout/session');
         //Mage::getSingleton('magebridge/debug')->notice('Quote: '.$session->getQuoteId());
 
+        return true;
+    }
+
+    /**
+     *
+     */
+    protected function rewriteNonSefUrls()
+    {
+        $this->rewriteNonSefCategoryUrls();
+        $this->rewriteNonSefProductUrls();
+    }
+
+    /**
+     * @return bool
+     */
+    protected function rewriteNonSefCategoryUrls()
+    {
+        $request = Mage::app()->getRequest();
+        if (!preg_match('/catalog\/category\/view\/id\/([0-9]+)/', $request->getRequestUri(), $requestMatch)) {
+            return false;
+        }
+
+        $categoryId = $requestMatch[1];
+        if (!$categoryId > 0) {
+            return false;
+        }
+
+        $category = Mage::getModel('catalog/category')->load($categoryId);
+        $sefUrl = $category->getRequestPath();
+        if (empty($sefUrl)) {
+            return false;
+        }
+
+        $request->setRequestUri($sefUrl);
+        return true;
+    }
+
+    /**
+     * @return bool
+     */
+    protected function rewriteNonSefProductUrls()
+    {
+        $request = Mage::app()->getRequest();
+        if (!preg_match('/catalog\/product\/view\/id\/([0-9]+)/', $request->getRequestUri(), $requestMatch)) {
+            return false;
+        }
+
+        $productId = $requestMatch[1];
+        if (!$productId > 0) {
+            return false;
+        }
+
+        $product = Mage::getModel('catalog/product')->load($productId);
+        $sefUrl = $product->getRequestPath();
+        if (empty($sefUrl)) {
+            return false;
+        }
+
+        $request->setRequestUri($sefUrl);
         return true;
     }
 

@@ -11,7 +11,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-$items = MageBridgeUrlHelper::getRootItems();
+$items = MageBridgeUrlHelper::getRootItems(false);
 ?>
 <h3>MageBridge Root Menu-Items</h3>
 <table class="table table-striped">
@@ -26,6 +26,9 @@ $items = MageBridgeUrlHelper::getRootItems();
 		<th>
 			Menu
 		</th>
+		<th>
+			Access
+		</th>
 	</tr>
 	</thead>
 	<tbody>
@@ -39,6 +42,9 @@ $items = MageBridgeUrlHelper::getRootItems();
 		</td>
 		<td>
 			<?php echo $item->menutype; ?>
+		</td>
+		<td>
+			<?php echo $item->access; ?>
 		</td>
 	</tr>
 	<?php endforeach; ?>

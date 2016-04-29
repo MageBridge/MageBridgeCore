@@ -38,15 +38,15 @@ class MageBridgeUrlHelper
 	{
 		$request = trim($request);
 
-        if (empty($request))
-        {
-            return false;
-        }
+		if (empty($request))
+		{
+			return false;
+		}
 
-        if ($request == 'magebridge.php')
-        {
-            return false;
-        }
+		if ($request == 'magebridge.php')
+		{
+			return false;
+		}
 
 		self::$request = $request;
 
@@ -55,7 +55,7 @@ class MageBridgeUrlHelper
 			self::$original_request = $request;
 		}
 
-        return true;
+		return true;
 	}
 
 	/**
@@ -77,7 +77,7 @@ class MageBridgeUrlHelper
 	{
 		$app = JFactory::getApplication();
 		$input = $app->input;
-        $bridge = MageBridgeModelBridge::getInstance();
+		$bridge = MageBridgeModelBridge::getInstance();
 
 		// Always override the current request with whatever comes from the bridge
 		self::setRequest($bridge->getSessionData('request', false));
@@ -108,8 +108,8 @@ class MageBridgeUrlHelper
 					// Build a list of current variables
 					$currentVars = array('option', 'view', 'layout', 'format', 'request', 'Itemid', 'lang', 'tmpl');
 
-                    // Add the form token to current variables
-                    $currentsVars[] = JSession::getFormToken();
+					// Add the form token to current variables
+					$currentsVars[] = JSession::getFormToken();
 
 					// If the request is set, filter all rubbish
 					if (!empty($request))
@@ -159,22 +159,22 @@ class MageBridgeUrlHelper
 					{
 						foreach ($getVars as $name => $value)
 						{
-                            if (in_array($name, $currentVars))
-                            {
-                                continue;
-                            }
+							if (in_array($name, $currentVars))
+							{
+								continue;
+							}
 
-                            if (preg_match('/^quot;/', $name))
-                            {
-                                continue;
-                            }
-								
-                            if (strlen($name) == 32 && $value == 1)
-                            {
-                                continue;
-                            }
-								
-                            $get[$name] = $value;
+							if (preg_match('/^quot;/', $name))
+							{
+								continue;
+							}
+
+							if (strlen($name) == 32 && $value == 1)
+							{
+								continue;
+							}
+
+							$get[$name] = $value;
 						}
 					}
 
@@ -193,7 +193,7 @@ class MageBridgeUrlHelper
 			}
 
 			$request = trim($request);
-		    self::setRequest($request);
+			self::setRequest($request);
 		}
 
 		return self::$request;
@@ -229,37 +229,41 @@ class MageBridgeUrlHelper
 	/**
 	 * Helper-method to get all MageBridge menu-items
 	 *
-	 * @param bool $only_authorised
+	 * @param bool $onlyAuthorised
 	 *
 	 * @return array
 	 */
-	static public function getMenuItems($only_authorised = true)
+	static public function getMenuItems($onlyAuthorised = true)
 	{
 		static $items = array();
 
-		if (empty($items))
+		if (!empty($items))
 		{
-			//require_once JPATH_SITE.'/includes/application.php'; // 2013-10-13 throws error in J32
-			$app = JFactory::getApplication();
-			$component = JComponentHelper::getComponent('com_magebridge');
-			$menu = $app->getMenu('site');
+			return $items;
+		}
 
-			if (!empty($menu))
-			{
-				$items = $menu->getItems('component_id', $component->id);
-			}
+		//require_once JPATH_SITE.'/includes/application.php'; // 2013-10-13 throws error in J32
+		$app = JFactory::getApplication();
+		$component = JComponentHelper::getComponent('com_magebridge');
+		$menu = $app->getMenu('site');
 
-			// Remove those menu-items that are not authorised
-			if ($only_authorised && !empty($items))
+		if (empty($menu))
+		{
+			return array();
+		}
+
+		$items = $menu->getItems(array('component_id'), array($component->id));
+
+		// Remove those menu-items that are not authorised
+		if ($onlyAuthorised && !empty($items))
+		{
+			foreach ($items as $index => $item)
 			{
-				foreach ($items as $index => $item)
+				$authorised = $menu->authorise($item->id);
+
+				if ($authorised == false)
 				{
-					$authorised = $menu->authorise($item->id);
-
-					if ($authorised == false)
-					{
-						unset($items[$index]);
-					}
+					unset($items[$index]);
 				}
 			}
 		}
@@ -323,30 +327,36 @@ class MageBridgeUrlHelper
 	}
 
 	/**
+	 * @param boolean
+	 *
 	 * @return array|null
 	 */
-	static public function getRootItems()
+	static public function getRootItems($onlyAuthorised = true)
 	{
 		// Load the Root Menu-Items found in the Joomla! database
-		static $root_items = null;
+		static $rootItems = null;
 
-		if (empty($root_items))
+		if (!empty($rootItems))
 		{
-			$items = MageBridgeUrlHelper::getMenuItems();
+			return $rootItems;
+		}
 
-			if (!empty($items))
+		$items = MageBridgeUrlHelper::getMenuItems($onlyAuthorised);
+
+		if (empty($items))
+		{
+			return null;
+		}
+
+		foreach ($items as $item)
+		{
+			if (isset($item->query['view']) && $item->query['view'] == 'root')
 			{
-				foreach ($items as $item)
-				{
-					if (isset($item->query['view']) && $item->query['view'] == 'root')
-					{
-						$root_items[] = $item;
-					}
-				}
+				$rootItems[] = $item;
 			}
 		}
 
-		return $root_items;
+		return $rootItems;
 	}
 
 	/**
@@ -364,39 +374,36 @@ class MageBridgeUrlHelper
 			return false;
 		}
 
-		$root_items = self::getRootItems();
+		$rootItems = self::getRootItems(true);
 
-		$current_item = MageBridgeUrlHelper::getCurrentItem();
-		if (!empty($root_items))
+		$currentItem = MageBridgeUrlHelper::getCurrentItem();
+
+		if (empty($rootItems))
 		{
-			// Loop through all Root Menu-Items found, and return the one matching the current ID
-			foreach ($root_items as $root_item)
-			{
-				if (!empty($current_item) && $root_item->id == $current_item->id)
-				{
-					return $root_item;
-				}
-				else
-				{
-					if ($root_item->id == JFactory::getApplication()->input->getInt('Itemid'))
-					{
-						return $root_item;
-					}
-					else
-					{
-						if (!empty($current_item) && is_array($current_item->tree) && in_array($root_item->id, $current_item->tree))
-						{
-							return $root_item;
-						}
-					}
-				}
-			}
-
-			// Return the first Root Menu-Item found
-			return $root_items[0];
+			return false;
 		}
 
-		return false;
+		// Loop through all Root Menu-Items found, and return the one matching the current ID
+		foreach ($rootItems as $rootItem)
+		{
+			if (!empty($currentItem) && $rootItem->id == $currentItem->id)
+			{
+				return $rootItem;
+			}
+
+			if ($rootItem->id == JFactory::getApplication()->input->getInt('Itemid'))
+			{
+				return $rootItem;
+			}
+
+			if (!empty($currentItem) && is_array($currentItem->tree) && in_array($rootItem->id, $currentItem->tree))
+			{
+				return $rootItem;
+			}
+		}
+
+		// Return the first Root Menu-Item found
+		return $rootItems[0];
 	}
 
 	/**
@@ -408,16 +415,16 @@ class MageBridgeUrlHelper
 	 */
 	static public function getCurrentItem()
 	{
-		static $current_item = null;
+		static $currentItem = null;
 
-		if (empty($current_item))
+		if (empty($currentItem))
 		{
 
 			$menu = JFactory::getApplication()
 				->getMenu('site');
-			$current_item = $menu->getActive();
+			$currentItem = $menu->getActive();
 
-			if (empty($current_item) || $current_item->component != 'com_magebridge')
+			if (empty($currentItem) || $currentItem->component != 'com_magebridge')
 			{
 				$items = MageBridgeUrlHelper::getMenuItems();
 
@@ -427,7 +434,7 @@ class MageBridgeUrlHelper
 					{
 						if ($item->id == JFactory::getApplication()->input->getInt('Itemid'))
 						{
-							$current_item = $item;
+							$currentItem = $item;
 							break;
 						}
 					}
@@ -435,7 +442,7 @@ class MageBridgeUrlHelper
 			}
 		}
 
-		return $current_item;
+		return $currentItem;
 	}
 
 	/**
@@ -601,7 +608,7 @@ class MageBridgeUrlHelper
 	 * Helper method to only return the Forward SEF option if SEF is actually enabled
 	 *
 	 * @param string $layout
-	 * @param int $id
+	 * @param int    $id
 	 *
 	 * @return string
 	 */
@@ -697,11 +704,11 @@ class MageBridgeUrlHelper
 	 */
 	static public function getItemid()
 	{
-		$root_item = self::getRootItem();
+		$rootItem = self::getRootItem();
 
-		if (!empty($root_item) && $root_item->id > 0)
+		if (!empty($rootItem) && $rootItem->id > 0)
 		{
-			return $root_item->id;
+			return $rootItem->id;
 		}
 
 		return JFactory::getApplication()->input->getInt('Itemid');
@@ -712,7 +719,7 @@ class MageBridgeUrlHelper
 	 *
 	 * @param string  $request
 	 * @param boolean $xhtml
-	 * @param array $arguments
+	 * @param array   $arguments
 	 *
 	 * @return string
 	 */
@@ -800,7 +807,8 @@ class MageBridgeUrlHelper
 		$pages = array(
 			'checkout/*',
 			'customer/*',
-			'wishlist/*',);
+			'wishlist/*',
+		);
 
 		// Extra payment-pages to be served with SSL
 		$payment_urls = explode(',', MagebridgeModelConfig::load('payment_urls'));
