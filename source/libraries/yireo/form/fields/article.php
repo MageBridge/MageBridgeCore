@@ -11,10 +11,13 @@
 
 defined('JPATH_BASE') or die;
 
+// Require the parent
+require_once dirname(__FILE__) . '/abstract.php';
+
 /**
  * Supports a modal article picker.
  */
-class JFormFieldArticle extends JFormField
+class JFormFieldArticle extends YireoFormFieldAbstract
 {
 	/**
 	 * The form field type.
