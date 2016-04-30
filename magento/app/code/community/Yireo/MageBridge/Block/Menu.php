@@ -8,18 +8,14 @@
  * @license Open Source License
  * @link https://www.yireo.com
  */
-/*
+
+/**
  * MageBridge class for the menu-block
  */
-
 class Yireo_MageBridge_Block_Menu extends Mage_Core_Block_Template
 {
-    /*
+    /**
      * Constructor method
-     *
-     * @access public
-     * @param null
-     * @return null
      */
     public function _construct()
     {
@@ -28,34 +24,15 @@ class Yireo_MageBridge_Block_Menu extends Mage_Core_Block_Template
         $this->setTemplate('magebridge/menu.phtml');
     }
 
-    /*
+    /**
      * Helper method to get data from the Magento configuration
      *
-     * @access public
-     * @param null
      * @return array
      */
     public function getMenuItems()
     {
         // Build the list of menu-items
-        $items = array(
-            array(
-                'action' => 'settings',
-                'title' => 'Settings',
-            ),
-            array(
-                'action' => 'check',
-                'title' => 'System Check',
-            ),
-            array(
-                'action' => 'updates',
-                'title' => 'Updates',
-            ),
-            array(
-                'action' => 'supportkey',
-                'title' => 'Support Key',
-            ),
-        );
+        $items = $this->getMenuItemArray();
 
         // Fetch the URL-model
         $url = Mage::getModel('adminhtml/url');
@@ -80,5 +57,30 @@ class Yireo_MageBridge_Block_Menu extends Mage_Core_Block_Template
         }
 
         return $items;
+    }
+
+    /**
+     * @return array
+     */
+    protected function getMenuItemArray()
+    {
+        return array(
+            array(
+                'action' => 'settings',
+                'title' => 'Settings',
+            ),
+            array(
+                'action' => 'check',
+                'title' => 'System Check',
+            ),
+            array(
+                'action' => 'updates',
+                'title' => 'Updates',
+            ),
+            array(
+                'action' => 'supportkey',
+                'title' => 'Support Key',
+            ),
+        );
     }
 }

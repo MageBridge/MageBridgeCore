@@ -9,7 +9,7 @@
  * @link https://www.yireo.com
  */
 
-/*
+/**
  * MageBridge rewrite of the default breadcrumbs-block
  */
 class Yireo_MageBridge_Block_Breadcrumbs extends Mage_Page_Block_Html_Breadcrumbs
