@@ -622,6 +622,7 @@ class PlgSystemMageBridge extends JPlugin
 		{
 			$whitelist[] = 'media/system/js/calendar.js';
 			$whitelist[] = 'media/system/js/calendar-setup.js';
+			$whitelist[] = 'media/system/js/caption.js';
 			$whitelist[] = '/com_jce/';
 			$whitelist[] = '/footools.js';
 			$whitelist[] = 'www.googleadservices.com';
