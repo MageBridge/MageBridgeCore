@@ -9,9 +9,12 @@
  * @link https://www.yireo.com
  */
 
+/**
+ * Class Yireo_MageBridge_Helper_Product
+ */
 class Yireo_MageBridge_Helper_Product extends Mage_Core_Helper_Abstract
 {
-    /*
+    /**
      * Helper-method to export a product to the bridge
      *
      * @access public
@@ -164,19 +167,33 @@ class Yireo_MageBridge_Helper_Product extends Mage_Core_Helper_Abstract
         return $p;
     }
 
+    /**
+     * @param $product
+     * @param $attributeName
+     * @param $size
+     *
+     * @return mixed
+     */
     public function getImageUrl($product, $attributeName, $size)
     {
         $imageData = $this->getImageData($product, $attributeName, $size);
         return $imageData['url'];
     }
 
+    /**
+     * @param $product
+     * @param $attributeName
+     * @param $size
+     *
+     * @return array
+     */
     public function getImageData($product, $attributeName, $size)
     {
         $imageHelper = Mage::helper('catalog/image');
         $imageHelper->init($product, $attributeName);
 
-        $originalWidth = $imageHelper->getOriginalWidth();
-        $originalHeight = $imageHelper->getOriginalHeight();
+        $imageWidth = $imageHelper->getOriginalWidth();
+        $imageHeight = $imageHelper->getOriginalHeight();
 
         if (is_array($size) && count($size) == 1) {
             $imageWidth = $size[0];
@@ -187,9 +204,6 @@ class Yireo_MageBridge_Helper_Product extends Mage_Core_Helper_Abstract
         } elseif (!empty($size)) {
             $imageWidth = $size;
             $imageHeight = $size;
-        } else {
-            $imageWidth = $originalWidth;
-            $imageHeight = $originalHeight;
         }
 
         $imageUrl = (string) $imageHelper->resize($imageWidth, $imageHeight);
