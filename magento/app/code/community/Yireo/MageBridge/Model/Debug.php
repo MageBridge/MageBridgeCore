@@ -76,7 +76,11 @@ function Yireo_MageBridge_ErrorHandler($errno, $errstr, $errfile, $errline)
 function Yireo_MageBridge_ExceptionHandler($exception)
 {
     // Make sure this exception is logged in MAGENTO/var/log/exception.log
-    Mage::logException($exception);
+    if ($exception instanceOf Exception) {
+        Mage::logException($exception);
+    } else {
+        Mage::log($exception->getMessage());
+    }
 
     // Print the error
     if((bool)Mage::getStoreConfig('magebridge/debug/print') == true) {
