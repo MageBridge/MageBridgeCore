@@ -88,7 +88,7 @@ class YireoViewForm extends YireoView
         $this->jinput->set('hidemainmenu', 1);
     
         // Initialize tooltips
-        JHTML::_('behavior.tooltip');
+        JHtml::_('behavior.tooltip');
 
         // Automatically fetch the item and assign it to the layout
         $this->fetchItem();

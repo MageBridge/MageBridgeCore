@@ -60,7 +60,7 @@ class MageBridgeModelUserSSO extends MageBridgeModelUser
 		$arguments = array(
 			'sso=login',
 			'app='.$application_name,
-			'base='.base64_encode(JURI::base()),
+			'base='.base64_encode(JUri::base()),
 			'userhash='.MageBridgeEncryptionHelper::encrypt($username),
 			'token='.$token,
 		);
@@ -99,7 +99,7 @@ class MageBridgeModelUserSSO extends MageBridgeModelUser
 		
 		// Set the redirection URL
 		if ($application_name == 'admin') {
-			$redirect = JURI::current();
+			$redirect = JUri::current();
 		} else {
 			$redirect = MageBridgeUrlHelper::current();
 		}
@@ -144,7 +144,7 @@ class MageBridgeModelUserSSO extends MageBridgeModelUser
 		}
 
 		// Redirect back to the original URL
-		$redirect = $session->get('magento_redirect', JURI::base());
+		$redirect = $session->get('magento_redirect', JUri::base());
 		if (empty($redirect)) {
 			$redirect = MageBridgeUrlHelper::route('customer/account');
 		}

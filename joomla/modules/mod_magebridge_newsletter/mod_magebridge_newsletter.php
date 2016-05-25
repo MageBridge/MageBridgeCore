@@ -31,7 +31,7 @@ $redirect_url = MageBridgeUrlHelper::route(MageBridgeUrlHelper::getRequest());
 $redirect_url = MageBridgeEncryptionHelper::base64_encode($redirect_url);
 
 // Require form validation
-JHTML::_('behavior.formvalidation');
+JHtml::_('behavior.formvalidation');
 
 // Include the layout-file
 require(JModuleHelper::getLayoutPath('mod_magebridge_newsletter', $layout));

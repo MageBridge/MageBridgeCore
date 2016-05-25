@@ -70,7 +70,7 @@ class MageBridgeConnectorStore extends MageBridgeConnector
 		}
 
 		// Get the conditions
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$db->setQuery("SELECT * FROM #__magebridge_stores WHERE `published`=1 ORDER BY `ordering`");
 		$conditions = $db->loadObjectList();
 		if (empty($conditions)) {

@@ -49,7 +49,7 @@ On this page, you can see the result of Joomla! fetching data from the Magento M
 			<input type="hidden" name="view" value="check" />
 			<input type="hidden" name="layout" value="browser" />
 			<input type="hidden" name="task" value="" />
-			<?php echo JHTML::_( 'form.token' ); ?>
+			<?php echo JHtml::_( 'form.token' ); ?>
 		</form>
 	</td>
 </tr>

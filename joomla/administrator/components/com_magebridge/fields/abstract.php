@@ -2,18 +2,18 @@
 /**
  * Joomla! component MageBridge
  *
- * @author Yireo (info@yireo.com)
- * @package MageBridge
+ * @author    Yireo (info@yireo.com)
+ * @package   MageBridge
  * @copyright Copyright 2016
- * @license GNU Public License
- * @link https://www.yireo.com
+ * @license   GNU Public License
+ * @link      https://www.yireo.com
  */
 
 // Check to ensure this file is included in Joomla!
 defined('JPATH_BASE') or die();
 
 // Import the MageBridge autoloader
-require_once JPATH_SITE.'/components/com_magebridge/helpers/loader.php';
+require_once JPATH_SITE . '/components/com_magebridge/helpers/loader.php';
 
 // Import required libraries
 jimport('joomla.html.html');
@@ -21,14 +21,36 @@ jimport('joomla.access.access');
 jimport('joomla.form.formfield');
 
 /**
- * Generic Form Field-class 
+ * Generic Form Field-class
  */
 abstract class MagebridgeFormFieldAbstract extends JFormField
 {
+	/** @var MageBridgeModelBridge */
+	protected $bridge;
+	
+	/** @var MageBridgeModelRegister */
+	protected $register;
+
+	/** @var  MageBridgeModelDebug */
+	protected $debugger;
+
+	/**
+	 * MagebridgeFormFieldAbstract constructor.
+	 *
+	 * @param null $form
+	 */
+	public function __construct($form = null)
+	{
+		$this->bridge   = MageBridgeModelBridge::getInstance();
+		$this->register = MageBridgeModelRegister::getInstance();
+		$this->debugger = MageBridgeModelDebug::getInstance();
+
+		return parent::__construct($form);
+	}
+
 	/**
 	 * Method to wrap the protected getInput() method
 	 *
-	 * @param null
 	 * @return string
 	 */
 	public function getHtmlInput()
@@ -40,7 +62,6 @@ abstract class MagebridgeFormFieldAbstract extends JFormField
 	 * Method to set the name
 	 *
 	 * @param mixed $value
-	 * @return null
 	 */
 	public function setName($value = null)
 	{
@@ -51,10 +72,32 @@ abstract class MagebridgeFormFieldAbstract extends JFormField
 	 * Method to set the value
 	 *
 	 * @param mixed $value
-	 * @return null
 	 */
 	public function setValue($value = null)
 	{
 		$this->value = $value;
+	}
+
+	/**
+	 * @param $warning
+	 */
+	protected function warning($warning, $variable = null)
+	{
+		if (!empty($variable))
+		{
+			$warning .= ': ' .  var_export($variable, true);
+		}
+		
+		$this->debugger->warning($warning);
+	}
+
+	/**
+	 * @param $name
+	 *
+	 * @return mixed
+	 */
+	protected function getConfig($name)
+	{
+		return MagebridgeModelConfig::load($name);
 	}
 }

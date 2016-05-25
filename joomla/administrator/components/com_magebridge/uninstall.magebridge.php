@@ -22,7 +22,7 @@ function com_uninstall()
 	$installer = JInstaller::getInstance();
 
 	// Select all MageBridge modules and remove them
-	$db = JFactory::getDBO();
+	$db = JFactory::getDbo();
 	$query = "SELECT `id`,`client_id` FROM #__modules WHERE `module` LIKE 'mod_magebridge%'";
 	$db->setQuery($query);
 	$rows = $db->loadObjectList();
@@ -33,7 +33,7 @@ function com_uninstall()
 	} 
 
 	// Select all MageBridge plugins and remove them
-	$db = JFactory::getDBO();
+	$db = JFactory::getDbo();
 	$query = "SELECT `id`,`client_id` FROM #__plugins WHERE `element` LIKE 'magebridge%' OR `folder` = 'magento'";
 	$db->setQuery($query);
 	$rows = $db->loadObjectList();

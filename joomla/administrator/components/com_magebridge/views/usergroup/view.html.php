@@ -42,7 +42,7 @@ class MageBridgeViewUsergroup extends MageBridgeView
 		$fields['joomla_group'] = $this->getFieldJoomlaGroup($this->item->joomla_group);
 		$fields['magento_group'] = $this->getFieldMagentoGroup($this->item->magento_group);
 		$fields['ordering'] = $this->getFieldOrdering($this->item);
-		$fields['published'] = JHTML::_('select.booleanlist',  'published', 'class="inputbox"', $this->item->published );
+		$fields['published'] = JHtml::_('select.booleanlist',  'published', 'class="inputbox"', $this->item->published );
 
 		// Initialize parameters
 		$file = JPATH_ADMINISTRATOR.'/components/com_magebridge/models/usergroup.xml';
@@ -70,7 +70,7 @@ class MageBridgeViewUsergroup extends MageBridgeView
 			. ' ORDER BY ordering';
 
 		if (MageBridgeHelper::isJoomla35() == false) {
-			return JHTML::_('list.specificordering',  $item, $item->id, $query );
+			return JHtml::_('list.specificordering',  $item, $item->id, $query );
 		}
 		return null;
 	}
@@ -84,7 +84,7 @@ class MageBridgeViewUsergroup extends MageBridgeView
 	public function getFieldJoomlaGroup($value = null)
 	{
 		$usergroups = MageBridgeFormHelper::getUsergroupOptions();
-		return JHTML::_('select.genericlist', $usergroups, 'joomla_group', null, 'value', 'text', $value);
+		return JHtml::_('select.genericlist', $usergroups, 'joomla_group', null, 'value', 'text', $value);
 	}
 
 	/**

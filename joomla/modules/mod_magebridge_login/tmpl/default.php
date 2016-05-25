@@ -34,7 +34,7 @@ $autocomplete = ($params->get('allow_autocomplete', 1) == 1) ? null : 'autocompl
 			<input type="hidden" name="task" value="<?php echo $task_logout ?>"/>
 			<input type="hidden" name="return" value="<?php echo $return_url ?>"/>
 			<input type="hidden" name="language" value="<?php echo JFactory::getApplication()->input->getCmd('language'); ?>"/>
-			<?php echo JHTML::_('form.token'); ?>
+			<?php echo JHtml::_('form.token'); ?>
 		</form>
 	</div>
 <?php else : ?>
@@ -75,7 +75,7 @@ $autocomplete = ($params->get('allow_autocomplete', 1) == 1) ? null : 'autocompl
 				<input type="hidden" name="task" value="<?php echo $task_login ?>"/>
 				<input type="hidden" name="return" value="<?php echo $return_url ?>"/>
 				<input type="hidden" name="language" value="<?php echo JFactory::getApplication()->input->getCmd('language'); ?>"/>
-				<?php echo JHTML::_('form.token'); ?>
+				<?php echo JHtml::_('form.token'); ?>
 			</div>
 		</form>
 	</div>

@@ -30,11 +30,11 @@ class MageBridgeViewHelper
 		$view = JFactory::getApplication()->input->getCmd('view');
 
 		// Add CSS-code
-		$document->addStyleSheet(JURI::root().'media/com_magebridge/css/backend.css');
-		$document->addStyleSheet(JURI::root().'media/com_magebridge/css/backend-view-'.$view.'.css');
+		$document->addStyleSheet(JUri::root().'media/com_magebridge/css/backend.css');
+		$document->addStyleSheet(JUri::root().'media/com_magebridge/css/backend-view-'.$view.'.css');
 
-		if (MageBridgeHelper::isJoomla25()) $document->addStyleSheet(JURI::root().'media/com_magebridge/css/backend-j25.css');
-		if (MageBridgeHelper::isJoomla35()) $document->addStyleSheet(JURI::root().'media/com_magebridge/css/backend-j35.css');
+		if (MageBridgeHelper::isJoomla25()) $document->addStyleSheet(JUri::root().'media/com_magebridge/css/backend-j25.css');
+		if (MageBridgeHelper::isJoomla35()) $document->addStyleSheet(JUri::root().'media/com_magebridge/css/backend-j35.css');
 
 		// Page title
 		$title = JText::_('COM_MAGEBRIDGE_VIEW_'.strtoupper(str_replace(' ', '_', $title)));

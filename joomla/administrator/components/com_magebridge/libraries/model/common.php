@@ -105,7 +105,7 @@ class YireoCommonModel extends YireoAbstractModel
     public function __construct($tableAlias = null)
     {
         // Import use full variables from JFactory
-        $this->db = JFactory::getDBO();
+        $this->db = JFactory::getDbo();
         $this->app = JFactory::getApplication();
         $this->application = $this->app;
         $this->jinput = $this->app->input;

@@ -886,7 +886,7 @@ class MageBridgeTemplateHelper
 				// Load jQuery through the Google API
 				if (MagebridgeModelConfig::load('use_google_api') == 1)
 				{
-					$prefix = (JURI::getInstance()
+					$prefix = (JUri::getInstance()
 						->isSSL()) ? 'https' : 'http';
 					$document->addScript($prefix . '://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js');
 				}
@@ -1013,16 +1013,16 @@ class MageBridgeTemplateHelper
 			}
 		}
 
-		$root = JURI::root();
+		$root = JUri::root();
 
-		if (JURI::getInstance()
+		if (JUri::getInstance()
 				->isSSL() == true
 		)
 		{
 			$root = preg_replace('/^http:\/\//', 'https://', $root);
 		}
 
-		if (JURI::getInstance()
+		if (JUri::getInstance()
 				->isSSL() == false
 		)
 		{

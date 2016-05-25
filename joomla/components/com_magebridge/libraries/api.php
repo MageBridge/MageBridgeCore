@@ -152,7 +152,7 @@ class MageBridgeApi
 			foreach ($modules as $module)
 			{
 				$moduleHtml = JModuleHelper::renderModule($module, $attributes);
-				$moduleHtml = preg_replace('/href=\"\/([^\"]{0,})\"/', 'href="' . JURI::root() . '\1"', $moduleHtml);
+				$moduleHtml = preg_replace('/href=\"\/([^\"]{0,})\"/', 'href="' . JUri::root() . '\1"', $moduleHtml);
 				$outputHtml .= $moduleHtml;
 			}
 		}
@@ -170,7 +170,7 @@ class MageBridgeApi
 	public function getUsers($params = array())
 	{
 		// System variables
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 
 		// Construct the query
 		$query = 'SELECT * FROM #__users';

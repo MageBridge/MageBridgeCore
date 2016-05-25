@@ -633,7 +633,7 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 		}
 
 		// Set SSL options
-		$uri = JURI::getInstance();
+		$uri = JUri::getInstance();
 
 		if ($uri->isSSL() == true)
 		{
@@ -943,7 +943,7 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 						$expires = 0;
 					}
 
-					$uri = JURI::getInstance();
+					$uri = JUri::getInstance();
 					setcookie($cookieName, $cookieValue, $expires, '/', '.' . $uri->toString(array('host')));
 					$_COOKIE[$cookieName] = $cookieValue;
 				}
@@ -1042,9 +1042,9 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 			{
 				if (MagebridgeModelConfig::load('use_homepage_for_homepage_redirects') == 1)
 				{
-					$location = JURI::base();
+					$location = JUri::base();
 				}
-				elseif (MagebridgeModelConfig::load('use_referer_for_homepage_redirects') == 1 && !empty($referer) && $referer != JURI::current())
+				elseif (MagebridgeModelConfig::load('use_referer_for_homepage_redirects') == 1 && !empty($referer) && $referer != JUri::current())
 				{
 					$location = $referer;
 				}
@@ -1474,7 +1474,7 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 		// When the URL doesnt start with HTTP or HTTPS, assume it is still the original Magento request
 		if (!preg_match('/^(http|https):\/\//', $redirect))
 		{
-			$redirect = JURI::base() . 'index.php?option=com_magebridge&view=root&request=' . $redirect;
+			$redirect = JUri::base() . 'index.php?option=com_magebridge&view=root&request=' . $redirect;
 		}
 
 		// Replace the System URL for the site

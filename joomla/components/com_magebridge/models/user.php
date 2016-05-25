@@ -60,7 +60,7 @@ class MageBridgeModelUser
 		JPluginHelper::importPlugin('user');
 
 		// Get system variables
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 
 		// Determine the email address
 		$email = $user['email'];
@@ -383,7 +383,7 @@ class MageBridgeModelUser
 		}
 
 		// Fetch the user-record for this email-address
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$query = "SELECT `id` FROM `#__users` WHERE `".$field."` = ".$db->Quote($value);
 		$db->setQuery($query);
 		$row = $db->loadObject();
@@ -499,7 +499,7 @@ class MageBridgeModelUser
 
 		// Check whether the Joomla! ID is different
 		if ($user_id > 0 && $user->id != $user_id) {
-			$db = JFactory::getDBO();
+			$db = JFactory::getDbo();
 			$query = "SELECT id FROM #__users WHERE `id` = ".(int)$user_id;
 			$db->setQuery($query);
 			$row = $db->loadObject();

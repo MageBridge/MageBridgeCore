@@ -368,7 +368,7 @@ class PlgSystemMageBridge extends JPlugin
 	private function redirectNonSef()
 	{
 		// Initialize variables
-		$uri = JURI::getInstance();
+		$uri = JUri::getInstance();
 		$post = $this->input->post->getArray();
 		$enabled = $this->getParam('enable_nonsef_redirect', 1);
 
@@ -466,17 +466,17 @@ class PlgSystemMageBridge extends JPlugin
 				// Fix the destination URL to be a FQDN
 				if (!preg_match('/^(http|https)\:\/\//', $destination))
 				{
-					$destination = JURI::base() . $destination;
+					$destination = JUri::base() . $destination;
 				}
 
-				if ($replacement_url->source_type == 1 && preg_match('/' . $source . '/', JURI::current()))
+				if ($replacement_url->source_type == 1 && preg_match('/' . $source . '/', JUri::current()))
 				{
 					header('Location: ' . $destination);
 					exit;
 				}
 				else
 				{
-					if ($replacement_url->source_type == 0 && preg_match('/' . $source . '$/', JURI::current()))
+					if ($replacement_url->source_type == 0 && preg_match('/' . $source . '$/', JUri::current()))
 					{
 						header('Location: ' . $destination);
 						exit;
@@ -574,10 +574,10 @@ class PlgSystemMageBridge extends JPlugin
 		$magento_js = MageBridgeModelBridgeHeaders::getInstance()
 			->getScripts();
 
-		$uri = JURI::getInstance();
-		$foo_script = JURI::root(true) . '/media/com_magebridge/js/foo.js';
-		$footools_script = JURI::root(true) . '/media/com_magebridge/js/footools.min.js';
-		$frototype_script = JURI::root(true) . '/media/com_magebridge/js/frototype.min.js';
+		$uri = JUri::getInstance();
+		$foo_script = JUri::root(true) . '/media/com_magebridge/js/foo.js';
+		$footools_script = JUri::root(true) . '/media/com_magebridge/js/footools.min.js';
+		$frototype_script = JUri::root(true) . '/media/com_magebridge/js/frototype.min.js';
 		$base_url = $this->getBaseUrl();
 		$base_js_url = $this->getBaseJsUrl();
 
@@ -1002,7 +1002,7 @@ class PlgSystemMageBridge extends JPlugin
 	private function redirectSSL()
 	{
 		// Get system variables
-		$uri = JURI::getInstance();
+		$uri = JUri::getInstance();
 		$enforce_ssl = $this->loadConfig('enforce_ssl');
 		$from_http_to_https = $this->getParam('enable_ssl_redirect', 1);
 		$from_https_to_http = $this->getParam('enable_nonssl_redirect', 1);

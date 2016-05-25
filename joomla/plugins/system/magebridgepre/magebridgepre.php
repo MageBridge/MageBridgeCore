@@ -40,7 +40,7 @@ class plgSystemMageBridgePre extends JPlugin
 			// If the user is already logged in, remove the cookie
 			if (JFactory::getUser()->id > 0)
 			{
-				setcookie('mb_postlogin', '', time() - 3600, '/', '.' . JURI::getInstance()
+				setcookie('mb_postlogin', '', time() - 3600, '/', '.' . JUri::getInstance()
 						->toString(array('host')));
 			}
 

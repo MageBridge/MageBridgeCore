@@ -159,7 +159,7 @@ class YireoHelperInstall
     {
         if(is_dir(JPATH_SITE.'/libraries/'.$library)) {
             $query = 'SELECT `name` FROM `#__extensions` WHERE `type`="library" AND `element`="'.$library.'"';
-            $db = JFactory::getDBO();
+            $db = JFactory::getDbo();
             $db->setQuery($query);
             return (bool)$db->loadObject();
         }
@@ -170,7 +170,7 @@ class YireoHelperInstall
     {
         if(file_exists(JPATH_SITE.'/plugins/'.$group.'/'.$plugin.'/'.$plugin.'.xml')) {
             $query = 'SELECT `name` FROM `#__extensions` WHERE `type`="plugin" AND `element`="'.$plugin.'" AND `folder`="'.$group.'"';
-            $db = JFactory::getDBO();
+            $db = JFactory::getDbo();
             $db->setQuery($query);
             return (bool)$db->loadObject();
         }
@@ -180,7 +180,7 @@ class YireoHelperInstall
     static public function hasPluginEnabled($plugin, $group)
     {
         $query = 'SELECT `enabled` FROM `#__extensions` WHERE `type`="plugin" AND `element`="'.$plugin.'" AND `folder`="'.$group.'"';
-        $db = JFactory::getDBO();
+        $db = JFactory::getDbo();
         $db->setQuery($query);
         return (bool)$db->loadResult();
     }
@@ -194,7 +194,7 @@ class YireoHelperInstall
         }
 
         $query = 'UPDATE `#__extensions` SET `enabled`="1" WHERE `type`="plugin" AND `element`="'.$plugin.'" AND `folder`="'.$group.'"';
-        $db = JFactory::getDBO();
+        $db = JFactory::getDbo();
         $db->setQuery($query);
 
         try {

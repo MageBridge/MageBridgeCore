@@ -88,7 +88,7 @@ class MageBridgeUpdateHelper
 		$packages = $packages['joomla'];
 
 		// Load the currently configured connectors
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$query = 'SELECT DISTINCT(`connector`) FROM `#__magebridge_products`';
 		$db->setQuery($query);
 		$usedConnectorsList = $db->loadObjectList();

@@ -36,7 +36,7 @@ class MageBridgePluginProduct extends MageBridgePlugin
 	{
 		parent::__construct($subject, $config);
 		$this->loadLanguage();
-		$this->db = JFactory::getDBO();
+		$this->db = JFactory::getDbo();
 	}
 
 	/**

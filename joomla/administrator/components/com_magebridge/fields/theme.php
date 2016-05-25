@@ -2,18 +2,18 @@
 /**
  * Joomla! component MageBridge
  *
- * @author Yireo (info@yireo.com)
- * @package MageBridge
+ * @author    Yireo (info@yireo.com)
+ * @package   MageBridge
  * @copyright Copyright 2016
- * @license GNU Public License
- * @link https://www.yireo.com
+ * @license   GNU Public License
+ * @link      https://www.yireo.com
  */
 
 // Check to ensure this file is included in Joomla!
 defined('JPATH_BASE') or die();
 
 // Import the MageBridge autoloader
-require_once JPATH_SITE.'/components/com_magebridge/helpers/loader.php';
+require_once JPATH_SITE . '/components/com_magebridge/helpers/loader.php';
 
 /**
  * Form Field-class for selecting a Magento theme
@@ -29,23 +29,26 @@ class MagebridgeFormFieldTheme extends MagebridgeFormFieldAbstract
 	 * Method to get the output of this element
 	 *
 	 * @param null
+	 *
 	 * @return string
 	 */
 	protected function getInput()
 	{
-		$name = $this->name;
+		$name      = $this->name;
 		$fieldName = $this->fieldname;
-		$value = $this->value;
+		$value     = $this->value;
 
-		if (MagebridgeModelConfig::load('api_widgets') == true) {
-
+		if ($this->getConfig('api_widgets') == true)
+		{
 			$options = MageBridgeWidgetHelper::getWidgetData('theme');
-			if (!empty($options) && is_array($options)) {
-				array_unshift( $options, array( 'value' => '', 'label' => ''));
-				return JHTML::_('select.genericlist', $options, $name, null, 'value', 'label', MagebridgeModelConfig::load($fieldName));
+			if (!empty($options) && is_array($options))
+			{
+				array_unshift($options, array('value' => '', 'label' => ''));
+
+				return JHtml::_('select.genericlist', $options, $name, null, 'value', 'label', $this->getConfig($fieldName));
 			}
 		}
 
-		return '<input type="text" name="'.$name.'" value="'.$value.'" />';
+		return '<input type="text" name="' . $name . '" value="' . $value . '" />';
 	}
 }

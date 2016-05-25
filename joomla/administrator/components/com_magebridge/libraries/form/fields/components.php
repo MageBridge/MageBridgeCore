@@ -36,7 +36,7 @@ class YireoFormFieldComponents extends JFormField
     {
         $name = $this->name.'[]';
         $value = $this->value;
-        $db = JFactory::getDBO();
+        $db = JFactory::getDbo();
 
         // load the list of components
         $query = 'SELECT * FROM `#__extensions` WHERE `type`="component" AND `enabled`=1';
@@ -45,11 +45,11 @@ class YireoFormFieldComponents extends JFormField
 
         $options = array();
         foreach ($components as $component) {
-            $options[] = JHTML::_('select.option',  $component->element, JText::_($component->name).' ['.$component->element.']', 'value', 'text');
+            $options[] = JHtml::_('select.option',  $component->element, JText::_($component->name).' ['.$component->element.']', 'value', 'text');
         }
 
         $size = (count($options) > 12) ? 12 : count($options);
         $attribs = 'class="inputbox" multiple="multiple" size="'.$size.'"';
-        return JHTML::_('select.genericlist',  $options, $name, $attribs, 'value', 'text', $value, $name);
+        return JHtml::_('select.genericlist',  $options, $name, $attribs, 'value', 'text', $value, $name);
     }
 }

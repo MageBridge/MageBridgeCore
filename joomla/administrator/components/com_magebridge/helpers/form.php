@@ -54,7 +54,7 @@ class MageBridgeFormHelper
 	static public function getUsergroupOptions()
 	{
 		$query = 'SELECT `id` AS `value`, `title` AS `text` FROM `#__usergroups` WHERE `parent_id` > 0';
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$db->setQuery($query);
 		return $db->loadObjectList();
 	}

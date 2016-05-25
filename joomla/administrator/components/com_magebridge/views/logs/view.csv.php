@@ -40,7 +40,7 @@ class MageBridgeViewLogs extends MageBridgeView
 		header('Content-Type: application/octet-stream');
 		header('Content-disposition: attachment; filename='.$filename);
 
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$db->setQuery('SELECT * FROM #__magebridge_log WHERE 1=1');
 		$rows = $db->loadObjectList();
 

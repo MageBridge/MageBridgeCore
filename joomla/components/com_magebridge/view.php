@@ -36,7 +36,7 @@ class MageBridgeView extends YireoAbstractView
 		$rt = parent::__construct($config);
 
 		// Import use full variables from JFactory
-		$this->db = JFactory::getDBO();
+		$this->db = JFactory::getDbo();
 		$this->doc = JFactory::getDocument();
 		$this->user = JFactory::getUser();
 		$this->app = JFactory::getApplication();

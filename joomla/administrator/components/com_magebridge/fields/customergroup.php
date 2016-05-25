@@ -2,18 +2,18 @@
 /**
  * Joomla! component MageBridge
  *
- * @author Yireo (info@yireo.com)
- * @package MageBridge
+ * @author    Yireo (info@yireo.com)
+ * @package   MageBridge
  * @copyright Copyright 2016
- * @license GNU Public License
- * @link https://www.yireo.com
+ * @license   GNU Public License
+ * @link      https://www.yireo.com
  */
 
 // Check to ensure this file is included in Joomla!
 defined('JPATH_BASE') or die();
 
 // Import the MageBridge autoloader
-require_once JPATH_SITE.'/components/com_magebridge/helpers/loader.php';
+require_once JPATH_SITE . '/components/com_magebridge/helpers/loader.php';
 
 /**
  * Form Field-class for choosing a specific Magento customer-group in a selection-box
@@ -28,37 +28,38 @@ class MagebridgeFormFieldCustomerGroup extends MagebridgeFormFieldAbstract
 	/**
 	 * Method to get the HTML of this element
 	 *
-	 * @param null
 	 * @return string
 	 */
 	protected function getInput()
 	{
-		$name = $this->name;
-		$fieldName = $name;
+		$name  = $this->name;
 		$value = $this->value;
 
 		// Only build a dropdown when the API-widgets are enabled
-		if (MagebridgeModelConfig::load('api_widgets') == true) {
-
+		if ($this->getConfig('api_widgets') == true)
+		{
 			// Fetch the widget data from the API
 			$options = MageBridgeWidgetHelper::getWidgetData('customergroup');
 
 			// Parse the result into an HTML form-field
-			if (!empty($options) && is_array($options)) {
-
-				foreach ($options as $index => $option) {
-
+			if (!empty($options) && is_array($options))
+			{
+				foreach ($options as $index => $option)
+				{
 					// Set default return-value
 					$option['value'] = $option['customer_group_id'];
 
 					// Customize the return-value when the attribute "output" is defined
-					$output = (string)$this->element['output'];
-					if (!empty($output) && array_key_exists($output, $option)) {
+					$output = (string) $this->element['output'];
+
+					if (!empty($output) && array_key_exists($output, $option))
+					{
 						$option['value'] = $option[$output];
 					}
 
 					// Strip empty options (like the "NOT LOGGED IN" group)
-					if (empty($option['value']) || $option['value'] == 0) {
+					if (empty($option['value']) || $option['value'] == 0)
+					{
 						unset($options[$index]);
 						continue;
 					}
@@ -71,16 +72,17 @@ class MagebridgeFormFieldCustomerGroup extends MagebridgeFormFieldAbstract
 				}
 
 				// Return a dropdown list
-				array_unshift( $options, array( 'value' => '', 'label' => ''));
-				return JHTML::_('select.genericlist', $options, $name, null, 'value', 'label', $value);
+				array_unshift($options, array('value' => '', 'label' => ''));
 
-			// Fetching data from the bridge failed, so report a warning
-			} else {
-				MageBridgeModelDebug::getInstance()->warning( 'Unable to obtain MageBridge API Widget "customer group": '.var_export($options, true));
+				return JHtml::_('select.genericlist', $options, $name, null, 'value', 'label', $value);
+
+				// Fetching data from the bridge failed, so report a warning
 			}
+
+			$this->debugger->warning('Unable to obtain MageBridge API Widget "customer group"', $options);
 		}
 
 		// Return a simple input-field by default
-		return '<input type="text" name="'.$name.'" value="'.$value.'" />';
+		return '<input type="text" name="' . $name . '" value="' . $value . '" />';
 	}
 }

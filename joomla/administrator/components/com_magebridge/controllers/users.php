@@ -170,7 +170,7 @@ class MageBridgeControllerUsers extends MageBridgeController
 	 */
 	private function getUserList()
 	{
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$db->setQuery("SELECT u.* FROM #__users AS u");
 
 		return $db->loadObjectList();

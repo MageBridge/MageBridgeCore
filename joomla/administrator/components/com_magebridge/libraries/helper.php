@@ -68,7 +68,7 @@ class YireoHelper
         echo '<input type="hidden" name="option" value="'.JFactory::getApplication()->input->getCmd('option').'" />';
         echo '<input type="hidden" name="cid[]" value="'.$id.'" />';
         echo '<input type="hidden" name="task" value="" />';
-        echo JHTML::_( 'form.token' );
+        echo JHtml::_( 'form.token' );
     }
 
     /*
@@ -271,7 +271,7 @@ class YireoHelper
             $option = JFactory::getApplication()->input->getCmd('option');
             $document = JFactory::getDocument();
             $document->addStyleSheet('//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css');
-            $document->addStyleSheet(JURI::root().'media/'.$option.'/css/backend-bootstrap-j25.css');
+            $document->addStyleSheet(JUri::root().'media/'.$option.'/css/backend-bootstrap-j25.css');
             $document->addScript('//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js');
 
         } else {
@@ -331,7 +331,7 @@ class YireoHelper
         // Load jQuery
         $option = JFactory::getApplication()->input->getCmd('option');
         if (file_exists(JPATH_SITE.'/media/'.$option.'/js/jquery.js')) {
-            $document->addScript(JURI::root().'media/'.$option.'/js/jquery.js');
+            $document->addScript(JUri::root().'media/'.$option.'/js/jquery.js');
             $document->addCustomTag('<script type="text/javascript">jQuery.noConflict();</script>');
 
             // Set the flag that jQuery has been loaded

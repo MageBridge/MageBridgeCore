@@ -30,7 +30,7 @@ class MageBridgeController extends YireoAbstractController
 		$this->registerTask('login', 'ssoCheck');
 		$this->registerTask('logout', 'ssoCheck');
 
-		$uri = JURI::current();
+		$uri = JUri::current();
 		$input = JFactory::getApplication()->input;
 		$post = $input->post->getArray();
 
@@ -174,7 +174,7 @@ class MageBridgeController extends YireoAbstractController
 		}
 		else
 		{
-			$this->setRedirect(JURI::base());
+			$this->setRedirect(JUri::base());
 		}
 	}
 

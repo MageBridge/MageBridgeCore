@@ -48,7 +48,7 @@ class MageBridgeModuleHelper extends JModuleHelper
 		}
 
 		$application = JFactory::getApplication();
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 
 		$where = array();
 		$where[] = 'm.published = 1';

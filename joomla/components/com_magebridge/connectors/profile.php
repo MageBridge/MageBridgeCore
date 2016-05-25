@@ -108,7 +108,7 @@ class MageBridgeConnectorProfile extends MageBridgeConnector
 		if (empty($user_id)) return false;
 
 		// Get a general user-array from Joomla! itself
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$query = "SELECT `name`,`username`,`email` FROM `#__users` WHERE `id`=".(int)$user_id;
 		$db->setQuery($query);
 		$user = $db->loadAssoc();

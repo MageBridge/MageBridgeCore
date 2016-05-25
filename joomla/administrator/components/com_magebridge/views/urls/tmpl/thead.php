@@ -12,8 +12,8 @@
 defined('_JEXEC') or die('Restricted access');
 ?>
 <th width="200" class="title">
-	<?php echo JHTML::_('grid.sort', 'COM_MAGEBRIDGE_VIEW_URLS_SOURCE', 'source', $this->lists['order_Dir'], $this->lists['order'] ); ?>
+	<?php echo JHtml::_('grid.sort', 'COM_MAGEBRIDGE_VIEW_URLS_SOURCE', 'source', $this->lists['order_Dir'], $this->lists['order'] ); ?>
 </th>
 <th width="200" class="title">
-	<?php echo JHTML::_('grid.sort', 'COM_MAGEBRIDGE_VIEW_URLS_DESTINATION', 'destination', $this->lists['order_Dir'], $this->lists['order'] ); ?>
+	<?php echo JHtml::_('grid.sort', 'COM_MAGEBRIDGE_VIEW_URLS_DESTINATION', 'destination', $this->lists['order_Dir'], $this->lists['order'] ); ?>
 </th>

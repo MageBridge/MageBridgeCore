@@ -301,7 +301,7 @@ class YireoTable extends JTable
      */     
     static public function getCachedDatabaseFields($tableName)
     {   
-        $db = JFactory::getDBO();
+        $db = JFactory::getDbo();
         $db->setQuery('SHOW FIELDS FROM `'.$tableName.'`');
         $fields = (method_exists($db, 'loadColumn')) ? $db->loadColumn() : $db->loadResultArray();
         return $fields;

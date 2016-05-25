@@ -264,7 +264,7 @@ class MageBridgeController extends YireoController
 		if ($this->_app->input->getCmd('view') == 'logs')
 		{
 			// Clean up the database
-			$db = JFactory::getDBO();
+			$db = JFactory::getDbo();
 			$db->setQuery('DELETE FROM #__magebridge_log WHERE 1 = 1');
 			$db->execute();
 
@@ -378,7 +378,7 @@ class MageBridgeController extends YireoController
 		}
 		else
 		{
-			$this->setRedirect(JURI::base());
+			$this->setRedirect(JUri::base());
 		}
 	}
 

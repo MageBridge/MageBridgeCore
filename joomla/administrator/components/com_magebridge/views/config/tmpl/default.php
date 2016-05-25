@@ -33,7 +33,7 @@ $form = $this->form;
 <input type="hidden" name="option" value="com_magebridge" />
 <input type="hidden" name="view" value="config" />
 <input type="hidden" name="task" value="" />
-<?php echo JHTML::_( 'form.token' ); ?>
+<?php echo JHtml::_( 'form.token' ); ?>
 </form>
 
 <script type="text/javascript">

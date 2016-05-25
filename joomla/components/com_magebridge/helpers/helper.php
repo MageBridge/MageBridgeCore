@@ -222,7 +222,7 @@ class MageBridgeHelper
 				}
 
 				// Extra check on HTTPS
-				if (JURI::getInstance()
+				if (JUri::getInstance()
 						->isSSL() == true
 				)
 				{
@@ -276,12 +276,12 @@ class MageBridgeHelper
 		}
 
 		// Remove double-slashes
-		//$basedir = preg_replace('/^([\/]?)(.*)([\/]?)$/', '\2', JURI::base(true));
-		//$content = str_replace(JURI::base().$basedir, JURI::base(), $content);
-		$content = str_replace(JURI::base() . '/', JURI::base(), $content);
+		//$basedir = preg_replace('/^([\/]?)(.*)([\/]?)$/', '\2', JUri::base(true));
+		//$content = str_replace(JUri::base().$basedir, JUri::base(), $content);
+		$content = str_replace(JUri::base() . '/', JUri::base(), $content);
 
 		// Adjust wrong media-URLs
-		if (JURI::getInstance()
+		if (JUri::getInstance()
 				->isSSL() == true
 		)
 		{
@@ -352,9 +352,9 @@ class MageBridgeHelper
 			$url = MageBridgeUrlHelper::getSefUrl($url);
 		}
 
-		$prefix = JURI::getInstance()
+		$prefix = JUri::getInstance()
 			->toString(array('scheme', 'host', 'port'));
-		$path = str_replace($prefix, '', JURI::base());
+		$path = str_replace($prefix, '', JUri::base());
 		$pos = strpos($url, $path);
 
 		if (!empty($path) && $pos !== false)
@@ -572,7 +572,7 @@ class MageBridgeHelper
 	 */
 	static public function arrayToSQl($array)
 	{
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$sql = array();
 
 		foreach ($array as $name => $value)

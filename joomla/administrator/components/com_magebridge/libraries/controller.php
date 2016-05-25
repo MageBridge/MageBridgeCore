@@ -787,7 +787,7 @@ class YireoController extends YireoCommonController
         $model->setId($id);
 
         // If this vote is made from an external source, make sure we redirect to an internal page
-        if (!JURI::isInternal($url)) {
+        if (!JUri::isInternal($url)) {
             $option = $this->_jinput->getCmd('option');
             $view = $this->_jinput->getCmd('view');
             $url = JRoute::_('index.php?option='.$option.'&view='.$view.'&id='.$id);

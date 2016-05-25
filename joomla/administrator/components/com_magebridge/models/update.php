@@ -194,7 +194,7 @@ class MagebridgeModelUpdate extends YireoCommonModel
 		if (isset($extension['post_install_query'])) {
 			$query = trim($extension['post_install_query']);
 			if (!empty($query)) {
-				$db = JFactory::getDBO();
+				$db = JFactory::getDbo();
 				$db->setQuery($query);
 				try {
 					$db->execute();

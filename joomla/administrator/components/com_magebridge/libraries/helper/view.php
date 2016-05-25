@@ -49,7 +49,7 @@ class YireoHelperView
         }
 
         // Return the select-box
-        return JHTML::_('select.genericlist', $options, $name, implode(' ', $attributes), 'value', 'title', $value);
+        return JHtml::_('select.genericlist', $options, $name, implode(' ', $attributes), 'value', 'title', $value);
     }
 
     /*

@@ -50,6 +50,6 @@ class JElementT3Layout extends JElement
 			$options[] = array( 'value' => $layoutIndex, 'label' => $layoutIndex);
 		}
 
-		return JHTML::_('select.genericlist', $options, $name, null, 'value', 'label', $value);
+		return JHtml::_('select.genericlist', $options, $name, null, 'value', 'label', $value);
 	}
 }

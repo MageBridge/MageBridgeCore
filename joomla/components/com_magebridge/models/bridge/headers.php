@@ -68,7 +68,7 @@ class MageBridgeModelBridgeHeaders extends MageBridgeModelBridgeSegment
 	public function getBaseJsUrl()
 	{
 		$url = $this->bridge->getSessionData('base_js_url');
-		$uri = JURI::getInstance();
+		$uri = JUri::getInstance();
 
 		if (empty($url))
 		{
@@ -778,7 +778,7 @@ class MageBridgeModelBridgeHeaders extends MageBridgeModelBridgeSegment
 	 */
 	public function convertUrl($url)
 	{
-		$uri = JURI::getInstance();
+		$uri = JUri::getInstance();
 
 		if ($uri->isSSL())
 		{

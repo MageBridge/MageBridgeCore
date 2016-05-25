@@ -53,7 +53,7 @@ class MageBridgeModelBridgeMeta extends MageBridgeModelBridgeSegment
 			$application = JFactory::getApplication();
 			$input = $application->input;
 			$user = JFactory::getUser();
-			$uri = JURI::getInstance();
+			$uri = JUri::getInstance();
 			$session = JFactory::getSession();
 			$config = JFactory::getConfig();
 			$storeHelper = MageBridgeStoreHelper::getInstance();
@@ -66,7 +66,7 @@ class MageBridgeModelBridgeMeta extends MageBridgeModelBridgeSegment
 				'api_session' => $bridge->getApiSession(),
 				'api_user' => MageBridgeEncryptionHelper::encrypt(MagebridgeModelConfig::load('api_user')),
 				'api_key' => MageBridgeEncryptionHelper::encrypt(MagebridgeModelConfig::load('api_key')),
-				'api_url' => JURI::root() . 'component/magebridge/?controller=jsonrpc&task=call',
+				'api_url' => JUri::root() . 'component/magebridge/?controller=jsonrpc&task=call',
 				'app' => $application->getClientId(), // 0 = site, 1 = admin
 				'app_type' => $app_type,
 				'app_value' => $app_value,
@@ -91,7 +91,7 @@ class MageBridgeModelBridgeMeta extends MageBridgeModelBridgeSegment
 				'magento_persistent_session' => $bridge->getMagentoPersistentSession(),
 				'magento_user_allowed_save_cookie' => (isset($_COOKIE['user_allowed_save_cookie'])) ? $_COOKIE['user_allowed_save_cookie'] : null,
 				'request_uri' => MageBridgeUrlHelper::getRequest(),
-				'request_id' => md5(JURI::current() . serialize($input->get->getArray())),
+				'request_id' => md5(JUri::current() . serialize($input->get->getArray())),
 				'post' => (!empty($_POST)) ? $_POST : null,
 				'http_referer' => $bridge->getHttpReferer(),
 				'http_host' => $uri->toString(array('host')),

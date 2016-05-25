@@ -64,7 +64,7 @@ class MageBridgeModelBridge
 	{
 		// Get important variables
 		$application = JFactory::getApplication();
-		$uri = JURI::getInstance();
+		$uri = JUri::getInstance();
 
 		// Catch the backend URLs
 		if ($application->isAdmin())
@@ -111,7 +111,7 @@ class MageBridgeModelBridge
 			// Prepend the hostname
 			if (!preg_match('/^(http|https):\/\//', $route))
 			{
-				$url = JURI::getInstance()
+				$url = JUri::getInstance()
 					->toString(array('scheme', 'host', 'port'));
 				if (!preg_match('/^\//', $route) && !preg_match('/\/$/', $url))
 				{
@@ -597,12 +597,12 @@ class MageBridgeModelBridge
 		// If this is a non-MageBridge page, use it
 		if (JFactory::getApplication()->input->getCmd('option') != 'com_magebridge')
 		{
-			$referer = JURI::getInstance()
+			$referer = JUri::getInstance()
 				->toString();
 
 			// If the referer is set on the URL, use it also
 		}
-		elseif (preg_match('/\/(uenc|referer)\/([a-zA-Z0-9\,\_\-]+)/', JURI::current(), $match))
+		elseif (preg_match('/\/(uenc|referer)\/([a-zA-Z0-9\,\_\-]+)/', JUri::current(), $match))
 		{
 			$referer = MageBridgeEncryptionHelper::base64_decode($match[2]);
 
@@ -610,7 +610,7 @@ class MageBridgeModelBridge
 		}
 		else
 		{
-			if (preg_match('/\/checkout\/cart\/([a-zA-Z0-9]+)Post/', JURI::current()) == true)
+			if (preg_match('/\/checkout\/cart\/([a-zA-Z0-9]+)Post/', JUri::current()) == true)
 			{
 				$referer = MageBridgeUrlHelper::route('checkout/cart');
 
@@ -618,9 +618,9 @@ class MageBridgeModelBridge
 			}
 			else
 			{
-				if (preg_match('/\/customer\/account\//', JURI::current()) == false && preg_match('/\/persistent\/index/', JURI::current()) == false && preg_match('/\/review\/product\/post/', JURI::current()) == false && preg_match('/\/remove\/item/', JURI::current()) == false && preg_match('/\/newsletter\/subscriber/', JURI::current()) == false && preg_match('/\/checkout\/cart/', JURI::current()) == false && $this->isAjax() == false && JURI::current() != $this->getJoomlaBridgeUrl())
+				if (preg_match('/\/customer\/account\//', JUri::current()) == false && preg_match('/\/persistent\/index/', JUri::current()) == false && preg_match('/\/review\/product\/post/', JUri::current()) == false && preg_match('/\/remove\/item/', JUri::current()) == false && preg_match('/\/newsletter\/subscriber/', JUri::current()) == false && preg_match('/\/checkout\/cart/', JUri::current()) == false && $this->isAjax() == false && JUri::current() != $this->getJoomlaBridgeUrl())
 				{
-					$referer = JURI::getInstance()
+					$referer = JUri::getInstance()
 						->toString();
 				}
 			}
@@ -636,7 +636,7 @@ class MageBridgeModelBridge
 		// Use the default referer
 		if (empty($this->_http_referer))
 		{
-			if (isset($_SERVER['HTTP_REFERER']) && $_SERVER['HTTP_REFERER'] != JURI::current())
+			if (isset($_SERVER['HTTP_REFERER']) && $_SERVER['HTTP_REFERER'] != JUri::current())
 			{
 				$referer = $_SERVER['HTTP_REFERER'];
 			}
@@ -884,7 +884,7 @@ class MageBridgeModelBridge
 	{
 		if (!headers_sent())
 		{
-			setcookie('frontend', $mage_session, 0, '/', '.' . JURI::getInstance()
+			setcookie('frontend', $mage_session, 0, '/', '.' . JUri::getInstance()
 					->toString(array('host')));
 		}
 		JFactory::getSession()

@@ -64,7 +64,7 @@ class MageBridgeViewCheck extends YireoView
 		MageBridgeViewHelper::initialize('Check');
 
 		// Load libraries
-		JHTML::_('behavior.tooltip');
+		JHtml::_('behavior.tooltip');
 
 		JToolBarHelper::custom( 'refresh', 'preview.png', 'preview_f2.png', 'Refresh', false );
 

@@ -33,7 +33,7 @@ class MageBridgeViewCommon extends MageBridgeView
 	public function display($tpl = null)
 	{
 		// Add CSS
-		JHTML::stylesheet('media/com_magebridge/css/backend-elements.css');
+		JHtml::stylesheet('media/com_magebridge/css/backend-elements.css');
 
 		// Load jQuery
 		YireoHelper::jquery();

@@ -83,7 +83,7 @@ class YireoCommonView extends YireoAbstractView
 		parent::__construct($config);
 
 		// Import use full variables from JFactory
-		$this->db = JFactory::getDBO();
+		$this->db = JFactory::getDbo();
 		$this->uri = JFactory::getURI();
 		$this->document = JFactory::getDocument();
 		$this->user = JFactory::getUser();
@@ -236,35 +236,35 @@ class YireoCommonView extends YireoAbstractView
 
 		if (file_exists(JPATH_SITE . '/templates/' . $template . '/css/' . $this->_option . '/' . $prefix . $stylesheet))
 		{
-			$this->document->addStyleSheet(JURI::root() . 'templates/' . $template . '/css/' . $this->_option . '/' . $prefix . $stylesheet);
+			$this->document->addStyleSheet(JUri::root() . 'templates/' . $template . '/css/' . $this->_option . '/' . $prefix . $stylesheet);
 
 		}
 		else
 		{
 			if (file_exists(JPATH_SITE . '/media/' . $this->_option . '/css/' . $prefix . $stylesheet))
 			{
-				$this->document->addStyleSheet(JURI::root() . 'media/' . $this->_option . '/css/' . $prefix . $stylesheet);
+				$this->document->addStyleSheet(JUri::root() . 'media/' . $this->_option . '/css/' . $prefix . $stylesheet);
 
 			}
 			else
 			{
 				if (file_exists(JPATH_SITE . '/templates/' . $template . '/css/' . $this->_option . '/' . $stylesheet))
 				{
-					$this->document->addStyleSheet(JURI::root() . 'templates/' . $template . '/css/' . $this->_option . '/' . $stylesheet);
+					$this->document->addStyleSheet(JUri::root() . 'templates/' . $template . '/css/' . $this->_option . '/' . $stylesheet);
 
 				}
 				else
 				{
 					if (file_exists(JPATH_SITE . '/media/' . $this->_option . '/css/' . $stylesheet))
 					{
-						$this->document->addStyleSheet(JURI::root() . 'media/' . $this->_option . '/css/' . $stylesheet);
+						$this->document->addStyleSheet(JUri::root() . 'media/' . $this->_option . '/css/' . $stylesheet);
 
 					}
 					else
 					{
 						if (file_exists(JPATH_SITE . '/media/lib_yireo/css/' . $stylesheet))
 						{
-							$this->document->addStyleSheet(JURI::root() . 'media/lib_yireo/css/' . $stylesheet);
+							$this->document->addStyleSheet(JUri::root() . 'media/lib_yireo/css/' . $stylesheet);
 						}
 					}
 				}
@@ -289,35 +289,35 @@ class YireoCommonView extends YireoAbstractView
 
 		if (file_exists(JPATH_SITE . '/templates/' . $template . '/js/' . $this->_option . '/' . $prefix . $script))
 		{
-			$this->document->addScript(JURI::root() . 'templates/' . $template . '/js/' . $this->_option . '/' . $prefix . $script);
+			$this->document->addScript(JUri::root() . 'templates/' . $template . '/js/' . $this->_option . '/' . $prefix . $script);
 
 		}
 		else
 		{
 			if (file_exists(JPATH_SITE . '/media/' . $this->_option . '/js/' . $prefix . $script))
 			{
-				$this->document->addScript(JURI::root() . 'media/' . $this->_option . '/js/' . $prefix . $script);
+				$this->document->addScript(JUri::root() . 'media/' . $this->_option . '/js/' . $prefix . $script);
 
 			}
 			else
 			{
 				if (file_exists(JPATH_SITE . '/templates/' . $template . '/js/' . $this->_option . '/' . $script))
 				{
-					$this->document->addScript(JURI::root() . 'templates/' . $template . '/js/' . $this->_option . '/' . $script);
+					$this->document->addScript(JUri::root() . 'templates/' . $template . '/js/' . $this->_option . '/' . $script);
 
 				}
 				else
 				{
 					if (file_exists(JPATH_SITE . '/media/' . $this->_option . '/js/' . $script))
 					{
-						$this->document->addScript(JURI::root() . 'media/' . $this->_option . '/js/' . $script);
+						$this->document->addScript(JUri::root() . 'media/' . $this->_option . '/js/' . $script);
 
 					}
 					else
 					{
 						if (file_exists(JPATH_SITE . '/media/lib_yireo/js/' . $script))
 						{
-							$this->document->addScript(JURI::root() . 'media/lib_yireo/js/' . $script);
+							$this->document->addScript(JUri::root() . 'media/lib_yireo/js/' . $script);
 						}
 					}
 				}
@@ -626,7 +626,7 @@ class YireoView extends YireoCommonView
 					JToolBarHelper::cancel('cancel', 'LIB_YIREO_VIEW_TOOLBAR_CLOSE');
 				}
 
-				JHTML::_('behavior.tooltip');
+				JHtml::_('behavior.tooltip');
 			}
 		}
 	}
@@ -803,7 +803,7 @@ class YireoView extends YireoCommonView
 		$this->lists['search'] = $this->getFilter('search', null, 'string');
 		$this->lists['order'] = $this->getFilter('order', null, 'string');
 		$this->lists['order_Dir'] = $this->getFilter('order_Dir');
-		$this->lists['state'] = JHTML::_('grid.state', $this->getFilter('state'));
+		$this->lists['state'] = JHtml::_('grid.state', $this->getFilter('state'));
 
 		return $this->items;
 	}
@@ -888,7 +888,7 @@ class YireoView extends YireoCommonView
 		// Assign the published-list
 		if (isset($this->item->published))
 		{
-			$this->lists['published'] = JHTML::_('select.booleanlist', 'published', 'class="inputbox"', $this->item->published);
+			$this->lists['published'] = JHtml::_('select.booleanlist', 'published', 'class="inputbox"', $this->item->published);
 		}
 		else
 		{
@@ -904,7 +904,7 @@ class YireoView extends YireoCommonView
 			}
 			else
 			{
-				$this->lists['access'] = JHTML::_('list.accesslevel', $this->item);
+				$this->lists['access'] = JHtml::_('list.accesslevel', $this->item);
 			}
 		}
 		else
@@ -916,7 +916,7 @@ class YireoView extends YireoCommonView
 
 		if ($this->application->isAdmin() && !empty($ordering) && $ordering == 'ordering')
 		{
-			$this->lists['ordering'] = JHTML::_('list.ordering', 'ordering', $this->model->getOrderingQuery(), $this->item->ordering);
+			$this->lists['ordering'] = JHtml::_('list.ordering', 'ordering', $this->model->getOrderingQuery(), $this->item->ordering);
 		}
 		else
 		{
@@ -1058,8 +1058,8 @@ class YireoView extends YireoCommonView
 		if ($type == 'orderby')
 		{
 			$field = $this->get('OrderByDefault');
-			$html .= JHTML::_('grid.sort', $title, $field, $this->lists['order_Dir'], $this->lists['order']);
-			$html .= JHTML::_('grid.order', $this->items);
+			$html .= JHtml::_('grid.sort', $title, $field, $this->lists['order_Dir'], $this->lists['order']);
+			$html .= JHtml::_('grid.order', $this->items);
 		}
 		else
 		{
@@ -1103,7 +1103,7 @@ class YireoView extends YireoCommonView
 			{
 				if ($type == 'checked')
 				{
-					$html .= JHTML::_('grid.checkedout', $item, $i);
+					$html .= JHtml::_('grid.checkedout', $item, $i);
 				}
 			}
 		}

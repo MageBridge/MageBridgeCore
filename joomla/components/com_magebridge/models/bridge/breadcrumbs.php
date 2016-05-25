@@ -84,7 +84,7 @@ class MageBridgeModelBridgeBreadcrumbs extends MageBridgeModelBridgeSegment
 		$pathway_items = array();
 		foreach ($pathway->getPathway() as $pathway_item) {
 			if(!preg_match('/^(http|https):/', $pathway_item->link)) {
-				$pathway_item->link = preg_replace('/\/$/', '', JURI::root()).JRoute::_($pathway_item->link);
+				$pathway_item->link = preg_replace('/\/$/', '', JUri::root()).JRoute::_($pathway_item->link);
 			}
 			$pathway_items[] = $pathway_item;
 		}
@@ -103,7 +103,7 @@ class MageBridgeModelBridgeBreadcrumbs extends MageBridgeModelBridgeSegment
 			} else {
 				$root_pathway_item->name = JText::_($rootItem->title);
 			}
-			$root_pathway_item->link = preg_replace('/\/$/', '', JURI::base()).JRoute::_($rootItem->link);
+			$root_pathway_item->link = preg_replace('/\/$/', '', JUri::base()).JRoute::_($rootItem->link);
 
 			// Scan the current items to see whether there is a match or not
 			$homeMatch = false;
@@ -137,7 +137,7 @@ class MageBridgeModelBridgeBreadcrumbs extends MageBridgeModelBridgeSegment
 
 			// Do not add the current link
 			//if (MageBridgeUrlHelper::current() == $item['link']) continue;
-			if(empty($item['link'])) $item['link'] = JURI::current();
+			if(empty($item['link'])) $item['link'] = JUri::current();
 
 			// Loop through the current pathway-items to prevent double links
 			if (!empty($pathway_items)) {

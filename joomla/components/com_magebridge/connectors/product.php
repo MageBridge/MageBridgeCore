@@ -127,7 +127,7 @@ class MageBridgeConnectorProduct extends MageBridgeConnector
 			$create_date = time();
 			$expire_date = time() + $expire_seconds;
 
-			$db = JFactory::getDBO();
+			$db = JFactory::getDbo();
 			$query = "INSERT INTO #__magebridge_products_log "
 				. " SET `user_id`=".(int)$user_id.", `sku`=".$db->Quote($sku).", `create_date`=".(int)$create_date.", `expire_date`=".(int)$expire_date;
 			$db->setQuery($query);
@@ -157,7 +157,7 @@ class MageBridgeConnectorProduct extends MageBridgeConnector
 		// Fetch all published product relations
 		static $rows = null;
 		if ($rows == null) {
-			$db = JFactory::getDBO();
+			$db = JFactory::getDbo();
 			$query = "SELECT * FROM #__magebridge_products WHERE `published`=1 ORDER BY `ordering`";
 			$db->setQuery($query);
 			$rows = $db->loadObjectList();

@@ -45,7 +45,7 @@ class MageBridgeInstallHelper
 		);
 
 		// Perform the update queries
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		foreach ($update_queries as $query) {
 			$query = trim($query);
 			if(empty($query)) continue;

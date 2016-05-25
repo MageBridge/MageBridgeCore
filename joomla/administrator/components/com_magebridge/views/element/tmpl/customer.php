@@ -129,5 +129,5 @@ defined('_JEXEC') or die('Restricted access');
 	<input type="hidden" name="current" value="<?php echo $this->current; ?>"/>
 	<input type="hidden" name="task" value=""/>
 	<input type="hidden" name="boxchecked" value="0"/>
-	<?php echo JHTML::_('form.token'); ?>
+	<?php echo JHtml::_('form.token'); ?>
 </form>

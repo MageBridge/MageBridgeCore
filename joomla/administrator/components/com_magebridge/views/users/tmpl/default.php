@@ -11,8 +11,8 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-$enabled_img = JHTML::image(JURI::base().'/images/disabled.png', JText::_('Disabled'));
-$disabled_img = JHTML::image(JURI::base().'/images/check.png', JText::_('Enabled'));
+$enabled_img = JHtml::image(JUri::base().'/images/disabled.png', JText::_('Disabled'));
+$disabled_img = JHtml::image(JUri::base().'/images/check.png', JText::_('Enabled'));
 ?>
 <form method="post" name="adminForm" id="adminForm">
 <table>
@@ -32,13 +32,13 @@ $disabled_img = JHTML::image(JURI::base().'/images/check.png', JText::_('Enabled
 				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->items ); ?>);" />
 			</th>
 			<th width="150" class="title">
-				<?php echo JHTML::_('grid.sort',  'Name', 'u.name', $this->lists['order_Dir'], $this->lists['order'] ); ?>
+				<?php echo JHtml::_('grid.sort',  'Name', 'u.name', $this->lists['order_Dir'], $this->lists['order'] ); ?>
 			</th>
 			<th width="150" class="title">
-				<?php echo JHTML::_('grid.sort',  'Username', 'u.username', $this->lists['order_Dir'], $this->lists['order'] ); ?>
+				<?php echo JHtml::_('grid.sort',  'Username', 'u.username', $this->lists['order_Dir'], $this->lists['order'] ); ?>
 			</th>
 			<th width="150" class="title">
-				<?php echo JHTML::_('grid.sort',  'Email', 'u.email', $this->lists['order_Dir'], $this->lists['order'] ); ?>
+				<?php echo JHtml::_('grid.sort',  'Email', 'u.email', $this->lists['order_Dir'], $this->lists['order'] ); ?>
 			</th>
 			<th width="150" class="title">
 				<?php echo JText::_('Magento Name'); ?>
@@ -131,5 +131,5 @@ $disabled_img = JHTML::image(JURI::base().'/images/check.png', JText::_('Enabled
 <input type="hidden" name="boxchecked" value="0" />
 <input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
 <input type="hidden" name="filter_order_Dir" value="" />
-<?php echo JHTML::_( 'form.token' ); ?>
+<?php echo JHtml::_( 'form.token' ); ?>
 </form>

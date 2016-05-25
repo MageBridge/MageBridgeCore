@@ -213,7 +213,7 @@ class MageBridgeUrlHelper
 			if (MagebridgeModelConfig::load('load_urls') == 1)
 			{
 				$query = "SELECT `id`,`source`,`source_type`,`destination`,`access` FROM #__magebridge_urls WHERE `published` = 1 ORDER BY `ordering`";
-				$db = JFactory::getDBO();
+				$db = JFactory::getDbo();
 				$db->setQuery($query);
 				$urls = $db->loadObjectList();
 			}
@@ -519,7 +519,7 @@ class MageBridgeUrlHelper
 	 */
 	static public function current()
 	{
-		return JURI::getInstance()
+		return JUri::getInstance()
 			->toString();
 	}
 
@@ -539,7 +539,7 @@ class MageBridgeUrlHelper
 		$url = preg_replace('/^(http|https):\/\/([a-zA-Z0-9\.\-\_]+)/', '', $url); // Strip all domain-information
 
 		// Extra workaround if Magento hostname is same as current hostname
-		$hostname = JURI::getInstance()
+		$hostname = JUri::getInstance()
 			->toString(array('host'));
 
 		if ($hostname == MagebridgeModelConfig::load('host'))
@@ -728,7 +728,7 @@ class MageBridgeUrlHelper
 		if (preg_match('/^(http|https):\/\//', $request))
 		{
 			// Try to strip domain part
-			$url = JURI::base();
+			$url = JUri::base();
 			$request = str_replace($url, '', $request);
 			$request = str_replace(str_replace('https://', 'http://', $url), '', $request);
 			$request = str_replace(str_replace('http://', 'https://', $url), '', $request);

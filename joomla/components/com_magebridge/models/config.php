@@ -510,7 +510,7 @@ class MagebridgeModelConfig extends YireoAbstractModel
 		}
 
 		// Check whether the URL-table contains entries
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$db->setQuery('SELECT * FROM #__magebridge_urls WHERE published=1');
 		$rows = $db->loadObjectList();
 		if (!empty($rows)) {
@@ -520,7 +520,7 @@ class MagebridgeModelConfig extends YireoAbstractModel
 		}
 
 		// Check whether the stores-table contains entries
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$db->setQuery('SELECT * FROM #__magebridge_stores WHERE published=1');
 		$rows = $db->loadObjectList();
 		if (!empty($rows)) {
@@ -555,7 +555,7 @@ class MagebridgeModelConfig extends YireoAbstractModel
 		}
 
 		// Store the values row-by-row
-		$database = JFactory::getDBO();
+		$database = JFactory::getDbo();
 		foreach ($config as $name => $data) {
 
 			if (!isset($data['name']) || empty($data['name'])) {

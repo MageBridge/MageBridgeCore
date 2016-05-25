@@ -22,7 +22,7 @@ function com_install()
 
 	// Initialize important variables
 	$application = JFactory::getApplication();
-	$db = JFactory::getDBO();
+	$db = JFactory::getDbo();
 
 	// Upgrade the database tables
 	$helper->updateQueries();

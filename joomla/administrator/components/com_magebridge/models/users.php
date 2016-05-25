@@ -177,7 +177,7 @@ class MagebridgeModelUsers extends YireoCommonModel
 	private function _buildContentWhere()
 	{
 		$application = JFactory::getApplication();
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$option = JFactory::getApplication()->input->getCmd( 'option' ).'-users';
 
 		$filter_type = $application->getUserStateFromRequest( $option.'filter_type', 'filter_type', '', 'word' );

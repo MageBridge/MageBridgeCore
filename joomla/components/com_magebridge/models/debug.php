@@ -481,7 +481,7 @@ class MagebridgeModelDebug
 			return false;
 		}
 
-			$db = JFactory::getDBO();
+			$db = JFactory::getDbo();
 			$remote_addr = (!empty($_SERVER['REMOTE_ADDR'])) ? $_SERVER['REMOTE_ADDR'] : null;
 			$http_agent = (!empty($_SERVER['HTTP_USER_AGENT'])) ? $_SERVER['HTTP_USER_AGENT'] : null;
 			$unique_id = $this->getUniqueId();

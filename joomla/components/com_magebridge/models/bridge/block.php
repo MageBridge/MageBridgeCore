@@ -234,7 +234,7 @@ class MageBridgeModelBridgeBlock extends MageBridgeModelBridgeSegment
 		}
 
 		// Get system variables
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 
 		$query = 'SELECT `element` FROM `#__extensions`' . ' WHERE `type` = "plugin" AND `enabled` = 1 AND `element` NOT LIKE "magebridge%" AND `element` != "emailcloak"' . ' ORDER BY `ordering`';
 
