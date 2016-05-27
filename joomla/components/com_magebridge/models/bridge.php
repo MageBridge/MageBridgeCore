@@ -1055,6 +1055,12 @@ class MageBridgeModelBridge
 	 */
 	public function isOffline()
 	{
+        // Set the bridge offline by using a flag
+        if (JFactory::getApplication()->input->getInt('offline', 0) == 2)
+        {
+            return false;
+        }
+
 		// Set the bridge offline by using a flag
 		if (JFactory::getApplication()->input->getInt('offline', 0) == 1)
 		{
