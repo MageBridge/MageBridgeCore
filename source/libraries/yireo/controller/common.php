@@ -2,12 +2,10 @@
 /**
  * Joomla! Yireo Library
  *
- * @author    Yireo (http://www.yireo.com/)
+ * @author    Yireo (https://www.yireo.com/)
  * @package   YireoLib
- * @copyright Copyright 2015
  * @license   GNU Public License
- * @link      http://www.yireo.com/
- * @version   0.6.0
+ * @link      https://www.yireo.com/
  */
 
 // Check to ensure this file is included in Joomla!
@@ -23,7 +21,6 @@ require_once dirname(__FILE__) . '/../loader.php';
  */
 class YireoCommonController extends YireoAbstractController
 {
-
 	/**
 	 * @var JApplicationWeb
 	 */
@@ -74,10 +71,7 @@ class YireoCommonController extends YireoAbstractController
 	{
 		// Define variables
 		$this->app = JFactory::getApplication();
-		$this->_app = $this->app;
-		$this->_application = $this->app;
 		$this->input = $this->app->input;
-		$this->_jinput = $this->input;
 
 		// Add model paths
 		$this->addModelPaths();
@@ -87,6 +81,18 @@ class YireoCommonController extends YireoAbstractController
 
 		// Call the parent constructor
 		parent::__construct();
+	}
+
+	/**
+	 * Handle legacy calls
+	 */
+	protected function handleLegacy()
+	{
+		$this->_app = $this->app;
+		$this->_application = $this->app;
+		$this->_jinput = $this->input;
+
+		parent::handleLegacy();
 	}
 
 	/**
@@ -101,11 +107,13 @@ class YireoCommonController extends YireoAbstractController
 		{
 			$this->addModelPath(JPATH_ADMINISTRATOR . '/components/' . $option . '/models');
 			$this->addModelPath(JPATH_SITE . '/components/' . $option . '/models');
-			return;
+			
+			return null;
 		}
 
 		$this->addModelPath(JPATH_ADMINISTRATOR . '/components/' . $option . '/models');
-		return;
+		
+		return null;
 	}
 
 	/**
@@ -113,7 +121,7 @@ class YireoCommonController extends YireoAbstractController
 	 * @param $name
 	 *
 	 * @return mixed
-	 * @throws Exception
+	 * @throws \Yireo\Exception\Controller\NotFound
 	 */
 	static public function getControllerInstance($option, $name)
 	{
@@ -140,7 +148,7 @@ class YireoCommonController extends YireoAbstractController
 	 * @param $name
 	 *
 	 * @return mixed
-	 * @throws Exception
+	 * @throws \Yireo\Exception\Controller\NotFound
 	 */
 	static public function getDefaultControllerInstance($option, $name)
 	{
@@ -159,6 +167,6 @@ class YireoCommonController extends YireoAbstractController
 			return $controller;
 		}
 
-		throw new Exception(JText::_('LIB_YIREO_NO_CONTROLLER_FOUND'));
+		throw new \Yireo\Exception\Controller\NotFound(JText::_('LIB_YIREO_NO_CONTROLLER_FOUND'));
 	}
 }

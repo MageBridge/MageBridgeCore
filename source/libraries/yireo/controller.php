@@ -59,51 +59,115 @@ class YireoController extends YireoCommonController
 	 * Value of the default View to use
 	 *
 	 * @protected string
+	 * @deprecated
 	 */
 	protected $_default_view = 'home';
+
+	/**
+	 * Value of the default View to use
+	 *
+	 * @protected string
+	 */
+	protected $default_view = 'home';
+
+	/**
+	 * Value of the current model
+	 *
+	 * @protected object
+	 * @deprecated
+	 */
+	protected $_model = null;
 
 	/**
 	 * Value of the current model
 	 *
 	 * @protected object
 	 */
-	protected $_model = null;
+	protected $model = null;
+
+	/**
+	 * Boolean to allow or disallow frontend editing
+	 *
+	 * @protected bool
+	 * @deprecated
+	 */
+	protected $_frontend_edit = false;
+
 
 	/**
 	 * Boolean to allow or disallow frontend editing
 	 *
 	 * @protected bool
 	 */
-	protected $_frontend_edit = false;
+	protected $frontend_edit = false;
+
+	/**
+	 * List of allowed tasks
+	 *
+	 * @protected array
+	 * @deprecated
+	 */
+	protected $_allow_tasks = array(
+		'display',
+	);
+
 
 	/**
 	 * List of allowed tasks
 	 *
 	 * @protected array
 	 */
-	protected $_allow_tasks = array(
-		'display',);
+	protected $allow_tasks = array(
+		'display',
+	);
+
+	/**
+	 * List of POST-values that should be allowed to contain raw content
+	 *
+	 * @protected array
+	 * @deprecated
+	 */
+	protected $_allow_raw = array(
+		'description',
+		'text',
+		'comment',
+	);
 
 	/**
 	 * List of POST-values that should be allowed to contain raw content
 	 *
 	 * @protected array
 	 */
-	protected $_allow_raw = array(
+	protected $allow_raw = array(
 		'description',
 		'text',
-		'comment',);
+		'comment',
+	);
+
+	/**
+	 * List of relations between Views
+	 *
+	 * @protected int
+	 * @deprecated
+	 */
+	protected $_relations = array(
+		'list'     => 'lists',
+		'category' => 'categories',
+		'item'     => 'items',
+		'status'   => 'statuses',
+	);
 
 	/**
 	 * List of relations between Views
 	 *
 	 * @protected int
 	 */
-	protected $_relations = array(
-		'list' => 'lists',
+	protected $relations = array(
+		'list'     => 'lists',
 		'category' => 'categories',
-		'item' => 'items',
-		'status' => 'statuses',);
+		'item'     => 'items',
+		'status'   => 'statuses',
+	);
 
 	/**
 	 * Constructor
@@ -124,9 +188,9 @@ class YireoController extends YireoCommonController
 		$this->registerTask('change', 'edit');
 
 		// Allow or disallow frontend editing
-		if ($this->app->isSite() && in_array($this->input->getCmd('task', 'display'), $this->_allow_tasks) == false)
+		if ($this->app->isSite() && in_array($this->input->getCmd('task', 'display'), $this->allow_tasks) == false)
 		{
-			JError::raiseError(500, JText::_('LIB_YIREO_CONTROLLER_ILLEGAL_REQUEST'));
+			throw new YireoControllerIllegalRequestException(JText::_('LIB_YIREO_CONTROLLER_ILLEGAL_REQUEST'));
 		}
 
 		// Check for ACLs in backend
@@ -243,7 +307,7 @@ class YireoController extends YireoCommonController
 
 		// Fetch the ID
 		$post['id'] = $this->getId();
-		$this->id = $post['id'];
+		$this->id   = $post['id'];
 
 		// Make sure fields that are configured as "raw" are loaded correspondingly
 		if (!empty($this->_allow_raw))
@@ -266,7 +330,7 @@ class YireoController extends YireoCommonController
 				{
 					if (YireoHelper::compareJoomlaVersion('3.2.0', 'gt'))
 					{
-						$array = $this->input->getArray(array('item' => array($raw => 'raw')));
+						$array              = $this->input->getArray(array('item' => array($raw => 'raw')));
 						$post['item'][$raw] = $array['item'][$raw];
 					}
 					else
@@ -285,7 +349,7 @@ class YireoController extends YireoCommonController
 				$alias = $this->input->getString('title', '', 'post');
 			}
 
-			$alias = strtolower(JFilterOutput::stringURLSafe($alias));
+			$alias         = strtolower(JFilterOutput::stringURLSafe($alias));
 			$post['alias'] = $alias;
 		}
 
@@ -309,7 +373,7 @@ class YireoController extends YireoCommonController
 		else
 		{
 			$this->msg = JText::sprintf('LIB_YIREO_CONTROLLER_ITEM_NOT_SAVED', $this->_jinput->getCmd('view'));
-			$error = $model->getError();
+			$error     = $model->getError();
 
 			if (!empty($error))
 			{
@@ -461,12 +525,12 @@ class YireoController extends YireoCommonController
 			if (count($cid) == 1)
 			{
 				$singleName = $this->getSingleName($this->input->getCmd('view'));
-				$this->msg = JText::_('LIB_YIREO_CONTROLLER_' . strtoupper($singleName) . '_DELETED');
+				$this->msg  = JText::_('LIB_YIREO_CONTROLLER_' . strtoupper($singleName) . '_DELETED');
 			}
 			else
 			{
 				$pluralName = $this->getPluralName($this->input->getCmd('view'));
-				$this->msg = JText::sprintf('LIB_YIREO_CONTROLLER_' . strtoupper($pluralName) . '_DELETED', count($cid));
+				$this->msg  = JText::sprintf('LIB_YIREO_CONTROLLER_' . strtoupper($pluralName) . '_DELETED', count($cid));
 			}
 		}
 
@@ -502,12 +566,12 @@ class YireoController extends YireoCommonController
 			if (count($cid) == 1)
 			{
 				$singleName = $this->getSingleName($this->input->getCmd('view'));
-				$this->msg = JText::_('LIB_YIREO_CONTROLLER_ITEM_PUBLISHED');
+				$this->msg  = JText::_('LIB_YIREO_CONTROLLER_ITEM_PUBLISHED');
 			}
 			else
 			{
 				$pluralName = $this->getPluralName($this->input->getCmd('view'));
-				$this->msg = JText::sprintf('LIB_YIREO_CONTROLLER_ITEM_PUBLISHED', count($cid));
+				$this->msg  = JText::sprintf('LIB_YIREO_CONTROLLER_ITEM_PUBLISHED', count($cid));
 			}
 		}
 
@@ -543,12 +607,12 @@ class YireoController extends YireoCommonController
 			if (count($cid) == 1)
 			{
 				$singleName = $this->getSingleName($this->input->getCmd('view'));
-				$this->msg = JText::sprintf('LIB_YIREO_CONTROLLER_ITEM_UNPUBLISHED', $singleName);
+				$this->msg  = JText::sprintf('LIB_YIREO_CONTROLLER_ITEM_UNPUBLISHED', $singleName);
 			}
 			else
 			{
 				$pluralName = $this->getPluralName($this->input->getCmd('view'));
-				$this->msg = JText::sprintf('LIB_YIREO_CONTROLLER_ITEM_UNPUBLISHED', $pluralName, count($cid));
+				$this->msg  = JText::sprintf('LIB_YIREO_CONTROLLER_ITEM_UNPUBLISHED', $pluralName, count($cid));
 			}
 		}
 
@@ -663,9 +727,9 @@ class YireoController extends YireoCommonController
 		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
 
 		// Fetch base-variables
-		$url = $this->input->get('url', '', 'default', 'string');
+		$url    = $this->input->get('url', '', 'default', 'string');
 		$rating = $this->input->get('user_rating', 0, '', 'int');
-		$id = $this->input->get('cid', 0, '', 'int');
+		$id     = $this->input->get('cid', 0, '', 'int');
 
 		// Load the current model
 		$model = $this->getModel('item');
@@ -675,8 +739,8 @@ class YireoController extends YireoCommonController
 		if (!JURI::isInternal($url))
 		{
 			$option = $this->input->getCmd('option');
-			$view = $this->input->getCmd('view');
-			$url = JRoute::_('index.php?option=' . $option . '&view=' . $view . '&id=' . $id);
+			$view   = $this->input->getCmd('view');
+			$url    = JRoute::_('index.php?option=' . $option . '&view=' . $view . '&id=' . $id);
 		}
 
 		// Store the vote in this model
@@ -699,8 +763,8 @@ class YireoController extends YireoCommonController
 		JSession::checkToken('get') or jexit(JText::_('JINVALID_TOKEN'));
 
 		// Fetch the request-parameters
-		$id = $this->input->getInt('id');
-		$name = $this->input->getCmd('name');
+		$id    = $this->input->getInt('id');
+		$name  = $this->input->getCmd('name');
 		$value = $this->input->getInt('value');
 
 		if ($id > 0 && strlen($name) > 0)
@@ -725,12 +789,12 @@ class YireoController extends YireoCommonController
 	{
 		// If we are in a "plural" view, redirect to a "single" view
 		$current = $this->input->getCmd('view');
-		$single = $this->getSingleName($current);
+		$single  = $this->getSingleName($current);
 
 		// If the current request does not have the right view, redirect to the right view
 		if ($current != $single)
 		{
-			$id = $this->getId();
+			$id        = $this->getId();
 			$variables = array('task' => $this->input->getCmd('task'));
 
 			if ($id > 0)
@@ -869,7 +933,7 @@ class YireoController extends YireoCommonController
 		if ($this->input->getInt('modal') == 1)
 		{
 			$variables['modal'] = 1;
-			$variables['tmpl'] = 'component';
+			$variables['tmpl']  = 'component';
 		}
 
 		// Add the extra variables to the URL if needed
@@ -916,7 +980,7 @@ class YireoController extends YireoCommonController
 		}
 
 		$cid = $this->input->get('cid', array(0), null, 'array');
-		$id = (int) $cid[0];
+		$id  = (int) $cid[0];
 
 		if (!empty($id))
 		{
@@ -965,8 +1029,8 @@ class YireoController extends YireoCommonController
 	protected function showPhpSupported()
 	{
 		$phpversion = phpversion();
-		$phpmajor = explode('.', $phpversion);
-		$phpmajor = $phpmajor[0] . '.' . $phpmajor[1];
+		$phpmajor   = explode('.', $phpversion);
+		$phpmajor   = $phpmajor[0] . '.' . $phpmajor[1];
 
 		if (version_compare($phpversion, self::PHP_SUPPORTED_VERSION, 'lt'))
 		{

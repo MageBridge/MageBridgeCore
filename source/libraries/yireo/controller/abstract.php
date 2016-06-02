@@ -4,10 +4,8 @@
  *
  * @author    Yireo (http://www.yireo.com/)
  * @package   YireoLib
- * @copyright Copyright 2015
  * @license   GNU Public License
- * @link      http://www.yireo.com/
- * @version   0.6.0
+ * @link      https://www.yireo.com/
  */
 
 // Check to ensure this file is included in Joomla!
@@ -23,4 +21,18 @@ require_once dirname(__FILE__) . '/../loader.php';
  */
 class YireoAbstractController extends JControllerLegacy
 {
+	/**
+	 * Constructor
+	 */
+	public function __construct()
+	{
+		$this->handleLegacy();
+		
+		// Call the parent constructor
+		parent::__construct();
+	}
+	
+	protected function handleLegacy()
+	{
+	}
 }
