@@ -59,37 +59,50 @@ class YireoAbstractModel extends JModelLegacy
 
 	/**
 	 * Constructor
+	 * 
+	 * @param array $config
+	 * @param JApplication $app
+	 * @param JInput $input
 	 *
 	 * @return mixed
 	 */
-	public function __construct()
+	public function __construct($config = array(), $app = null, $input = null)
 	{
-		$rt = parent::__construct();
-		$this->init();
+		$rt = parent::__construct($config);
+		
+		if (empty($app))
+		{
+			$app = JFactory::getApplication();
+		}
 
-        return $rt;
+		if (empty($input))
+		{
+			$input = $app->input;
+		}
+
+		$this->app   = $app;
+		$this->input = $input;
+		
+		$this->handleAbstractDeprecated();
+
+		return $rt;
 	}
 
 	/**
-	 * Inititalize system variables
+	 * Handle deprecated variables
 	 */
-	protected function init()
+	protected function handleAbstractDeprecated()
 	{
-		// Useful variables
-		$this->app = JFactory::getApplication();
-		$this->input = $this->app->input;
-
-		// Deprecated variables
 		$this->application = $this->app;
-		$this->_input = $this->input;
-		$this->jinput = $this->input;
+		$this->_input      = $this->input;
+		$this->jinput      = $this->input;
 	}
 
 	/**
 	 * @param mixed $name
 	 * @param mixed $value
 	 */
-	protected function setMeta($name, $value)
+	public function setMeta($name, $value)
 	{
 		$this->meta[$name] = $value;
 	}
@@ -99,7 +112,7 @@ class YireoAbstractModel extends JModelLegacy
 	 *
 	 * @return bool|mixed
 	 */
-	protected function getMeta($name)
+	public function getMeta($name)
 	{
 		if (empty($this->meta[$name]))
 		{
@@ -107,5 +120,37 @@ class YireoAbstractModel extends JModelLegacy
 		}
 
 		return $this->meta[$name];
+	}
+	
+	/**
+	 * @return JApplicationCms
+	 */
+	public function getApp()
+	{
+		return $this->app;
+	}
+
+	/**
+	 * @param JApplicationCms $app
+	 */
+	public function setApp($app)
+	{
+		$this->app = $app;
+	}
+
+	/**
+	 * @return JInput
+	 */
+	public function getInput()
+	{
+		return $this->input;
+	}
+
+	/**
+	 * @param JInput $input
+	 */
+	public function setInput($input)
+	{
+		$this->input = $input;
 	}
 }

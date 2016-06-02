@@ -27,42 +27,47 @@ class YireoModel extends YireoCommonModel
 	/**
 	 * Indicator if this is a model for multiple or single entries
 	 *
-	 * @protected int
+	 * @protected bool
 	 */
-	protected $single = null;
+	protected $single = false;
 
 	/**
 	 * Boolean to allow for caching
 	 *
-	 * @protected int
+	 * @protected bool
+	 * @deprecated Use $this->getMeta('cache') instead
 	 */
 	protected $_cache = false;
 
 	/**
 	 * Boolean to allow for debugging
 	 *
-	 * @protected int
+	 * @protected bool
+	 * @deprecated Use $this->getMeta('debug') instead
 	 */
 	protected $_debug = false;
 
 	/**
 	 * Boolean to allow for filtering
 	 *
-	 * @protected int
+	 * @protected bool
+	 * @deprecated Use $this->getMeta('allow_filter') instead
 	 */
 	protected $_allow_filter = true;
 
 	/**
 	 * Boolean to allow for checking out
 	 *
-	 * @protected int
+	 * @protected bool
+	 * @deprecated Use $this->getMeta('checkout') instead
 	 */
 	protected $_checkout = true;
 
 	/*
 	 * Boolean to skip table-detection
 	 *
-	 * @protected int
+	 * @protected bool
+	 * @deprecated Use $this->getMeta('skip_table') instead
 	 */
 	protected $skip_table = false;
 
@@ -190,6 +195,8 @@ class YireoModel extends YireoCommonModel
 		// Call the parent constructor
 		$rt = parent::__construct();
 
+		$this->initCommon();
+
 		// Set the database variables
 		if ($this->_tbl_prefix_auto == true)
 		{
@@ -198,12 +205,12 @@ class YireoModel extends YireoCommonModel
 
 		// @todo: Set this in a metadata array
 		$this->_tbl_alias = $tableAlias;
-		$this->_tbl = $this->getTable($tableAlias);
+		$this->table = $this->getTable($tableAlias);
 
-		if ($this->_tbl)
+		if ($this->table)
 		{
-			$this->_tbl_name = $this->_tbl->getTableName();
-			$this->_tbl_key = $this->_tbl->getKeyName();
+			$this->_tbl_name = $this->table->getTableName();
+			$this->_tbl_key = $this->table->getKeyName();
 		}
 
 		$this->_entity = $tableAlias;
@@ -212,29 +219,29 @@ class YireoModel extends YireoCommonModel
 		// Detect the orderby-default
 		if (empty($this->_orderby_default))
 		{
-			$this->_orderby_default = $this->_tbl->getDefaultOrderBy();
+			$this->_orderby_default = $this->table->getDefaultOrderBy();
 		}
 
 		if (empty($this->_orderby_title))
 		{
-			if ($this->_tbl->hasField('title'))
+			if ($this->table->hasField('title'))
 			{
 				$this->_orderby_title = 'title';
 			}
 
-			if ($this->_tbl->hasField('label'))
+			if ($this->table->hasField('label'))
 			{
 				$this->_orderby_title = 'label';
 			}
 
-			if ($this->_tbl->hasField('name'))
+			if ($this->table->hasField('name'))
 			{
 				$this->_orderby_title = 'name';
 			}
 		}
 
 		// Detect checkout
-		if ($this->_tbl->hasField('checked_out'))
+		if ($this->table->hasField('checked_out'))
 		{
 			$this->_checkout = true;
 		}
@@ -293,8 +300,6 @@ class YireoModel extends YireoCommonModel
 			{
 				$this->setId((int) $id);
 			}
-
-			
 		}
 		// Multiple records
 		else
@@ -317,7 +322,24 @@ class YireoModel extends YireoCommonModel
 
 		}
 
+		$this->handleModelDeprecated();
+
 		return $rt;
+	}
+
+	/**
+	 * Inititalize system variables
+	 */
+	protected function initModel()
+	{
+	}
+
+	/**
+	 * Handle deprecated variables
+	 */
+	protected function handleModelDeprecated()
+	{
+		$this->_tbl = $this->table;
 	}
 
 	/**
@@ -1860,7 +1882,7 @@ class YireoModel extends YireoCommonModel
 		// Print the query if debugging is enabled
 		if (isset($this->_debug) && $this->_debug == true)
 		{
-			throw new Exception($this->getDbDebug());
+			$this->app->enqueueMessage($this->getDbDebug(), 'debug');
 		}
 
 		// Fetch the database-result

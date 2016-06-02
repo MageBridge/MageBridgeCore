@@ -77,7 +77,7 @@ class YireoHelper
 		echo '<input type="hidden" name="option" value="' . JFactory::getApplication()->input->getCmd('option') . '" />';
 		echo '<input type="hidden" name="cid[]" value="' . $id . '" />';
 		echo '<input type="hidden" name="task" value="" />';
-		echo JHTML::_('form.token');
+		echo JHtml::_('form.token');
 	}
 
 	/*
@@ -254,7 +254,7 @@ class YireoHelper
 		{
 			$params = trim($params);
 		}
-
+		
 		jimport('joomla.registry.registry');
 		$registry = new JRegistry;
 

@@ -16,6 +16,10 @@ defined('_JEXEC') or die();
 // Import the loader
 require_once dirname(dirname(__FILE__)) . '/loader.php';
 
+require_once 'trait/identifiable.php';
+require_once 'trait/formable.php';
+require_once 'trait/table.php';
+
 /**
  * Yireo Common Model
  * Parent class for models that need additional features without JTable functionality
@@ -24,6 +28,21 @@ require_once dirname(dirname(__FILE__)) . '/loader.php';
  */
 class YireoCommonModel extends YireoAbstractModel
 {
+	/**
+	 * Trait to implement ID behaviour
+	 */
+	use YireoModelTraitIdentifiable;
+
+	/**
+	 * Trait to implement form behaviour
+	 */
+	use YireoModelTraitFormable;
+	
+	/**
+	 * Trait to implement table behaviour
+	 */
+	use YireoModelTraitTable;
+
 	/**
 	 * @var JDatabaseDriver
 	 */
@@ -35,74 +54,37 @@ class YireoCommonModel extends YireoAbstractModel
 	protected $user;
 
 	/**
-	 * Boolean to skip table-detection
+	 * Data array
 	 *
-	 * @protected int
+	 * @var array
 	 */
-	protected $skip_table = true;
-
-	/**
-	 * Boolean to allow forms in the frontend
-	 *
-	 * @protected int
-	 */
-	protected $_frontend_form = false;
-
-	/**
-	 * Name of the XML-file containing the JForm definitions (if any)
-	 *
-	 * @protected int
-	 */
-	protected $_form_name = null;
-
-	/**
-	 * Database table object
-	 *
-	 * @protected string
-	 */
-	protected $_tbl = null;
-
-	/**
-	 * Database table-name
-	 *
-	 * @protected string
-	 */
-	protected $_tbl_name = null;
-
-	/**
-	 * Database table-alias
-	 *
-	 * @protected string
-	 */
-	protected $_tbl_alias = null;
-
-	/**
-	 * Database primary key
-	 *
-	 * @protected string
-	 */
-	protected $_tbl_key = null;
-
-	/**
-	 * Flag to automatically set the table class prefix
-	 *
-	 * @protected boolean
-	 */
-	protected $_tbl_prefix_auto = false;
-
-	/**
-	 * Unique id
-	 *
-	 * @protected int
-	 */
-	protected $_id = null;
+	protected $data = array();
 
 	/**
 	 * Data array
 	 *
-	 * @protected array
+	 * @var array
+	 * @deprecated Use $this->data instead
 	 */
-	protected $_data = null;
+	protected $_data = array();
+
+	/**
+	 * @var string
+	 * @deprecated Use $this->getMeta('view') instead
+	 */
+	protected $_view;
+
+	/**
+	 * @var string
+	 * @deprecated Use $this->getMeta('option') instead
+	 */
+	protected $_option;
+
+	/**
+	 * @var string
+	 * @deprecated Use $this->getMeta('option_id') instead
+	 */
+	protected $_option_id;
 
 	/**
 	 * Constructor
@@ -113,31 +95,80 @@ class YireoCommonModel extends YireoAbstractModel
 	 */
 	public function __construct($tableAlias = null)
 	{
-		// Initialize variables
-		$this->init();
-		$this->db = JFactory::getDBO();
-		$this->user = JFactory::getUser();
-
-		// Create the option-namespace
-		$classParts = explode('Model', get_class($this));
-		$this->_view = (!empty($classParts[1])) ? strtolower($classParts[1]) : $this->input->getCmd('view');
-		$this->_option = $this->getOption();
-		$this->_option_id = $this->_option . '_' . $this->_view . '_';
-
-		if ($this->app->isSite())
-		{
-			$this->_option_id .= $this->input->getInt('Itemid') . '_';
-		}
-
-		$component = preg_replace('/^com_/', '', $this->_option);
-		$component = preg_replace('/[^A-Z0-9_]/i', '', $component);
-		$component = str_replace(' ', '', ucwords(str_replace('_', ' ', $component)));
-		$this->setMeta('component', $component);
-
 		// Call the parent constructor
 		$rt = parent::__construct();
 
+		$this->initCommon();
+
+		// Create the component options
+		$view      = $this->detectViewName();
+		$option    = $this->getOption();
+		$option_id = $option . '_' . $view . '_';
+		$component = $this->getComponentNameFromOption($option);
+
+		if ($this->app->isSite())
+		{
+			$option_id .= $this->input->getInt('Itemid') . '_';
+		}
+
+		$this->setMeta('view', $view);
+		$this->setMeta('option', $option);
+		$this->setMeta('option_id', $option_id);
+		$this->setMeta('component', $component);
+		$this->setMeta('frontend_form', false);
+
+		$this->handleCommonDeprecated();
+
 		return $rt;
+	}
+
+	/**
+	 * @param $option
+	 *
+	 * @return mixed
+	 */
+	protected function getComponentNameFromOption($option)
+	{
+		$component = preg_replace('/^com_/', '', $option);
+		$component = preg_replace('/[^A-Z0-9_]/i', '', $component);
+		$component = str_replace(' ', '', ucwords(str_replace('_', ' ', $component)));
+		
+		return $component;
+	}
+
+	/**
+	 * @return string
+	 */
+	protected function detectViewName()
+	{
+		$classParts = explode('Model', get_class($this));
+		$view       = (!empty($classParts[1])) ? strtolower($classParts[1]) : $this->input->getCmd('view');
+
+		return $view;
+	}
+
+	/**
+	 * Inititalize system variables
+	 */
+	protected function initCommon()
+	{
+		$this->db   = JFactory::getDbo();
+		$this->user = JFactory::getUser();
+	}
+
+	/**
+	 * Handle deprecated variables
+	 */
+	protected function handleCommonDeprecated()
+	{
+		$this->_db   = $this->db;
+		$this->_user = $this->user;
+
+		$this->_view          = $this->getMeta('view');
+		$this->_option        = $this->getMeta('option');
+		$this->_option_id     = $this->getMeta('option_id');
+		$this->_form_name     = $this->getMeta('form_name');
+		$this->_frontend_form = $this->getMeta('frontend_form');
 	}
 
 	/**
@@ -149,80 +180,7 @@ class YireoCommonModel extends YireoAbstractModel
 	 */
 	public function getData($forceNew = false)
 	{
-		return array();
-	}
-
-	/**
-	 * Method to get a XML-based form
-	 *
-	 * @param array $data
-	 * @param bool  $loadData
-	 *
-	 * @return mixed
-	 */
-	public function getForm($data = array(), $loadData = true)
-	{
-		// Do not continue if this is not the right backend
-		if ($this->app->isAdmin() == false && $this->_frontend_form == false)
-		{
-			return false;
-		}
-
-		// Do not continue if this is not a singular view
-		if (method_exists($this, 'isSingular') && $this->isSingular() == false)
-		{
-			return false;
-		}
-
-		// Read the form from XML
-		$xmlFile = JPATH_ADMINISTRATOR . '/components/' . $this->_option . '/models/' . $this->_form_name . '.xml';
-
-		if (!file_exists($xmlFile))
-		{
-			$xmlFile = JPATH_SITE . '/components/' . $this->_option . '/models/' . $this->_form_name . '.xml';
-		}
-
-		if (!file_exists($xmlFile))
-		{
-			return false;
-		}
-
-		// Construct the form-object
-		jimport('joomla.form.form');
-		$form = JForm::getInstance('item', $xmlFile);
-
-		if (empty($form))
-		{
-			return false;
-		}
-
-		// Bind the data
-		$data = $this->getData();
-		$form->bind(array('item' => $data));
-
-		// Insert the params-data if set
-		if (!empty($data->params))
-		{
-			$params = $data->params;
-
-			if (is_string($params))
-			{
-				$params = YireoHelper::toRegistry($params)
-					->toArray();
-			}
-
-			$form->bind(array('params' => $params));
-		}
-
-		return $form;
-	}
-
-	/*
-	 * Helper method to override the name of the form
-	 */
-	public function setFormName($form_name)
-	{
-		$this->_form_name = $form_name;
+		return $this->data;
 	}
 
 	/**
@@ -261,12 +219,16 @@ class YireoCommonModel extends YireoAbstractModel
 	 */
 	protected function getOption()
 	{
-		$classParts = explode('Model', get_class($this));
-		$comPart = (!empty($classParts[0])) ? $classParts[0] : null;
-		$comPart = preg_replace('/([A-Z])/', '_\\1', $comPart);
-		$comPart = strtolower(preg_replace('/^_/', '', $comPart));
-		$option = (!empty($comPart) && $comPart != 'yireo') ? 'com_' . $comPart : $this->input->getCmd('option');
+		if (empty($this->option))
+		{
+			$classParts   = explode('Model', get_class($this));
+			$comPart      = (!empty($classParts[0])) ? $classParts[0] : null;
+			$comPart      = preg_replace('/([A-Z])/', '_\\1', $comPart);
+			$comPart      = strtolower(preg_replace('/^_/', '', $comPart));
+			$option       = (!empty($comPart) && $comPart != 'yireo') ? 'com_' . $comPart : $this->input->getCmd('option');
+			$this->option = $option;
+		}
 
-		return $option;
+		return $this->option;
 	}
 }
