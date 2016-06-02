@@ -70,33 +70,33 @@ class YireoCommonModel extends YireoAbstractModel
 
 	/**
 	 * @var string
-	 * @deprecated Use $this->getMeta('view') instead
+	 * @deprecated Use $this->getConfig('view') instead
 	 */
 	protected $_view;
 
 	/**
 	 * @var string
-	 * @deprecated Use $this->getMeta('option') instead
+	 * @deprecated Use $this->getConfig('option') instead
 	 */
 	protected $_option;
 
 	/**
 	 * @var string
-	 * @deprecated Use $this->getMeta('option_id') instead
+	 * @deprecated Use $this->getConfig('option_id') instead
 	 */
 	protected $_option_id;
 
 	/**
 	 * Constructor
-	 *
-	 * @param string $tableAlias
+	 * 
+	 * @param array $config
 	 *
 	 * @return mixed
 	 */
-	public function __construct($tableAlias = null)
+	public function __construct($config = array())
 	{
 		// Call the parent constructor
-		$rt = parent::__construct();
+		$rt = parent::__construct($config);
 
 		$this->initCommon();
 
@@ -111,11 +111,11 @@ class YireoCommonModel extends YireoAbstractModel
 			$option_id .= $this->input->getInt('Itemid') . '_';
 		}
 
-		$this->setMeta('view', $view);
-		$this->setMeta('option', $option);
-		$this->setMeta('option_id', $option_id);
-		$this->setMeta('component', $component);
-		$this->setMeta('frontend_form', false);
+		$this->setConfig('view', $view);
+		$this->setConfig('option', $option);
+		$this->setConfig('option_id', $option_id);
+		$this->setConfig('component', $component);
+		$this->setConfig('frontend_form', false);
 
 		$this->handleCommonDeprecated();
 
@@ -164,23 +164,11 @@ class YireoCommonModel extends YireoAbstractModel
 		$this->_db   = $this->db;
 		$this->_user = $this->user;
 
-		$this->_view          = $this->getMeta('view');
-		$this->_option        = $this->getMeta('option');
-		$this->_option_id     = $this->getMeta('option_id');
-		$this->_form_name     = $this->getMeta('form_name');
-		$this->_frontend_form = $this->getMeta('frontend_form');
-	}
-
-	/**
-	 * Method to get data
-	 *
-	 * @param bool $forceNew
-	 *
-	 * @return array
-	 */
-	public function getData($forceNew = false)
-	{
-		return $this->data;
+		$this->_view          = $this->getConfig('view');
+		$this->_option        = $this->getConfig('option');
+		$this->_option_id     = $this->getConfig('option_id');
+		$this->_form_name     = $this->getConfig('form_name');
+		$this->_frontend_form = $this->getConfig('frontend_form');
 	}
 
 	/**
@@ -230,5 +218,18 @@ class YireoCommonModel extends YireoAbstractModel
 		}
 
 		return $this->option;
+	}
+	
+	/**
+	 * Method to override the parameters
+	 *
+	 * @param mixed
+	 */
+	public function setParams($params = null)
+	{
+		if (!empty($params))
+		{
+			$this->params = $params;
+		}
 	}
 }

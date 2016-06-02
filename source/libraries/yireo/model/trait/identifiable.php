@@ -45,9 +45,15 @@ trait YireoModelTraitIdentifiable
 
 	/**
 	 * @param int $id
+	 * @param bool $reInitialize
 	 */
-	public function setId($id)
+	public function setId($id, $reInitialize = true)
 	{
-		$this->id = (int) $id;
+		$this->id = $id;
+
+		if ($reInitialize)
+		{
+			$this->data = null;
+		}
 	}
 }

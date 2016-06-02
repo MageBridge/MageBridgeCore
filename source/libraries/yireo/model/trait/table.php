@@ -30,14 +30,14 @@ trait YireoModelTraitTable
 	/**
 	 * Database table object
 	 *
-	 * @var JTable
+	 * @var YireoTable
 	 */
 	protected $table;
 
 	/**
 	 * Database table object
 	 *
-	 * @var JTable
+	 * @var YireoTable
 	 * @deprecated Use $this->table instead
 	 */
 	protected $_tbl;
@@ -77,6 +77,49 @@ trait YireoModelTraitTable
 	 * Flag to automatically set the table class prefix
 	 *
 	 * @var boolean
+	 * @deprecated Use $this->getMeta('table_prefix_auto') instead
 	 */
 	protected $_tbl_prefix_auto = false;
+
+	/**
+	 * @return int
+	 */
+	public function getSkipTable()
+	{
+		return $this->skip_table;
+	}
+
+	/**
+	 * @param int $skip_table
+	 */
+	public function setSkipTable($skip_table)
+	{
+		$this->skip_table = $skip_table;
+	}
+	
+	/**
+	 * @return string
+	 */
+	public function getTableAlias()
+	{
+		return $this->table_alias;
+	}
+
+	/**
+	 * @param string $table_alias
+	 */
+	public function setTableAlias($table_alias)
+	{
+		$this->table_alias = $table_alias;
+	}
+
+	/**
+	 * Method to get the current primary key
+	 *
+	 * @return string
+	 */
+	public function getPrimaryKey()
+	{
+		return $this->table->getKeyName();
+	}
 }

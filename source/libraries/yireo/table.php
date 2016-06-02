@@ -79,6 +79,7 @@ class YireoTable extends JTable
 	{
 		// Determine the table name
 		$table_namespace = preg_replace('/^com_/', '', JFactory::getApplication()->input->getCmd('option'));
+		
 		if (!empty($table_name))
 		{
 			if (!strstr($table_name, '#__'))
@@ -96,6 +97,7 @@ class YireoTable extends JTable
 
 		// Initialize the fields based on an array
 		$fields = $this->getDatabaseFields();
+		
 		if (!empty($fields))
 		{
 			foreach ($fields as $field)
@@ -136,6 +138,7 @@ class YireoTable extends JTable
 
 		// Remove fields that do not exist in the database-table
 		$fields = $this->getDatabaseFields();
+		
 		foreach ($array as $name => $value)
 		{
 			if (!in_array($name, $fields))
@@ -163,6 +166,7 @@ class YireoTable extends JTable
 			{
 				$array['alias'] = JFilterOutput::stringURLSafe($array['name']);
 			}
+			
 			if (!empty($array['title']))
 			{
 				$array['alias'] = JFilterOutput::stringURLSafe($array['title']);
@@ -222,10 +226,7 @@ class YireoTable extends JTable
 	/**
 	 * Overloaded store method to debug query-failures
 	 *
-	 * @access     public
-	 * @subpackage Yireo
-	 *
-	 * @param null
+	 * @param $updateNulls
 	 *
 	 * @return bool
 	 */
@@ -244,9 +245,6 @@ class YireoTable extends JTable
 
 	/**
 	 * Helper-method to check if a required value is set or not
-	 *
-	 * @access     public
-	 * @subpackage Yireo
 	 *
 	 * @param string $field
 	 *

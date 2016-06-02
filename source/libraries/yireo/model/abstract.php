@@ -16,6 +16,8 @@ defined('_JEXEC') or die();
 // Import the loader
 require_once dirname(dirname(__FILE__)) . '/loader.php';
 
+require_once 'trait/configurable.php';
+
 /**
  * Yireo Abstract Model
  * Parent class to easily maintain backwards compatibility
@@ -24,6 +26,11 @@ require_once dirname(dirname(__FILE__)) . '/loader.php';
  */
 class YireoAbstractModel extends JModelLegacy
 {
+	/**
+	 * Trait to implement ID behaviour
+	 */
+	use YireoModelTraitConfigurable;
+	
 	/**
 	 * @var JApplicationCms
 	 */
@@ -53,36 +60,20 @@ class YireoAbstractModel extends JModelLegacy
 	protected $_input;
 
 	/**
-	 * @var array
-	 */
-	protected $meta = array();
-
-	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param array $config
-	 * @param JApplication $app
-	 * @param JInput $input
 	 *
 	 * @return mixed
 	 */
-	public function __construct($config = array(), $app = null, $input = null)
+	public function __construct($config = array())
 	{
 		$rt = parent::__construct($config);
-		
-		if (empty($app))
-		{
-			$app = JFactory::getApplication();
-		}
 
-		if (empty($input))
-		{
-			$input = $app->input;
-		}
+		$this->config = $config;
+		$this->app    = JFactory::getApplication();
+		$this->input  = $this->app->input;
 
-		$this->app   = $app;
-		$this->input = $input;
-		
 		$this->handleAbstractDeprecated();
 
 		return $rt;
@@ -98,30 +89,6 @@ class YireoAbstractModel extends JModelLegacy
 		$this->jinput      = $this->input;
 	}
 
-	/**
-	 * @param mixed $name
-	 * @param mixed $value
-	 */
-	public function setMeta($name, $value)
-	{
-		$this->meta[$name] = $value;
-	}
-
-	/**
-	 * @param $name
-	 *
-	 * @return bool|mixed
-	 */
-	public function getMeta($name)
-	{
-		if (empty($this->meta[$name]))
-		{
-			return false;
-		}
-
-		return $this->meta[$name];
-	}
-	
 	/**
 	 * @return JApplicationCms
 	 */
