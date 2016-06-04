@@ -538,7 +538,7 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 
 		foreach ($cookies as $cookieName)
 		{
-			$cookieValue = $this->input->getString($cookieName, null, 'cookie');
+            $cookieValue = (isset($_COOKIE[$cookieName])) ? $_COOKIE[$cookieName] : null;
 
 			if (empty($cookieValue))
 			{
