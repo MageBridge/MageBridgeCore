@@ -187,7 +187,7 @@ class Yireo_MageBridge_Helper_Product extends Mage_Core_Helper_Abstract
      *
      * @return array
      */
-    public function getImageData($product, $attributeName, $size)
+    public function getImageData($product, $attributeName, $size = array())
     {
         $imageHelper = Mage::helper('catalog/image');
         $imageHelper->init($product, $attributeName);
@@ -202,8 +202,11 @@ class Yireo_MageBridge_Helper_Product extends Mage_Core_Helper_Abstract
             $imageWidth = $size[0];
             $imageHeight = $size[1];
         } elseif (!empty($size)) {
-            $imageWidth = $size;
-            $imageHeight = $size;
+            $size = (int) $size;
+            if ($size > 0) {
+                $imageWidth = $size;
+                $imageHeight = $size;
+            }
         }
 
         $imageUrl = (string) $imageHelper->resize($imageWidth, $imageHeight);
