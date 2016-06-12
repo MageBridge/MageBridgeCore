@@ -16,9 +16,6 @@ defined('_JEXEC') or die();
 // Import the loader
 require_once dirname(dirname(__FILE__)) . '/loader.php';
 
-require_once 'trait/identifiable.php';
-require_once 'trait/formable.php';
-
 /**
  * Yireo Common Model
  * Parent class for models that need additional features without JTable functionality

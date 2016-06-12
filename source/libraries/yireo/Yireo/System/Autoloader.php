@@ -27,29 +27,14 @@ class Autoloader
 	protected $mapping = array(
 		'YireoRouteQuery'         => 'route/query',
 		'YireoDispatcher'         => 'dispatcher',
-		'YireoModel'              => 'model',
-		'YireoModelItem'          => 'model/item',
-		'YireoModelItems'         => 'model/items',
 		'YireoAbstractModel'      => 'model/abstract',
 		'YireoCommonModel'        => 'model/common',
 		'YireoDataModel'          => 'model/data',
 		'YireoServiceModel'       => 'model/service',
-		'YireoView'               => 'view',
 		'YireoCommonView'         => 'view/common',
 		'YireoAbstractView'       => 'view/abstract',
-		'YireoViewItem'           => 'view/item',
-		'YireoViewForm'           => 'view/form',
-		'YireoViewHome'           => 'view/home',
-		'YireoViewHomeAjax'       => 'view/home_ajax',
-		'YireoViewList'           => 'view/list',
-		'YireoController'         => 'controller',
 		'YireoCommonController'   => 'controller/common',
 		'YireoAbstractController' => 'controller/abstract',
-		'YireoTable'              => 'table',
-		'YireoHelper'             => 'helper',
-		'YireoHelperView'         => 'helper/view',
-		'YireoHelperInstall'      => 'helper/install',
-		'YireoHelperTable'        => 'helper/table',
 	);
 
 	/**
@@ -132,13 +117,25 @@ class Autoloader
 		}
 
 		// Construct the filename
-		if (!isset($this->mapping[$className]))
+		if (isset($this->mapping[$className]))
 		{
-			return false;
+			$filename = $this->mapping[$className];
+		}
+		else
+		{
+			$className = preg_replace('/^Yireo/', '', $className);
+			$pieces = preg_split('/(?=[A-Z])/',$className);
+			$path = array();
+
+			foreach ($pieces as $piece)
+			{
+				$path[] = strtolower($piece);
+			}
+
+			$filename = implode('/', $path);
 		}
 
-		// Try to include the needed file
-		$filename = $this->mapping[$className];
+		// Try to determine the needed file
 		$filename = dirname(dirname(__DIR__)) . '/' . $filename . '.php';
 
 		if (!file_exists($filename))

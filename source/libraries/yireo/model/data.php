@@ -16,9 +16,6 @@ defined('_JEXEC') or die();
 // Import the loader
 require_once dirname(dirname(__FILE__)) . '/loader.php';
 
-require_once 'trait/debuggable.php';
-require_once 'trait/table.php';
-
 /**
  * Yireo Data Model
  *
@@ -42,6 +39,16 @@ class YireoDataModel extends YireoCommonModel
 	protected $data;
 
 	/**
+	 * @var \Joomla\Registry\Registry
+	 */
+	protected $params;
+
+	/**
+	 * @var YireoModelDataQuery
+	 */
+	protected $query;
+
+	/**
 	 * Constructor
 	 *
 	 * @param array $config
@@ -57,8 +64,42 @@ class YireoDataModel extends YireoCommonModel
 		$this->setConfig('table_prefix_auto', true);
 		$this->setTablePrefix();
 		$this->table = $this->getTable($this->getConfig('table_alias'));
+		$this->initQuery();
 
 		return $rt;
+	}
+
+	/**
+	 * @return $this
+	 */
+	public function initQuery()
+	{
+		if (method_exists($this, 'buildQuery') || method_exists($this, 'buildQueryWhere'))
+		{
+			$this->query = new YireoModelDataQuerytext($this->table, $this->getConfig('table_alias'));
+
+			return $this;
+		}
+
+		$this->query = new YireoModelDataQuery($this->table, $this->getConfig('table_alias'));
+
+		return $this;
+	}
+
+	/**
+	 * Method to override a default user-state value
+	 *
+	 * @param string $key
+	 * @param mixed  $value
+	 *
+	 * @return bool
+	 * @todo Code smell
+	 */
+	public function overrideUserState($key, $value)
+	{
+		$this->$key = $value;
+
+		return true;
 	}
 
 	/**
@@ -114,7 +155,7 @@ class YireoDataModel extends YireoCommonModel
 	 */
 	public function getDbResult($query, $type = 'object')
 	{
-		if ($this->_cache == true)
+		if ($this->getConfig('cache') == true)
 		{
 			$cache = JFactory::getCache('lib_yireo_model');
 			$rs    = $cache->call(array($this, '_getDbResult'), $query, $type);

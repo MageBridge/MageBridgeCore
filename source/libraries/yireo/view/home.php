@@ -49,7 +49,7 @@ class YireoViewHome extends YireoView
         // Initialize the toolbar
         if (file_exists(JPATH_COMPONENT.'/config.xml')) {
             if(JFactory::getUser()->authorise('core.admin')) {
-                JToolBarHelper::preferences($this->_option, 600, 800);
+                JToolbarHelper::preferences($this->_option, 600, 800);
             }
         }
 
@@ -71,22 +71,21 @@ class YireoViewHome extends YireoView
         $document = JFactory::getDocument();
 
         // Generate the backend feeds
-        $backend_feed = $this->params->get('backend_feed', 1);
-        $this->assignRef( 'backend_feed', $backend_feed);
-        if ($backend_feed == 1) {
+        $this->backend_feed = $this->params->get('backend_feed', 1);
+
+        if ($this->backend_feed == 1) {
             $this->ajax('index.php?option='.$this->_option.'&view=home&format=ajax&layout=feeds', 'latest_news');
             $this->ajax('index.php?option='.$this->_option.'&view=home&format=ajax&layout=promotion', 'promotion');
         }
 
         // Add additional CSS
-        $document->addStylesheet('https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700');
-        $document->addStylesheet('https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css');
+        $document->addStyleSheet('https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700');
+        $document->addStyleSheet('https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css');
 
         // Get the current version
-        $current_version = YireoHelper::getCurrentVersion();
-        $this->assignRef( 'current_version', $current_version );
+        $this->current_version = YireoHelper::getCurrentVersion();
 
-        parent::display($tpl);
+        return parent::display($tpl);
     }
 
     /*

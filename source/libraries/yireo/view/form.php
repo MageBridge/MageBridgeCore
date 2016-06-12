@@ -69,7 +69,6 @@ class YireoViewForm extends YireoView
 	public function __construct($config = array())
 	{
 		// Add the Yireo form fields
-		jimport('joomla.form.form');
 		JForm::addFieldPath(JPATH_LIBRARIES . '/yireo/form/fields');
 		JForm::addFieldPath(JPATH_COMPONENT_ADMINISTRATOR . '/lib/form/fields');
 		JForm::addFieldPath(JPATH_COMPONENT_ADMINISTRATOR . '/fields');
@@ -107,10 +106,10 @@ class YireoViewForm extends YireoView
 	public function display($tpl = null)
 	{
 		// Hide the menu
-		$this->jinput->set('hidemainmenu', 1);
+		$this->input->set('hidemainmenu', 1);
 
 		// Initialize tooltips
-		JHTML::_('behavior.tooltip');
+		JHtml::_('behavior.tooltip');
 
 		// Automatically fetch the item and assign it to the layout
 		$this->fetchItem();
@@ -120,7 +119,7 @@ class YireoViewForm extends YireoView
 			$this->prepareDisplay();
 		}
 
-		parent::display($tpl);
+		return parent::display($tpl);
 	}
 
 	/*

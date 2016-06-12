@@ -38,6 +38,11 @@ trait YireoModelTraitDebuggable
 		{
 			return true;
 		}
+
+		if ($this->getConfig('debug'))
+		{
+			return true;
+		}
 		
 		return false;
 	}

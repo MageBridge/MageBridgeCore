@@ -20,6 +20,8 @@ require_once 'model/trait/paginable.php';
 require_once 'model/trait/checkable.php';
 require_once 'model/trait/filterable.php';
 require_once 'model/trait/limitable.php';
+require_once 'model/trait/debuggable.php';
+require_once 'model/trait/table.php';
 
 /**
  * Yireo Model
@@ -28,8 +30,18 @@ require_once 'model/trait/limitable.php';
  * @package    Yireo
  * @deprecated Use YireoModelItem or YireoModelItems instead
  */
-class YireoModel extends YireoDataModel
+class YireoModel extends YireoCommonModel
 {
+	/**
+	 * Trait to implement debugging behaviour
+	 */
+	use YireoModelTraitDebuggable;
+
+	/**
+	 * Trait to implement table behaviour
+	 */
+	use YireoModelTraitTable;
+	
 	/**
 	 * Trait to implement checkout behaviour
 	 */
@@ -49,6 +61,11 @@ class YireoModel extends YireoDataModel
 	 * Trait to implement filter behaviour
 	 */
 	use YireoModelTraitLimitable;
+
+	/**
+	 * @var mixed
+	 */
+	protected $data;
 
 	/**
 	 * Indicator if this is a model for multiple or single entries
@@ -161,6 +178,11 @@ class YireoModel extends YireoDataModel
 		// Call the parent constructor
 		$rt = parent::__construct($config);
 
+		$this->setConfig('skip_table', false);
+		$this->setConfig('table_prefix_auto', true);
+		$this->setTablePrefix();
+		$this->table = $this->getTable($this->getConfig('table_alias'));
+
 		if ($this->isSingular())
 		{
 			$this->initSingle();
@@ -177,6 +199,108 @@ class YireoModel extends YireoDataModel
 		$this->handleModelDeprecated();
 
 		return $rt;
+	}
+
+	/**
+	 * @param mixed $name
+	 * @param mixed $value
+	 */
+	public function setData($name, $value = null)
+	{
+		if (is_array($name) && empty($value))
+		{
+			$this->data = $name;
+
+			return;
+		}
+
+		$this->data[$name] = $value;
+	}
+
+	/**
+	 * @param $name
+	 *
+	 * @return bool|mixed
+	 */
+	public function getDataByName($name = null)
+	{
+		if (empty($this->data[$name]))
+		{
+			return false;
+		}
+
+		return $this->data[$name];
+	}
+
+	/**
+	 * Method to fetch database-results
+	 *
+	 * @param string $query
+	 * @param string $type : object|objectList|result
+	 *
+	 * @return mixed
+	 */
+	public function getDbResult($query, $type = 'object')
+	{
+		if ($this->_cache == true)
+		{
+			$cache = JFactory::getCache('lib_yireo_model');
+			$rs    = $cache->call(array($this, '_getDbResult'), $query, $type);
+		}
+		else
+		{
+			$rs = $this->_getDbResult($query, $type);
+		}
+
+		return $rs;
+	}
+
+	/**
+	 * Method to fetch database-results
+	 *
+	 * @param string $query
+	 * @param string $type : object|objectList|result
+	 *
+	 * @throws Exception
+	 * @return mixed
+	 */
+	public function _getDbResult($query, $type = 'object')
+	{
+		// Set the query in the database-object
+		$this->_db->setQuery($query);
+
+		// Print the query if debugging is enabled
+		if (method_exists($this, 'allowDebug') && $this->allowDebug())
+		{
+			$this->app->enqueueMessage($this->getDbDebug(), 'debug');
+		}
+
+		// Fetch the database-result
+		if ($type == 'objectList')
+		{
+			$rs = $this->_db->loadObjectList();
+		}
+		elseif ($type == 'result')
+		{
+			$rs = $this->_db->loadResult();
+		}
+		else
+		{
+			$rs = $this->_db->loadObject();
+		}
+
+		// Return the result
+		return $rs;
+	}
+
+	/**
+	 * Throw a database exception
+	 */
+	protected function throwDbException()
+	{
+		$db = JFactory::getDbo();
+
+		throw new JDatabaseExceptionUnsupported($db->getErrorMsg());
 	}
 
 	/**
@@ -1133,9 +1257,7 @@ class YireoModel extends YireoDataModel
 		{
 			return ' WHERE ' . implode(' AND ', $this->where) . "\n";
 		}
-
-		print_r($this->where);
-
+		
 		return '';
 	}
 

@@ -13,8 +13,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 ?>
-<input type="hidden" name="option" value="<?php echo $this->_option; ?>" />
-<input type="hidden" name="view" value="<?php echo $this->_view; ?>" />
+<input type="hidden" name="option" value="<?php echo $this->getConfig('option'); ?>"/>
+<input type="hidden" name="view" value="<?php echo $this->getConfig('view'); ?>"/>
 <input type="hidden" name="task" value="" />
 <input type="hidden" name="boxchecked" value="0" />
 <input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />

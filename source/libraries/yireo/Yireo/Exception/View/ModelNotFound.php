@@ -9,7 +9,7 @@
  */
 
 // Namespace
-namespace Yireo\Exception\Model;
+namespace Yireo\Exception\View;
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
@@ -17,8 +17,8 @@ defined('_JEXEC') or die();
 /**
  * Class NotFound
  *
- * @package Yireo\Exception\Model
+ * @package Yireo\Exception\View
  */
-class NotFound extends \Exception
+class ModelNotFound extends \Exception
 {
 }

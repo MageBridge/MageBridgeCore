@@ -28,6 +28,8 @@ trait YireoModelTraitConfigurable
 	/**
 	 * @param mixed $name
 	 * @param mixed $value
+	 * 
+	 * @return $this
 	 */
 	public function setConfig($name, $value = null)
 	{
@@ -40,10 +42,12 @@ trait YireoModelTraitConfigurable
 		{
 			$this->config = $name;
 
-			return;
+			return $this;
 		}
 
 		$this->config[$name] = $value;
+		
+		return $this;
 	}
 
 	/**

@@ -16,8 +16,6 @@ defined('_JEXEC') or die();
 // Import the loader
 require_once dirname(dirname(__FILE__)) . '/loader.php';
 
-require_once 'trait/configurable.php';
-
 /**
  * Yireo Abstract Model
  * Parent class to easily maintain backwards compatibility
