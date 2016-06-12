@@ -28,6 +28,11 @@ if (function_exists('__autoload'))
 	spl_autoload_register('__autoload');
 }
 
+// Detect our own autoloader
+if (!class_exists('\Yireo\System\Autoloader'))
+{
+	include_once __DIR__ . '/Yireo/System/Autoloader.php';
+}
+
 // Add our own loader-function to SPL
-include_once __DIR__ . '/Yireo/System/Autoloader.php';
 spl_autoload_register(array(new \Yireo\System\Autoloader, 'load'));

@@ -2,21 +2,22 @@
 /**
  * Joomla! Yireo Library
  *
- * @author Yireo (http://www.yireo.com/)
- * @package YireoLib
+ * @author    Yireo (http://www.yireo.com/)
+ * @package   YireoLib
  * @copyright Copyright 2015
- * @license GNU Public License
- * @link http://www.yireo.com/
- * @version 0.6.0
+ * @license   GNU Public License
+ * @link      http://www.yireo.com/
+ * @version   0.6.0
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
 // Import the loader
-require_once dirname(dirname(__FILE__)).'/loader.php';
+require_once dirname(dirname(__FILE__)) . '/loader.php';
 
 require_once 'trait/debuggable.php';
+require_once 'trait/table.php';
 
 /**
  * Yireo Data Model
@@ -31,17 +32,14 @@ class YireoDataModel extends YireoCommonModel
 	use YireoModelTraitDebuggable;
 
 	/**
+	 * Trait to implement table behaviour
+	 */
+	use YireoModelTraitTable;
+
+	/**
 	 * @var mixed
 	 */
 	protected $data;
-	
-	/*
-	 * Boolean to skip table-detection
-	 *
-	 * @var bool
-	 * @deprecated Use $this->getConfig('skip_table') instead
-	 */
-	protected $skip_table = false;
 
 	/**
 	 * Constructor
@@ -55,25 +53,10 @@ class YireoDataModel extends YireoCommonModel
 		// Call the parent constructor
 		$rt = parent::__construct($config);
 
-		// Set the database variables
-		if ($this->getConfig('table_prefix_auto') == true)
-		{
-			$this->_tbl_prefix = $this->getConfig('component') . 'Table';
-		}
-
-		// @todo: Set this in a metadata array
-		$tableAlias       = $this->getConfig('table_alias');
-		$this->_tbl_alias = $tableAlias;
-		$this->table      = $this->getTable($tableAlias);
-
-		if ($this->table)
-		{
-			$this->_tbl_name = $this->table->getTableName();
-			$this->_tbl_key  = $this->table->getKeyName();
-		}
-
-		$this->_entity    = $tableAlias;
-		$this->_form_name = $tableAlias;
+		$this->setConfig('skip_table', false);
+		$this->setConfig('table_prefix_auto', true);
+		$this->setTablePrefix();
+		$this->table = $this->getTable($this->getConfig('table_alias'));
 
 		return $rt;
 	}
@@ -105,7 +88,7 @@ class YireoDataModel extends YireoCommonModel
 	{
 		return $this->data;
 	}
-	
+
 	/**
 	 * @param $name
 	 *
@@ -121,7 +104,6 @@ class YireoDataModel extends YireoCommonModel
 		return $this->data[$name];
 	}
 
-
 	/**
 	 * Method to fetch database-results
 	 *
@@ -135,7 +117,7 @@ class YireoDataModel extends YireoCommonModel
 		if ($this->_cache == true)
 		{
 			$cache = JFactory::getCache('lib_yireo_model');
-			$rs = $cache->call(array($this, '_getDbResult'), $query, $type);
+			$rs    = $cache->call(array($this, '_getDbResult'), $query, $type);
 		}
 		else
 		{
@@ -189,7 +171,7 @@ class YireoDataModel extends YireoCommonModel
 	protected function throwDbException()
 	{
 		$db = JFactory::getDbo();
-		
+
 		throw new JDatabaseExceptionUnsupported($db->getErrorMsg());
 	}
 }

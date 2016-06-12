@@ -18,7 +18,6 @@ require_once dirname(dirname(__FILE__)) . '/loader.php';
 
 require_once 'trait/identifiable.php';
 require_once 'trait/formable.php';
-require_once 'trait/table.php';
 
 /**
  * Yireo Common Model
@@ -37,11 +36,7 @@ class YireoCommonModel extends YireoAbstractModel
 	 * Trait to implement form behaviour
 	 */
 	use YireoModelTraitFormable;
-	
-	/**
-	 * Trait to implement table behaviour
-	 */
-	use YireoModelTraitTable;
+
 
 	/**
 	 * @var JDatabaseDriver
@@ -167,37 +162,7 @@ class YireoCommonModel extends YireoAbstractModel
 		$this->_view          = $this->getConfig('view');
 		$this->_option        = $this->getConfig('option');
 		$this->_option_id     = $this->getConfig('option_id');
-		$this->_form_name     = $this->getConfig('form_name');
 		$this->_frontend_form = $this->getConfig('frontend_form');
-	}
-
-	/**
-	 * Override the default method to allow for skipping table creation
-	 *
-	 * @param string $name
-	 * @param string $prefix
-	 * @param array  $options
-	 *
-	 * @return mixed
-	 */
-	public function getTable($name = '', $prefix = 'Table', $options = array())
-	{
-		if ($this->skip_table == true)
-		{
-			return null;
-		}
-
-		if (empty($name))
-		{
-			$name = $this->_tbl_alias;
-		}
-
-		if (!empty($this->_tbl_prefix))
-		{
-			$prefix = $this->_tbl_prefix;
-		}
-
-		return parent::getTable($name, $prefix, $options);
 	}
 
 	/**
@@ -231,5 +196,13 @@ class YireoCommonModel extends YireoAbstractModel
 		{
 			$this->params = $params;
 		}
+	}
+
+	/**
+	 * @return \Joomla\Registry\Registry
+	 */
+	public function getParams()
+	{
+		return $this->params;
 	}
 }

@@ -77,7 +77,7 @@ trait YireoModelTraitTable
 	 * Flag to automatically set the table class prefix
 	 *
 	 * @var boolean
-	 * @deprecated Use $this->getMeta('table_prefix_auto') instead
+	 * @deprecated Use $this->getConfig('table_prefix_auto') instead
 	 */
 	protected $_tbl_prefix_auto = false;
 
@@ -110,7 +110,63 @@ trait YireoModelTraitTable
 	 */
 	public function setTableAlias($table_alias)
 	{
+		$this->setConfig('table_alias', $table_alias);
 		$this->table_alias = $table_alias;
+	}
+
+	/**
+	 * @param $table_prefix
+	 */
+	public function setTablePrefix($table_prefix = null)
+	{
+		if (!empty($table_prefix))
+		{
+			$this->setConfig('table_prefix', $table_prefix);
+			
+			return true;
+		}
+		
+		// Set the database variables
+		if ($this->getConfig('table_prefix_auto') == true)
+		{
+			$tablePrefix = $this->getConfig('component') . 'Table';
+			$this->setConfig('table_prefix', $tablePrefix);
+			
+			return true;
+		}
+		
+		return false;
+	}
+
+	/**
+	 * Override the default method to allow for skipping table creation
+	 *
+	 * @param string $name
+	 * @param string $prefix
+	 * @param array  $options
+	 *
+	 * @return mixed
+	 */
+	public function getTable($name = '', $prefix = 'Table', $options = array())
+	{
+		if ($this->getConfig('skip_table') == true)
+		{
+			return null;
+		}
+
+		if (empty($name))
+		{
+			$name = $this->getConfig('table_alias');
+		}
+
+		$tablePrefix = $this->getConfig('table_prefix');
+
+		if (!empty($tablePrefix))
+		{
+			$prefix = $tablePrefix;
+		}
+
+		return parent::getTable($name, $prefix, $options);
 	}
 
 	/**

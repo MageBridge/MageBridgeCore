@@ -115,7 +115,7 @@ trait YireoModelTraitFormable
 			return false;
 		}
 
-		return true;
+		return $form;
 	}
 
 	/*
@@ -131,6 +131,23 @@ trait YireoModelTraitFormable
 	}
 
 	/**
+	 * Get the form name
+	 *
+	 * @return string
+	 */
+	public function getFormName()
+	{
+		$formName = $this->getConfig('form_name');
+
+		if (empty($formName))
+		{
+			$formName = $this->getConfig('table_alias');
+		}
+
+		return $formName;
+	}
+
+	/**
 	 * Detect the XML file containing the form
 	 *
 	 * @return string
@@ -138,11 +155,11 @@ trait YireoModelTraitFormable
 	protected function detectXmlFile()
 	{
 		$option  = $this->getOption();
-		$xmlFile = JPATH_ADMINISTRATOR . '/components/' . $option . '/models/' . $this->getConfig('form_name') . '.xml';
+		$xmlFile = JPATH_ADMINISTRATOR . '/components/' . $option . '/models/' . $this->getFormName() . '.xml';
 
 		if (!file_exists($xmlFile))
 		{
-			$xmlFile = JPATH_SITE . '/components/' . $option . '/models/' . $this->getConfig('form_name') . '.xml';
+			$xmlFile = JPATH_SITE . '/components/' . $option . '/models/' . $this->getFormName() . '.xml';
 		}
 
 		return $xmlFile;
@@ -203,6 +220,6 @@ trait YireoModelTraitFormable
 	public function resetTmpSession()
 	{
 		$session = JFactory::getSession();
-		$session->clear($this->_option_id);
+		$session->clear($this->getConfig('option_id'));
 	}
 }

@@ -40,7 +40,7 @@ trait YireoModelTraitFilterable
 	 */
 	public function getFilter($filter = '', $default = '', $type = 'cmd', $option = '')
 	{
-		if ($this->getConfig('allow_filter') == false)
+		if ($this->getConfig('allow_filter', true) == false)
 		{
 			return null;
 		}

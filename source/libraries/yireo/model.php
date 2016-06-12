@@ -44,7 +44,7 @@ class YireoModel extends YireoDataModel
 	 * Trait to implement filter behaviour
 	 */
 	use YireoModelTraitFilterable;
-	
+
 	/**
 	 * Trait to implement filter behaviour
 	 */
@@ -137,9 +137,14 @@ class YireoModel extends YireoDataModel
 	protected $_columnFields = array();
 
 	/**
+	 * @var \Joomla\Registry\Registry
+	 */
+	protected $params;
+
+	/**
 	 * Constructor
 	 *
-	 * @param string $tableAlias
+	 * @param mixed $config
 	 *
 	 * @return mixed
 	 */
@@ -149,16 +154,36 @@ class YireoModel extends YireoDataModel
 		if (is_string($config))
 		{
 			$tableAlias = $config;
-			$this->setConfig('table_alias', $tableAlias);
-			$config = array();
+			$this->table_alias = $tableAlias;
+			$config = array('table_alias' => $tableAlias);
 		}
 
 		// Call the parent constructor
 		$rt = parent::__construct($config);
 
-		$this->initModel();
+		if ($this->isSingular())
+		{
+			$this->initSingle();
+		}
+		else
+		{
+			$this->initOrderBy();
+			$this->initPlural();
+		}
 
-		// Detect the orderby-default
+		// Set the parameters for the frontend
+		$this->initParams();
+
+		$this->handleModelDeprecated();
+
+		return $rt;
+	}
+
+	/**
+	 * Initialize ORDER BY details
+	 */
+	protected function initOrderBy()
+	{
 		if (empty($this->_orderby_default))
 		{
 			$this->_orderby_default = $this->table->getDefaultOrderBy();
@@ -181,68 +206,71 @@ class YireoModel extends YireoDataModel
 				$this->_orderby_title = 'name';
 			}
 		}
+	}
 
-		// Set the parameters for the frontend
-		if (empty($this->params))
+	/**
+	 * @return \Joomla\Registry\Registry
+	 */
+	protected function initParams()
+	{
+		if (!empty($this->params))
 		{
-			if ($this->app->isSite() == false)
-			{
-				$this->params = JComponentHelper::getParams($this->_option);
-			}
-			else
-			{
-				$this->params = $this->app->getParams($this->_option);
-			}
+			return $this->params;
 		}
 
-		// Initialize the ID for single records
-		if ($this->isSingular())
+		if ($this->app->isSite() == false)
 		{
-			$cid = $this->input->get('cid', array(0), '', 'array');
+			$this->params = JComponentHelper::getParams($this->_option);
 
-			if (!empty($cid) && count($cid) > 0)
-			{
-				$this->setId((int) $cid[0]);
-			}
-
-			$id = $this->input->getInt('id', 0);
-
-			if (!empty($id) && $id > 0)
-			{
-				$this->setId((int) $id);
-			}
-		}
-		// Multiple records
-		else
-		{
-			// Initialize limiting
-			$this->initLimit();
-			$this->initLimitstart();
-
-			// Initialize ordering
-			$filter_order     = $this->getFilter('order', '{tableAlias}.' . $this->_orderby_default, 'string');
-			$filter_order_Dir = $this->getFilter('order_Dir');
-
-			if (!empty($filter_order_Dir))
-			{
-				$filter_order_Dir = ' ' . strtoupper($filter_order_Dir);
-			}
-
-			$this->addOrderby($filter_order . $filter_order_Dir);
-			$this->addOrderby('{tableAlias}.' . $this->_orderby_default);
-
+			return $this->params;
 		}
 
-		$this->handleModelDeprecated();
+		$this->params = $this->app->getParams($this->_option);
 
-		return $rt;
+		return $this->params;
 	}
 
 	/**
 	 * Inititalize system variables
 	 */
-	protected function initModel()
+	protected function initSingle()
 	{
+		$cid = $this->input->get('cid', array(0), '', 'array');
+
+		if (!empty($cid) && count($cid) > 0)
+		{
+			$this->setId((int) $cid[0]);
+		}
+
+		$id = $this->input->getInt('id', 0);
+
+
+		if (!empty($id) && $id > 0)
+		{
+			$this->setId((int) $id);
+		}
+	}
+
+	/**
+	 * Inititalize system variables
+	 */
+	protected function initPlural()
+	{
+		// Initialize limiting
+		$this->initLimit();
+		$this->initLimitstart();
+
+		// Initialize ordering
+		$filter_order     = $this->getFilter('order', '{tableAlias}.' . $this->_orderby_default, 'string');
+		$filter_order_Dir = $this->getFilter('order_Dir');
+
+		if (!empty($filter_order_Dir))
+		{
+			$filter_order_Dir = ' ' . strtoupper($filter_order_Dir);
+		}
+
+		$this->addOrderby($filter_order . $filter_order_Dir);
+		$this->addOrderby('{tableAlias}.' . $this->_orderby_default);
 	}
 
 	/**
@@ -250,7 +278,7 @@ class YireoModel extends YireoDataModel
 	 */
 	protected function handleModelDeprecated()
 	{
-		$this->table = $this->table;
+		$this->_table = $this->table;
 	}
 
 	/**
@@ -317,7 +345,7 @@ class YireoModel extends YireoDataModel
 					$data->id = $data->$key;
 
 					$data->metadata = $this->getConfig();
-					$this->data    = $data;
+					$this->data     = $data;
 
 				}
 				else
@@ -327,7 +355,7 @@ class YireoModel extends YireoDataModel
 
 				// Check to see if the data is published
 				$stateField = $this->table->getStateField();
-				
+
 				if ($this->app->isSite() && isset($data->$stateField) && $data->$stateField == 0)
 				{
 					throw new \Yireo\Exception\Model\NotFound(JText::_('LIB_YIREO_MODEL_NOT_FOUND'));
@@ -371,10 +399,6 @@ class YireoModel extends YireoDataModel
 							// Backend permissions
 							if ($this->app->isAdmin() && (bool) $this->table->hasAssetId() == true)
 							{
-								// Get the ID
-								$key = $this->getPrimaryKey();
-								$id  = $item->$key;
-
 								// Determine the owner
 								$owner = 0;
 
@@ -397,8 +421,8 @@ class YireoModel extends YireoDataModel
 								}
 
 								// Get the ACL rules
-								$canEdit    = $this->user->authorise('core.edit', $this->_option);
-								$canEditOwn = $this->user->authorise('core.edit.own', $this->_option);
+								$canEdit    = $this->user->authorise('core.edit', $this->getConfig('option'));
+								$canEditOwn = $this->user->authorise('core.edit.own', $this->getConfig('option'));
 
 								// Determine authorisation
 								$authorise = false;
@@ -502,7 +526,7 @@ class YireoModel extends YireoDataModel
 			// Allow to modify the data afterwards
 			if (method_exists($this, 'onDataLoadAfter'))
 			{
-				$this->data = $this->onDataLoadAfter($this->_data);
+				$this->data = $this->onDataLoadAfter($this->data);
 			}
 		}
 
@@ -586,27 +610,27 @@ class YireoModel extends YireoDataModel
 			{
 				$data['created'] = $data['params']['created'];
 			}
-			
+
 			if (!empty($data['params']['created_date']))
 			{
 				$data['created'] = $data['params']['created_date'];
 			}
-			
+
 			if (!empty($data['params']['created_by']))
 			{
 				$data['created_by'] = $data['params']['created_by'];
 			}
-			
+
 			if (!empty($data['params']['modified']))
 			{
 				$data['modified'] = $data['params']['modified'];
 			}
-			
+
 			if (!empty($data['params']['modified_date']))
 			{
 				$data['modified'] = $data['params']['modified_date'];
 			}
-			
+
 			if (!empty($data['params']['modified_by']))
 			{
 				$data['modified_by'] = $data['params']['modified_by'];
@@ -620,27 +644,27 @@ class YireoModel extends YireoDataModel
 			{
 				unset($data['params']['created']);
 			}
-			
+
 			if (isset($data['params']['created_date']))
 			{
 				unset($data['params']['created_date']);
 			}
-			
+
 			if (isset($data['params']['created_by']))
 			{
 				unset($data['params']['created_by']);
 			}
-			
+
 			if (isset($data['params']['modified']))
 			{
 				unset($data['params']['modified']);
 			}
-			
+
 			if (isset($data['params']['modified_date']))
 			{
 				unset($data['params']['modified_date']);
 			}
-			
+
 			if (isset($data['params']['modified_by']))
 			{
 				unset($data['params']['modified_by']);
@@ -894,7 +918,7 @@ class YireoModel extends YireoDataModel
 
 		// Get the LIMIT segments for the query
 		$limitString = null;
-		
+
 		if ($this->getConfig('limit_query') == true)
 		{
 			$limitstart = $this->getState('limitstart');
@@ -945,7 +969,7 @@ class YireoModel extends YireoDataModel
 			$fieldsString = implode(',', $fieldsStrings);
 
 			// Frontend or backend query
-			if ($this->_checkout == true && $this->app->isAdmin())
+			if ($this->allowCheckout() == true && $this->app->isAdmin())
 			{
 				$query = "SELECT " . $fieldsString . ", `editor`.`name` AS `editor` FROM `{table}` AS `{tableAlias}`\n";
 				$query .= " LEFT JOIN `#__users` AS `editor` ON `{tableAlias}`.`checked_out` = `editor`.`id`\n";
@@ -972,9 +996,9 @@ class YireoModel extends YireoDataModel
 
 		// Return the query including WHERE and ORDER BY and LIMIT
 		$query = $query . $extra . $where . $groupby . $orderby . $limitString;
-		$query = str_replace('{table}', $this->table_name, $query);
-		$query = str_replace('{tableAlias}', $this->table_alias, $query);
-		$query = str_replace('{primary}', $this->table_key, $query);
+		$query = str_replace('{table}', $this->table->getTableName(), $query);
+		$query = str_replace('{tableAlias}', $this->getConfig('table_alias'), $query);
+		$query = str_replace('{primary}', $this->table->getKeyName(), $query);
 
 		return $query;
 	}
@@ -1062,7 +1086,7 @@ class YireoModel extends YireoDataModel
 
 			if (!empty($stateField))
 			{
-				$this->addWhere('`' . $this->table_alias . '`.`' . $stateField . '` = ' . $state);
+				$this->addWhere($this->db->quoteName($this->table_alias) . '.`' . $stateField . '` = ' . $state);
 			}
 		}
 
@@ -1110,6 +1134,8 @@ class YireoModel extends YireoDataModel
 			return ' WHERE ' . implode(' AND ', $this->where) . "\n";
 		}
 
+		print_r($this->where);
+
 		return '';
 	}
 
@@ -1132,6 +1158,8 @@ class YireoModel extends YireoDataModel
 	 * Method to add a new ORDER BY argument
 	 *
 	 * @param string $orderby
+	 *
+	 * @return $this
 	 */
 	public function addOrderby($orderby = null)
 	{
@@ -1139,12 +1167,12 @@ class YireoModel extends YireoDataModel
 
 		if (empty($orderby))
 		{
-			return;
+			return $this;
 		}
 
 		if ($orderby == '{tableAlias}.')
 		{
-			return;
+			return $this;
 		}
 
 		if (is_string($orderby) && !isset($this->_orderby[$orderby]))
@@ -1161,12 +1189,16 @@ class YireoModel extends YireoDataModel
 
 			$this->_orderby[] = $orderby;
 		}
+
+		return $this;
 	}
 
 	/**
 	 * Method to add a new GROUP BY argument
 	 *
 	 * @param string $groupby
+	 *
+	 * @return $this
 	 */
 	public function addGroupby($groupby = null)
 	{
@@ -1174,12 +1206,12 @@ class YireoModel extends YireoDataModel
 
 		if (empty($groupby))
 		{
-			return;
+			return $this;
 		}
 
 		if ($groupby == '{tableAlias}.')
 		{
-			return;
+			return $this;
 		}
 
 		if (is_string($groupby) && !isset($this->_groupby[$groupby]))
@@ -1191,6 +1223,8 @@ class YireoModel extends YireoDataModel
 
 			$this->_groupby[] = $groupby;
 		}
+
+		return $this;
 	}
 
 	/**
@@ -1198,12 +1232,14 @@ class YireoModel extends YireoDataModel
 	 *
 	 * @param mixed  $where WHERE statement in the form of an array ($name, $value) or string
 	 * @param string $type  Type of WHERE statement. Either "is" or "like".
+	 *
+	 * @return $this
 	 */
 	public function addWhere($where, $type = 'is')
 	{
-		if ($this->_allow_filter == false)
+		if ($this->getConfig('allow_filter', true) == false)
 		{
-			return;
+			return $this;
 		}
 
 		if (is_array($where))
@@ -1222,6 +1258,8 @@ class YireoModel extends YireoDataModel
 		{
 			$this->where[] = $where;
 		}
+
+		return $this;
 	}
 
 	/**
@@ -1255,7 +1293,7 @@ class YireoModel extends YireoDataModel
 		$query = $db->getQuery(true);
 		$query->select($db->quoteName($this->_orderby_default, 'value'));
 		$query->select($db->quoteName($this->_orderby_title, 'text'));
-		$query->from($db->quoteName($this->table_name));
+		$query->from($db->quoteName($this->table->getTableName()));
 		$query->order($db->quoteName($this->_orderby_default));
 
 		return $query;
@@ -1328,7 +1366,7 @@ class YireoModel extends YireoDataModel
 		// Check the permissions for this edit.state action
 		if ($this->getId() > 0)
 		{
-			return $this->user->authorise('core.edit.state', $this->getConfig('option') . '.' . $this->_entity . '.' . (int) $this->getId());
+			return $this->user->authorise('core.edit.state', $this->getConfig('option') . '.' . $this->getConfig('table_alias') . '.' . (int) $this->getId());
 		}
 
 		return $this->user->authorise('core.edit.state', $this->getConfig('option'));

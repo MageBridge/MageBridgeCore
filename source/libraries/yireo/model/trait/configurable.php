@@ -31,6 +31,11 @@ trait YireoModelTraitConfigurable
 	 */
 	public function setConfig($name, $value = null)
 	{
+		if (!is_array($this->config))
+		{
+			$this->config = array();
+		}
+		
 		if (is_array($name) && empty($value))
 		{
 			$this->config = $name;
@@ -43,10 +48,11 @@ trait YireoModelTraitConfigurable
 
 	/**
 	 * @param $name
+	 * @param $default
 	 *
 	 * @return bool|mixed
 	 */
-	public function getConfig($name = null)
+	public function getConfig($name = null, $default = false)
 	{
 		if (empty($name))
 		{
@@ -55,7 +61,7 @@ trait YireoModelTraitConfigurable
 
 		if (empty($this->config[$name]))
 		{
-			return false;
+			return $default;
 		}
 
 		return $this->config[$name];

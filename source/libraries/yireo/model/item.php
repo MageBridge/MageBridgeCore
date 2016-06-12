@@ -14,7 +14,7 @@
 defined('_JEXEC') or die();
 
 // Import the loader
-require_once dirname(__FILE__) . '/loader.php';
+require_once dirname(__FILE__) . '/../loader.php';
 
 /**
  * Yireo Model
@@ -22,6 +22,6 @@ require_once dirname(__FILE__) . '/loader.php';
  *
  * @package Yireo
  */
-class YireoModelItem extends YireoDataModel
+class YireoModelItem extends YireoModel
 {
 }

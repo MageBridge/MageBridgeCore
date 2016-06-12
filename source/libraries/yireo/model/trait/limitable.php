@@ -67,16 +67,16 @@ trait YireoModelTraitLimitable
 	/**
 	 * Method to initialize the limitstart parameter\
 	 *
-	 * @param string $limitstart
+	 * @param string $limitStart
 	 */
-	public function initLimitstart($limitstart = null)
+	public function initLimitstart($limitStart = null)
 	{
-		if (is_numeric($limitstart) == false)
+		if (is_numeric($limitStart) == false)
 		{
-			$limitstart = $this->app->getUserStateFromRequest($this->getFilterName('limitstart'), 'limitstart', 0, 'int');
+			$limitStart = $this->app->getUserStateFromRequest($this->getFilterName('limitstart'), 'limitstart', 0, 'int');
 		}
 
-		$this->setState('limitstart', $limitstart);
+		$this->setState('limitstart', $limitStart);
 	}
 
 	/**

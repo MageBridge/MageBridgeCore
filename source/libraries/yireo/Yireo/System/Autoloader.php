@@ -28,6 +28,8 @@ class Autoloader
 		'YireoRouteQuery'         => 'route/query',
 		'YireoDispatcher'         => 'dispatcher',
 		'YireoModel'              => 'model',
+		'YireoModelItem'          => 'model/item',
+		'YireoModelItems'         => 'model/items',
 		'YireoAbstractModel'      => 'model/abstract',
 		'YireoCommonModel'        => 'model/common',
 		'YireoDataModel'          => 'model/data',
@@ -91,9 +93,9 @@ class Autoloader
 	 */
 	protected function loadNamespaced($className)
 	{
-		$prefix = 'Yireo\\';
+		$prefix   = 'Yireo\\';
 		$base_dir = __DIR__ . '/Yireo/';
-		$len = strlen($prefix);
+		$len      = strlen($prefix);
 
 		if (strncmp($prefix, $className, $len) !== 0)
 		{
