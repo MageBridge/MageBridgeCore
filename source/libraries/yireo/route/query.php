@@ -239,13 +239,18 @@ class YireoRouteQuery
 	 *
 	 * @return bool
 	 */
-	public function matchValue($name, $item)
-	{
-		if ($this->getValue($name) == $this->getValue($name, $item))
-		{
-			return true;
-		}
+    public function matchValue($name, $item, $type = 'string')
+    {
+        if ($type == 'int' && (int) $this->getValue($name) == (int) $this->getValue($name, $item))
+        {
+            return true;
+        }
 
-		return false;
-	}
+        if ($this->getValue($name) == $this->getValue($name, $item))
+        {
+            return true;
+        }
+
+        return false;
+    }
 }
