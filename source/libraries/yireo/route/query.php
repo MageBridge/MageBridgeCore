@@ -239,8 +239,13 @@ class YireoRouteQuery
 	 *
 	 * @return bool
 	 */
-    public function matchValue($name, $item, $type = 'string')
+    public function matchValue($name, $item, $type = null)
     {
+        if (empty($type) && preg_match('/\_id$/', $name))
+        {
+            $type = 'int';
+        }
+
         if ($type == 'int' && (int) $this->getValue($name) == (int) $this->getValue($name, $item))
         {
             return true;
