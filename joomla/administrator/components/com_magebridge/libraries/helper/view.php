@@ -4,9 +4,9 @@
  *
  * @author Yireo (info@yireo.com)
  * @package YireoLib
- * @copyright Copyright 2015
+ * @copyright Copyright 2016
  * @license GNU Public License
- * @link http://www.yireo.com
+ * @link https://www.yireo.com
  * @version 0.6.0
  */
 
@@ -49,7 +49,7 @@ class YireoHelperView
         }
 
         // Return the select-box
-        return JHTML::_('select.genericlist', $options, $name, implode(' ', $attributes), 'value', 'title', $value);
+        return JHtml::_('select.genericlist', $options, $name, implode(' ', $attributes), 'value', 'title', $value);
     }
 
     /*

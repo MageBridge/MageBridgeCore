@@ -4,9 +4,9 @@
  *
  * @author Yireo
  * @package YireoLib
- * @copyright Copyright 2015
+ * @copyright Copyright 2016
  * @license GNU Public License
- * @link http://www.yireo.com/
+ * @link https://www.yireo.com/
  * @version 0.5.3
  */
 
@@ -24,6 +24,6 @@ foreach($limits as $limit) {
 $javascript = 'onchange="document.adminForm.submit();"';
 ?>
 <div class="list-limit">
-    <?php echo JHTML::_('select.genericlist', $options, 'filter_list_limit', $javascript, 'value', 'title', $this->getFilter('list_limit')); ?>
+    <?php echo JHtml::_('select.genericlist', $options, 'filter_list_limit', $javascript, 'value', 'title', $this->getFilter('list_limit')); ?>
 </div>
 <?php endif; ?>

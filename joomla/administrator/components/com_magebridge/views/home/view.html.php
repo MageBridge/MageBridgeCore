@@ -4,9 +4,9 @@
  *
  * @author Yireo (info@yireo.com)
  * @package MageBridge
- * @copyright Copyright 2015
+ * @copyright Copyright 2016
  * @license GNU Public License
- * @link http://www.yireo.com
+ * @link https://www.yireo.com
  */
 
 // Check to ensure this file is included in Joomla!  
@@ -45,9 +45,9 @@ class MageBridgeViewHome extends YireoViewHome
 		$urls = array();
 		$urls['twitter'] ='http://twitter.com/yireo';
 		$urls['facebook'] ='http://www.facebook.com/yireo';
-		$urls['tutorials'] = 'http://www.yireo.com/tutorials/magebridge';
+		$urls['tutorials'] = 'https://www.yireo.com/tutorials/magebridge';
 		$urls['jed'] ='http://extensions.joomla.org/extensions/bridges/e-commerce-bridges/9440';
-		$urls['changelog'] ='http://www.yireo.com/tutorials/magebridge/updates/975-magebridge-changelog'; // @todo: Use this
+		$urls['changelog'] ='https://www.yireo.com/tutorials/magebridge/updates/975-magebridge-changelog'; // @todo: Use this
 		$this->urls = $urls;
 
 		parent::display($tpl);

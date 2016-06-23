@@ -4,9 +4,9 @@
  *
  * @author    Yireo (info@yireo.com)
  * @package   MageBridge
- * @copyright Copyright 2015
+ * @copyright Copyright 2016
  * @license   GNU Public License
- * @link      http://www.yireo.com/
+ * @link      https://www.yireo.com/
  */
 
 // Check to ensure this file is included in Joomla!
@@ -280,7 +280,7 @@ class PlgUserMageBridge extends JPlugin
 
 			setcookie($cookie, '', time() - 1000);
 			setcookie($cookie, '', time() - 1000, '/');
-			setcookie($cookie, '', time() - 1000, '/', '.' . JURI::getInstance()->toString(array('host')));
+			setcookie($cookie, '', time() - 1000, '/', '.' . JUri::getInstance()->toString(array('host')));
 			$application->input->set($cookie, null, 'cookie');
 			JFactory::getSession()->set('magebridge.cookie.' . $cookie, null);
 		}

@@ -4,9 +4,9 @@
  *
  * @author Yireo (info@yireo.com)
  * @package MageBridge
- * @copyright Copyright 2015
+ * @copyright Copyright 2016
  * @license GNU Public License
- * @link http://www.yireo.com
+ * @link https://www.yireo.com
  */
 
 defined('_JEXEC') or die('Restricted access');
@@ -49,7 +49,7 @@ On this page, you can see the result of Joomla! fetching data from the Magento M
 			<input type="hidden" name="view" value="check" />
 			<input type="hidden" name="layout" value="browser" />
 			<input type="hidden" name="task" value="" />
-			<?php echo JHTML::_( 'form.token' ); ?>
+			<?php echo JHtml::_( 'form.token' ); ?>
 		</form>
 	</td>
 </tr>

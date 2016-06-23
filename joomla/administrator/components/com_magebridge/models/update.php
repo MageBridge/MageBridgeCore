@@ -4,9 +4,9 @@
  *
  * @author Yireo (info@yireo.com)
  * @package MageBridge
- * @copyright Copyright 2015
+ * @copyright Copyright 2016
  * @license GNU Public License
- * @link http://www.yireo.com
+ * @link https://www.yireo.com
  */
 
 // Check to ensure this file is included in Joomla!
@@ -194,7 +194,7 @@ class MagebridgeModelUpdate extends YireoCommonModel
 		if (isset($extension['post_install_query'])) {
 			$query = trim($extension['post_install_query']);
 			if (!empty($query)) {
-				$db = JFactory::getDBO();
+				$db = JFactory::getDbo();
 				$db->setQuery($query);
 				try {
 					$db->execute();

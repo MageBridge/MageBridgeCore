@@ -4,9 +4,9 @@
  *
  * @author Yireo (info@yireo.com)
  * @package MageBridge
- * @copyright Copyright 2015
+ * @copyright Copyright 2016
  * @license GNU Public License
- * @link http://www.yireo.com
+ * @link https://www.yireo.com
  */
 
 // Check to ensure this file is included in Joomla!
@@ -50,6 +50,6 @@ class JElementT3Layout extends JElement
 			$options[] = array( 'value' => $layoutIndex, 'label' => $layoutIndex);
 		}
 
-		return JHTML::_('select.genericlist', $options, $name, null, 'value', 'label', $value);
+		return JHtml::_('select.genericlist', $options, $name, null, 'value', 'label', $value);
 	}
 }

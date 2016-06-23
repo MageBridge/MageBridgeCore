@@ -2,11 +2,11 @@
 /**
  * Joomla! Yireo Library
  *
- * @author Yireo (http://www.yireo.com/)
+ * @author Yireo (https://www.yireo.com/)
  * @package YireoLib
- * @copyright Copyright 2015
+ * @copyright Copyright 2016
  * @license GNU Public License
- * @link http://www.yireo.com/
+ * @link https://www.yireo.com/
  * @version 0.6.0
  */
 
@@ -105,7 +105,7 @@ class YireoCommonModel extends YireoAbstractModel
     public function __construct($tableAlias = null)
     {
         // Import use full variables from JFactory
-        $this->db = JFactory::getDBO();
+        $this->db = JFactory::getDbo();
         $this->app = JFactory::getApplication();
         $this->application = $this->app;
         $this->jinput = $this->app->input;

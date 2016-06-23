@@ -4,9 +4,9 @@
  *
  * @author Yireo
  * @package YireoLib
- * @copyright Copyright 2015
+ * @copyright Copyright 2016
  * @license GNU Public License
- * @link http://www.yireo.com/
+ * @link https://www.yireo.com/
  * @version 0.6.0
  */
 
@@ -46,17 +46,17 @@ $hasOrdering = ($table->getDefaultOrderBy()) ? true : false;
             <?php echo $this->loadTemplate('thead'); ?>
             <?php if($hasState) : ?>
             <th width="5%" class="title">
-                <?php echo JHTML::_('grid.sort', 'LIB_YIREO_TABLE_FIELDNAME_PUBLISHED', $this->fields['state_field'], $this->lists['order_Dir'], $this->lists['order'] ); ?>
+                <?php echo JHtml::_('grid.sort', 'LIB_YIREO_TABLE_FIELDNAME_PUBLISHED', $this->fields['state_field'], $this->lists['order_Dir'], $this->lists['order'] ); ?>
             </th>
             <?php endif; ?>
             <?php if($hasOrdering && YireoHelper::isJoomla25()) : ?>
             <th width="8%" nowrap="nowrap">
-                <?php echo JHTML::_('grid.sort', 'LIB_YIREO_TABLE_FIELDNAME_ORDERING', $this->fields['ordering_field'], $this->lists['order_Dir'], $this->lists['order'] ); ?>
-                <?php echo JHTML::_('grid.order', $this->items ); ?>
+                <?php echo JHtml::_('grid.sort', 'LIB_YIREO_TABLE_FIELDNAME_ORDERING', $this->fields['ordering_field'], $this->lists['order_Dir'], $this->lists['order'] ); ?>
+                <?php echo JHtml::_('grid.order', $this->items ); ?>
             </th>
             <?php endif; ?>
             <th width="5">
-                <?php echo JHTML::_('grid.sort', 'LIB_YIREO_TABLE_FIELDNAME_ID', $this->fields['primary_field'], $this->lists['order_Dir'], $this->lists['order'] ); ?>
+                <?php echo JHtml::_('grid.sort', 'LIB_YIREO_TABLE_FIELDNAME_ID', $this->fields['primary_field'], $this->lists['order_Dir'], $this->lists['order'] ); ?>
             </th>
         </tr>
     </thead>

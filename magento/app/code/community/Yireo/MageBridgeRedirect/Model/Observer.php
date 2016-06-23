@@ -4,9 +4,9 @@
  *
  * @author Yireo
  * @package MageBridge
- * @copyright Copyright 2015
+ * @copyright Copyright 2016
  * @license Open Source License
- * @link http://www.yireo.com
+ * @link https://www.yireo.com
  */
 
 /*
@@ -33,6 +33,11 @@ class Yireo_MageBridgeRedirect_Model_Observer
             return $this;
         }
 
+        // Check should redirect on current IPv4
+        if(Mage::helper('magebridgeredirect')->checkIPv4()) {
+            return $this;
+        }
+
         // Skip certain modules
         if(in_array($module, array('api'))) {
             return $this;
@@ -53,6 +58,7 @@ class Yireo_MageBridgeRedirect_Model_Observer
 
         // Redirect
         header('HTTP/1.1 301 Moved Permanently');
-        header('Location: '.$newUrl);exit;
+        header('Location: '.$newUrl);
+        exit;
     }
 }

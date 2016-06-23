@@ -3,11 +3,11 @@
     <name>MOD_MAGEBRIDGE_LOGIN</name>
 	<author>Yireo</author>
 	<creationDate>${dateMonth}</creationDate>
-	<copyright>Copyright (C) 2015 Yireo.com. All rights reserved.</copyright>
+	<copyright>Copyright (C) 2016 Yireo.com. All rights reserved.</copyright>
 	<license>GNU/GPL</license>
 	<authorEmail>development@yireo.com</authorEmail>
 	<authorUrl>www.yireo.com</authorUrl>
-    <version>1.9.5362</version>
+    <version>1.9.5398</version>
     <description>MOD_MAGEBRIDGE_LOGIN</description>
 
     <files folder="site">
@@ -16,7 +16,7 @@
         <folder>tmpl</folder>
     </files>
 
-    <languages folder="site/language">
+    <languages folder="site/language/en-GB">
         <language tag="en-GB">en-GB.mod_magebridge_login.ini</language>
         <language tag="en-GB">en-GB.mod_magebridge_login.sys.ini</language>
     </languages>

@@ -2,11 +2,11 @@
 /**
  * Joomla! Yireo Library
  *
- * @author Yireo (http://www.yireo.com/)
+ * @author Yireo (https://www.yireo.com/)
  * @package YireoLib
- * @copyright Copyright 2015
+ * @copyright Copyright 2016
  * @license GNU Public License
- * @link http://www.yireo.com/
+ * @link https://www.yireo.com/
  * @version 0.6.0
  */
 
@@ -787,7 +787,7 @@ class YireoController extends YireoCommonController
         $model->setId($id);
 
         // If this vote is made from an external source, make sure we redirect to an internal page
-        if (!JURI::isInternal($url)) {
+        if (!JUri::isInternal($url)) {
             $option = $this->_jinput->getCmd('option');
             $view = $this->_jinput->getCmd('view');
             $url = JRoute::_('index.php?option='.$option.'&view='.$view.'&id='.$id);

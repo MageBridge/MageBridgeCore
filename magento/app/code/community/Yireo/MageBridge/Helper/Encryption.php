@@ -4,9 +4,9 @@
  *
  * @author Yireo
  * @package MageBridge
- * @copyright Copyright 2015
+ * @copyright Copyright 2016
  * @license Open Source License
- * @link http://www.yireo.com
+ * @link https://www.yireo.com
  */
 
 /*
@@ -57,32 +57,16 @@ class Yireo_MageBridge_Helper_Encryption extends Mage_Core_Helper_Abstract
         $random = str_shuffle('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz');
         $key = Mage::helper('magebridge/encryption')->getSaltedKey($random);
 
-        // PHP 5.5 version
-        if(version_compare(PHP_VERSION, '5.5.0') >= 0) {
+        try {
+            $td = mcrypt_module_open(MCRYPT_CAST_256, '', 'ecb', '');
+            $iv = mcrypt_create_iv(mcrypt_enc_get_iv_size($td), MCRYPT_RAND);
+            mcrypt_generic_init($td, $key, $iv);
+            $encrypted = mcrypt_generic($td, $data);
+            $encoded = Mage::helper('magebridge/encryption')->base64_encode($encrypted);
 
-            try {
-                $td = mcrypt_module_open(MCRYPT_CAST_256, '', 'ecb', '');
-                $iv = mcrypt_create_iv(mcrypt_enc_get_iv_size($td), MCRYPT_RAND);
-                mcrypt_generic_init($td, $key, $iv);
-                $encrypted = mcrypt_generic($td, $data);
-                $encoded = Mage::helper('magebridge/encryption')->base64_encode($encrypted);
-
-            } catch(Exception $e) {
-                Mage::getSingleton('magebridge/debug')->error("Error while decrypting: ".$e->getMessage());
-                return null;
-            }
-
-        } else {
-
-            try {
-                $iv = substr($key, 0, mcrypt_get_iv_size(MCRYPT_CAST_256, MCRYPT_MODE_CFB));
-                $encrypted = @mcrypt_cfb(MCRYPT_CAST_256, $key, $data, MCRYPT_ENCRYPT, $iv);
-                $encoded = Mage::helper('magebridge/encryption')->base64_encode($encrypted);
-
-            } catch(Exception $e) {
-                Mage::getSingleton('magebridge/debug')->error("Error while decrypting: ".$e->getMessage());
-                return null;
-            }
+        } catch(Exception $e) {
+            Mage::getSingleton('magebridge/debug')->error("Error while decrypting: ".$e->getMessage());
+            return null;
         }
 
         return $encoded.'|=|'.$random;

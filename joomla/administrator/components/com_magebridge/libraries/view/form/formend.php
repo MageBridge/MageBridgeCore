@@ -4,9 +4,9 @@
  *
  * @author Yireo
  * @package YireoLib
- * @copyright Copyright 2015
+ * @copyright Copyright 2016
  * @license GNU Public License
- * @link http://www.yireo.com/
+ * @link https://www.yireo.com/
  * @version 0.6.0
  */
 
@@ -19,4 +19,4 @@ defined('_JEXEC') or die();
 <input type="hidden" name="cid[]" value="<?php echo $this->item->id; ?>" />
 <?php endif; ?>
 <input type="hidden" name="task" value="<?php echo $this->_task; ?>" />
-<?php echo JHTML::_('form.token'); ?>
+<?php echo JHtml::_('form.token'); ?>

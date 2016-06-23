@@ -4,9 +4,9 @@
  *
  * @author Yireo (info@yireo.com)
  * @package MageBridge
- * @copyright Copyright 2015
+ * @copyright Copyright 2016
  * @license GNU Public License
- * @link http://www.yireo.com
+ * @link https://www.yireo.com
  */
 
 // No direct access
@@ -70,7 +70,7 @@ class MageBridgeConnectorStore extends MageBridgeConnector
 		}
 
 		// Get the conditions
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$db->setQuery("SELECT * FROM #__magebridge_stores WHERE `published`=1 ORDER BY `ordering`");
 		$conditions = $db->loadObjectList();
 		if (empty($conditions)) {

@@ -4,9 +4,9 @@
  *
  * @author Yireo (info@yireo.com)
  * @package MageBridge
- * @copyright Copyright 2015
+ * @copyright Copyright 2016
  * @license GNU Public License
- * @link http://www.yireo.com
+ * @link https://www.yireo.com
  */
 
 // No direct access
@@ -36,7 +36,7 @@ class MageBridgeView extends YireoAbstractView
 		$rt = parent::__construct($config);
 
 		// Import use full variables from JFactory
-		$this->db = JFactory::getDBO();
+		$this->db = JFactory::getDbo();
 		$this->doc = JFactory::getDocument();
 		$this->user = JFactory::getUser();
 		$this->app = JFactory::getApplication();
@@ -54,7 +54,8 @@ class MageBridgeView extends YireoAbstractView
 	public function display($tpl = null)
 	{
 		// Add debugging
-		MageBridgeDebugHelper::addDebug();
+		$debugHelper = new MageBridgeDebugHelper;
+		$debugHelper->addDebug();
 
 		// Build the block
 		$this->block = $this->build();

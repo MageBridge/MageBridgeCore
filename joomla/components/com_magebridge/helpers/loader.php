@@ -2,11 +2,11 @@
 /**
  * Joomla! component MageBridge
  *
- * @author	Yireo (info@yireo.com)
+ * @author    Yireo (info@yireo.com)
  * @package   MageBridge
- * @copyright Copyright 2015
+ * @copyright Copyright 2016
  * @license   GNU Public License
- * @link	  http://www.yireo.com
+ * @link      https://www.yireo.com
  */
 
 // Check to ensure this file is included in Joomla!
@@ -37,7 +37,6 @@ spl_autoload_register('MageBridge_Autoload::load');
 /**
  * Loader-class to load all other MageBridge classes
  */
-
 class MageBridge_Autoload
 {
 	static public function load($name = null)
@@ -124,7 +123,8 @@ class MageBridge_Autoload
 			'MageBridgeUpdateHelper' => JPATH_ADMINISTRATOR . '/components/com_magebridge/helpers/update.php',
 			'MageBridgeWidgetHelper' => JPATH_ADMINISTRATOR . '/components/com_magebridge/helpers/widget.php',
 			'MageBridgeInstallHelper' => JPATH_ADMINISTRATOR . '/components/com_magebridge/helpers/install.php',
-			'MagebridgeFormFieldAbstract' => JPATH_ADMINISTRATOR . '/components/com_magebridge/fields/abstract.php',);
+			'MagebridgeFormFieldAbstract' => JPATH_ADMINISTRATOR . '/components/com_magebridge/fields/abstract.php',
+		);
 
 		// Get system variables
 		$application = JFactory::getApplication();

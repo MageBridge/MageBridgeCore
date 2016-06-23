@@ -4,9 +4,9 @@
  *
  * @author Yireo
  * @package Magento Bridge
- * @copyright Copyright 2015
+ * @copyright Copyright 2016
  * @license Open Source License
- * @link http://www.yireo.com
+ * @link https://www.yireo.com
  */
 
 // Basic PHP settings that can be overwritten
@@ -58,7 +58,9 @@ try {
 
     // Switch debugging
     if($magebridge->getMeta('debug')) {
-        //Varien_Profiler::enable();
+        ini_set('display_errors', 1);
+        ini_set('log_errors', 1);
+        Varien_Profiler::enable();
         Mage::setIsDeveloperMode(true);
     }
 

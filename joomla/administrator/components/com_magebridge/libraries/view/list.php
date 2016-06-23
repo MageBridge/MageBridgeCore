@@ -2,11 +2,11 @@
 /**
  * Joomla! Yireo Library
  *
- * @author    Yireo (http://www.yireo.com/)
+ * @author    Yireo (https://www.yireo.com/)
  * @package   YireoLib
- * @copyright Copyright 2015
+ * @copyright Copyright 2016
  * @license   GNU Public License
- * @link      http://www.yireo.com/
+ * @link      https://www.yireo.com/
  * @version   1.0.0
  */
 
@@ -74,8 +74,8 @@ class YireoViewList extends YireoView
 	public function display($tpl = null)
 	{
 		// Extra behaviors
-		JHTML::_('behavior.tooltip');
-		JHTML::_('behavior.modal');
+		JHtml::_('behavior.tooltip');
+		JHtml::_('behavior.modal');
 
 		// Automatically fetch items, total and pagination - and assign them to the template
 		$this->fetchItems();

@@ -4,9 +4,9 @@
  *
  * @author    Yireo (info@yireo.com)
  * @package   MageBridge
- * @copyright Copyright 2015
+ * @copyright Copyright 2016
  * @license   GNU Public License
- * @link      http://www.yireo.com
+ * @link      https://www.yireo.com
  */
 
 // Check to ensure this file is included in Joomla!
@@ -61,33 +61,38 @@ class plgSystemMageBridgePositions extends JPlugin
 		}
 
 		// Import the custom module helper - this is needed to make it possible to flush certain positions
-		if ($loadModuleHelper == true)
+		if ($loadModuleHelper == false)
 		{
-			$rewrite_path = __DIR__ . '/';
+            return false;
+        }
 
-			if (MageBridgeHelper::isJoomlaVersion('2.5'))
-			{
-				@include_once($rewrite_path . '25/joomla/application/module/helper.php');
-			}
-			else
-			{
-				if (MageBridgeHelper::isJoomlaVersion('3.0'))
-				{
-					@include_once($rewrite_path . '30/joomla/application/module/helper.php');
-				}
-				else
-				{
-					if (MageBridgeHelper::isJoomlaVersion('3.1'))
-					{
-						@include_once($rewrite_path . '31/cms/application/module/helper.php');
-					}
-					elseif (MageBridgeHelper::isJoomlaVersion(array('3.2', '3.3')))
-					{
-						@include_once($rewrite_path . '32/cms/application/module/helper.php');
-					}
-				}
-			}
+		$rewrite_path = __DIR__ . '/rewrite/';
+
+		if (MageBridgeHelper::isJoomlaVersion('2.5'))
+		{
+			@include_once($rewrite_path . '25/joomla/application/module/helper.php');
+            return true;
 		}
+				
+        if (MageBridgeHelper::isJoomlaVersion('3.0'))
+		{
+			@include_once($rewrite_path . '30/joomla/application/module/helper.php');
+            return true;
+		}
+					
+        if (MageBridgeHelper::isJoomlaVersion('3.1'))
+		{
+		    @include_once($rewrite_path . '31/cms/application/module/helper.php');
+            return true;
+		}
+					
+        if (MageBridgeHelper::isJoomlaVersion(array('3.2', '3.3', '3.4', '3.5')))
+		{
+			include_once($rewrite_path . '32/cms/application/module/helper.php');
+            return true;
+		}
+
+        return false;
 	}
 
 	/*

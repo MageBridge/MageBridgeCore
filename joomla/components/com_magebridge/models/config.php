@@ -4,9 +4,9 @@
  *
  * @author Yireo (info@yireo.com)
  * @package MageBridge
- * @copyright Copyright 2015
+ * @copyright Copyright 2016
  * @license GNU Public License
- * @link http://www.yireo.com
+ * @link https://www.yireo.com
  */
 
 // No direct access
@@ -93,6 +93,7 @@ class MagebridgeModelConfig extends YireoAbstractModel
 			'disable_js_all' => 1, // Disable Joomla! JS
 			'replace_jquery' => 1, // Replace Magento jQuery with Joomla
 			'merge_js' => 0,
+			'merge_css' => 0,
 			'use_google_api' => 0,
 			'use_protoaculous' => 0,
 			'use_protoculous' => 0,
@@ -509,7 +510,7 @@ class MagebridgeModelConfig extends YireoAbstractModel
 		}
 
 		// Check whether the URL-table contains entries
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$db->setQuery('SELECT * FROM #__magebridge_urls WHERE published=1');
 		$rows = $db->loadObjectList();
 		if (!empty($rows)) {
@@ -519,7 +520,7 @@ class MagebridgeModelConfig extends YireoAbstractModel
 		}
 
 		// Check whether the stores-table contains entries
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$db->setQuery('SELECT * FROM #__magebridge_stores WHERE published=1');
 		$rows = $db->loadObjectList();
 		if (!empty($rows)) {
@@ -554,7 +555,7 @@ class MagebridgeModelConfig extends YireoAbstractModel
 		}
 
 		// Store the values row-by-row
-		$database = JFactory::getDBO();
+		$database = JFactory::getDbo();
 		foreach ($config as $name => $data) {
 
 			if (!isset($data['name']) || empty($data['name'])) {

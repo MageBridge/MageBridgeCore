@@ -6,7 +6,7 @@
  * @package MageBridge
  * @copyright Copyright Yireo.com 2015
  * @license GNU Public License
- * @link http://www.yireo.com
+ * @link https://www.yireo.com
  */
 
 // Check to ensure this file is included in Joomla!
@@ -147,7 +147,7 @@ class MagebridgeModelCheck extends YireoCommonModel
 	public function doSystemChecks($installer = false)
 	{
 		$application = JFactory::getApplication();
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$config = MagebridgeModelConfig::load();
 		$server_software = (isset($_SERVER['software'])) ? $_SERVER['software'] : null;
 
@@ -175,7 +175,7 @@ class MagebridgeModelCheck extends YireoCommonModel
 		$result = (function_exists('curl_init')) ? self::CHECK_OK : self::CHECK_ERROR;
 		$this->addResult('compatibility', 'CURL', $result, JText::_('COM_MAGEBRIDGE_CHECK_CURL'));
 
-		$result = (function_exists('mcrypt_cfb')) ? self::CHECK_OK : self::CHECK_ERROR;
+		$result = (function_exists('mcrypt_get_iv_size')) ? self::CHECK_OK : self::CHECK_ERROR;
 		$this->addResult('compatibility', 'mcrypt', $result, JText::_('COM_MAGEBRIDGE_CHECK_MCRYPT'));
 
 		$result = (ini_get('magic_quotes_gpc')) ? self::CHECK_ERROR : self::CHECK_OK;
@@ -243,7 +243,7 @@ class MagebridgeModelCheck extends YireoCommonModel
 	public function doExtensionChecks()
 	{
 		$application = JFactory::getApplication();
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$config = MagebridgeModelConfig::load();
 
 		if (file_exists(JPATH_SITE.'/plugins/system/rokmoduleorder.php')) 
@@ -273,7 +273,7 @@ class MagebridgeModelCheck extends YireoCommonModel
 	public function doPluginChecks()
 	{
 		$application = JFactory::getApplication();
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 
 		$plugins = array(
 			array('authentication', 'magebridge', 'Authentication - MageBridge', 'COM_MAGEBRIDGE_CHECK_PLUGIN_AUTHENTICATION'),
@@ -385,7 +385,7 @@ class MagebridgeModelCheck extends YireoCommonModel
 	 */
 	public function checkStoreRelations()
 	{
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 
 		// Count the languages
 		$query = 'SELECT COUNT(*) FROM #__languages WHERE `published`=1';

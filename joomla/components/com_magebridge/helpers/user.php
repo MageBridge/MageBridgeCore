@@ -4,9 +4,9 @@
  *
  * @author	Yireo (info@yireo.com)
  * @package   MageBridge
- * @copyright Copyright 2015
+ * @copyright Copyright 2016
  * @license   GNU Public License
- * @link	  http://www.yireo.com
+ * @link	  https://www.yireo.com
  */
 
 // No direct access
@@ -107,7 +107,7 @@ class MageBridgeUserHelper
 
 		if (!is_array($rows))
 		{
-			$db = JFactory::getDBO();
+			$db = JFactory::getDbo();
 			$db->setQuery('SELECT * FROM #__magebridge_usergroups WHERE `published`=1 ORDER BY `ordering`');
 			$rows = $db->loadObjectList();
 		}
@@ -162,7 +162,7 @@ class MageBridgeUserHelper
 
 		if (!is_array($rows))
 		{
-			$db = JFactory::getDBO();
+			$db = JFactory::getDbo();
 			$query = 'SELECT `magento_group`,`joomla_group`,`params` ' . ' FROM #__magebridge_usergroups WHERE `published`=1 ORDER BY `ordering`';
 			$db->setQuery($query);
 			$rows = $db->loadObjectList();

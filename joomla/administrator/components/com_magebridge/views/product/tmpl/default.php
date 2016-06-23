@@ -4,9 +4,9 @@
  *
  * @author Yireo (info@yireo.com)
  * @package MageBridge
- * @copyright Copyright 2015
+ * @copyright Copyright 2016
  * @license GNU Public License
- * @link http://www.yireo.com
+ * @link https://www.yireo.com
  */
 
 defined('_JEXEC') or die('Restricted access');
@@ -85,5 +85,5 @@ defined('_JEXEC') or die('Restricted access');
 <input type="hidden" name="option" value="com_magebridge" />
 <input type="hidden" name="cid[]" value="<?php echo $this->item->id; ?>" />
 <input type="hidden" name="task" value="" />
-<?php echo JHTML::_( 'form.token' ); ?>
+<?php echo JHtml::_( 'form.token' ); ?>
 </form>

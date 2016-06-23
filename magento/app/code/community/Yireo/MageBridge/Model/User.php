@@ -4,9 +4,9 @@
  *
  * @author Yireo
  * @package MageBridge
- * @copyright Copyright 2015
+ * @copyright Copyright 2016
  * @license Open Source License
- * @link http://www.yireo.com
+ * @link https://www.yireo.com
  */
 
 define( 'MAGEBRIDGE_AUTHENTICATION_FAILURE', 0 );

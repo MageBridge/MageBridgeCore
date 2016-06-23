@@ -5,9 +5,9 @@
  *
  * @author Yireo
  * @package MageBridge
- * @copyright Copyright 2015
+ * @copyright Copyright 2016
  * @license Open Source License
- * @link http://www.yireo.com
+ * @link https://www.yireo.com
  */
 -->
 <config>
@@ -40,6 +40,15 @@
                             <show_in_store>1</show_in_store>
                             <comment><![CDATA[Example: http://JOOMLA/shop/]]></comment>
                         </magebridge_root>
+                        <magebridge_ipv4 translate="label">
+                            <label>Disable Redirect IPv4</label>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>3</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[One IP per line]]></comment>
+                        </magebridge_ipv4>
                     </fields>
                 </redirect>
             </groups>

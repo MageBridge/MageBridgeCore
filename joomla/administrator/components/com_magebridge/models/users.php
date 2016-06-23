@@ -4,9 +4,9 @@
  *
  * @author Yireo (info@yireo.com)
  * @package MageBridge
- * @copyright Copyright 2015
+ * @copyright Copyright 2016
  * @license GNU Public License
- * @link http://www.yireo.com
+ * @link https://www.yireo.com
  */
 
 // Check to ensure this file is included in Joomla!  
@@ -177,7 +177,7 @@ class MagebridgeModelUsers extends YireoCommonModel
 	private function _buildContentWhere()
 	{
 		$application = JFactory::getApplication();
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$option = JFactory::getApplication()->input->getCmd( 'option' ).'-users';
 
 		$filter_type = $application->getUserStateFromRequest( $option.'filter_type', 'filter_type', '', 'word' );

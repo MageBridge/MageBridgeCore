@@ -4,9 +4,9 @@
  *
  * @author Yireo (info@yireo.com)
  * @package MageBridge
- * @copyright Copyright 2015
+ * @copyright Copyright 2016
  * @license GNU Public License
- * @link http://www.yireo.com
+ * @link https://www.yireo.com
  */
 
 // Check to ensure this file is included in Joomla!
@@ -22,7 +22,7 @@ function com_install()
 
 	// Initialize important variables
 	$application = JFactory::getApplication();
-	$db = JFactory::getDBO();
+	$db = JFactory::getDbo();
 
 	// Upgrade the database tables
 	$helper->updateQueries();
