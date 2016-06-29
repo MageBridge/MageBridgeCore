@@ -2,11 +2,11 @@
 /**
  * Joomla! component MageBridge
  *
- * @author Yireo (info@yireo.com)
- * @package MageBridge
+ * @author    Yireo (info@yireo.com)
+ * @package   MageBridge
  * @copyright Copyright 2016
- * @license GNU Public License
- * @link https://www.yireo.com
+ * @license   GNU Public License
+ * @link      https://www.yireo.com
  */
 
 // Check to ensure this file is included in Joomla!
@@ -22,10 +22,6 @@ class MagebridgeModelUrl extends YireoModel
 {
 	/**
 	 * Constructor method
-	 *
-	 * @access public
-	 * @param null
-	 * @return null
 	 */
 	public function __construct()
 	{
@@ -36,9 +32,8 @@ class MagebridgeModelUrl extends YireoModel
 	/**
 	 * Method to store the item
 	 *
-	 * @package MageBridge
-	 * @access public
 	 * @param array $data
+	 *
 	 * @return bool
 	 */
 	public function store($data)
@@ -47,7 +42,8 @@ class MagebridgeModelUrl extends YireoModel
 		$rt = parent::store($data);
 
 		// Change the setting "load_urls" in the MageBridge configuration
-		if ($data['published'] == 1) {
+		if ($data['published'] == 1)
+		{
 			MagebridgeModelConfig::saveValue('load_urls', 1);
 		}
 

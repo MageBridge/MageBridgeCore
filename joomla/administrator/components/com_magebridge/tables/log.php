@@ -2,30 +2,27 @@
 /**
  * Joomla! component MageBridge
  *
- * @author Yireo (info@yireo.com)
- * @package MageBridge
+ * @author    Yireo (info@yireo.com)
+ * @package   MageBridge
  * @copyright Copyright 2016
- * @license GNU Public License
- * @link https://www.yireo.com
+ * @license   GNU Public License
+ * @link      https://www.yireo.com
  */
 
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
 /**
-* MageBridge Table class
-*
-* @package MageBridge
-*/
-class TableLog extends YireoTable
+ * MageBridge Table class
+ */
+class MagebridgeTableLog extends YireoTable
 {
 	/**
 	 * Constructor
 	 *
 	 * @param JDatabase $db
-	 * @return null
 	 */
-	public function __construct(& $db) 
+	public function __construct(& $db)
 	{
 		parent::__construct('#__magebridge_log', 'id', $db);
 	}
@@ -33,8 +30,6 @@ class TableLog extends YireoTable
 	/**
 	 * Helper-method to get the default ORDER BY value (depending on the present fields)
 	 *
-	 * @access public
-	 * @param null
 	 * @return array
 	 */
 	public function getDefaultOrderBy()

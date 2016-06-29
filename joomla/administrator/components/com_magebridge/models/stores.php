@@ -20,9 +20,6 @@ class MagebridgeModelStores extends YireoModel
 	/**
 	 * Constructor method
 	 *
-	 * @access public
-	 * @param null
-	 * @return null
 	 */
 	public function __construct()
 	{

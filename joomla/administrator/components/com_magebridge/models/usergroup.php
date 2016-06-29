@@ -2,11 +2,11 @@
 /**
  * Joomla! component MageBridge
  *
- * @author Yireo (info@yireo.com)
- * @package MageBridge
+ * @author    Yireo (info@yireo.com)
+ * @package   MageBridge
  * @copyright Copyright 2016
- * @license GNU Public License
- * @link https://www.yireo.com
+ * @license   GNU Public License
+ * @link      https://www.yireo.com
  */
 
 // Check to ensure this file is included in Joomla!
@@ -22,10 +22,6 @@ class MagebridgeModelUsergroup extends YireoModel
 {
 	/**
 	 * Constructor method
-	 *
-	 * @access public
-	 * @param null
-	 * @return null
 	 */
 	public function __construct()
 	{
