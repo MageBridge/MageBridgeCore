@@ -119,6 +119,7 @@ class YireoCommonView extends YireoAbstractView
 		// Create the namespace-variables
 		$this->setConfig('view', (!empty($config['name'])) ? $config['name'] : $this->input->getCmd('view', 'default'));
 		$this->setConfig('option', (!empty($config['option'])) ? $config['option'] : $this->input->getCmd('option'));
+
 		$this->_name = $this->getConfig('view');
 		$option_id = $this->getConfig('option') . '_' . $this->getConfig('view') . '_';
 
@@ -128,7 +129,7 @@ class YireoCommonView extends YireoAbstractView
 		}
 
 		$this->setConfig('option_id', $option_id);
-
+		
 		// Load additional language-files
 		YireoHelper::loadLanguageFile();
 	}

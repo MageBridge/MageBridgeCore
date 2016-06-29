@@ -58,8 +58,8 @@ class YireoViewList extends YireoView
 
 	/**
 	 * Main constructor method
-	 *
-	 * @subpackage Yireo
+	 * 
+	 * @return mixed
 	 */
 	public function __construct($config = array())
 	{
@@ -75,7 +75,7 @@ class YireoViewList extends YireoView
 	 *
 	 * @param string $tpl
 	 *
-	 * @return null
+	 * @return mixed
 	 */
 	public function display($tpl = null)
 	{
@@ -114,7 +114,11 @@ class YireoViewList extends YireoView
 		$fields                   = array();
 		$fields['primary_field']  = $primaryKey;
 		$fields['ordering_field'] = $this->model->getOrderByDefault();
-		$fields['state_field']    = $this->table->getStateField();
+
+		if ($this->table)
+		{
+			$fields['state_field']    = $this->table->getStateField();
+		}
 
 		$this->fields = $fields;
 
@@ -166,7 +170,7 @@ class YireoViewList extends YireoView
 		}
 
 		// Initialize the toolbar
-		if ($this->table->getStateField() != '')
+		if ($this->table && $this->table->getStateField() != '')
 		{
 			JToolbarHelper::publishList();
 			JToolbarHelper::unpublishList();
@@ -191,9 +195,6 @@ class YireoViewList extends YireoView
 
 	/**
 	 * Method to return the checkedout grid-box
-	 *
-	 * @access     public
-	 * @subpackage Yireo
 	 *
 	 * @param object $item
 	 * @param int    $i
@@ -228,9 +229,6 @@ class YireoViewList extends YireoView
 	/**
 	 * Method to return the checkbox to do something
 	 *
-	 * @access     public
-	 * @subpackage Yireo
-	 *
 	 * @param object $item
 	 * @param int    $i
 	 *
@@ -245,9 +243,6 @@ class YireoViewList extends YireoView
 
 	/**
 	 * Helper method to return the published grid-box
-	 *
-	 * @access     public
-	 * @subpackage Yireo
 	 *
 	 * @param object $item
 	 * @param int    $i
@@ -273,7 +268,10 @@ class YireoViewList extends YireoView
 		}
 
 		// Fetch the state-field
-		$stateField = $this->table->getStateField();
+		if ($this->table)
+		{
+			$stateField = $this->table->getStateField();
+		}
 
 		if (!empty($stateField))
 		{
@@ -287,15 +285,17 @@ class YireoViewList extends YireoView
 	/**
 	 * Method to return whether an item is checked out or not
 	 *
-	 * @access     public
-	 * @subpackage Yireo
-	 *
 	 * @param
 	 *
 	 * @return array
 	 */
 	public function isCheckedOut($item = null)
 	{
+		if ($this->table == false)
+		{
+			return false;
+		}
+		
 		// If this item has no checked_out field, it's an easy choice
 		if (isset($item->checked_out) == false)
 		{

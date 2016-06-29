@@ -54,6 +54,7 @@ trait YireoModelTraitTable
 	 * Database table-alias
 	 *
 	 * @var string
+	 * @deprecated Use $this->getConfig('table_alias') instead
 	 */
 	protected $table_alias = '';
 
@@ -61,7 +62,7 @@ trait YireoModelTraitTable
 	 * Database table-alias
 	 *
 	 * @var string
-	 * @deprecated Use $this->table_alias instead
+	 * @deprecated Use $this->getConfig('table_alias') instead
 	 */
 	protected $_tbl_alias = '';
 
@@ -96,13 +97,13 @@ trait YireoModelTraitTable
 	{
 		$this->skip_table = $skip_table;
 	}
-	
+
 	/**
 	 * @return string
 	 */
 	public function getTableAlias()
 	{
-		return $this->table_alias;
+		return $this->getConfig('table_alias');
 	}
 
 	/**
@@ -122,19 +123,19 @@ trait YireoModelTraitTable
 		if (!empty($table_prefix))
 		{
 			$this->setConfig('table_prefix', $table_prefix);
-			
+
 			return true;
 		}
-		
+
 		// Set the database variables
 		if ($this->getConfig('table_prefix_auto') == true)
 		{
 			$tablePrefix = $this->getConfig('component') . 'Table';
 			$this->setConfig('table_prefix', $tablePrefix);
-			
+
 			return true;
 		}
-		
+
 		return false;
 	}
 

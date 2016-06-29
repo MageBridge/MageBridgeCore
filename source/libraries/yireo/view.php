@@ -135,10 +135,10 @@ class YireoView extends YireoCommonView
 		}
 
 		// Insert the model & table
-		$this->model = $this->getModel();
+		$this->model = $this->getModel(null, false);
 		$this->_model = $this->model;
 		
-		if (!empty($this->model))
+		if (!empty($this->model) && $this->model instanceof YireoDataModel)
 		{
 			$this->table = $this->model->getTable();
 			$this->_table = $this->table;
@@ -367,7 +367,7 @@ class YireoView extends YireoCommonView
 		}
 
 		// Fetch the model
-		$this->model = $this->getModel();
+		$this->model = $this->getModel(null, false);
 
 		if (empty($this->model))
 		{
@@ -537,12 +537,13 @@ class YireoView extends YireoCommonView
 	 * Overload the original method
 	 *
 	 * @param string $name
+	 * @param bool $generateFatalError
 	 *
 	 * @return mixed
 	 * 
 	 * @throws Yireo\Exception\View\ModelNotFound
 	 */
-	public function getModel($name = null)
+	public function getModel($name = null, $generateFatalError = true)
 	{
 		if (empty($name))
 		{
@@ -567,7 +568,7 @@ class YireoView extends YireoCommonView
 			$model = JModelLegacy::getInstance($name, $classPrefix, array());
 		}
 
-		if (empty($model))
+		if (empty($model) && $generateFatalError == true)
 		{
 			throw new Yireo\Exception\View\ModelNotFound('YireoModel not found');
 		}

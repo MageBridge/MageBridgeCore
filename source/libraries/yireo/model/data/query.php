@@ -222,7 +222,7 @@ class YireoModelDataQuery
 		// Automatically add the WHERE-statement for a single ID-based query
 		if (!empty($this->id))
 		{
-			$this->addWhere($this->db->quoteName($this->tableAlias . '.' . $this->table->getPrimaryKey()) . '=' . (int) $this->id);
+			$this->addWhere($this->db->quoteName($this->tableAlias . '.' . $this->table->getKeyName()) . '=' . (int) $this->id);
 		}
 
 		// Automatically add a WHERE-statement if the state-filter is used

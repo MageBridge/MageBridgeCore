@@ -41,7 +41,7 @@ class YireoModel extends YireoCommonModel
 	 * Trait to implement table behaviour
 	 */
 	use YireoModelTraitTable;
-	
+
 	/**
 	 * Trait to implement checkout behaviour
 	 */
@@ -101,8 +101,17 @@ class YireoModel extends YireoCommonModel
 	 * Search columns
 	 *
 	 * @var array
+	 * @deprecated Use $this->getConfig('search_fields') instead
 	 */
 	protected $search = array();
+
+	/**
+	 * Search columns
+	 *
+	 * @var array
+	 * @deprecated Use $this->getConfig('search_fields') instead
+	 */
+	protected $_search = array();
 
 	/**
 	 * Order-by segments
@@ -170,9 +179,9 @@ class YireoModel extends YireoCommonModel
 		// Handle a deprecated constructor call
 		if (is_string($config))
 		{
-			$tableAlias = $config;
+			$tableAlias        = $config;
 			$this->table_alias = $tableAlias;
-			$config = array('table_alias' => $tableAlias);
+			$config            = array('table_alias' => $tableAlias);
 		}
 
 		// Call the parent constructor
@@ -368,7 +377,6 @@ class YireoModel extends YireoCommonModel
 
 		$id = $this->input->getInt('id', 0);
 
-
 		if (!empty($id) && $id > 0)
 		{
 			$this->setId((int) $id);
@@ -403,6 +411,16 @@ class YireoModel extends YireoCommonModel
 	protected function handleModelDeprecated()
 	{
 		$this->_table = $this->table;
+
+		if (!empty($this->_search))
+		{
+			$this->setConfig('search_fields', $this->_search);
+		}
+
+		if (!empty($this->search))
+		{
+			$this->setConfig('search_fields', $this->search);
+		}
 	}
 
 	/**
@@ -848,17 +866,36 @@ class YireoModel extends YireoCommonModel
 	 */
 	public function delete($cid = array())
 	{
-		if (count($cid) && !empty($this->table_name) && !empty($this->table_key))
+		if (!count($cid) > 0)
 		{
-			\Joomla\Utilities\ArrayHelper::toInteger($cid);
-			$cids  = implode(',', $cid);
-			$query = 'DELETE FROM ' . $this->table_name . ' WHERE ' . $this->table_key . ' IN ( ' . $cids . ' )';
-			$this->_db->setQuery($query);
+			return false;
+		}
 
-			if (!$this->_db->execute())
-			{
-				$this->throwDbException();
-			}
+		$tableName = $this->table->getTableName();
+		$primaryKey = $this->table->getKeyName();
+
+		if (empty($tableName))
+		{
+			throw new RuntimeException(JText::_('LIB_YIREO_MODEL_ITEM_NO_TABLE_NAME'));
+		}
+
+		if (empty($primaryKey))
+		{
+			throw new RuntimeException(JText::_('LIB_YIREO_MODEL_ITEM_NO_TABLE_KEY'));
+		}
+
+		\Joomla\Utilities\ArrayHelper::toInteger($cid);
+		$cids  = implode(',', $cid);
+
+		$query = $this->_db->getQuery(true);
+		$query->delete($this->_db->quoteName($tableName));
+		$query->where($this->_db->quoteName($primaryKey) . ' IN (' . $cids . ')');
+
+		$this->_db->setQuery($query);
+
+		if (!$this->_db->execute())
+		{
+			$this->throwDbException();
 		}
 
 		return true;
@@ -1108,14 +1145,14 @@ class YireoModel extends YireoCommonModel
 		if (strstr($query, '{access}'))
 		{
 			$query = str_replace('{access}', '`viewlevel`.`title` AS `accesslevel`', $query);
-			$query .= " LEFT JOIN `#__viewlevels` AS `viewlevel` ON `viewlevel`.`id`=`" . $this->table_alias . "`.`access`\n";
+			$query .= " LEFT JOIN `#__viewlevels` AS `viewlevel` ON `viewlevel`.`id`=`" . $this->getConfig('table_alias') . "`.`access`\n";
 		}
 
 		// Add-in editor-details
 		if (strstr($query, '{editor}'))
 		{
 			$query = str_replace('{editor}', '`user`.`name` AS `editor`', $query);
-			$query .= " LEFT JOIN `#__users` AS `user` ON `user`.`id`=`" . $this->table_alias . "`.`checked_out`\n";
+			$query .= " LEFT JOIN `#__users` AS `user` ON `user`.`id`=`" . $this->getConfig('table_alias') . "`.`checked_out`\n";
 		}
 
 		// Return the query including WHERE and ORDER BY and LIMIT
@@ -1210,7 +1247,7 @@ class YireoModel extends YireoCommonModel
 
 			if (!empty($stateField))
 			{
-				$this->addWhere($this->db->quoteName($this->table_alias) . '.`' . $stateField . '` = ' . $state);
+				$this->addWhere($this->db->quoteName($this->getConfig('table_alias')) . '.`' . $stateField . '` = ' . $state);
 			}
 		}
 
@@ -1221,30 +1258,31 @@ class YireoModel extends YireoCommonModel
 
 			if (!empty($stateField))
 			{
-				$this->addWhere($this->table_alias . '.' . $stateField . ' = 1');
+				$this->addWhere($this->getConfig('table_alias') . '.' . $stateField . ' = 1');
 			}
 		}
 
 		// Automatically add a WHERE-statement if the search-filter is used
-		$search = $this->getFilter('search');
+		$search       = $this->getFilter('search');
+		$searchFields = $this->getConfig('search_fields');
 
-		if (!empty($this->search) && !empty($search))
+		if (!empty($searchFields) && !empty($search))
 		{
 			$where_search = array();
 
-			foreach ($this->search as $column)
+			foreach ($searchFields as $searchField)
 			{
-				if (strstr($column, '.') == false && strstr($column, '`') == false)
+				if (strstr($searchField, '.') == false && strstr($searchField, '`') == false)
 				{
-					$column = "`" . $column . "`";
+					$searchField = $this->db->quoteName($searchField);
 				}
 
-				if (strstr($column, '.') == false)
+				if (strstr($searchField, '.') == false)
 				{
-					$column = "`" . $this->table_alias . "`." . $column;
+					$searchField = $this->db->quoteName($this->getConfig('table_alias')) . "." . $searchField;
 				}
 
-				$where_search[] = "$column LIKE '%$search%'";
+				$where_search[] = "$searchField LIKE " . $this->db->quote("%$search%");
 			}
 		}
 
@@ -1257,7 +1295,7 @@ class YireoModel extends YireoCommonModel
 		{
 			return ' WHERE ' . implode(' AND ', $this->where) . "\n";
 		}
-		
+
 		return '';
 	}
 

@@ -392,17 +392,36 @@ class YireoModelItem extends YireoDataModel
 	 */
 	public function delete($cid = array())
 	{
-		if (count($cid) && !empty($this->table_name) && !empty($this->table_key))
+		if (!count($cid) > 0)
 		{
-			\Joomla\Utilities\ArrayHelper::toInteger($cid);
-			$cids  = implode(',', $cid);
-			$query = 'DELETE FROM ' . $this->table_name . ' WHERE ' . $this->table_key . ' IN ( ' . $cids . ' )';
-			$this->_db->setQuery($query);
+			return false;
+		}
 
-			if (!$this->_db->execute())
-			{
-				$this->throwDbException();
-			}
+		$tableName = $this->table->getTableName();
+		$primaryKey = $this->table->getKeyName();
+
+		if (empty($tableName))
+		{
+			throw new RuntimeException(JText::_('LIB_YIREO_MODEL_ITEM_NO_TABLE_NAME'));
+		}
+
+		if (empty($primaryKey))
+		{
+			throw new RuntimeException(JText::_('LIB_YIREO_MODEL_ITEM_NO_TABLE_KEY'));
+		}
+
+		\Joomla\Utilities\ArrayHelper::toInteger($cid);
+		$cids  = implode(',', $cid);
+
+		$query = $this->_db->getQuery(true);
+		$query->delete($this->_db->quoteName($tableName));
+		$query->where($this->_db->quoteName($primaryKey) . ' IN (' . $cids . ')');
+
+		$this->_db->setQuery($query);
+
+		if (!$this->_db->execute())
+		{
+			$this->throwDbException();
 		}
 
 		return true;

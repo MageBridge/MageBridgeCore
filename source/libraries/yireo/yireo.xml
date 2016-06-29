@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="library" version="3.3" method="upgrade">
-    <name>Yireo</name>
+    <name>Library - Yireo</name>
 	<libraryname>yireo</libraryname>
     <author>Yireo</author>
     <authoremail>support@yireo.com</authoremail>
@@ -8,7 +8,7 @@
     <creationDate>June 2016</creationDate>
     <copyright>Copyright 2016 Yireo.com. All rights reserved.</copyright>
     <license>http://www.gnu.org/licenses/gpl-3.0.html GNU/GPL</license>
-    <version>0.1.8</version>
+    <version>0.2.4</version>
 
 	<languages folder="admin/language">
 		<language tag="en-GB">en-GB.lib_yireo.ini</language>
@@ -37,6 +37,7 @@
         <folder>model</folder>
         <folder>route</folder>
         <folder>view</folder>
+        <folder>Yireo</folder>
     </files>
 
 	<updateservers>

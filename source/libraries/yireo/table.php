@@ -21,10 +21,7 @@ jimport('joomla.filter.output');
 require_once dirname(__FILE__) . '/loader.php';
 
 /**
- * Generic Table class
- *
- * @static
- * @package    Yireo
+ * Common Table class
  */
 class YireoTable extends JTable
 {
@@ -58,22 +55,15 @@ class YireoTable extends JTable
 
 	/**
 	 * Flag to enable debugging
-	 *
-	 * @access public
 	 */
 	protected $_debug = false;
 
 	/**
 	 * Constructor
 	 *
-	 * @access     public
-	 * @subpackage Yireo
-	 *
 	 * @param string    $table_name
 	 * @param string    $primary_key
-	 * @param JDatabase $db
-	 *
-	 * @return null
+	 * @param JDatabaseDriver $db
 	 */
 	public function __construct($table_name, $primary_key, $db)
 	{
@@ -117,24 +107,15 @@ class YireoTable extends JTable
 	/**
 	 * Bind method
 	 *
-	 * @access     public
-	 * @subpackage Yireo
-	 *
 	 * @param array  $array
 	 * @param string $ignore
 	 *
-	 * @return null
+	 * @return mixed
 	 * @see        JTable:bind
 	 */
 	public function bind($array, $ignore = '')
 	{
-		// Set cid[] as primary key
-		if (key_exists('cid', $array))
-		{
-			$cid = (int) $array['cid'][0];
-			$primary_key = $this->getKeyName();
-			$array[$primary_key] = $cid;
-		}
+		$this->bindCid($array);
 
 		// Remove fields that do not exist in the database-table
 		$fields = $this->getDatabaseFields();
@@ -146,7 +127,19 @@ class YireoTable extends JTable
 				unset($array[$name]);
 			}
 		}
+		
+		$this->bindDefaults($array);
+		$this->bindAlias($array);
+		$this->bindParams($array);
 
+		return parent::bind($array, $ignore);
+	}
+
+	/**
+	 * @param $array
+	 */
+	protected function bindDefaults(&$array)
+	{
 		// Add fields that are defined in this table by default, but are not set to bound
 		if (!empty($this->_defaults))
 		{
@@ -158,7 +151,41 @@ class YireoTable extends JTable
 				}
 			}
 		}
+	}
 
+	/**
+	 * @param $array
+	 */
+	protected function bindCid(&$array)
+	{
+		// Set cid[] as primary key
+		if (key_exists('cid', $array))
+		{
+			$cid = (int) $array['cid'][0];
+			$primary_key = $this->getKeyName();
+			$array[$primary_key] = $cid;
+		}
+	}
+
+	/**
+	 * @param $array
+	 */
+	protected function bindParams(&$array)
+	{
+		// Convert the parameter array to a flat string
+		if (key_exists('params', $array) && is_array($array['params']))
+		{
+			$registry = new \Joomla\Registry\Registry;
+			$registry->loadArray($array['params']);
+			$array['params'] = $registry->toString();
+		}
+	}
+
+	/**
+	 * @param $array
+	 */
+	protected function bindAlias(&$array)
+	{
 		// Generate an alias if it is empty, but if a title exists
 		if (empty($array['alias']))
 		{
@@ -166,31 +193,16 @@ class YireoTable extends JTable
 			{
 				$array['alias'] = JFilterOutput::stringURLSafe($array['name']);
 			}
-			
+
 			if (!empty($array['title']))
 			{
 				$array['alias'] = JFilterOutput::stringURLSafe($array['title']);
 			}
 		}
-
-		// Convert the parameter array to a flat string
-		if (key_exists('params', $array) && is_array($array['params']))
-		{
-			$registry = new JRegistry();
-			$registry->loadArray($array['params']);
-			$array['params'] = $registry->toString();
-		}
-
-		return parent::bind($array, $ignore);
 	}
 
 	/**
 	 * Overloaded check method to ensure data integrity
-	 *
-	 * @access     public
-	 * @subpackage Yireo
-	 *
-	 * @param null
 	 *
 	 * @return bool
 	 */
@@ -265,9 +277,6 @@ class YireoTable extends JTable
 	/**
 	 * Helper-method to check for duplicate values in the table
 	 *
-	 * @access     public
-	 * @subpackage Yireo
-	 *
 	 * @param string $field
 	 *
 	 * @return bool
@@ -278,7 +287,7 @@ class YireoTable extends JTable
 		{
 			$table = $this->getTableName();
 			$primary_key = $this->getKeyName();
-			$query = "SELECT `$primary_key` FROM `$table` WHERE `$field`=" . $this->_db->Quote($this->$field);
+			$query = "SELECT `$primary_key` FROM `$table` WHERE `$field`=" . $this->_db->quote($this->$field);
 			$this->_db->setQuery($query);
 
 			$xid = intval($this->_db->loadResult());
@@ -297,11 +306,6 @@ class YireoTable extends JTable
 	/**
 	 * Helper-method to get the latest insert ID
 	 *
-	 * @access     public
-	 * @subpackage Yireo
-	 *
-	 * @param null
-	 *
 	 * @return int
 	 */
 	public function getLastInsertId()
@@ -318,11 +322,6 @@ class YireoTable extends JTable
 	/**
 	 * Helper-method to get the error-message
 	 *
-	 * @access     public
-	 * @subpackage Yireo
-	 *
-	 * @param null
-	 *
 	 * @return int
 	 */
 	public function getErrorMsg()
@@ -332,10 +331,6 @@ class YireoTable extends JTable
 
 	/**
 	 * Helper-method to get all fields from this table
-	 *
-	 * @access public
-	 *
-	 * @param null
 	 *
 	 * @return array
 	 */
@@ -359,15 +354,14 @@ class YireoTable extends JTable
 	/**
 	 * Helper-method to get all fields from this table
 	 *
-	 * @access public
-	 *
-	 * @param null
+	 * @param string $tableName
 	 *
 	 * @return array
 	 */
 	static public function getCachedDatabaseFields($tableName)
 	{
-		$db = JFactory::getDBO();
+		/** @var JDatabaseDriver $db */
+		$db = JFactory::getDbo();
 		$db->setQuery('SHOW FIELDS FROM `' . $tableName . '`');
 		$fields = (method_exists($db, 'loadColumn')) ? $db->loadColumn() : $db->loadResultArray();
 
@@ -377,9 +371,7 @@ class YireoTable extends JTable
 	/**
 	 * Helper-method to get the default ORDER BY value (depending on the present fields)
 	 *
-	 * @access public
-	 *
-	 * @param null
+	 * @param mixed $check
 	 *
 	 * @return array
 	 */
@@ -410,10 +402,6 @@ class YireoTable extends JTable
 	/**
 	 * Helper-method to get all fields from this table
 	 *
-	 * @access public
-	 *
-	 * @param null
-	 *
 	 * @return array
 	 */
 	public function hasAssetId()
@@ -423,10 +411,6 @@ class YireoTable extends JTable
 
 	/**
 	 * Helper-method to get the state-field
-	 *
-	 * @access public
-	 *
-	 * @param null
 	 *
 	 * @return array
 	 */
@@ -450,10 +434,6 @@ class YireoTable extends JTable
 	/**
 	 * Helper-method to get the default ORDER BY value (depending on the present fields)
 	 *
-	 * @access public
-	 *
-	 * @param null
-	 *
 	 * @return array
 	 */
 	public function getDefaultOrderBy()
@@ -472,10 +452,6 @@ class YireoTable extends JTable
 
 	/**
 	 * Helper-method to turn an array into a CSV-list
-	 *
-	 * @access public
-	 *
-	 * @param null
 	 *
 	 * @return array
 	 */

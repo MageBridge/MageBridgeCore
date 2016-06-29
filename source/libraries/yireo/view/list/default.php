@@ -41,15 +41,9 @@ $hasOrdering = ($table->getDefaultOrderBy()) ? true : false;
 						<?php echo JHtml::_('grid.checkall'); ?>
 				</th>
 				<?php echo $this->loadTemplate('thead'); ?>
-				<?php if ($hasState) : ?>
+				<?php if ($hasState && !empty($this->fields['state_field'])) : ?>
 					<th width="5%" class="title">
 						<?php echo JHtml::_('grid.sort', 'LIB_YIREO_TABLE_FIELDNAME_PUBLISHED', $this->fields['state_field'], $this->lists['order_Dir'], $this->lists['order']); ?>
-					</th>
-				<?php endif; ?>
-				<?php if ($hasOrdering && YireoHelper::isJoomla25()) : ?>
-					<th width="8%" nowrap="nowrap">
-						<?php echo JHtml::_('grid.sort', 'LIB_YIREO_TABLE_FIELDNAME_ORDERING', $this->fields['ordering_field'], $this->lists['order_Dir'], $this->lists['order']); ?>
-						<?php echo JHtml::_('grid.order', $this->items); ?>
 					</th>
 				<?php endif; ?>
 				<th width="5">
@@ -126,22 +120,6 @@ $hasOrdering = ($table->getDefaultOrderBy()) ? true : false;
 							<?php if ($hasState) : ?>
 								<td>
 									<?php echo $published; ?>
-								</td>
-							<?php endif; ?>
-							<?php if ($hasOrdering && YireoHelper::isJoomla25()) : ?>
-								<td class="order">
-									<?php if (isset($item->hasOrdering) && $item->hasOrdering == false) : ?>
-										<?php echo $this->getImageTag('disabled.png'); ?>
-									<?php else: ?>
-										<?php if ($this->pagination) : ?>
-											<span><?php echo $this->pagination->orderUpIcon($i, true, 'orderup', 'Move Up', $ordering); ?></span>
-											<span><?php echo $this->pagination->orderDownIcon($i, 0, true, 'orderdown', 'Move Down', $ordering); ?></span>
-										<?php endif; ?>
-										<?php $disabled = ($ordering) ? '' : 'disabled="disabled"'; ?>
-										<input type="text" name="order[]" size="5"
-										       value="<?php echo $item->$orderingField; ?>" <?php echo $disabled ?>
-										       class="ordering" style="text-align: center"/>
-									<?php endif; ?>
 								</td>
 							<?php endif; ?>
 							<td>

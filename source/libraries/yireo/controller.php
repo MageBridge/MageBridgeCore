@@ -93,7 +93,6 @@ class YireoController extends YireoCommonController
 	 */
 	protected $_frontend_edit = false;
 
-
 	/**
 	 * Boolean to allow or disallow frontend editing
 	 *
@@ -110,7 +109,6 @@ class YireoController extends YireoCommonController
 	protected $_allow_tasks = array(
 		'display',
 	);
-
 
 	/**
 	 * List of allowed tasks
@@ -403,7 +401,7 @@ class YireoController extends YireoCommonController
 		// Determine the state of the model
 		$model = $this->_loadModel();
 
-		if ($model->hasErrors() == false)
+		if (!method_exists($model, 'hasErrors') || $model->hasErrors() == false)
 		{
 			// Redirect back to the overview
 			$plural = $this->getPluralName($this->input->get('view'));
@@ -515,23 +513,17 @@ class YireoController extends YireoCommonController
 
 		// Remove all selected items
 		$model = $this->_loadModel();
+		$model->delete($cid);
 
-		if (!$model->delete($cid))
+		if (count($cid) == 1)
 		{
-			$this->msg = $model->getError();
+			$singleName = $this->getSingleName($this->input->getCmd('view'));
+			$this->msg  = JText::_('LIB_YIREO_CONTROLLER_' . strtoupper($singleName) . '_DELETED');
 		}
 		else
 		{
-			if (count($cid) == 1)
-			{
-				$singleName = $this->getSingleName($this->input->getCmd('view'));
-				$this->msg  = JText::_('LIB_YIREO_CONTROLLER_' . strtoupper($singleName) . '_DELETED');
-			}
-			else
-			{
-				$pluralName = $this->getPluralName($this->input->getCmd('view'));
-				$this->msg  = JText::sprintf('LIB_YIREO_CONTROLLER_' . strtoupper($pluralName) . '_DELETED', count($cid));
-			}
+			$pluralName = $this->getPluralName($this->input->getCmd('view'));
+			$this->msg  = JText::sprintf('LIB_YIREO_CONTROLLER_' . strtoupper($pluralName) . '_DELETED', count($cid));
 		}
 
 		// Redirect to this same page
@@ -736,7 +728,7 @@ class YireoController extends YireoCommonController
 		$model->setId($id);
 
 		// If this vote is made from an external source, make sure we redirect to an internal page
-		if (!JURI::isInternal($url))
+		if (!JUri::isInternal($url))
 		{
 			$option = $this->input->getCmd('option');
 			$view   = $this->input->getCmd('view');
@@ -946,7 +938,7 @@ class YireoController extends YireoCommonController
 		}
 
 		// Set the redirect, including messages if they are set
-		if ($this->_app->isSite())
+		if ($this->app->isSite())
 		{
 			$link = JRoute::_($link);
 		}
