@@ -2,11 +2,11 @@
 /*
  * Joomla! Yireo Library
  *
- * @author Yireo (https://www.yireo.com/)
+ * @author Yireo (http://www.yireo.com/)
  * @package YireoLib
- * @copyright Copyright 2016
+ * @copyright Copyright 2015
  * @license GNU Public License
- * @link https://www.yireo.com/
+ * @link http://www.yireo.com/
  * @version 0.6.0
  */
 
@@ -26,5 +26,5 @@ defined('_JEXEC') or die('Restricted access');
 
 <input type="hidden" name="option" value="<?php echo $this->_option; ?>" />
 <input type="hidden" name="task" value="" />
-<?php echo JHtml::_( 'form.token' ); ?>
+<?php echo JHTML::_( 'form.token' ); ?>
 </form>

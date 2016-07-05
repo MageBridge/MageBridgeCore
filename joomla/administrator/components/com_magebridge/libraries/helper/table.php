@@ -4,9 +4,9 @@
  *
  * @author Yireo (info@yireo.com)
  * @package YireoLib
- * @copyright Copyright 2016
+ * @copyright Copyright 2015
  * @license GNU Public License
- * @link https://www.yireo.com
+ * @link http://www.yireo.com
  * @version 0.6.0
  */
 

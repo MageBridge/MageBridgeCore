@@ -4,9 +4,9 @@
  *
  * @author Yireo
  * @package YireoLib
- * @copyright Copyright 2016
+ * @copyright Copyright 2015
  * @license GNU Public License
- * @link https://www.yireo.com/
+ * @link http://www.yireo.com/
  * @version 0.6.0
  */
 
@@ -14,5 +14,5 @@
 defined('_JEXEC') or die();
 ?>
 <th width="300" class="title">
-    <?php echo JHtml::_('grid.sort',  'LIB_YIREO_TABLE_FIELDNAME_TITLE', 'title', $this->lists['order_Dir'], $this->lists['order'] ); ?>
+    <?php echo JHTML::_('grid.sort',  'LIB_YIREO_TABLE_FIELDNAME_TITLE', 'title', $this->lists['order_Dir'], $this->lists['order'] ); ?>
 </th>

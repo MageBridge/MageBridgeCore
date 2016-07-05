@@ -4,9 +4,9 @@
  *
  * @author Yireo
  * @package YireoLib
- * @copyright Copyright 2016
+ * @copyright Copyright 2015
  * @license GNU Public License
- * @link https://www.yireo.com/
+ * @link http://www.yireo.com/
  */
 
 // Check to ensure this file is included in Joomla!
@@ -17,7 +17,7 @@ jimport('joomla.utilities.utility');
 ?>
 <?php echo $this->loadTemplate('script'); ?>
 
-<form method="post" name="adminForm" id="adminForm">
+<form method="post" name="adminForm" id="adminForm" enctype="multipart/form-data">
 <div class="row-fluid">
     <div class="span6">
         <?php echo $this->loadTemplate('fieldset', array('fieldset' => 'basic')); ?>
