@@ -14,5 +14,5 @@
 defined('_JEXEC') or die();
 ?>
 <th width="300" class="title">
-    <?php echo JHTML::_('grid.sort',  'LIB_YIREO_TABLE_FIELDNAME_TITLE', 'title', $this->lists['order_Dir'], $this->lists['order'] ); ?>
+    <?php echo JHtml::_('grid.sort',  'LIB_YIREO_TABLE_FIELDNAME_TITLE', 'title', $this->lists['order_Dir'], $this->lists['order'] ); ?>
 </th>

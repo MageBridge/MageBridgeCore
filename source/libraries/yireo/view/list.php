@@ -58,7 +58,7 @@ class YireoViewList extends YireoView
 
 	/**
 	 * Main constructor method
-	 * 
+	 *
 	 * @return mixed
 	 */
 	public function __construct($config = array())
@@ -85,7 +85,7 @@ class YireoViewList extends YireoView
 
 		// Automatically fetch items, total and pagination - and assign them to the template
 		$this->fetchItems();
-		
+
 		// Fetch the primary key
 		$primaryKey = $this->model->getPrimaryKey();
 
@@ -100,7 +100,7 @@ class YireoViewList extends YireoView
 				// Set the various links
 				if (empty($item->edit_link))
 				{
-					$item->edit_link = JRoute::_('index.php?option=' . $this->getConfig('option') . '&view=' . $this->getConfig('view') . '&task=edit&cid[]=' . $item->id);
+					$item->edit_link = JRoute::_($this->getCurrentLink() . '&task=edit&cid[]=' . $item->id);
 				}
 
 				// Re-insert the item
@@ -117,10 +117,11 @@ class YireoViewList extends YireoView
 
 		if ($this->table)
 		{
-			$fields['state_field']    = $this->table->getStateField();
+			$fields['state_field'] = $this->table->getStateField();
 		}
 
 		$this->fields = $fields;
+		$this->pagination = $this->model->getPagination();
 
 		return parent::display($tpl);
 	}
@@ -151,8 +152,8 @@ class YireoViewList extends YireoView
 			return $this->getImageTag($img);
 		}
 
-		$token = JSession::getFormToken();
-		$url   = JRoute::_('index.php?option=' . $this->getConfig('option') . '&view=' . $this->getConfig('view') . '&task=toggle&id=' . $id . '&name=' . $name . '&value=' . $value . '&' . $token . '=1');
+		$token  = JSession::getFormToken();
+		$url    = JRoute::_($this->getCurrentLink() . '&task=toggle&id=' . $id . '&name=' . $name . '&value=' . $value . '&' . $token . '=1');
 
 		return '<a href="' . $url . '">' . $this->getImageTag($img) . '</a>';
 	}
@@ -186,7 +187,7 @@ class YireoViewList extends YireoView
 		if ($this->loadToolbarEdit == true)
 		{
 			JToolbarHelper::editList();
-			JToolbarHelper::custom('copy', 'copy.png', 'copy.png', 'LIB_YIREO_VIEW_TOOLBAR_COPY', true, true);
+			JToolbarHelper::custom('copy', 'copy.png', 'copy.png', 'LIB_YIREO_VIEW_TOOLBAR_COPY', true);
 			JToolbarHelper::addNew();
 		}
 
@@ -246,6 +247,7 @@ class YireoViewList extends YireoView
 	 *
 	 * @param object $item
 	 * @param int    $i
+	 * @param mixed  $model
 	 *
 	 * @return string
 	 */
@@ -285,9 +287,9 @@ class YireoViewList extends YireoView
 	/**
 	 * Method to return whether an item is checked out or not
 	 *
-	 * @param
+	 * @param object $item
 	 *
-	 * @return array
+	 * @return bool
 	 */
 	public function isCheckedOut($item = null)
 	{
@@ -295,7 +297,7 @@ class YireoViewList extends YireoView
 		{
 			return false;
 		}
-		
+
 		// If this item has no checked_out field, it's an easy choice
 		if (isset($item->checked_out) == false)
 		{
@@ -306,5 +308,17 @@ class YireoViewList extends YireoView
 		$user = JFactory::getUser();
 
 		return $this->table->isCheckedOut($user->get('id'), $item->checked_out);
+	}
+
+	/**
+	 * @return string
+	 */
+	protected function getCurrentLink()
+	{
+		$option = $this->getConfig('option');
+		$view   = $this->getConfig('view');
+		$link = 'index.php?option=' . $option . '&view=' . $view;
+
+		return $link;
 	}
 }

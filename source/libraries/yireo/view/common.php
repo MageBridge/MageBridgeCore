@@ -30,7 +30,7 @@ class YireoCommonView extends YireoAbstractView
 	 * Trait to implement ID behaviour
 	 */
 	use YireoModelTraitConfigurable;
-	
+
 	/**
 	 * Array of template-paths to look for layout-files
 	 */
@@ -88,7 +88,7 @@ class YireoCommonView extends YireoAbstractView
 	 * @deprecated Use $this->getConfig('option') instead
 	 */
 	protected $_option;
-	
+
 	/**
 	 * @var JUser
 	 */
@@ -107,21 +107,21 @@ class YireoCommonView extends YireoAbstractView
 		parent::__construct($config);
 
 		// Import use full variables from JFactory
-		$this->db = JFactory::getDbo();
-		$this->uri = JFactory::getUri();
-		$this->doc = JFactory::getDocument();
-		$this->user = JFactory::getUser();
-		$this->app = JFactory::getApplication();
+		$this->db          = JFactory::getDbo();
+		$this->uri         = JUri::getInstance();
+		$this->doc         = JFactory::getDocument();
+		$this->user        = JFactory::getUser();
+		$this->app         = JFactory::getApplication();
 		$this->application = $this->app;
-		$this->input = $this->app->input;
-		$this->jinput = $this->input;
+		$this->input       = $this->app->input;
+		$this->jinput      = $this->input;
 
 		// Create the namespace-variables
 		$this->setConfig('view', (!empty($config['name'])) ? $config['name'] : $this->input->getCmd('view', 'default'));
 		$this->setConfig('option', (!empty($config['option'])) ? $config['option'] : $this->input->getCmd('option'));
 
 		$this->_name = $this->getConfig('view');
-		$option_id = $this->getConfig('option') . '_' . $this->getConfig('view') . '_';
+		$option_id   = $this->getConfig('option') . '_' . $this->getConfig('view') . '_';
 
 		if ($this->app->isSite())
 		{
@@ -129,7 +129,7 @@ class YireoCommonView extends YireoAbstractView
 		}
 
 		$this->setConfig('option_id', $option_id);
-		
+
 		// Load additional language-files
 		YireoHelper::loadLanguageFile();
 	}
@@ -140,6 +140,7 @@ class YireoCommonView extends YireoAbstractView
 	 * @subpackage Yireo
 	 *
 	 * @param string $title
+	 * @param string $class
 	 *
 	 * @return null
 	 */
@@ -167,7 +168,7 @@ class YireoCommonView extends YireoAbstractView
 		if ($this->_single)
 		{
 			$pretext = ($this->isEdit()) ? JText::_('LIB_YIREO_VIEW_EDIT') : JText::_('LIB_YIREO_VIEW_NEW');
-			$title = $pretext . ' ' . $title;
+			$title   = $pretext . ' ' . $title;
 		}
 
 		if (file_exists(JPATH_SITE . '/media/' . $this->getConfig('option') . '/images/' . $class . '.png'))
@@ -199,8 +200,8 @@ class YireoCommonView extends YireoAbstractView
 			{
 				if (strstr($view, '|'))
 				{
-					$v = explode('|', $view);
-					$view = $v[0];
+					$v      = explode('|', $view);
+					$view   = $v[0];
 					$layout = $v[1];
 				}
 				else
@@ -259,7 +260,7 @@ class YireoCommonView extends YireoAbstractView
 	 */
 	public function addCss($stylesheet)
 	{
-		$prefix = ($this->app->isSite()) ? 'site-' : 'backend-';
+		$prefix   = ($this->app->isSite()) ? 'site-' : 'backend-';
 		$template = $this->app->getTemplate();
 
 		if (file_exists(JPATH_SITE . '/templates/' . $template . '/css/' . $this->getConfig('option') . '/' . $prefix . $stylesheet))
@@ -307,7 +308,7 @@ class YireoCommonView extends YireoAbstractView
 	 */
 	public function addJs($script)
 	{
-		$prefix = ($this->app->isSite()) ? 'site-' : 'backend-';
+		$prefix   = ($this->app->isSite()) ? 'site-' : 'backend-';
 		$template = $this->app->getTemplate();
 
 		if (file_exists(JPATH_SITE . '/templates/' . $template . '/js/' . $this->getConfig('option') . '/' . $prefix . $script))
@@ -359,13 +360,13 @@ class YireoCommonView extends YireoAbstractView
 		// If this path is non-existent, skip it
 		if (!is_dir($path))
 		{
-			return;
+			return false;
 		}
 
 		// If this path is already included, skip it
 		if (in_array($path, $this->templatePaths))
 		{
-			return;
+			return false;
 		}
 
 		// Add this path to the beginning of the array
@@ -378,6 +379,8 @@ class YireoCommonView extends YireoAbstractView
 			// Add this path to the end of the array
 			$this->templatePaths[] = $path;
 		}
+
+		return true;
 	}
 
 	/**
@@ -390,6 +393,9 @@ class YireoCommonView extends YireoAbstractView
 	 */
 	public function loadTemplate($file = null, $variables = array())
 	{
+		$option = $this->getConfig('option');
+		$view   = $this->getConfig('view');
+
 		// Construct the paths where to locate a specific template
 		if ($this->app->isSite() == false)
 		{
@@ -397,31 +403,31 @@ class YireoCommonView extends YireoAbstractView
 			$this->templatePaths = array();
 
 			// Local layout
-			$this->addNewTemplatePath(JPATH_ADMINISTRATOR . '/components/' . $this->getConfig('option') . '/views/' . $this->getConfig('view') . '/tmpl', true);
+			$this->addNewTemplatePath(JPATH_ADMINISTRATOR . '/components/' . $option . '/views/' . $view . '/tmpl', true);
 
 			// Library defaults
-			$this->addNewTemplatePath(JPATH_LIBRARIES . '/yireo/view/' . $this->getConfig('view'), false);
+			$this->addNewTemplatePath(JPATH_LIBRARIES . '/yireo/view/' . $view, false);
 			$this->addNewTemplatePath(JPATH_LIBRARIES . '/yireo/view/' . $this->_viewParent, false);
 
-			$this->addNewTemplatePath(JPATH_ADMINISTRATOR . '/components/' . $this->getConfig('option') . '/lib/view/' . $this->_viewParent, false);
-			$this->addNewTemplatePath(JPATH_ADMINISTRATOR . '/components/' . $this->getConfig('option') . '/libraries/view/' . $this->_viewParent, false);
+			$this->addNewTemplatePath(JPATH_ADMINISTRATOR . '/components/' . $option . '/lib/view/' . $this->_viewParent, false);
+			$this->addNewTemplatePath(JPATH_ADMINISTRATOR . '/components/' . $option . '/libraries/view/' . $this->_viewParent, false);
 		}
 		else
 		{
 			$template = $this->app->getTemplate();
 
 			// Local layout
-			$this->addNewTemplatePath(JPATH_SITE . '/components/' . $this->getConfig('option') . '/views/' . $this->getConfig('view') . '/tmpl', true);
+			$this->addNewTemplatePath(JPATH_SITE . '/components/' . $option . '/views/' . $view . '/tmpl', true);
 
 			// Template override
-			$this->addNewTemplatePath(JPATH_THEMES . '/' . $template . '/html/lib_yireo/' . $this->getConfig('view'), true);
-			$this->addNewTemplatePath(JPATH_THEMES . '/' . $template . '/html/' . $this->getConfig('option') . '/' . $this->getConfig('view'), true);
+			$this->addNewTemplatePath(JPATH_THEMES . '/' . $template . '/html/lib_yireo/' . $view, true);
+			$this->addNewTemplatePath(JPATH_THEMES . '/' . $template . '/html/' . $option . '/' . $view, true);
 
 			// Library defaults
 			$this->addNewTemplatePath(JPATH_THEMES . '/' . $template . '/html/lib_yireo/' . $this->_viewParent, true);
 			$this->addNewTemplatePath(JPATH_LIBRARIES . '/yireo/view/' . $this->_viewParent, false);
-			$this->addNewTemplatePath(JPATH_ADMINISTRATOR . '/components/' . $this->getConfig('option') . '/lib/view/' . $this->_viewParent, false);
-			$this->addNewTemplatePath(JPATH_ADMINISTRATOR . '/components/' . $this->getConfig('option') . '/libraries/view/' . $this->_viewParent, false);
+			$this->addNewTemplatePath(JPATH_ADMINISTRATOR . '/components/' . $option . '/lib/view/' . $this->_viewParent, false);
+			$this->addNewTemplatePath(JPATH_ADMINISTRATOR . '/components/' . $option . '/libraries/view/' . $this->_viewParent, false);
 		}
 
 		// Default file
@@ -436,7 +442,7 @@ class YireoCommonView extends YireoAbstractView
 		if (strstr($file, '/'))
 		{
 			$fileParts = explode('/', $file);
-			$file = array_pop($fileParts);
+			$file      = array_pop($fileParts);
 
 			foreach ($templatePaths as $templatePathIndex => $templatePath)
 			{
@@ -459,7 +465,7 @@ class YireoCommonView extends YireoAbstractView
 		// If this template is empty, try to use alternatives
 		if (empty($template) && $file == 'default.php')
 		{
-			$file = 'form.php';
+			$file     = 'form.php';
 			$template = JPath::find($templatePaths, $file);
 		}
 
@@ -505,5 +511,7 @@ class YireoCommonView extends YireoAbstractView
 		{
 			throw new RuntimeException('Template file can not be located: ' . $this->_viewParent . '/' . $file);
 		}
+
+		return '';
 	}
 }

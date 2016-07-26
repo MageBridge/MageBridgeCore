@@ -241,11 +241,16 @@ class YireoHelper
 	 *
 	 * @param mixed $params
 	 * @param string $file
-	 * @return JParameter|JRegistry
+	 * @return \Joomla\Registry\Registry
 	 */
 	static public function toRegistry($params = null, $file = null)
 	{
-		if ($params instanceof JParameter || $params instanceof JRegistry)
+		if (class_exists('JParameter') && $params instanceof JParameter)
+		{
+			return $params;
+		}
+
+		if (class_exists('JRegistry') && $params instanceof JRegistry)
 		{
 			return $params;
 		}
@@ -255,8 +260,7 @@ class YireoHelper
 			$params = trim($params);
 		}
 		
-		jimport('joomla.registry.registry');
-		$registry = new JRegistry;
+		$registry = new \Joomla\Registry\Registry;
 
 		if (!empty($params) && is_string($params))
 		{

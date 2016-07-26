@@ -54,12 +54,12 @@ class YireoModelDataQuery
 	 * @var JDatabaseQuery
 	 */
 	protected $query;
-	
+
 	/**
 	 * @var YireoModel
 	 */
 	protected $model;
-	
+
 	/**
 	 * @var array
 	 */
@@ -95,7 +95,7 @@ class YireoModelDataQuery
 	/**
 	 * YireoModelDataQuery constructor
 	 *
-	 * @param $table YireoTable
+	 * @param $table      YireoTable
 	 * @param $tableAlias string
 	 */
 	public function __construct($table, $tableAlias)
@@ -112,7 +112,7 @@ class YireoModelDataQuery
 	 *
 	 * @param null|JDatabaseQuery $query
 	 *
-	 * @return string
+	 * @return JDatabaseQuery
 	 */
 	public function build($query = null)
 	{
@@ -126,7 +126,7 @@ class YireoModelDataQuery
 
 		// Get the WHERE clauses for the query
 		$this->buildWhere();
-		
+
 		// Get the ORDER BY clauses for the query
 		$this->buildQueryOrderBy();
 
@@ -151,8 +151,8 @@ class YireoModelDataQuery
 	 */
 	protected function getSelectFields()
 	{
-		$availableFields        = $this->table->getDatabaseFields();
-		$selectFields = array();
+		$availableFields = $this->table->getDatabaseFields();
+		$selectFields    = array();
 
 		foreach ($availableFields as $availableField)
 		{
@@ -191,7 +191,12 @@ class YireoModelDataQuery
 		if ($this->getConfig('checkout') == true && $this->table->hasField('checked_out') && $this->app->isAdmin())
 		{
 			$this->query->select($db->quoteName('editor.name', 'editor'));
-			$this->query->leftJoin($db->quoteName('#__users', 'editor') . ' ON ' . $db->quoteName($this->tableAlias . '.checked_out') . '=' . $db->quoteName('editor.id'));
+
+			$editorTable      = $db->quoteName('#__users', 'editor');
+			$editorTableField = $db->quoteName('editor.id');
+			$checkedOutField  = $db->quoteName($this->tableAlias . '.checked_out');
+
+			$this->query->leftJoin($editorTable . ' ON ' . $editorTableField . '=' . $checkedOutField);
 		}
 
 		return $this;
@@ -206,7 +211,12 @@ class YireoModelDataQuery
 		{
 			$db = $this->db;
 			$this->query->select($db->quoteName('viewlevel.title', 'accesslevel'));
-			$this->query->leftJoin($db->quoteName('#__viewlevels', 'viewlevel') . ' ON ' . $db->quoteName('viewlevel.id') . '=' . $db->quoteName($this->tableAlias.'.access'));
+
+			$viewlevelTable      = $db->quoteName('#__viewlevels', 'viewlevel');
+			$viewlevelTableField = $db->quoteName('viewlevel.id');
+			$accessField         = $db->quoteName($this->tableAlias . '.access');
+
+			$this->query->leftJoin($viewlevelTable . ' ON ' . $viewlevelTableField . '=' . $accessField);
 		}
 
 		return $this;
@@ -286,7 +296,7 @@ class YireoModelDataQuery
 
 		return $this;
 	}
-	
+
 	/**
 	 * Method to build the query ORDER BY segment
 	 *
@@ -375,13 +385,12 @@ class YireoModelDataQuery
 		$limitStart = $this->getConfig('limit.start');
 		$limitCount = $this->getConfig('limit.count');
 
-		if (empty($limitCount) || empty($limitStart))
+		if (empty($limitCount) && empty($limitStart))
 		{
 			return $this;
 		}
 
-		// @todo: Does this actually work?
-		$this->query->setLimit($limitStart, $limitCount);
+		$this->query->setLimit($limitCount, $limitStart);
 
 		return $this;
 	}
@@ -420,7 +429,6 @@ class YireoModelDataQuery
 
 		return $this;
 	}
-
 
 	/**
 	 * Method to add a new ORDER BY argument

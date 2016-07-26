@@ -233,25 +233,53 @@ class YireoRouteQuery
 		}
 	}
 
-	/**
-	 * @param $name
-	 * @param $item
-	 *
-	 * @return bool
-	 */
-    public function matchValue($name, $item, $type = null)
+    /**
+     * @param $names
+     * @param $item
+     *
+     * @return bool
+     */
+    public function matchValues($names, $item)
+    {
+        foreach ($names as $name)
+        {
+            if ($this->matchValue($name, $item) == false)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * @param $name
+     * @param $item
+     * @param $type
+     * @param $allowEmpty
+     *
+     * @return bool
+     */
+    public function matchValue($name, $item, $type = null, $allowEmpty = true)
     {
         if (empty($type) && preg_match('/\_id$/', $name))
         {
             $type = 'int';
         }
 
-        if ($type == 'int' && (int) $this->getValue($name) == (int) $this->getValue($name, $item))
+        $currentValue = $this->getValue($name);
+        
+        if ($allowEmpty == false && empty($currentValue))
+        {
+            return false;
+        }
+
+        if ($type == 'int' && (int) $currentValue == (int) $this->getValue($name, $item))
         {
             return true;
         }
 
-        if ($this->getValue($name) == $this->getValue($name, $item))
+        if ($currentValue == $this->getValue($name, $item))
         {
             return true;
         }

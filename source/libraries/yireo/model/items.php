@@ -114,6 +114,7 @@ class YireoModelItems extends YireoDataModel
 
 		$this->setConfig('skip_table', false);
 		$this->setConfig('table_prefix_auto', true);
+		$this->setConfig('limit_query', true);
 		$this->setTablePrefix();
 		$this->table = $this->getTable($this->getConfig('table_alias'));
 
@@ -228,11 +229,35 @@ class YireoModelItems extends YireoDataModel
 		if ($this->getConfig('limit_query') == false && $this->getState('limit') > 0)
 		{
 			$part = array_slice($this->data, (int) $this->getState('limitstart'), $this->getState('limit'));
-			
+
 			return $part;
 		}
 
 		return $this->data;
+	}
+
+	/**
+	 * @return JDatabaseQuery
+	 */
+	public function buildQueryObject()
+	{
+		$this->queryConfig['filter_state']  = $this->getFilter('state');
+		$this->queryConfig['filter_search'] = $this->getFilter('search');
+		$this->queryConfig['search_fields'] = $this->search;
+		$this->queryConfig['allow_filter']  = $this->getConfig('allow_filter', true);
+
+		if ($this->getConfig('limit_query') == true)
+		{
+			$this->queryConfig['limit.start'] = $this->getState('limitstart');
+			$this->queryConfig['limit.count'] = $this->getState('limit');
+		}
+
+		$this->initQuery();
+		$query = $this->query->setConfig($this->queryConfig)
+			->setModel($this)
+			->build();
+
+		return $query;
 	}
 
 	/**
@@ -255,23 +280,8 @@ class YireoModelItems extends YireoDataModel
 		// Try to load the temporary data from this session
 		$this->loadTmpSession();
 
-		$this->queryConfig['filter_state']  = $this->getFilter('state');
-		$this->queryConfig['filter_search'] = $this->getFilter('search');
-		$this->queryConfig['search_fields'] = $this->search;
-		$this->queryConfig['allow_filter']  = $this->getConfig('allow_filter', true);
-
-		if ($this->getConfig('limit_query') == true)
-		{
-			$this->queryConfig['limit.start'] = $this->getState('limitstart');
-			$this->queryConfig['limit.count'] = $this->getState('limit');
-		}
-
-		$this->initQuery();
-		$query = $this->query->setConfig($this->queryConfig)
-			->setModel($this)
-			->build();
-
-		$data  = $this->getDbResult($query, 'objectList');
+		$query = $this->buildQueryObject();
+		$data = $this->getDbResult($query, 'objectList');
 
 		if (!empty($data))
 		{
@@ -429,7 +439,9 @@ class YireoModelItems extends YireoDataModel
 	 *
 	 * @param mixed $data
 	 *
+	 * @return null
 	 * @throws BadMethodCallException
+	 *
 	 */
 	public function store($data)
 	{
