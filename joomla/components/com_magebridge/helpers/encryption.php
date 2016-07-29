@@ -13,7 +13,9 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Helper for encoding and encrypting
+ * Class MageBridgeEncryptionHelper - Helper for encoding and encrypting
+ *
+ * @since 1.0
  */
 class MageBridgeEncryptionHelper
 {
@@ -23,6 +25,7 @@ class MageBridgeEncryptionHelper
 	 * @param mixed $string
 	 *
 	 * @return string
+	 * @since 1.0
 	 */
 	public static function base64_encode($string = null)
 	{
@@ -35,6 +38,7 @@ class MageBridgeEncryptionHelper
 	 * @param mixed $string
 	 *
 	 * @return string
+	 * @since 1.0
 	 */
 	public static function base64_decode($string = null)
 	{
@@ -47,21 +51,35 @@ class MageBridgeEncryptionHelper
 	}
 
 	/**
-	 * Return an encryption key
-	 *
-	 * @param string $string
-	 *
-	 * @return string
+	 * @return mixed
+	 * @since 1.0
 	 */
-	public static function getSaltedKey($string)
+	public static function getEncryptionKey()
 	{
 		$key = MagebridgeModelConfig::load('encryption_key');
+
 		if (empty($key))
 		{
 			$key = MagebridgeModelConfig::load('supportkey');
 		}
 
-		return md5($key . $string);
+		return $key;
+	}
+
+	/**
+	 * Return an encryption key
+	 *
+	 * @param string $string
+	 *
+	 * @return string
+	 * @since 1.0
+	 */
+	public static function getSaltedKey($string)
+	{
+		$key = self::getEncryptionKey();
+		$salted = md5($key . $string);
+
+		return $salted;
 	}
 
 	/**
@@ -70,6 +88,7 @@ class MageBridgeEncryptionHelper
 	 * @param mixed $data
 	 *
 	 * @return string
+ 	 * @since 1.0
 	 */
 	public static function encrypt($data)
 	{
@@ -93,34 +112,16 @@ class MageBridgeEncryptionHelper
 			return $data;
 		}
 
-		// Check for mcrypt
-		if (!function_exists('mcrypt_get_iv_size'))
-		{
-			return $data;
-		}
-
 		// Generate a random key
-		$random = str_shuffle('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz');
-		$key = MageBridgeEncryptionHelper::getSaltedKey($random);
+		$iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length('aes-256-cbc'));
+		$encrypted = openssl_encrypt($data, 'aes-256-cbc', self::getEncryptionKey(), null, $iv);
 
-		try
-		{
-			$td = mcrypt_module_open(MCRYPT_CAST_256, '', 'ecb', '');
-			$iv = mcrypt_create_iv(mcrypt_enc_get_iv_size($td), MCRYPT_RAND);
-			mcrypt_generic_init($td, $key, $iv);
-			$encrypted = mcrypt_generic($td, $data);
-			$encoded = MageBridgeEncryptionHelper::base64_encode($encrypted);
+		$encoded = MageBridgeEncryptionHelper::base64_encode($encrypted);
+		$encodedIv = MageBridgeEncryptionHelper::base64_encode($iv);
+		$encodedSum = $encoded . '|=|' . $encodedIv;
 
-		}
-		catch (Exception $e)
-		{
-			Mage::getSingleton('magebridge/debug')
-				->error("Error while decrypting: " . $e->getMessage());
+		return $encodedSum;
 
-			return null;
-		}
-
-		return $encoded . '|=|' . $random;
 	}
 
 	/**
@@ -129,6 +130,7 @@ class MageBridgeEncryptionHelper
 	 * @param string $data
 	 *
 	 * @return mixed
+	 * @since 1.0
 	 */
 	public static function decrypt($data)
 	{
@@ -149,27 +151,16 @@ class MageBridgeEncryptionHelper
 		}
 
 		$array = explode('|=|', $data);
-		$encrypted = MageBridgeEncryptionHelper::base64_decode($array[0], true);
-		$key = MageBridgeEncryptionHelper::getSaltedKey($array[1]);
+		$encrypted = self::base64_decode($array[0]);
+		$iv = self::base64_decode($array[1]);
 
-		try
+		$result = openssl_decrypt($encrypted, 'aes-256-cbc', self::getEncryptionKey(), null, $iv);
+
+		if ($result)
 		{
-
-			$td = mcrypt_module_open(MCRYPT_CAST_256, '', 'ecb', '');
-			$iv = substr($key, 0, mcrypt_get_iv_size(MCRYPT_CAST_256, MCRYPT_MODE_CFB));
-			mcrypt_generic_init($td, $key, $iv);
-			$decrypted = mdecrypt_generic($td, $encrypted);
-			$decrypted = trim($decrypted);
-
-			return $decrypted;
-
+			return $result;
 		}
-		catch (Exception $e)
-		{
-			Mage::getSingleton('magebridge/debug')
-				->error("Error while decrypting: " . $e->getMessage());
 
-			return null;
-		}
+		return $data;
 	}
 }
