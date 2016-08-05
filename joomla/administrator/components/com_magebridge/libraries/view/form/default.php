@@ -17,7 +17,7 @@ jimport('joomla.utilities.utility');
 ?>
 <?php echo $this->loadTemplate('script'); ?>
 
-<form method="post" name="adminForm" id="adminForm">
+<form method="post" name="adminForm" id="adminForm" enctype="multipart/form-data">
 <div class="row-fluid">
     <div class="span6">
         <?php echo $this->loadTemplate('fieldset', array('fieldset' => 'basic')); ?>

@@ -4,9 +4,9 @@
  *
  * @author Yireo (info@yireo.com)
  * @package MageBridge
- * @copyright Copyright 2015
+ * @copyright Copyright 2016
  * @license GNU Public License
- * @link http://www.yireo.com
+ * @link https://www.yireo.com
  */
 
 // Check to ensure this file is included in Joomla!
@@ -88,7 +88,7 @@ class MageBridgeUpdateHelper
 		$packages = $packages['joomla'];
 
 		// Load the currently configured connectors
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$query = 'SELECT DISTINCT(`connector`) FROM `#__magebridge_products`';
 		$db->setQuery($query);
 		$usedConnectorsList = $db->loadObjectList();

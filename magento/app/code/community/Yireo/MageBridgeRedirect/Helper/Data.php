@@ -4,9 +4,9 @@
  *
  * @author Yireo
  * @package MageBridge
- * @copyright Copyright 2015
+ * @copyright Copyright 2016
  * @license Open Source License
- * @link http://www.yireo.com
+ * @link https://www.yireo.com
  */
 
 class Yireo_MageBridgeRedirect_Helper_Data extends Mage_Core_Helper_Abstract
@@ -48,7 +48,11 @@ class Yireo_MageBridgeRedirect_Helper_Data extends Mage_Core_Helper_Abstract
     public function checkIPv4()
     {
         $value = Mage::getStoreConfig('magebridge/redirect/magebridge_ipv4');
-        if(empty(trim($value))) $value = null;
+        $value = trim($value);
+
+        if(empty($value)) {
+            $value = null;
+        }
 
         if($value != null) {
             $ips = explode(PHP_EOL, $value);

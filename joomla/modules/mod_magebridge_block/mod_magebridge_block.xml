@@ -6,8 +6,8 @@
 	<copyright>Copyright (C) 2016 Yireo.com. All rights reserved.</copyright>
 	<license>GNU/GPL</license>
 	<authorEmail>development@yireo.com</authorEmail>
-	<authorUrl>http://www.yireo.com/</authorUrl>
-	<version>1.9.5381</version>
+	<authorUrl>https://www.yireo.com/</authorUrl>
+	<version>1.9.5400</version>
 	<description>MOD_MAGEBRIDGE_BLOCK_DESC</description>
 
 	<files folder="site">

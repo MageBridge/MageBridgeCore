@@ -4,9 +4,9 @@
  *
  * @author Yireo
  * @package Magento Bridge
- * @copyright Copyright 2015
+ * @copyright Copyright 2016
  * @license Open Source License
- * @link http://www.yireo.com
+ * @link https://www.yireo.com
  */
 
 /*
@@ -184,12 +184,14 @@ class MageBridge
             // Set the REQUEST_URI
             $_SERVER['REQUEST_URI'] = $request_uri;
             $_SERVER['HTTP_X_REWRITE_URL'] = $request_uri;
+            $_SERVER['HTTP_X_ORIGINAL_URL'] = $request_uri;
 
 
         // Set defaults otherwise
         } else {
             $_SERVER['REQUEST_URI'] = '/';
             $_SERVER['HTTP_X_REWRITE_URL'] = '/';
+            $_SERVER['HTTP_X_ORIGINAL_URL'] = '/';
         }
 
         // Mask the HTTP_USER_AGENT
@@ -208,13 +210,10 @@ class MageBridge
             $_SERVER['REMOTE_ADDR'] = $data['remote_addr'];
         }
 
-        // Mask the HTTP_HOST
-        //if(!empty($data['http_host'])) {
-        //    $_SERVER['HTTP_HOST'] = $data['http_host'];
-        //}
-
         // Mask the REQUEST_METHOD
-        if($_SERVER['REQUEST_METHOD'] == 'POST' && empty($_POST)) $_SERVER['REQUEST_METHOD'] = 'GET';
+        if(isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST' && empty($_POST)) {
+            $_SERVER['REQUEST_METHOD'] = 'GET';
+        }
 
         // Make sure all globals are arrays
         if(empty($_GET)) $_GET = array();

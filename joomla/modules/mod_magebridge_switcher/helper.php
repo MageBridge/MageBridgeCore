@@ -4,9 +4,9 @@
  *
  * @author	Yireo (info@yireo.com)
  * @package   MageBridge
- * @copyright Copyright 2015
+ * @copyright Copyright 2016
  * @license   GNU Public License
- * @link	  http://www.yireo.com
+ * @link	  https://www.yireo.com
  */
 
 // No direct access
@@ -119,7 +119,7 @@ class ModMageBridgeSwitcherHelper
 		array_unshift($options, array('value' => '', 'label' => '-- Select --'));
 		$attribs = 'onChange="document.forms[\'mbswitcher\'].submit();"';
 
-		return JHTML::_('select.genericlist', $options, 'magebridge_store', $attribs, 'value', 'label', $currentValue);
+		return JHtml::_('select.genericlist', $options, 'magebridge_store', $attribs, 'value', 'label', $currentValue);
 	}
 
 	/**
@@ -285,7 +285,7 @@ class ModMageBridgeSwitcherHelper
 				{
 					foreach ($group['childs'] as $child)
 					{
-						$url = JURI::current() . '?__store=' . $child['value'];
+						$url = JUri::current() . '?__store=' . $child['value'];
 
 						if ($child['value'] == $currentName)
 						{
@@ -302,7 +302,7 @@ class ModMageBridgeSwitcherHelper
 
 		array_unshift($options, array('value' => '', 'label' => '-- Select --'));
 
-		return JHTML::_('select.genericlist', $options, 'magebridge_store', 'onChange="window.location.href=this.value"', 'value', 'label', $currentValue);
+		return JHtml::_('select.genericlist', $options, 'magebridge_store', 'onChange="window.location.href=this.value"', 'value', 'label', $currentValue);
 	}
 
 	/**

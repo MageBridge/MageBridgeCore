@@ -4,9 +4,9 @@
  *
  * @author    Yireo (info@yireo.com)
  * @package   MageBridge
- * @copyright Copyright 2015
+ * @copyright Copyright 2016
  * @license   GNU Public License
- * @link      http://www.yireo.com
+ * @link      https://www.yireo.com
  *
  * @todo      : plgSystemMageBridgeHelperJavascript
  * @todo      : plgSystemMageBridgeHelperSsl
@@ -23,6 +23,21 @@ jimport('joomla.plugin.plugin');
  */
 class PlgSystemMageBridge extends JPlugin
 {
+	/**
+	 * @var JApplicationCms
+	 */
+	protected $app;
+
+	/**
+	 * @var JDocument
+	 */
+	protected $doc;
+
+	/**
+	 * @var JInput
+	 */
+	protected $input;
+
 	/**
 	 * List of console messages
 	 */
@@ -242,7 +257,8 @@ class PlgSystemMageBridge extends JPlugin
 			}
 
 			// Add the debugging bar if configured
-			MageBridgeDebugHelper::addDebug();
+			$debugHelper = new MageBridgeDebugHelper;
+			$debugHelper->addDebug();
 		}
 	}
 
@@ -352,7 +368,7 @@ class PlgSystemMageBridge extends JPlugin
 	private function redirectNonSef()
 	{
 		// Initialize variables
-		$uri = JURI::getInstance();
+		$uri = JUri::getInstance();
 		$post = $this->input->post->getArray();
 		$enabled = $this->getParam('enable_nonsef_redirect', 1);
 
@@ -450,17 +466,17 @@ class PlgSystemMageBridge extends JPlugin
 				// Fix the destination URL to be a FQDN
 				if (!preg_match('/^(http|https)\:\/\//', $destination))
 				{
-					$destination = JURI::base() . $destination;
+					$destination = JUri::base() . $destination;
 				}
 
-				if ($replacement_url->source_type == 1 && preg_match('/' . $source . '/', JURI::current()))
+				if ($replacement_url->source_type == 1 && preg_match('/' . $source . '/', JUri::current()))
 				{
 					header('Location: ' . $destination);
 					exit;
 				}
 				else
 				{
-					if ($replacement_url->source_type == 0 && preg_match('/' . $source . '$/', JURI::current()))
+					if ($replacement_url->source_type == 0 && preg_match('/' . $source . '$/', JUri::current()))
 					{
 						header('Location: ' . $destination);
 						exit;
@@ -558,10 +574,10 @@ class PlgSystemMageBridge extends JPlugin
 		$magento_js = MageBridgeModelBridgeHeaders::getInstance()
 			->getScripts();
 
-		$uri = JURI::getInstance();
-		$foo_script = JURI::root(true) . '/media/com_magebridge/js/foo.js';
-		$footools_script = JURI::root(true) . '/media/com_magebridge/js/footools.min.js';
-		$frototype_script = JURI::root(true) . '/media/com_magebridge/js/frototype.min.js';
+		$uri = JUri::getInstance();
+		$foo_script = JUri::root(true) . '/media/com_magebridge/js/foo.js';
+		$footools_script = JUri::root(true) . '/media/com_magebridge/js/footools.min.js';
+		$frototype_script = JUri::root(true) . '/media/com_magebridge/js/frototype.min.js';
 		$base_url = $this->getBaseUrl();
 		$base_js_url = $this->getBaseJsUrl();
 
@@ -606,6 +622,7 @@ class PlgSystemMageBridge extends JPlugin
 		{
 			$whitelist[] = 'media/system/js/calendar.js';
 			$whitelist[] = 'media/system/js/calendar-setup.js';
+			$whitelist[] = 'media/system/js/caption.js';
 			$whitelist[] = '/com_jce/';
 			$whitelist[] = '/footools.js';
 			$whitelist[] = 'www.googleadservices.com';
@@ -985,7 +1002,7 @@ class PlgSystemMageBridge extends JPlugin
 	private function redirectSSL()
 	{
 		// Get system variables
-		$uri = JURI::getInstance();
+		$uri = JUri::getInstance();
 		$enforce_ssl = $this->loadConfig('enforce_ssl');
 		$from_http_to_https = $this->getParam('enable_ssl_redirect', 1);
 		$from_https_to_http = $this->getParam('enable_nonssl_redirect', 1);
@@ -996,27 +1013,21 @@ class PlgSystemMageBridge extends JPlugin
 		{
 			return false;
 		}
-		else
-		{
-			if (in_array($this->input->getCmd('view'), array('ajax', 'jsonrpc')))
-			{
-				return false;
-			}
-			else
-			{
-				if (in_array($this->input->getCmd('task'), array('ajax', 'json')))
-				{
-					return false;
-				}
-				else
-				{
-					if (in_array($this->input->getCmd('controller'), array('ajax', 'jsonrpc')))
-					{
-						return false;
-					}
-				}
-			}
-		}
+
+		if (in_array($this->input->getCmd('view'), array('ajax', 'jsonrpc')))
+        {
+            return false;
+        }
+				
+        if (in_array($this->input->getCmd('task'), array('ajax', 'json')))
+        {
+            return false;
+        }
+					
+        if (in_array($this->input->getCmd('controller'), array('ajax', 'jsonrpc')))
+        {
+            return false;
+        }
 
 		// Check the Menu-Item settings
 		$menu = $this->app->getMenu();

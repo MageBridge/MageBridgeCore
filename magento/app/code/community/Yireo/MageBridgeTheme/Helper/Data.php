@@ -4,9 +4,9 @@
  *
  * @author Yireo
  * @package MageBridgeTheme
- * @copyright Copyright 2015
+ * @copyright Copyright 2016
  * @license Open Source License
- * @link http://www.yireo.com
+ * @link https://www.yireo.com
  */
 
 class Yireo_MageBridgeTheme_Helper_Data extends Mage_Core_Helper_Abstract

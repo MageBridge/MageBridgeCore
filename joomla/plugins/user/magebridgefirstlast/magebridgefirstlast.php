@@ -3,9 +3,9 @@
  * User Plugin for Joomla! - MageBridge First Last name
  *
  * @author    Yireo (info@yireo.com)
- * @copyright Copyright 2015 Yireo
+ * @copyright Copyright 2016 Yireo
  * @license   GNU Public License version 3 or later
- * @link      http://www.yireo.com/software/magebridge
+ * @link      https://www.yireo.com/software/magebridge
  */
 
 defined('_JEXEC') or die;

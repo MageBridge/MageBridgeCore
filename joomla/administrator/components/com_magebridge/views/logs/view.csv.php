@@ -4,9 +4,9 @@
  *
  * @author Yireo (info@yireo.com)
  * @package MageBridge
- * @copyright Copyright 2015
+ * @copyright Copyright 2016
  * @license GNU Public License
- * @link http://www.yireo.com
+ * @link https://www.yireo.com
  */
 
 // Check to ensure this file is included in Joomla!
@@ -40,7 +40,7 @@ class MageBridgeViewLogs extends MageBridgeView
 		header('Content-Type: application/octet-stream');
 		header('Content-disposition: attachment; filename='.$filename);
 
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$db->setQuery('SELECT * FROM #__magebridge_log WHERE 1=1');
 		$rows = $db->loadObjectList();
 

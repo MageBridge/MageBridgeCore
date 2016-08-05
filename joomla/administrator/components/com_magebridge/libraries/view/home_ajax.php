@@ -2,11 +2,11 @@
 /**
  * Joomla! Yireo Library
  *
- * @author Yireo (http://www.yireo.com/)
+ * @author Yireo (https://www.yireo.com/)
  * @package YireoLib
- * @copyright Copyright 2015
+ * @copyright Copyright 2016
  * @license GNU Public License
- * @link http://www.yireo.com/
+ * @link https://www.yireo.com/
  * @version 0.6.0
  */
 
@@ -38,11 +38,11 @@ class YireoViewHomeAjax extends YireoView
     {
         switch ($this->jinput->get('layout')) {
             case 'feeds':
-                $feeds = $this->fetchFeeds('http://www.yireo.com/blog?format=feed&type=rss', 3);
+                $feeds = $this->fetchFeeds('https://www.yireo.com/blog?format=feed&type=rss', 3);
                 $this->feeds = $feeds;
                 break;
             case 'promotion':
-                $html = YireoHelper::fetchRemote('http://www.yireo.com/advertizement.php', $this->_option);
+                $html = YireoHelper::fetchRemote('https://www.yireo.com/advertizement.php', $this->_option);
                 print $html;
                 exit;
         }

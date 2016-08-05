@@ -2,11 +2,11 @@
 /**
  * Joomla! component MageBridge
  *
- * @author	Yireo (info@yireo.com)
+ * @author    Yireo (info@yireo.com)
  * @package   MageBridge
- * @copyright Copyright 2015
+ * @copyright Copyright 2016
  * @license   GNU Public License
- * @link	  http://www.yireo.com
+ * @link      https://www.yireo.com
  */
 
 // No direct access
@@ -15,18 +15,19 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Helper for usage in Joomla!/MageBridge modules and templates
  */
-
 class MageBridgeTemplateHelper
 {
 	/**
 	 * Determine if the bridge is loaded with some CSS-stylesheets
 	 *
 	 * @param null
+	 *
 	 * @return bool
 	 */
 	static public function hasCss()
 	{
-		$stylesheets = MageBridgeModelBridgeHeaders::getInstance()->getStylesheets();
+		$stylesheets = MageBridgeModelBridgeHeaders::getInstance()
+			->getStylesheets();
 
 		if (empty($stylesheets))
 		{
@@ -40,11 +41,13 @@ class MageBridgeTemplateHelper
 	 * Determine if the bridge is loaded with some JavaScript-scripts
 	 *
 	 * @param null
+	 *
 	 * @return bool
 	 */
 	static public function hasJs()
 	{
-		$scripts = MageBridgeModelBridgeHeaders::getInstance()->getScripts();
+		$scripts = MageBridgeModelBridgeHeaders::getInstance()
+			->getScripts();
 
 		if (empty($scripts))
 		{
@@ -58,17 +61,20 @@ class MageBridgeTemplateHelper
 	 * Determine if the bridge is loaded with ProtoType
 	 *
 	 * @param null
+	 *
 	 * @return bool
 	 */
 	static public function hasPrototypeJs()
 	{
-		return MageBridgeModelBridgeHeaders::getInstance()->hasProtoType();
+		return MageBridgeModelBridgeHeaders::getInstance()
+			->hasProtoType();
 	}
 
 	/**
 	 * Function to remove Magento scripts from the page
 	 *
 	 * @param null
+	 *
 	 * @return bool
 	 */
 	static public function removeMagentoScripts()
@@ -113,6 +119,7 @@ class MageBridgeTemplateHelper
 	 * Alternative for getRootTemplate
 	 *
 	 * @param null
+	 *
 	 * @return string
 	 */
 	static public function getPageLayout()
@@ -124,6 +131,7 @@ class MageBridgeTemplateHelper
 	 * Get the current page layout
 	 *
 	 * @param null
+	 *
 	 * @return string
 	 */
 	static public function getRootTemplate()
@@ -132,7 +140,8 @@ class MageBridgeTemplateHelper
 
 		if ($tmpl == null)
 		{
-			$tmpl = MageBridge::getBridge()->getSessionData('root_template');
+			$tmpl = MageBridge::getBridge()
+				->getSessionData('root_template');
 			$tmpl = preg_replace('/^page\//', '', $tmpl);
 			$tmpl = preg_replace('/\.phtml$/', '', $tmpl);
 		}
@@ -144,6 +153,7 @@ class MageBridgeTemplateHelper
 	 * Get the Magento XML-handles
 	 *
 	 * @param null
+	 *
 	 * @return array
 	 */
 	static public function getHandles()
@@ -152,7 +162,8 @@ class MageBridgeTemplateHelper
 
 		if ($handles == null)
 		{
-			$handles = MageBridge::getBridge()->getSessionData('handles');
+			$handles = MageBridge::getBridge()
+				->getSessionData('handles');
 		}
 
 		return $handles;
@@ -162,11 +173,13 @@ class MageBridgeTemplateHelper
 	 * Check for a specific Magento XML-handles
 	 *
 	 * @param string
+	 *
 	 * @return boolean
 	 */
 	static public function hasHandle($match)
 	{
-		$handles = MageBridge::getBridge()->getSessionData('handles');
+		$handles = MageBridge::getBridge()
+			->getSessionData('handles');
 
 		if (!empty($handles))
 		{
@@ -186,6 +199,7 @@ class MageBridgeTemplateHelper
 	 * Determine if the Magento theme is using the left-column layout
 	 *
 	 * @param null
+	 *
 	 * @return bool
 	 */
 	static public function hasLeftColumn()
@@ -211,6 +225,7 @@ class MageBridgeTemplateHelper
 	 * Determine if the Magento theme is using the right-column layout
 	 *
 	 * @param null
+	 *
 	 * @return bool
 	 */
 	static public function hasRightColumn()
@@ -236,6 +251,7 @@ class MageBridgeTemplateHelper
 	 * Determine if the Magento layout uses all three columns
 	 *
 	 * @param null
+	 *
 	 * @return bool
 	 */
 	static public function hasAllColumns()
@@ -261,6 +277,7 @@ class MageBridgeTemplateHelper
 	 * Determine if the Magento layout uses the two columns (content + one side-column
 	 *
 	 * @param null
+	 *
 	 * @return bool
 	 */
 	static public function hasTwoColumns()
@@ -286,6 +303,7 @@ class MageBridgeTemplateHelper
 	 * Determine if the Magento layout uses only the main component area
 	 *
 	 * @param null
+	 *
 	 * @return bool
 	 */
 	static public function hasOneColumn()
@@ -311,17 +329,20 @@ class MageBridgeTemplateHelper
 	 * Get the current Magento store-name
 	 *
 	 * @param null
+	 *
 	 * @return bool
 	 */
 	static public function getStore()
 	{
-		return MageBridge::getBridge()->getSessionData('store_code');
+		return MageBridge::getBridge()
+			->getSessionData('store_code');
 	}
 
 	/**
 	 * Get the current Magento page-request
 	 *
 	 * @param null
+	 *
 	 * @return bool
 	 */
 	static public function getRequest()
@@ -333,6 +354,7 @@ class MageBridgeTemplateHelper
 	 * Determine if the current request is the homepage
 	 *
 	 * @param null
+	 *
 	 * @return bool
 	 */
 	static public function isHomePage()
@@ -352,6 +374,7 @@ class MageBridgeTemplateHelper
 	 * Determine if the current request is a specific page
 	 *
 	 * @param null
+	 *
 	 * @return bool
 	 */
 	static public function isPage($pages = null, $request = null)
@@ -389,9 +412,9 @@ class MageBridgeTemplateHelper
 
 				$page = preg_replace('/\/$/', '', $page); // Strip the backslash in the end
 				$page = str_replace('/', '\/', $page); // Transform this string for use within preg_match
-                $page = preg_replace('/\.\*$/', '', $page); // Remove .* at end of string
-                $page = preg_replace('/\*$/', '', $page); // Remove * at end of string
-                $page = preg_replace('/\*/', '\\\*', $page); // Escape any remaining characters
+				$page = preg_replace('/\.\*$/', '', $page); // Remove .* at end of string
+				$page = preg_replace('/\*$/', '', $page); // Remove * at end of string
+				$page = preg_replace('/\*/', '\\\*', $page); // Escape any remaining characters
 
 				if (preg_match('/^' . $page . '/', $request))
 				{
@@ -407,6 +430,7 @@ class MageBridgeTemplateHelper
 	 * Determine if the current request is a catalog page
 	 *
 	 * @param null
+	 *
 	 * @return bool
 	 */
 	static public function isCatalogPage()
@@ -418,6 +442,7 @@ class MageBridgeTemplateHelper
 	 * Determine if the current request is a catalog product page
 	 *
 	 * @param null
+	 *
 	 * @return bool
 	 */
 	static public function isProductPage()
@@ -429,6 +454,7 @@ class MageBridgeTemplateHelper
 	 * Determine if the current request is a catalog category page
 	 *
 	 * @param null
+	 *
 	 * @return bool
 	 */
 	static public function isCategoryPage()
@@ -440,6 +466,7 @@ class MageBridgeTemplateHelper
 	 * Determine if the current request is a customer page
 	 *
 	 * @param null
+	 *
 	 * @return bool
 	 */
 	static public function isCustomerPage()
@@ -471,6 +498,7 @@ class MageBridgeTemplateHelper
 	 * Determine if the current request is the shopping cart
 	 *
 	 * @param null
+	 *
 	 * @return bool
 	 */
 	static public function isCartPage()
@@ -482,6 +510,7 @@ class MageBridgeTemplateHelper
 	 * Determine if the current request is a checkout page
 	 *
 	 * @param $only_checkout Parameter to skip cart-page
+	 *
 	 * @return bool
 	 */
 	static public function isCheckoutPage($only_checkout = false)
@@ -505,6 +534,7 @@ class MageBridgeTemplateHelper
 	 * Determine if the current request is a sales page
 	 *
 	 * @param null
+	 *
 	 * @return bool
 	 */
 	static public function isSalesPage()
@@ -516,6 +546,7 @@ class MageBridgeTemplateHelper
 	 * Determine if the current request is the wishlist
 	 *
 	 * @param null
+	 *
 	 * @return bool
 	 */
 	static public function isWishlistPage()
@@ -527,11 +558,13 @@ class MageBridgeTemplateHelper
 	 * Return the current product ID
 	 *
 	 * @param null
+	 *
 	 * @return int
 	 */
 	static public function getProductId()
 	{
-		$product_id = MageBridge::getBridge()->getSessionData('current_product_id');
+		$product_id = MageBridge::getBridge()
+			->getSessionData('current_product_id');
 
 		if ($product_id > 0)
 		{
@@ -552,6 +585,7 @@ class MageBridgeTemplateHelper
 	 * Check whether the current category-ID is x
 	 *
 	 * @param int $category_id
+	 *
 	 * @return bool
 	 */
 	static public function isCategoryId($category_id = 0)
@@ -561,7 +595,8 @@ class MageBridgeTemplateHelper
 			return true;
 		}
 
-		$category_path = MageBridge::getBridge()->getSessionData('current_category_path');
+		$category_path = MageBridge::getBridge()
+			->getSessionData('current_category_path');
 
 		if (!empty($category_path))
 		{
@@ -580,11 +615,13 @@ class MageBridgeTemplateHelper
 	 * Return the current category ID
 	 *
 	 * @param null
+	 *
 	 * @return int
 	 */
 	static public function getCategoryId()
 	{
-		$category_id = MageBridge::getBridge()->getSessionData('current_category_id');
+		$category_id = MageBridge::getBridge()
+			->getSessionData('current_category_id');
 
 		if ($category_id > 0)
 		{
@@ -605,6 +642,7 @@ class MageBridgeTemplateHelper
 	 * Determine if MageBridge is loaded
 	 *
 	 * @param null
+	 *
 	 * @return bool
 	 */
 	static public function isLoaded()
@@ -635,10 +673,16 @@ class MageBridgeTemplateHelper
 	 * Determine whether the browser is a mobile browser or not
 	 *
 	 * @param null
+	 *
 	 * @return bool
 	 */
 	static public function isMobile()
 	{
+		if (class_exists('MobileDetector'))
+		{
+			return MobileDetector::isMobile();
+		}
+
 		jimport('joomla.environment.browser');
 		$browser = JBrowser::getInstance();
 
@@ -659,7 +703,9 @@ class MageBridgeTemplateHelper
 	 *
 	 * @static
 	 * @access public
+	 *
 	 * @param string $name
+	 *
 	 * @return bool
 	 */
 	static public function hasModule($name = '')
@@ -681,6 +727,7 @@ class MageBridgeTemplateHelper
 	 * Copy of the original JDocumentHTML::countModules() method, but this copy skips empty modules as well
 	 *
 	 * @param string $condition
+	 *
 	 * @return integer
 	 */
 	static public function countModules($condition)
@@ -713,6 +760,7 @@ class MageBridgeTemplateHelper
 	 * Function that determines whether a certain module-position should be "flushed" depending on MageBridge settings
 	 *
 	 * @param string $condition
+	 *
 	 * @return bool
 	 */
 	static public function allowPosition($position)
@@ -726,7 +774,7 @@ class MageBridgeTemplateHelper
 		}
 
 		// Check for a certain page
-        $setting = self::getFlushSettingByPage();
+		$setting = self::getFlushSettingByPage();
 
 		// If the page-check returns empty, default to true
 		if (empty($setting))
@@ -736,11 +784,11 @@ class MageBridgeTemplateHelper
 
 		// Check for flushing of positions within the MageBridge configuration
 		$globalArray = explode(',', MagebridgeModelConfig::load($setting));
-        $plugin = JPluginHelper::getPlugin('system', 'magebridgepositions'); 
-        $pluginParams = json_decode($plugin->params, true);
-        $pluginArray = (isset($pluginParams[$setting])) ? explode(',', $pluginParams[$setting]) : array();
+		$plugin = JPluginHelper::getPlugin('system', 'magebridgepositions');
+		$pluginParams = json_decode($plugin->params, true);
+		$pluginArray = (isset($pluginParams[$setting])) ? explode(',', $pluginParams[$setting]) : array();
 
-        $array = array_merge($globalArray, $pluginArray);
+		$array = array_merge($globalArray, $pluginArray);
 
 		if (!empty($array))
 		{
@@ -763,37 +811,38 @@ class MageBridgeTemplateHelper
 		{
 			return 'flush_positions_home';
 		}
-		
-        if (MageBridgeTemplateHelper::isCustomerPage())
+
+		if (MageBridgeTemplateHelper::isCustomerPage())
 		{
 			return 'flush_positions_customer';
-        }
+		}
 
 		if (MageBridgeTemplateHelper::isProductPage())
 		{
 			return 'flush_positions_product';
 		}
-					
-        if (MageBridgeTemplateHelper::isCategoryPage())
+
+		if (MageBridgeTemplateHelper::isCategoryPage())
 		{
 			return 'flush_positions_category';
 		}
-						
-        if (MageBridgeTemplateHelper::isCartPage())
+
+		if (MageBridgeTemplateHelper::isCartPage())
 		{
 			return 'flush_positions_cart';
 		}
-							
-        if (MageBridgeTemplateHelper::isCheckoutPage())
+
+		if (MageBridgeTemplateHelper::isCheckoutPage())
 		{
 			return 'flush_positions_checkout';
 		}
-    }
+	}
 
 	/**
 	 * Function to load a Magento stylesheet
 	 *
 	 * @param string $file
+	 *
 	 * @return null
 	 */
 	static public function addMagentoStylesheet($file = null, $theme = 'default', $interface = 'default', $attribs = array())
@@ -805,7 +854,8 @@ class MageBridgeTemplateHelper
 
 		if (!preg_match('/^(http|https):\/\//', $file))
 		{
-			$file = MageBridge::getBridge()->getMagentoUrl() . 'skin/frontend/' . $interface . '/' . $theme . '/css/' . $file;
+			$file = MageBridge::getBridge()
+					->getMagentoUrl() . 'skin/frontend/' . $interface . '/' . $theme . '/css/' . $file;
 		}
 
 		$document = JFactory::getDocument();
@@ -817,12 +867,14 @@ class MageBridgeTemplateHelper
 	 *
 	 * @param string $type
 	 * @param string $file
+	 *
 	 * @return bool
 	 */
 	static public function load($type, $file = null)
 	{
 		// Fetch system-variables
-		$template = JFactory::getApplication()->getTemplate();
+		$template = JFactory::getApplication()
+			->getTemplate();
 		$document = JFactory::getDocument();
 		$application = JFactory::getApplication();
 
@@ -834,7 +886,8 @@ class MageBridgeTemplateHelper
 				// Load jQuery through the Google API
 				if (MagebridgeModelConfig::load('use_google_api') == 1)
 				{
-					$prefix = (JURI::getInstance()->isSSL()) ? 'https' : 'http';
+					$prefix = (JUri::getInstance()
+						->isSSL()) ? 'https' : 'http';
 					$document->addScript($prefix . '://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js');
 				}
 				else
@@ -917,12 +970,14 @@ class MageBridgeTemplateHelper
 	 *
 	 * @param string $type
 	 * @param string $file
+	 *
 	 * @return bool
 	 */
 	static public function getPath($type, $file)
 	{
 		// Get system variables
-		$template = JFactory::getApplication()->getTemplate();
+		$template = JFactory::getApplication()
+			->getTemplate();
 
 		// Check whether a file of a certain type exists - either as a template override, or as original file
 		if (file_exists(JPATH_SITE . '/templates/' . $template . '/' . $type . '/com_magebridge/' . $file))
@@ -958,14 +1013,18 @@ class MageBridgeTemplateHelper
 			}
 		}
 
-		$root = JURI::root();
+		$root = JUri::root();
 
-		if (JURI::getInstance()->isSSL() == true)
+		if (JUri::getInstance()
+				->isSSL() == true
+		)
 		{
 			$root = preg_replace('/^http:\/\//', 'https://', $root);
 		}
 
-		if (JURI::getInstance()->isSSL() == false)
+		if (JUri::getInstance()
+				->isSSL() == false
+		)
 		{
 			$root = preg_replace('/^https:\/\//', 'http://', $root);
 		}
@@ -983,6 +1042,7 @@ class MageBridgeTemplateHelper
 	 *
 	 * @param string $type
 	 * @param string $file
+	 *
 	 * @return bool
 	 */
 	static public function get($variable = null)
@@ -999,6 +1059,7 @@ class MageBridgeTemplateHelper
 	 *
 	 * @param string $type
 	 * @param string $file
+	 *
 	 * @return bool
 	 */
 	static public function debug()

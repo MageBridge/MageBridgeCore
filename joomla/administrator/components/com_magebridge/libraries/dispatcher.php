@@ -2,19 +2,19 @@
 /**
  * Joomla! Yireo Library
  *
- * @author Yireo (http://www.yireo.com/)
- * @package YireoLib
+ * @author    Yireo (http://www.yireo.com/)
+ * @package   YireoLib
  * @copyright Copyright 2015
- * @license GNU Public License
- * @link http://www.yireo.com/
- * @version 0.6.0
+ * @license   GNU Public License
+ * @link      http://www.yireo.com/
+ * @version   0.6.0
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
 // Import the loader
-require_once dirname(__FILE__).'/loader.php';
+require_once dirname(__FILE__) . '/loader.php';
 
 /**
  * Yireo Dispatcher
@@ -23,47 +23,57 @@ require_once dirname(__FILE__).'/loader.php';
  */
 class YireoDispatcher
 {
-    static public function dispatch()
-    {
-        // Fetch URL-variables
-        $jinput = JFactory::getApplication()->input;
-        $option = $jinput->getCmd('option');
-        $view = $jinput->getCmd('view');
+	static public function dispatch()
+	{
+		// Fetch URL-variables
+		$jinput = JFactory::getApplication()->input;
+		$option = $jinput->getCmd('option');
+		$view = $jinput->getCmd('view');
 
-        // Construct the controller-prefix
-        $prefix = ucfirst(preg_replace('/^com_/', '', $option));
+		// Construct the controller-prefix
+		$prefix = ucfirst(preg_replace('/^com_/', '', $option));
 
-        // Check for a corresponding view-controller
-        if(!empty($view)) {
-            $controllerFile = JPATH_COMPONENT.'/controllers/'.$view.'.php';
-            if(file_exists($controllerFile)) {
-                require_once $controllerFile;
-                $controllerClass = $prefix.'Controller'.ucfirst($view);
-                if(class_exists($controllerClass)) {
-                    $controller = new $controllerClass();
-                }
-            }
-        }
+		// Check for a corresponding view-controller
+		if (!empty($view))
+		{
+			$controllerFile = JPATH_COMPONENT . '/controllers/' . $view . '.php';
 
-        // Return to the default component-controller
-        if(empty($controller)) {
-            $controllerFile = JPATH_COMPONENT.'/controller.php';
-            if(file_exists($controllerFile)) {
-                require_once $controllerFile;
-                $controllerClass = $prefix.'Controller';
-                if(class_exists($controllerClass)) {
-                    $controller = new $controllerClass();
-                }
-            }
-        }
+			if (file_exists($controllerFile))
+			{
+				require_once $controllerFile;
+				$controllerClass = $prefix . 'Controller' . ucfirst($view);
 
-        // Default to YireoController
-        if(empty($controller)) {
-            $controller = new YireoController();
-        }
+				if (class_exists($controllerClass))
+				{
+					$controller = new $controllerClass();
+				}
+			}
+		}
 
-        // Perform the Request task
-        $controller->execute( $jinput->getCmd('task'));
-        $controller->redirect();
-    }
+		// Return to the default component-controller
+		if (empty($controller))
+		{
+			$controllerFile = JPATH_COMPONENT . '/controller.php';
+			if (file_exists($controllerFile))
+			{
+				require_once $controllerFile;
+				$controllerClass = $prefix . 'Controller';
+
+				if (class_exists($controllerClass))
+				{
+					$controller = new $controllerClass();
+				}
+			}
+		}
+
+		// Default to YireoController
+		if (empty($controller))
+		{
+			$controller = new YireoController();
+		}
+
+		// Perform the Request task
+		$controller->execute($jinput->getCmd('task'));
+		$controller->redirect();
+	}
 }

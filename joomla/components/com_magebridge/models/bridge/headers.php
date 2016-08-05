@@ -4,9 +4,9 @@
  *
  * @author    Yireo (info@yireo.com)
  * @package   MageBridge
- * @copyright Copyright 2015
+ * @copyright Copyright 2016
  * @license   GNU Public License
- * @link      http://www.yireo.com
+ * @link      https://www.yireo.com
  */
 
 // No direct access
@@ -68,7 +68,7 @@ class MageBridgeModelBridgeHeaders extends MageBridgeModelBridgeSegment
 	public function getBaseJsUrl()
 	{
 		$url = $this->bridge->getSessionData('base_js_url');
-		$uri = JURI::getInstance();
+		$uri = JUri::getInstance();
 
 		if (empty($url))
 		{
@@ -198,7 +198,7 @@ class MageBridgeModelBridgeHeaders extends MageBridgeModelBridgeSegment
 
 		if (!empty($headers['robots']))
 		{
-			$this->setMetaDescription($headers['robots']);
+			$this->setMetaRobots($headers['robots']);
 		}
 
 		// Add canonical tag
@@ -778,7 +778,7 @@ class MageBridgeModelBridgeHeaders extends MageBridgeModelBridgeSegment
 	 */
 	public function convertUrl($url)
 	{
-		$uri = JURI::getInstance();
+		$uri = JUri::getInstance();
 
 		if ($uri->isSSL())
 		{

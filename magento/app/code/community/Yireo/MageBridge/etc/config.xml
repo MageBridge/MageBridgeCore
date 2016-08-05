@@ -5,16 +5,16 @@
  *
  * @author Yireo
  * @package MageBridge
- * @copyright Copyright 2015
+ * @copyright Copyright 2016
  * @license Open Source License
- * @link http://www.yireo.com
+ * @link https://www.yireo.com
  */
 -->
 <config>
 
     <modules>
         <Yireo_MageBridge>
-            <version>1.9.5381</version>
+            <version>1.9.5400</version>
         </Yireo_MageBridge>
     </modules>
 

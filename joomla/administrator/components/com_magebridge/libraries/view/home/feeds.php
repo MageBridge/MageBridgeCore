@@ -11,22 +11,23 @@
  */
 
 defined('_JEXEC') or die('Restricted access');
+
 ?>
 <table id="adminform" width="100%">
-    <?php if (!empty($this->feeds)) { ?>
-    <?php foreach ($this->feeds as $feed) { ?>
-    <tr>
-    <td>
-        <a target="_new" href="<?php echo $feed['link']; ?>"><h4><?php echo $feed['title']; ?></h4></a>
-        <?php echo $feed['description']; ?>
-    </td>
-    </tr>
-    <?php } ?>
-    <?php } else { ?>
-    <tr>
-    <td>
-        <?php echo JText::_('LIB_YIREO_VIEW_FEED_ERROR'); ?>
-    </td>
-    </tr>
-    <?php } ?>
+	<?php if (!empty($this->feeds)) : ?>
+		<?php foreach ($this->feeds as $feed) : ?>
+			<tr>
+				<td>
+					<a target="_new" href="<?php echo $feed['link']; ?>"><h4><?php echo $feed['title']; ?></h4></a>
+					<?php echo $feed['description']; ?>
+				</td>
+			</tr>
+		<?php endforeach; ?>
+	<?php else : ?>
+		<tr>
+			<td>
+				<?php echo JText::_('LIB_YIREO_VIEW_FEED_ERROR'); ?>
+			</td>
+		</tr>
+	<?php endif; ?>
 </table>

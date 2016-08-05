@@ -4,22 +4,18 @@
  *
  * @author Yireo
  * @package MageBridge
- * @copyright Copyright 2015
+ * @copyright Copyright 2016
  * @license Open Source License
- * @link http://www.yireo.com
- */
-/*
- * MageBridge class for the log-block
+ * @link https://www.yireo.com
  */
 
+/**
+ * MageBridge class for the log-block
+ */
 class Yireo_MageBridge_Block_Log extends Mage_Core_Block_Template
 {
-    /*
+    /**
      * Constructor method
-     *
-     * @access public
-     * @param null
-     * @return null
      */
     public function _construct()
     {
@@ -28,11 +24,11 @@ class Yireo_MageBridge_Block_Log extends Mage_Core_Block_Template
         $this->setTemplate('magebridge/log.phtml');
     }
 
-    /*
+    /**
      * Helper to return the header of this page
      *
-     * @access public
      * @param string $title
+     *
      * @return string
      */
     public function getHeader($title = null)
@@ -41,11 +37,9 @@ class Yireo_MageBridge_Block_Log extends Mage_Core_Block_Template
         return 'MageBridge - ' . ucfirst($type) . ' Log';
     }
 
-    /*
+    /**
      * Helper to return the menu
      *
-     * @access public
-     * @param null
      * @return string
      */
     public function getMenu()
@@ -53,11 +47,9 @@ class Yireo_MageBridge_Block_Log extends Mage_Core_Block_Template
         return $this->getLayout()->createBlock('magebridge/menu')->toHtml();
     }
 
-    /*
+    /**
      * Get the content of a specific file
      *
-     * @access public
-     * @param null
      * @return string
      */
     public function getContent()
@@ -84,11 +76,9 @@ class Yireo_MageBridge_Block_Log extends Mage_Core_Block_Template
         return htmlentities($content);
     }
 
-    /*
+    /**
      * Return the wipelog URL
      *
-     * @access public
-     * @param null
      * @return string
      */
     public function getWipelogUrl($type = null)

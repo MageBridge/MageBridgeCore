@@ -4,22 +4,18 @@
  *
  * @author Yireo
  * @package MageBridge
- * @copyright Copyright 2015
+ * @copyright Copyright 2016
  * @license Open Source License
- * @link http://www.yireo.com
- */
-/*
- * MageBridge class for the settings-block
+ * @link https://www.yireo.com
  */
 
+/**
+ * MageBridge class for the settings-block
+ */
 class Yireo_MageBridge_Block_Settings extends Mage_Core_Block_Template
 {
-    /*
+    /**
      * Constructor method
-     *
-     * @access public
-     * @param null
-     * @return null
      */
     public function _construct()
     {
@@ -28,11 +24,11 @@ class Yireo_MageBridge_Block_Settings extends Mage_Core_Block_Template
         $this->setTemplate('magebridge/settings.phtml');
     }
 
-    /*
+    /**
      * Helper to return the header of this page
      *
-     * @access public
      * @param string $title
+     *
      * @return string
      */
     public function getHeader($title = null)
@@ -40,11 +36,9 @@ class Yireo_MageBridge_Block_Settings extends Mage_Core_Block_Template
         return 'MageBridge - ' . $this->__($title);
     }
 
-    /*
+    /**
      * Helper to return the menu
      *
-     * @access public
-     * @param null
      * @return string
      */
     public function getMenu()
@@ -52,11 +46,9 @@ class Yireo_MageBridge_Block_Settings extends Mage_Core_Block_Template
         return $this->getLayout()->createBlock('magebridge/menu')->toHtml();
     }
 
-    /*
+    /**
      * Helper to return the save URL
      *
-     * @access public
-     * @param null
      * @return string
      */
     public function getSaveUrl()
@@ -64,11 +56,9 @@ class Yireo_MageBridge_Block_Settings extends Mage_Core_Block_Template
         return Mage::getModel('adminhtml/url')->getUrl('adminhtml/magebridge/save');
     }
 
-    /*
+    /**
      * Helper to reset MageBridge values for event forwarding
      *
-     * @access public
-     * @param null
      * @return string
      */
     public function getResetEventsUrl()
@@ -76,11 +66,9 @@ class Yireo_MageBridge_Block_Settings extends Mage_Core_Block_Template
         return Mage::getModel('adminhtml/url')->getUrl('adminhtml/magebridge/resetevents');
     }
 
-    /*
+    /**
      * Helper to reset Joomla! to Magento usermapping by ID
      *
-     * @access public
-     * @param null
      * @return string
      */
     public function getResetUsermapUrl()
@@ -88,11 +76,9 @@ class Yireo_MageBridge_Block_Settings extends Mage_Core_Block_Template
         return Mage::getModel('adminhtml/url')->getUrl('adminhtml/magebridge/resetusermap');
     }
 
-    /*
+    /**
      * Helper to reset some MageBridge values to null
      *
-     * @access public
-     * @param null
      * @return string
      */
     public function getResetApiUrl()
@@ -103,13 +89,20 @@ class Yireo_MageBridge_Block_Settings extends Mage_Core_Block_Template
     /**
      * Render block HTML
      *
-     * @access protected
-     *
-     * @param null
-     *
      * @return mixed
      */
     protected function _toHtml()
+    {
+        $this->addAccordion();
+        $this->addToolbarButtons();
+
+        return parent::_toHtml();
+    }
+
+    /**
+     * Add the accordion block as child
+     */
+    protected function addAccordion()
     {
         $accordion = $this->getLayout()->createBlock('adminhtml/widget_accordion')->setId('magebridge');
 
@@ -132,7 +125,13 @@ class Yireo_MageBridge_Block_Settings extends Mage_Core_Block_Template
         ));
 
         $this->setChild('accordion', $accordion);
+    }
 
+    /**
+     * Add toolbar buttons
+     */
+    protected function addToolbarButtons()
+    {
         $this->setChild('resetevents_button',
             $this->getLayout()->createBlock('adminhtml/widget_button')
                 ->setData(array(
@@ -161,7 +160,5 @@ class Yireo_MageBridge_Block_Settings extends Mage_Core_Block_Template
                     'class' => 'delete'
                 ))
         );
-
-        return parent::_toHtml();
     }
 }

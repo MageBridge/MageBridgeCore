@@ -3,11 +3,11 @@
     <name>COM_MAGEBRIDGE</name>
     <author>Yireo</author>
     <authoremail>development@yireo.com</authoremail>
-    <authorurl>http://www.yireo.com</authorurl>
-    <creationDate>March 2016</creationDate>
+    <authorurl>https://www.yireo.com</authorurl>
+    <creationDate>July 2016</creationDate>
     <copyright>Copyright (C) 2016 Yireo.com. All rights reserved.</copyright>
     <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
-    <version>1.9.5381</version>
+    <version>1.9.5400</version>
     <description>COM_MAGEBRIDGE_DESC</description>
 
     <!-- installation part -->

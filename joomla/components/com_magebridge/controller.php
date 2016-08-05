@@ -4,9 +4,9 @@
  *
  * @author    Yireo (info@yireo.com)
  * @package   MageBridge
- * @copyright Copyright 2015
+ * @copyright Copyright 2016
  * @license   GNU Public License
- * @link      http://www.yireo.com
+ * @link      https://www.yireo.com
  */
 
 // No direct access
@@ -30,7 +30,7 @@ class MageBridgeController extends YireoAbstractController
 		$this->registerTask('login', 'ssoCheck');
 		$this->registerTask('logout', 'ssoCheck');
 
-		$uri = JURI::current();
+		$uri = JUri::current();
 		$input = JFactory::getApplication()->input;
 		$post = $input->post->getArray();
 
@@ -174,7 +174,7 @@ class MageBridgeController extends YireoAbstractController
 		}
 		else
 		{
-			$this->setRedirect(JURI::base());
+			$this->setRedirect(JUri::base());
 		}
 	}
 

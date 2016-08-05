@@ -2,11 +2,11 @@
 /**
  * Joomla! component MageBridge
  *
- * @author Yireo (info@yireo.com)
- * @package MageBridge
- * @copyright Copyright 2015
- * @license GNU Public License
- * @link http://www.yireo.com
+ * @author    Yireo (info@yireo.com)
+ * @package   MageBridge
+ * @copyright Copyright 2016
+ * @license   GNU Public License
+ * @link      https://www.yireo.com
  */
 
 // Check to ensure this file is included in Joomla!
@@ -27,11 +27,6 @@ class MagebridgeModelStore extends YireoModel
 
 	/**
 	 * Constructor method
-	 *
-	 * @package MageBridge
-	 * @access public
-	 * @param null
-	 * @return null
 	 */
 	public function __construct()
 	{
@@ -41,19 +36,20 @@ class MagebridgeModelStore extends YireoModel
 	/**
 	 * Method to remove multiple items
 	 *
-	 * @access public
-	 * @subpackage Yireo
 	 * @param array $cid
+	 *
 	 * @return bool
 	 */
 	public function delete($cid = array())
 	{
-		if(is_array($cid) && in_array(0, $cid)) {
+		if (is_array($cid) && in_array(0, $cid))
+		{
 			$data = array(
 				'storegroup' => '',
-				'storeview' => '',
+				'storeview'  => '',
 			);
-			MageBridgeModelConfig::store($data);
+
+			MagebridgeModelConfig::store($data);
 		}
 
 		return parent::delete($cid);
@@ -62,42 +58,52 @@ class MagebridgeModelStore extends YireoModel
 	/**
 	 * Method to store the item
 	 *
-	 * @package MageBridge
-	 * @access public
 	 * @param array $data
+	 *
 	 * @return bool
 	 */
 	public function store($data)
 	{
-		if (!empty($data['store'])) {
-			$values = explode(':', $data['store']);
-			$data['type'] = ($values[0] == 'g') ? 'storegroup' : 'storeview';
-			$data['name'] = $values[1];
+		if (!empty($data['store']))
+		{
+			$values        = explode(':', $data['store']);
+			$data['type']  = ($values[0] == 'g') ? 'storegroup' : 'storeview';
+			$data['name']  = $values[1];
 			$data['title'] = $values[2];
 			unset($data['store']);
-		} else {
+		}
+		else
+		{
 			$this->setError(JText::_('COM_MAGEBRIDGE_MODEL_STORE_NO_STORE_SELECTED'));
+
 			return false;
 		}
 
-		if (!empty($data['default']) && $data['default']) {
+		if (!empty($data['default']) && $data['default'])
+		{
 			$this->storeDefault($data['type'], $data['name']);
+
 			return true;
 		}
 
-		if (empty($data['name']) || empty($data['title'])) {
+		if (empty($data['name']) || empty($data['title']))
+		{
 			$this->setError(JText::_('COM_MAGEBRIDGE_MODEL_STORE_INVALID_STORE'));
+
 			return false;
 		}
 
-		if (empty($data['label'])) {
+		if (empty($data['label']))
+		{
 			$data['label'] = $data['title'];
 		}
 
 		$rt = parent::store($data);
 
-		if($rt == true && $data['published'] == 1) {
-			MageBridge::getConfig()->saveValue('load_stores', 1);
+		if ($rt == true && $data['published'] == 1)
+		{
+			MageBridge::getConfig()
+				->saveValue('load_stores', 1);
 		}
 
 		return $rt;
@@ -106,27 +112,30 @@ class MagebridgeModelStore extends YireoModel
 	/**
 	 * Method to save the default store-name
 	 *
-	 * @package MageBridge
-	 * @access public
 	 * @param string $type
 	 * @param string $name
+	 *
 	 * @return bool
 	 */
 	private function storeDefault($type, $name)
 	{
-		if ($type == 'storeview') {
+		if ($type == 'storeview')
+		{
 			$post = array(
 				'storegroup' => '',
-				'storeview' => $name,
+				'storeview'  => $name,
 			);
-		} else {
+		}
+		else
+		{
 			$post = array(
 				'storegroup' => $name,
-				'storeview' => '',
+				'storeview'  => '',
 			);
 		}
 
 		MageBridgeModelConfig::store($post);
+
 		return;
 	}
 }

@@ -4,9 +4,9 @@
  *
  * @author    Yireo (info@yireo.com)
  * @package   MageBridge
- * @copyright Copyright 2015
+ * @copyright Copyright 2016
  * @license   GNU Public License
- * @link      http://www.yireo.com
+ * @link      https://www.yireo.com
  */
 
 // Check to ensure this file is included in Joomla!
@@ -83,13 +83,13 @@ class MageBridgeController extends YireoController
 		// Redirect to the Yireo Forum
 		if ($this->_app->input->getCmd('view') == 'forum')
 		{
-			return $this->setRedirect('http://www.yireo.com/forum/');
+			return $this->setRedirect('https://www.yireo.com/forum/');
 		}
 
 		// Redirect to the Yireo Tutorials
 		if ($this->_app->input->getCmd('view') == 'tutorials')
 		{
-			return $this->setRedirect('http://www.yireo.com/tutorials/magebridge/');
+			return $this->setRedirect('https://www.yireo.com/tutorials/magebridge/');
 		}
 
 		parent::display();
@@ -264,7 +264,7 @@ class MageBridgeController extends YireoController
 		if ($this->_app->input->getCmd('view') == 'logs')
 		{
 			// Clean up the database
-			$db = JFactory::getDBO();
+			$db = JFactory::getDbo();
 			$db->setQuery('DELETE FROM #__magebridge_log WHERE 1 = 1');
 			$db->execute();
 
@@ -378,7 +378,7 @@ class MageBridgeController extends YireoController
 		}
 		else
 		{
-			$this->setRedirect(JURI::base());
+			$this->setRedirect(JUri::base());
 		}
 	}
 
