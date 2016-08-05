@@ -36,11 +36,11 @@ class YireoViewHomeAjax extends YireoView
 		switch ($this->input->get('layout'))
 		{
 			case 'feeds':
-				$this->feeds = $this->fetchFeeds('http://www.yireo.com/blog?format=feed&type=rss', 3);
+				$this->feeds = $this->fetchFeeds('https://www.yireo.com/blog?format=feed&type=rss', 3);
 				break;
 
 			case 'promotion':
-				$html = YireoHelper::fetchRemote('http://www.yireo.com/advertizement.php', $this->getConfig('option'));
+				$html = YireoHelper::fetchRemote('https://www.yireo.com/advertizement.php', $this->getConfig('option'));
 				print $html;
 				exit;
 		}
@@ -58,26 +58,24 @@ class YireoViewHomeAjax extends YireoView
 	public function fetchFeeds($url = '', $max = 3)
 	{
 		ini_set('display_errors', 0);
+		$remote = YireoHelper::fetchRemote($url);
 
-		if (method_exists('JFactory', 'getFeedParser'))
-		{
-			$rss = JFactory::getFeedParser($url);
-		}
-		else
-		{
-			$rss = JFactory::getXMLParser('rss', array('rssUrl' => $url));
-		}
-
-		if ($rss == null)
+		if (empty($remote))
 		{
 			return false;
 		}
 
-		$result = $rss->get_items();
-		$feeds  = array();
-		$i      = 0;
+		$xml = simplexml_load_string($remote);
 
-		foreach ($result as $r)
+		if (!$xml)
+		{
+			return false;
+		}
+
+		$feeds  = array();
+		$i = 0;
+
+		foreach ($xml->channel->item as $item)
 		{
 			if ($i == $max)
 			{
@@ -85,9 +83,9 @@ class YireoViewHomeAjax extends YireoView
 			}
 
 			$feed                = array();
-			$feed['link']        = $r->get_link();
-			$feed['title']       = $r->get_title();
-			$feed['description'] = preg_replace('/<img([^>]+)>/', '', $r->get_description());
+			$feed['link']        = (string) $item->link;
+			$feed['title']       = (string) $item->title;
+			$feed['description'] = preg_replace('/<img([^>]+)>/', '', (string) $item->description);
 			$feeds[]             = $feed;
 			$i++;
 		}
