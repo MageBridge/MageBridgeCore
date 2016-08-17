@@ -43,7 +43,10 @@ class MageBridgeViewCatalog extends MageBridgeView
 		if (is_numeric($prefix))
 		{
 			$request = MageBridgeUrlHelper::getLayoutUrl($layout, $prefix);
-
+            if (!empty($request))
+            {
+                $request .= '?' . $suffix;
+            }
 		}
 		else
 		{

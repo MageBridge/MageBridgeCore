@@ -435,7 +435,7 @@ class MageBridgeModelBridgeHeaders extends MageBridgeModelBridgeSegment
 
 		// Check whether all scripts are disabled
 		$disable_js = MagebridgeModelConfig::load('disable_js_mage');
-		if ($disable_js == 'all')
+		if (strtolower($disable_js) == 'all')
 		{
 			return false;
 		}
