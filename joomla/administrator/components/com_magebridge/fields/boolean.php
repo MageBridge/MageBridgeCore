@@ -43,8 +43,8 @@ class MagebridgeFormFieldBoolean extends JFormFieldRadio
 	protected function getOptions()
 	{
 		$options = array(
-			JHtml::_('select.option', '0', 'JNO'),
-			JHtml::_('select.option', '1', 'JYES'),
+			JHtml::_('select.option', '0', JText::_('JNO')),
+			JHtml::_('select.option', '1', JText::_('JYES')),
 		);
 
 		return $options;
