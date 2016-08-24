@@ -138,7 +138,7 @@ class YireoView extends YireoCommonView
 		$this->model = $this->getModel(null, false);
 		$this->_model = $this->model;
 		
-		if (!empty($this->model) && $this->model instanceof YireoDataModel)
+        if (!empty($this->model) && method_exists($this->model, 'getTable'))
 		{
 			$this->table = $this->model->getTable();
 			$this->_table = $this->table;
@@ -440,7 +440,7 @@ class YireoView extends YireoCommonView
 		// Assign the published-list
 		if (isset($this->item->published))
 		{
-			$this->lists['published'] = JHtml::_('select.booleanlist', 'published', 'class="inputbox"', $this->item->published);
+			$this->lists['published'] = JHtml::_('select.booleanlist', 'published', 'class="btn-group btn-group-yesno"', $this->item->published);
 		}
 		else
 		{

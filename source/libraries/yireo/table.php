@@ -132,6 +132,12 @@ class YireoTable extends JTable
 		$this->bindAlias($array);
 		$this->bindParams($array);
 
+        if (isset($array['rules']) && is_array($array['rules']))
+        {
+            $rules = new JAccessRules($array['rules']);
+            $this->setRules($rules);
+        }
+
 		return parent::bind($array, $ignore);
 	}
 

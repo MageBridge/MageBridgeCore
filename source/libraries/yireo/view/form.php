@@ -40,12 +40,12 @@ class YireoViewForm extends YireoView
 	 */
 	protected $_single = true;
 
-    /**
-     * Item object
-     *
-     * @var object
-     */
-    protected $item;
+	/**
+	 * Item object
+	 *
+	 * @var object
+	 */
+	protected $item;
 
 	/*
 	 * Array of all the form-fields
@@ -79,17 +79,17 @@ class YireoViewForm extends YireoView
 		// Detect the editor field
 		if (empty($this->_editor_field) && !empty($this->_table))
 		{
-			if ($this->_table->hasField('body'))
+			if ($this->table->hasField('body'))
 			{
 				$this->_editor_field = 'body';
 			}
 
-			if ($this->_table->hasField('description'))
+			if ($this->table->hasField('description'))
 			{
 				$this->_editor_field = 'description';
 			}
 
-			if ($this->_table->hasField('text'))
+			if ($this->table->hasField('text'))
 			{
 				$this->_editor_field = 'text';
 			}
