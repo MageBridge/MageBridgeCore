@@ -46,14 +46,14 @@ class Autoloader
 	 */
 	public function load($className)
 	{
-		if (stristr($className, 'yireo') == false)
+		if (stristr($className, 'yireo') === false)
 		{
 			return false;
 		}
 
 		$rt = $this->loadLegacy($className);
 
-		if ($rt == true)
+		if ($rt === true)
 		{
 			return true;
 		}
@@ -61,7 +61,7 @@ class Autoloader
 		// Try to include namespaced files
 		$rt = $this->loadNamespaced($className);
 
-		if ($rt == true)
+		if ($rt === true)
 		{
 			return true;
 		}
@@ -79,7 +79,7 @@ class Autoloader
 	protected function loadNamespaced($className)
 	{
 		$prefix   = 'Yireo\\';
-		$base_dir = __DIR__ . '/Yireo/';
+		$baseDir = dirname(__DIR__) . '/';
 		$len      = strlen($prefix);
 
 		if (strncmp($prefix, $className, $len) !== 0)
@@ -89,7 +89,7 @@ class Autoloader
 
 		$relativeClass = substr($className, $len);
 
-		$filename = $base_dir . str_replace('\\', '/', $relativeClass) . '.php';
+		$filename = $baseDir . str_replace('\\', '/', $relativeClass) . '.php';
 
 		if (!file_exists($filename))
 		{

@@ -61,15 +61,15 @@ class YireoTable extends JTable
 	/**
 	 * Constructor
 	 *
-	 * @param string    $table_name
-	 * @param string    $primary_key
+	 * @param string          $table_name
+	 * @param string          $primary_key
 	 * @param JDatabaseDriver $db
 	 */
 	public function __construct($table_name, $primary_key, $db)
 	{
 		// Determine the table name
 		$table_namespace = preg_replace('/^com_/', '', JFactory::getApplication()->input->getCmd('option'));
-		
+
 		if (!empty($table_name))
 		{
 			if (!strstr($table_name, '#__'))
@@ -87,7 +87,7 @@ class YireoTable extends JTable
 
 		// Initialize the fields based on an array
 		$fields = $this->getDatabaseFields();
-		
+
 		if (!empty($fields))
 		{
 			foreach ($fields as $field)
@@ -119,7 +119,7 @@ class YireoTable extends JTable
 
 		// Remove fields that do not exist in the database-table
 		$fields = $this->getDatabaseFields();
-		
+
 		foreach ($array as $name => $value)
 		{
 			if (!in_array($name, $fields))
@@ -127,16 +127,16 @@ class YireoTable extends JTable
 				unset($array[$name]);
 			}
 		}
-		
+
 		$this->bindDefaults($array);
 		$this->bindAlias($array);
 		$this->bindParams($array);
 
-        if (isset($array['rules']) && is_array($array['rules']))
-        {
-            $rules = new JAccessRules($array['rules']);
-            $this->setRules($rules);
-        }
+		if (isset($array['rules']) && is_array($array['rules']))
+		{
+			$rules = new JAccessRules($array['rules']);
+			$this->setRules($rules);
+		}
 
 		return parent::bind($array, $ignore);
 	}
@@ -167,8 +167,8 @@ class YireoTable extends JTable
 		// Set cid[] as primary key
 		if (key_exists('cid', $array))
 		{
-			$cid = (int) $array['cid'][0];
-			$primary_key = $this->getKeyName();
+			$cid                 = (int) $array['cid'][0];
+			$primary_key         = $this->getKeyName();
 			$array[$primary_key] = $cid;
 		}
 	}
@@ -251,7 +251,8 @@ class YireoTable extends JTable
 	public function store($updateNulls = false)
 	{
 		$result = parent::store($updateNulls);
-		if ($this->_debug == true)
+
+		if ($this->_debug === true)
 		{
 			echo "Query: " . $this->_db->getQuery();
 			echo "Error: " . $this->_db->getErrorMsg();
@@ -291,15 +292,15 @@ class YireoTable extends JTable
 	{
 		if ($this->$field != null)
 		{
-			$table = $this->getTableName();
+			$table       = $this->getTableName();
 			$primary_key = $this->getKeyName();
-			$query = "SELECT `$primary_key` FROM `$table` WHERE `$field`=" . $this->_db->quote($this->$field);
+			$query       = "SELECT `$primary_key` FROM `$table` WHERE `$field`=" . $this->_db->quote($this->$field);
 			$this->_db->setQuery($query);
 
 			$xid = intval($this->_db->loadResult());
 			if ($xid && $xid != intval($this->$primary_key))
 			{
-				$fieldLabel = JText::_('LIB_YIREO_TABLE_FIELDNAME_' . $field);
+				$fieldLabel   = JText::_('LIB_YIREO_TABLE_FIELDNAME_' . $field);
 				$this->_error = JText::sprintf('LIB_YIREO_TABLE_FIELD_VALUE_DUPLICATE', $fieldLabel, $this->$field);
 
 				return false;
@@ -317,6 +318,7 @@ class YireoTable extends JTable
 	public function getLastInsertId()
 	{
 		$primary_key = $this->getKeyName();
+
 		if ($this->$primary_key > 0)
 		{
 			return $this->$primary_key;
@@ -326,7 +328,7 @@ class YireoTable extends JTable
 	}
 
 	/**
-	 * Helper-method to get the error-message
+	 * Helper-method to get the error message
 	 *
 	 * @return int
 	 */
@@ -346,7 +348,9 @@ class YireoTable extends JTable
 		{
 			$tableName = $this->getTableName();
 		}
+
 		static $fields = array();
+
 		if (!isset($fields[$tableName]) || !is_array($fields[$tableName]))
 		{
 			$cache = JFactory::getCache('lib_yireo_table');
@@ -375,15 +379,16 @@ class YireoTable extends JTable
 	}
 
 	/**
-	 * Helper-method to get the default ORDER BY value (depending on the present fields)
+	 * Helper-method to see if a table contains a specific field or not
 	 *
 	 * @param mixed $check
 	 *
-	 * @return array
+	 * @return string|false
 	 */
 	public function hasField($check)
 	{
 		$fields = $this->getDatabaseFields();
+
 		if (!empty($fields))
 		{
 			foreach ($fields as $field)
@@ -408,7 +413,7 @@ class YireoTable extends JTable
 	/**
 	 * Helper-method to get all fields from this table
 	 *
-	 * @return array
+	 * @return bool
 	 */
 	public function hasAssetId()
 	{
@@ -448,6 +453,7 @@ class YireoTable extends JTable
 		{
 			return 'ordering';
 		}
+
 		if ($this->hasField('lft'))
 		{
 			return 'lft';
@@ -468,11 +474,13 @@ class YireoTable extends JTable
 			foreach ($array as $index => $value)
 			{
 				$value = trim($value);
+
 				if (empty($value))
 				{
 					unset($array[$index]);
 				}
 			}
+
 			$string = implode($seperator, $array);
 
 			return $string;

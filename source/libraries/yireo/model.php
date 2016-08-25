@@ -353,12 +353,12 @@ class YireoModel extends YireoCommonModel
 
 		if ($this->app->isSite() == false)
 		{
-			$this->params = JComponentHelper::getParams($this->_option);
+			$this->params = JComponentHelper::getParams($this->getConfig('option'));
 
 			return $this->params;
 		}
 
-		$this->params = $this->app->getParams($this->_option);
+		$this->params = $this->app->getParams($this->getConfig('option'));
 
 		return $this->params;
 	}
@@ -962,11 +962,11 @@ class YireoModel extends YireoCommonModel
 	 *
 	 * @return bool
 	 */
-	public function saveorder($cid = array(), $order)
+	public function saveorder($cid, $order)
 	{
 		$groupings = array();
 
-		// update ordering values
+		// Update ordering values
 		for ($i = 0; $i < count($cid); $i++)
 		{
 			// Load the table

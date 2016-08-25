@@ -188,7 +188,7 @@ class YireoController extends YireoCommonController
 		// Allow or disallow frontend editing
 		if ($this->app->isSite() && in_array($this->input->getCmd('task', 'display'), $this->allow_tasks) == false)
 		{
-			throw new YireoControllerIllegalRequestException(JText::_('LIB_YIREO_CONTROLLER_ILLEGAL_REQUEST'));
+			throw new Yireo\Exception\Controller\IllegalRequest(JText::_('LIB_YIREO_CONTROLLER_ILLEGAL_REQUEST') . ' = ' . $this->input->getCmd('task'));
 		}
 
 		// Check for ACLs in backend
