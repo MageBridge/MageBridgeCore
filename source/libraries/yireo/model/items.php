@@ -243,7 +243,7 @@ class YireoModelItems extends YireoDataModel
 	{
 		$this->queryConfig['filter_state']  = $this->getFilter('state');
 		$this->queryConfig['filter_search'] = $this->getFilter('search');
-		$this->queryConfig['search_fields'] = $this->search;
+		$this->queryConfig['search_fields'] = $this->getConfig('search_fields');
 		$this->queryConfig['allow_filter']  = $this->getConfig('allow_filter', true);
 
 		if ($this->getConfig('limit_query') == true)

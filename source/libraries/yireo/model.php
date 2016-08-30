@@ -1488,7 +1488,7 @@ class YireoModel extends YireoCommonModel
 	protected function getEmpty()
 	{
 		// Define the fields to initialize
-		$data = $this->getEmptyFields();
+		$fields = $this->getEmptyFields();
 
 		// Lets load the data if it doesn't already exist
 		if (empty($this->data))
@@ -1503,7 +1503,7 @@ class YireoModel extends YireoCommonModel
 
 			$this->data = (object) $this->table->getProperties();
 
-			foreach ($data as $name => $value)
+			foreach ($fields as $name => $value)
 			{
 				$this->data->$name = $value;
 			}

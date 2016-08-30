@@ -77,7 +77,7 @@ class YireoViewForm extends YireoView
 		$rt = parent::__construct($config);
 
 		// Detect the editor field
-		if (empty($this->_editor_field) && !empty($this->_table))
+		if (empty($this->_editor_field) && !empty($this->table))
 		{
 			if ($this->table->hasField('body'))
 			{
@@ -112,7 +112,10 @@ class YireoViewForm extends YireoView
 		JHtml::_('behavior.tooltip');
 
 		// Automatically fetch the item and assign it to the layout
-		$this->fetchItem();
+        if (!empty($this->table))
+        {
+		    $this->fetchItem();
+        }
 
 		if ($this->prepare_display == true)
 		{
