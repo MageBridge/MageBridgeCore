@@ -15,7 +15,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * MageBridge Table class
  */
-class TableConfig extends YireoTable
+class MagebridgeTableConfig extends YireoTable
 {
 	/**
 	 * Constructor
