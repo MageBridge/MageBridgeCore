@@ -87,6 +87,22 @@ class YireoDataModel extends YireoCommonModel
 	}
 
 	/**
+	 * @return YireoModelDataQuery
+	 */
+	public function getQuery()
+	{
+		return $this->query;
+	}
+
+	/**
+	 * @param $query
+	 */
+	public function setQuery($query)
+	{
+		$this->query = $query;
+	}
+
+	/**
 	 * Method to override a default user-state value
 	 *
 	 * @param string $key

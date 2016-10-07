@@ -75,6 +75,7 @@ class YireoModelItems extends YireoDataModel
 	 * Order-by default-value
 	 *
 	 * @var string
+	 * @deprecated: Use $this->getConfig('orderby_default') instead
 	 */
 	protected $_orderby_default = null;
 
@@ -82,6 +83,7 @@ class YireoModelItems extends YireoDataModel
 	 * Order-by default-title
 	 *
 	 * @var string
+	 * @deprecated: Use $this->getConfig('orderby_title') instead
 	 */
 	protected $_orderby_title = null;
 
@@ -170,11 +172,12 @@ class YireoModelItems extends YireoDataModel
 		$this->initLimitstart();
 
 		// Initialize ordering
-		$orderBys = array();
+		$orderBys       = array();
+		$orderByDefault = $this->getConfig('orderby_default');
 
-		if (!empty($this->_orderby_default))
+		if (!empty($orderByDefault))
 		{
-			$filter_order     = $this->getFilter('order', '{tableAlias}.' . $this->_orderby_default, 'string');
+			$filter_order     = $this->getFilter('order', $this->getConfig('table_alias') . '.' . $orderByDefault, 'string');
 			$filter_order_Dir = $this->getFilter('order_Dir');
 
 			if (!empty($filter_order_Dir))
@@ -187,7 +190,7 @@ class YireoModelItems extends YireoDataModel
 				$orderBys[] = $filter_order . $filter_order_Dir;
 			}
 
-			$orderBys[] = '{tableAlias}.' . $this->_orderby_default;
+			$orderBys[] = $this->getConfig('table_alias') . '.' . $orderByDefault;
 		}
 
 		$this->queryConfig['orderby'] = $orderBys;
@@ -281,7 +284,7 @@ class YireoModelItems extends YireoDataModel
 		$this->loadTmpSession();
 
 		$query = $this->buildQueryObject();
-		$data = $this->getDbResult($query, 'objectList');
+		$data  = $this->getDbResult($query, 'objectList');
 
 		if (!empty($data))
 		{
@@ -455,7 +458,7 @@ class YireoModelItems extends YireoDataModel
 	 */
 	public function getOrderingQuery()
 	{
-		if (!in_array($this->_orderby_default, array('ordering', 'lft')))
+		if (!in_array($this->getConfig('orderby_default'), array('ordering', 'lft')))
 		{
 			return false;
 		}
@@ -464,10 +467,10 @@ class YireoModelItems extends YireoDataModel
 		$db = $this->db;
 
 		$query = $db->getQuery(true);
-		$query->select($db->quoteName($this->_orderby_default, 'value'));
-		$query->select($db->quoteName($this->_orderby_title, 'text'));
+		$query->select($db->quoteName($this->getConfig('orderby_default'), 'value'));
+		$query->select($db->quoteName($this->getConfig('orderby_title'), 'text'));
 		$query->from($db->quoteName($this->table->getTableName()));
-		$query->order($db->quoteName($this->_orderby_default));
+		$query->order($db->quoteName($this->getConfig('orderby_default')));
 
 		return $query;
 	}
@@ -539,7 +542,7 @@ class YireoModelItems extends YireoDataModel
 	 */
 	public function getOrderByDefault()
 	{
-		return $this->_orderby_default;
+		return $this->getConfig('orderby_default');
 	}
 
 	/**

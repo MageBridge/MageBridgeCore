@@ -494,21 +494,7 @@ class YireoView extends YireoCommonView
 	 */
 	public function getAjaxFunction()
 	{
-		$script = "<script type=\"text/javascript\">\n" 
-            . "function getAjax(ajax_url, element_id, type) {\n" 
-            . "    var YireoAjax = jQuery.ajax({\n" 
-            . "        url: ajax_url, \n" 
-            . "        method: 'get', \n" 
-            . "        success: function(result){\n" 
-            . "            if (result == '') {\n" 
-            . "                console.log('Empty AJAX result');\n" 
-            . "            } else {\n" 
-            . "                 jQuery('#' + element_id).val(result);\n" 
-            . "            }\n" 
-            . "        }\n" 
-            . "    });\n" 
-            . "}\n" 
-            . "</script>";
+		$script = "<script type=\"text/javascript\">\n" . "function getAjax(ajax_url, element_id, type) {\n" . "    var MBajax = jQuery.ajax({\n" . "        url: ajax_url, \n" . "        method: 'get', \n" . "        success: function(result){\n" . "            if (result == '') {\n" . "                alert('Empty result');\n" . "            } else {\n" . "                 jQuery('#' + element_id).val(result);\n" . "            }\n" . "        }\n" . "    });\n" . "}\n" . "</script>";
 
 		$this->doc->addCustomTag($script);
 	}

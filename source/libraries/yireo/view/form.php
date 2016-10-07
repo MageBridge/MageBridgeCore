@@ -112,10 +112,10 @@ class YireoViewForm extends YireoView
 		JHtml::_('behavior.tooltip');
 
 		// Automatically fetch the item and assign it to the layout
-        if (!empty($this->table))
-        {
-		    $this->fetchItem();
-        }
+		if (!empty($this->table))
+		{
+			$this->fetchItem();
+		}
 
 		if ($this->prepare_display == true)
 		{

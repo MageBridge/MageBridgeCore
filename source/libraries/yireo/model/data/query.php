@@ -161,7 +161,7 @@ class YireoModelDataQuery
 				continue;
 			}
 
-			$selectFields[] = $this->tableAlias . '.' . $availableField;
+			$selectFields[] = $this->db->quoteName($this->tableAlias) . '.' . $this->db->quoteName($availableField);
 		}
 
 		// Append extra fields
@@ -171,7 +171,7 @@ class YireoModelDataQuery
 		{
 			foreach ($extraFields as $extraField)
 			{
-				$selectFields[] = $extraField;
+				$selectFields[] = $this->db->quoteName($extraField);
 			}
 		}
 
@@ -186,7 +186,7 @@ class YireoModelDataQuery
 		$db = $this->db;
 
 		$this->query->from($db->quoteName($this->table->getTableName(), $this->tableAlias));
-		$this->query->select($db->quoteName($this->getSelectFields()));
+		$this->query->select($this->getSelectFields());
 
 		if ($this->getConfig('checkout') == true && $this->table->hasField('checked_out') && $this->app->isAdmin())
 		{

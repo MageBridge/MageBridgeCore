@@ -146,6 +146,7 @@ class YireoModelItem extends YireoDataModel
 			$query = $this->query->setConfig($queryConfig)
 				->setId($this->getId())
 				->build();
+
 			$data  = $this->getDbResult($query, 'object');
 
 			if (!empty($data))

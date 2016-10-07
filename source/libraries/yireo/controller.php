@@ -59,7 +59,7 @@ class YireoController extends YireoCommonController
 	 * Value of the default View to use
 	 *
 	 * @protected string
-	 * @deprecated
+	 * @deprecated: Use $default_view instead
 	 */
 	protected $_default_view = 'home';
 
@@ -76,20 +76,20 @@ class YireoController extends YireoCommonController
 	 * @protected object
 	 * @deprecated
 	 */
-	protected $_model = null;
+	protected $_model;
 
 	/**
 	 * Value of the current model
 	 *
 	 * @protected object
 	 */
-	protected $model = null;
+	protected $model;
 
 	/**
 	 * Boolean to allow or disallow frontend editing
 	 *
 	 * @protected bool
-	 * @deprecated
+	 * @deprecated: Use $frontend_edit instead
 	 */
 	protected $_frontend_edit = false;
 
@@ -104,7 +104,7 @@ class YireoController extends YireoCommonController
 	 * List of allowed tasks
 	 *
 	 * @protected array
-	 * @deprecated
+	 * @deprecated: Use $allow_tasks instead
 	 */
 	protected $_allow_tasks = array(
 		'display',
@@ -123,7 +123,7 @@ class YireoController extends YireoCommonController
 	 * List of POST-values that should be allowed to contain raw content
 	 *
 	 * @protected array
-	 * @deprecated
+	 * @deprecated: Use $allow_row instead
 	 */
 	protected $_allow_raw = array(
 		'description',
@@ -206,6 +206,21 @@ class YireoController extends YireoCommonController
 		if ($this->input->getCmd('view') == $this->_default_view)
 		{
 			YireoHelperInstall::remove();
+		}
+
+		if (!empty($this->_allow_tasks))
+		{
+			$this->allow_tasks = array_merge($this->allow_tasks, $this->_allow_tasks);
+		}
+
+		if (!empty($this->_allow_raw))
+		{
+			$this->allow_raw = array_merge($this->allow_raw, $this->_allow_raw);
+		}
+
+		if (!empty($this->_relations))
+		{
+			$this->relations = array_merge($this->relations, $this->_relations);
 		}
 	}
 
@@ -308,9 +323,9 @@ class YireoController extends YireoCommonController
 		$this->id   = $post['id'];
 
 		// Make sure fields that are configured as "raw" are loaded correspondingly
-		if (!empty($this->_allow_raw))
+		if (!empty($this->allow_raw))
 		{
-			foreach ($this->_allow_raw as $raw)
+			foreach ($this->allow_raw as $raw)
 			{
 				if (isset($post[$raw]))
 				{
@@ -344,11 +359,10 @@ class YireoController extends YireoCommonController
 		{
 			if (empty($post['alias']))
 			{
-				$alias = $this->input->getString('title', '', 'post');
+				$alias         = $this->input->post->getString('title');
+				$alias         = strtolower(JFilterOutput::stringURLSafe($alias));
+				$post['alias'] = $alias;
 			}
-
-			$alias         = strtolower(JFilterOutput::stringURLSafe($alias));
-			$post['alias'] = $alias;
 		}
 
 		// Get the model
@@ -815,24 +829,26 @@ class YireoController extends YireoCommonController
 	 */
 	protected function _loadModel()
 	{
-		if ($this->_model === null)
+		if ($this->model !== null)
 		{
-			// Derive the model-name from the current view
-			$name = $this->getSingleName($this->input->get('view'));
-
-			// Create the model-object from the singular model-name
-			$model = $this->getModel($name);
-
-			// If it is still empty, try to create the model manually instead
-			if (empty($model))
-			{
-				$model = new YireoModel($name, $name . 's', $name . '_id');
-			}
-
-			$this->_model = $model;
+			return $this->model;
 		}
 
-		return $this->_model;
+		// Derive the model-name from the current view
+		$name = $this->getSingleName($this->input->get('view'));
+
+		// Create the model-object from the singular model-name
+		$model = $this->getModel($name);
+
+		// If it is still empty, try to create the model manually instead
+		if (empty($model))
+		{
+			$model = new YireoModel($name, $name . 's', $name . '_id');
+		}
+
+		$this->model = $model;
+
+		return $this->model;
 	}
 
 	/**
@@ -844,7 +860,7 @@ class YireoController extends YireoCommonController
 	 */
 	protected function getPluralName($name = '')
 	{
-		$relations = $this->_relations;
+		$relations = $this->relations;
 
 		if (isset($relations[$name]))
 		{
@@ -875,7 +891,7 @@ class YireoController extends YireoCommonController
 	 */
 	protected function getSingleName($name = '')
 	{
-		$relations = $this->_relations;
+		$relations = $this->relations;
 
 		if (array_key_exists($name, $relations))
 		{

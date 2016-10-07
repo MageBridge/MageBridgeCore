@@ -117,18 +117,18 @@ trait YireoModelTraitTable
 
 	/**
 	 * @param $table_prefix
+	 *
+	 * @return bool
 	 */
 	public function setTablePrefix($table_prefix = null)
 	{
 		if (!empty($table_prefix))
 		{
 			$this->setConfig('table_prefix', $table_prefix);
-
-			return true;
 		}
 
 		// Set the database variables
-		if ($this->getConfig('table_prefix_auto') == true)
+		if ($this->getConfig('table_prefix_auto') === true)
 		{
 			$tablePrefix = $this->getConfig('component') . 'Table';
 			$this->setConfig('table_prefix', $tablePrefix);

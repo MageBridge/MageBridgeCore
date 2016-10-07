@@ -13,7 +13,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
-// Check the table for certain capabilities
+/** @var YireoModel $model */
 $model       = $this->getModel();
 $table       = $model->getTable();
 $hasState    = ($table->getStateField()) ? true : false;
@@ -64,7 +64,7 @@ $hasOrdering = ($table->getDefaultOrderBy()) ? true : false;
 			<?php endif; ?>
 			<tbody>
 			<?php
-			$i = 0;
+			$i = $this->pagination->limitstart;
 			if (!empty($this->items))
 			{
 				foreach ($this->items as $item)

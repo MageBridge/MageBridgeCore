@@ -353,12 +353,12 @@ class YireoModel extends YireoCommonModel
 
 		if ($this->app->isSite() == false)
 		{
-			$this->params = JComponentHelper::getParams($this->getConfig('option'));
+			$this->params = JComponentHelper::getParams($this->_option);
 
 			return $this->params;
 		}
 
-		$this->params = $this->app->getParams($this->getConfig('option'));
+		$this->params = $this->app->getParams($this->_option);
 
 		return $this->params;
 	}
@@ -962,11 +962,11 @@ class YireoModel extends YireoCommonModel
 	 *
 	 * @return bool
 	 */
-	public function saveorder($cid, $order)
+	public function saveorder($cid = array(), $order)
 	{
 		$groupings = array();
 
-		// Update ordering values
+		// update ordering values
 		for ($i = 0; $i < count($cid); $i++)
 		{
 			// Load the table
@@ -1288,7 +1288,8 @@ class YireoModel extends YireoCommonModel
 
 		if (!empty($where_search))
 		{
-			$this->where[] = '(' . implode(' OR ', $where_search) . ')';
+			$this->addWhere('(' . implode(' OR ', $where_search) . ')');
+			//$this->where[] = '(' . implode(' OR ', $where_search) . ')';
 		}
 
 		if (count($this->where))
@@ -1488,7 +1489,7 @@ class YireoModel extends YireoCommonModel
 	protected function getEmpty()
 	{
 		// Define the fields to initialize
-		$fields = $this->getEmptyFields();
+		$data = $this->getEmptyFields();
 
 		// Lets load the data if it doesn't already exist
 		if (empty($this->data))
@@ -1503,7 +1504,7 @@ class YireoModel extends YireoCommonModel
 
 			$this->data = (object) $this->table->getProperties();
 
-			foreach ($fields as $name => $value)
+			foreach ($data as $name => $value)
 			{
 				$this->data->$name = $value;
 			}
