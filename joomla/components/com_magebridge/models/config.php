@@ -711,6 +711,7 @@ class MagebridgeModelConfig extends YireoAbstractModel
 	 * @param mixed $value
 	 *
 	 * @return bool
+	 * @throws Exception
 	 */
 	public function saveValue($name, $value)
 	{
@@ -720,12 +721,19 @@ class MagebridgeModelConfig extends YireoAbstractModel
 		);
 
 		$config = MagebridgeModelConfig::load();
+
 		if (isset($config[$name]))
 		{
 			$data['id'] = $config[$name]['id'];
 		}
 
-		$table = JTable::getInstance('config', 'Table');
+		$table = JTable::getInstance('config', 'MagebridgeTable');
+
+		if ($table === false)
+		{
+			throw new Exception('No table found');
+		}
+
 		if (!$table->bind($data))
 		{
 			JError::raiseWarning(500, 'Unable to bind configuration to component');
