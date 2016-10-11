@@ -62,6 +62,7 @@ class YireoDataModel extends YireoCommonModel
 
 		$this->setConfig('skip_table', false);
 		$this->setConfig('table_prefix_auto', true);
+
 		$this->setTablePrefix();
 		$this->table = $this->getTable($this->getConfig('table_alias'));
 		$this->initQuery();

@@ -108,6 +108,7 @@ class YireoCommonModel extends YireoAbstractModel
 		$this->setConfig('option_id', $option_id);
 		$this->setConfig('component', $component);
 		$this->setConfig('frontend_form', false);
+		$this->setConfig('skip_table', true);
 
 		$this->handleCommonDeprecated();
 

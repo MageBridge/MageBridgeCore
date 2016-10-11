@@ -140,8 +140,25 @@ class YireoView extends YireoCommonView
 		
         if (!empty($this->model) && method_exists($this->model, 'getTable'))
 		{
-			$this->table = $this->model->getTable();
-			$this->_table = $this->table;
+			$useTable = false;
+
+			if ($this->model instanceof YireoCommonModel === false)
+			{
+				$useTable = true;
+			}
+			else
+			{
+				if ($this->model->getConfig('skip_table') === false)
+				{
+					$useTable = true;
+				}
+			}
+
+			if ($useTable === true)
+			{
+				$this->table = $this->model->getTable();
+				$this->_table = $this->table;
+			}
 		}
 
 		// Add some backend-elements
