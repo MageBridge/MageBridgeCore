@@ -134,7 +134,7 @@ class MagebridgeModelStore extends YireoModel
 			);
 		}
 
-		MageBridgeModelConfig::store($post);
+		MagebridgeModelConfig::store($post);
 
 		return;
 	}

@@ -566,6 +566,7 @@ class MagebridgeModelConfig extends YireoAbstractModel
 			{
 				$post['disable_js_all'] = 0;
 			}
+
 			if ($post['disable_js_all'] == 3 && empty($post['disable_js_custom']))
 			{
 				$post['disable_js_all'] = 1;
@@ -579,6 +580,7 @@ class MagebridgeModelConfig extends YireoAbstractModel
 			{
 				array_shift($post['disable_css_mage']);
 			}
+
 			if (empty($post['disable_css_mage']))
 			{
 				$post['disable_css_mage'] = '';
@@ -596,6 +598,7 @@ class MagebridgeModelConfig extends YireoAbstractModel
 			{
 				array_shift($post['disable_js_mage']);
 			}
+
 			if (empty($post['disable_js_mage']))
 			{
 				$post['disable_js_mage'] = '';
@@ -704,7 +707,8 @@ class MagebridgeModelConfig extends YireoAbstractModel
 	/**
 	 * Method to store a single value in the database
 	 *
-	 * @param array $post
+	 * @param string $name
+	 * @param mixed $value
 	 *
 	 * @return bool
 	 */

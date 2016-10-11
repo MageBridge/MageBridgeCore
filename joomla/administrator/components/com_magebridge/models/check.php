@@ -66,7 +66,8 @@ class MagebridgeModelCheck extends YireoCommonModel
 	public function getChecks($installer = false)
 	{
 		$this->doSystemChecks($installer);
-		if ($installer == false)
+
+		if ($installer === false)
 		{
 			$this->doExtensionChecks();
 			$this->doBridgeChecks();
@@ -87,6 +88,7 @@ class MagebridgeModelCheck extends YireoCommonModel
 		foreach ($config as $c)
 		{
 			$result = MagebridgeModelConfig::check($c['name'], $c['value']);
+
 			if (!empty($result))
 			{
 				$this->addResult($group, $c['name'], self::CHECK_WARNING, $result);
@@ -144,25 +146,47 @@ class MagebridgeModelCheck extends YireoCommonModel
 		return;
 	}
 
+	private function getBytesFromValue($val)
+	{
+		$val  = trim($val);
+		$last = strtolower($val[strlen($val) - 1]);
+
+		switch ($last)
+		{
+			case 'g':
+				$val *= 1024;
+
+			case 'm':
+				$val *= 1024;
+
+			case 'k':
+				$val *= 1024;
+		}
+
+		return $val;
+	}
+
 	/**
 	 * Method to do all system checks
 	 */
 	public function doSystemChecks($installer = false)
 	{
-		$application     = JFactory::getApplication();
-		$db              = JFactory::getDbo();
 		$config          = MagebridgeModelConfig::load();
+		$joomlaConfig = JFactory::getConfig();
 		$server_software = (isset($_SERVER['software'])) ? $_SERVER['software'] : null;
 
 		// System Compatibility
 		$result = (version_compare(phpversion(), '5.4.0', '>=')) ? self::CHECK_OK : self::CHECK_ERROR;
 		$this->addResult('compatibility', 'PHP version', $result, JText::sprintf('COM_MAGEBRIDGE_CHECK_PHP_VERSION', '5.4.0'));
 
-		$result = (version_compare(ini_get('memory_limit'), '31M', '>')) ? self::CHECK_OK : self::CHECK_ERROR;
+		$memoryLimit = $this->getBytesFromValue(ini_get('memory_limit'));
+		$result      = ($memoryLimit >= (32 * 1024 * 1024)) ? self::CHECK_OK : self::CHECK_ERROR;
+
 		if (ini_get('memory_limit') == -1)
 		{
 			$result = self::CHECK_OK;
 		}
+
 		$this->addResult('compatibility', 'PHP memory', $result, JText::sprintf('COM_MAGEBRIDGE_CHECK_PHP_MEMORY', '32Mb', ini_get('memory_limit')));
 
 		$jversion = new JVersion();
@@ -211,16 +235,13 @@ class MagebridgeModelCheck extends YireoCommonModel
 			$this->addResult('system', 'htaccess', $result, JText::_('COM_MAGEBRIDGE_CHECK_HTACCESS'));
 		}
 
-		$result = (JFactory::getConfig()
-				->get('sef') == 1) ? self::CHECK_OK : self::CHECK_ERROR;
+		$result = ($joomlaConfig->get('sef') == 1) ? self::CHECK_OK : self::CHECK_ERROR;
 		$this->addResult('system', 'SEF', $result, JText::_('COM_MAGEBRIDGE_CHECK_SEF'));
 
-		$result = (JFactory::getConfig()
-				->get('sef_rewrite') == 1) ? self::CHECK_OK : self::CHECK_WARNING;
+		$result = ($joomlaConfig->get('sef_rewrite') == 1) ? self::CHECK_OK : self::CHECK_WARNING;
 		$this->addResult('system', 'SEF Rewrites', $result, JText::_('COM_MAGEBRIDGE_CHECK_SEF_REWRITE'));
 
-		$result = (JFactory::getConfig()
-				->get('caching') == 0) ? self::CHECK_OK : self::CHECK_WARNING;
+		$result = ($joomlaConfig->get('caching') == 0) ? self::CHECK_OK : self::CHECK_WARNING;
 		$this->addResult('system', 'Caching', $result, JText::_('COM_MAGEBRIDGE_CHECK_CACHING'));
 
 		$cachePlugin = JPluginHelper::getPlugin('system', 'cache');
@@ -233,12 +254,10 @@ class MagebridgeModelCheck extends YireoCommonModel
 			$this->addResult('system', 'Root item', $result, JText::_('COM_MAGEBRIDGE_CHECK_ROOT_ITEM'));
 		}
 
-		$result = self::checkWritable(JFactory::getConfig()
-			->get('tmp_path'));
+		$result = self::checkWritable($joomlaConfig->get('tmp_path'));
 		$this->addResult('system', 'Temporary path writable', $result, JText::_('COM_MAGEBRIDGE_CHECK_TMP'));
 
-		$result = self::checkWritable(JFactory::getConfig()
-			->get('log_path'));
+		$result = self::checkWritable($joomlaConfig->get('log_path'));
 		$this->addResult('system', 'Log path writable', $result, JText::_('COM_MAGEBRIDGE_CHECK_LOG'));
 
 		$result = self::checkWritable(JPATH_SITE . '/cache');
@@ -252,30 +271,31 @@ class MagebridgeModelCheck extends YireoCommonModel
 	 */
 	public function doExtensionChecks()
 	{
-		$application = JFactory::getApplication();
-		$db          = JFactory::getDbo();
-		$config      = MagebridgeModelConfig::load();
-
 		if (file_exists(JPATH_SITE . '/plugins/system/rokmoduleorder.php'))
 		{
 			$this->addResult('extension', 'RokModuleOrder', self::CHECK_ERROR, JText::_('COM_MAGEBRIDGE_CHECK_ROKMODULEORDER'));
 		}
+
 		if (file_exists(JPATH_SITE . '/plugins/system/rsform.php'))
 		{
 			$this->addResult('extension', 'RSForm', self::CHECK_ERROR, JText::_('COM_MAGEBRIDGE_CHECK_RSFORM'));
 		}
+
 		if (file_exists(JPATH_SITE . '/components/com_acesef/acesef.php'))
 		{
 			$this->addResult('extension', 'AceSEF', self::CHECK_ERROR, JText::_('COM_MAGEBRIDGE_CHECK_ACESEF'));
 		}
+
 		if (file_exists(JPATH_SITE . '/components/com_sh404sef/sh404sef.php'))
 		{
 			$this->addResult('extension', 'sh404SEF', self::CHECK_ERROR, JText::_('COM_MAGEBRIDGE_CHECK_SH404SEF'));
 		}
+
 		if (file_exists(JPATH_ADMINISTRATOR . '/components/com_sef/controller.php'))
 		{
 			$this->addResult('extension', 'JoomSEF', self::CHECK_WARNING, JText::_('COM_MAGEBRIDGE_CHECK_JOOMSEF'));
 		}
+
 		if (file_exists(JPATH_SITE . '/components/com_rsfirewall/rsfirewall.php'))
 		{
 			$this->addResult('extension', 'RSFirewall', self::CHECK_WARNING, JText::_('COM_MAGEBRIDGE_CHECK_RSFIREWALL'));
