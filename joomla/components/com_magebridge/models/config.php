@@ -685,7 +685,8 @@ class MagebridgeModelConfig extends YireoAbstractModel
 				continue;
 			}
 
-			$table = JTable::getInstance('config', 'Table');
+    		$table = JTable::getInstance('config', 'MagebridgeTable');
+
 			if (!$table->bind($data))
 			{
 				JError::raiseWarning(500, 'Unable to bind configuration to component');
