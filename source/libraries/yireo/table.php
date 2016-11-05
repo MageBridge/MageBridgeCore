@@ -221,7 +221,7 @@ class YireoTable extends JTable
 			{
 				if (!$this->_checkRequired($r))
 				{
-					return false;
+                    throw new Exception('Required field missing: '.$r);
 				}
 			}
 		}
@@ -231,9 +231,9 @@ class YireoTable extends JTable
 		{
 			foreach ($this->_noduplicate as $d)
 			{
-				if (!$this->_checkDuplicate($d))
+				if (!$this->_checkNoDuplicate($d))
 				{
-					return false;
+                    throw new Exception('Duplicate field value: '.$d);
 				}
 			}
 		}
@@ -287,7 +287,7 @@ class YireoTable extends JTable
 	 *
 	 * @return bool
 	 */
-	protected function _checkDuplicate($field)
+	protected function _checkNoDuplicate($field)
 	{
 		if ($this->$field != null)
 		{

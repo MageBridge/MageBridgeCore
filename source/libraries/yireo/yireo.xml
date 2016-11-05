@@ -8,7 +8,7 @@
     <creationDate>October 2016</creationDate>
     <copyright>Copyright 2016 Yireo.com. All rights reserved.</copyright>
     <license>http://www.gnu.org/licenses/gpl-3.0.html GNU/GPL</license>
-    <version>0.2.8</version>
+    <version>0.2.10</version>
 
 	<languages folder="admin/language">
 		<language tag="en-GB">en-GB.lib_yireo.ini</language>
