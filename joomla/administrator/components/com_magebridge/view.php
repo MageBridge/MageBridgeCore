@@ -18,7 +18,7 @@ defined('_JEXEC') or die();
  * @static
  * @package MageBridge
  */
-class MageBridgeView extends YireoView
+class MageBridgeView extends YireoCommonView
 {
 	/**
 	 * Display method
@@ -35,6 +35,7 @@ class MageBridgeView extends YireoView
 
 		// If we detect the API is down, report it
 		$bridge = MageBridgeModelBridge::getInstance();
+		$debug  = MagebridgeModelDebug::getInstance();
 
 		if ($bridge->getApiState() != null)
 		{
@@ -68,12 +69,11 @@ class MageBridgeView extends YireoView
 					break;
 			}
 
-			MageBridgeModelDebug::getInstance()
-				->feedback($message);
+			$debug->feedback($message);
 		}
 
 		// If debugging is enabled report it
-		$input = JFactory::getApplication()->input;
+		$input = $this->app->input;
 
 		if (MagebridgeModelConfig::load('debug') == 1 && $input->getCmd('tmpl') != 'component' && in_array($input->getCmd('view'), array(
 				'config',
@@ -81,8 +81,7 @@ class MageBridgeView extends YireoView
 			))
 		)
 		{
-			MageBridgeModelDebug::getInstance()
-				->feedback('COM_MAGEBRIDGE_VIEW_API_DEBUGGING_ENABLED');
+			$debug->feedback('COM_MAGEBRIDGE_VIEW_API_DEBUGGING_ENABLED');
 		}
 
 		parent::display($tpl);

@@ -12,23 +12,23 @@
 // Check to ensure this file is included in Joomla!  
 defined('_JEXEC') or die();
 
-// Require the parent view
-require_once JPATH_COMPONENT . '/libraries/view/form.php';
-
 /**
  * HTML View class
  *
  * @static
  * @package MageBridge
  */
-class MageBridgeViewCheck extends YireoView
+class MageBridgeViewCheck extends YireoViewForm
 {
+	/**
+	 * @var bool
+	 */
 	protected $loadToolbar = false;
 
 	/**
 	 * List of all checks
 	 */
-	private $_checks = array();
+	private $checks = array();
 
 	/**
 	 * Display method

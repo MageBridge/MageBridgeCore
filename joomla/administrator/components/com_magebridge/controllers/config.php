@@ -12,9 +12,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
-// Include the parent controller
-require_once JPATH_ADMINISTRATOR . '/components/com_magebridge/libraries/controller.php';
-
 /**
  * MageBridge Controller
  */

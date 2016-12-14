@@ -12,9 +12,6 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
-// Include the parent class
-require_once JPATH_ADMINISTRATOR.'/components/com_magebridge/libraries/view.php';
-
 /**
  * HTML View class
  * @package MageBridge

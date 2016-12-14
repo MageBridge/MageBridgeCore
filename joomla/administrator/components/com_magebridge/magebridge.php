@@ -15,7 +15,6 @@ defined('_JEXEC') or die('Restricted access');
 // Load the libraries
 require_once JPATH_SITE . '/components/com_magebridge/libraries/factory.php';
 require_once JPATH_SITE . '/components/com_magebridge/helpers/loader.php';
-require_once JPATH_ADMINISTRATOR . '/components/com_magebridge/libraries/loader.php';
 require_once JPATH_COMPONENT . '/helpers/acl.php';
 
 $app = JFactory::getApplication();
