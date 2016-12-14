@@ -28,7 +28,7 @@ class MageBridgeViewCheck extends YireoViewForm
 	/**
 	 * List of all checks
 	 */
-	private $checks = array();
+	public $checks = array();
 
 	/**
 	 * Display method
@@ -45,29 +45,32 @@ class MageBridgeViewCheck extends YireoViewForm
 		{
 			$this->displayBrowser($tpl);
 
+			return;
 		}
-		elseif ($input->getCmd('layout') == 'product')
+
+		if ($input->getCmd('layout') == 'product')
 		{
 			$this->displayProduct($tpl);
 
+			return;
 		}
-		elseif ($input->getCmd('layout') == 'result')
+
+		if ($input->getCmd('layout') == 'result')
 		{
 			$this->displayResult($tpl);
 
+			return;
 		}
-		else
-		{
-			$this->displayDefault($tpl);
-		}
+
+		$this->displayDefault($tpl);
+
+		return;
 	}
 
 	/**
 	 * Display method
 	 *
 	 * @param string $tpl
-	 *
-	 * @return null
 	 */
 	public function displayDefault($tpl)
 	{
@@ -88,8 +91,6 @@ class MageBridgeViewCheck extends YireoViewForm
 	 * Display method
 	 *
 	 * @param string $tpl
-	 *
-	 * @return null
 	 */
 	public function displayProduct($tpl)
 	{
@@ -112,8 +113,6 @@ class MageBridgeViewCheck extends YireoViewForm
 	 * Display method
 	 *
 	 * @param string $tpl
-	 *
-	 * @return null
 	 */
 	public function displayBrowser($tpl)
 	{
@@ -132,8 +131,6 @@ class MageBridgeViewCheck extends YireoViewForm
 	 * Display method
 	 *
 	 * @param string $tpl
-	 *
-	 * @return null
 	 */
 	public function displayResult($tpl)
 	{
@@ -167,6 +164,13 @@ class MageBridgeViewCheck extends YireoViewForm
 		exit;
 	}
 
+	/**
+	 * @param $label
+	 * @param $url
+	 * @param $params
+	 *
+	 * @return string
+	 */
 	protected function fetchContent($label, $url, $params)
 	{
 		// Initialize the proxy
@@ -193,32 +197,27 @@ class MageBridgeViewCheck extends YireoViewForm
 		// Parse the content
 		if (!empty($content))
 		{
-
-			// Detect HTML-page
-			if (preg_match('/\<\/html\>$/', $content))
-			{
-				die('ERROR: Data contains HTML not JSON');
-			}
-
-			$data = json_decode($content, true);
-
-			if (!empty($data))
-			{
-				if (array_key_exists('meta', $data))
-				{
-					return 'SUCCESS: ' . $label;
-				}
-				die('ERROR: JSON response contains unknown data: ' . var_export($data, true));
-
-			}
-			else
-			{
-				die('ERROR: Failed to decode JSON');
-			}
-		}
-		else
-		{
 			die('ERROR: Empty content');
 		}
+
+		// Detect HTML-page
+		if (preg_match('/\<\/html\>$/', $content))
+		{
+			die('ERROR: Data contains HTML not JSON');
+		}
+
+		$data = json_decode($content, true);
+
+		if (empty($data))
+		{
+			die('ERROR: Failed to decode JSON');
+		}
+
+		if (!array_key_exists('meta', $data))
+		{
+			die('ERROR: JSON response contains unknown data: ' . var_export($data, true));
+		}
+
+		return 'SUCCESS: ' . $label;
 	}
 }
