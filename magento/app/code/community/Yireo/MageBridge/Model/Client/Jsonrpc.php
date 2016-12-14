@@ -27,7 +27,7 @@ class Yireo_MageBridge_Model_Client_Jsonrpc
     /**
      * Yireo_MageBridge_Model_Client_Jsonrpc constructor.
      */
-    protected function __construct()
+    public function __construct()
     {
         $this->debug = Mage::getSingleton('magebridge/debug');
     }

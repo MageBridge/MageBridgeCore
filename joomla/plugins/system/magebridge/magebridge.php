@@ -18,10 +18,13 @@ defined('_JEXEC') or die('Restricted access');
 // Import the parent class
 jimport('joomla.plugin.plugin');
 
+// Import the MageBridge autoloader
+require_once JPATH_SITE . '/components/com_magebridge/helpers/loader.php';
+
 /**
  * MageBridge System Plugin
  */
-class PlgSystemMageBridge extends JPlugin
+class PlgSystemMageBridge extends MageBridgePlugin
 {
 	/**
 	 * @var JApplicationCms
@@ -44,23 +47,13 @@ class PlgSystemMageBridge extends JPlugin
 	protected $console = array();
 
 	/**
-	 * Constructor
-	 *
-	 * @access public
-	 *
-	 * @param object $subject
-	 * @param array  $config
+	 * Initialize
 	 */
-	public function __construct(& $subject, $config)
+	public function initialize()
 	{
-		parent::__construct($subject, $config);
-
-		$this->app = JFactory::getApplication();
-		$this->input = $this->app->input;
 		$this->doc = JFactory::getDocument();
-
+		$this->input = $this->app->input;
 		$this->replaceClasses();
-
 		$this->loadLanguage();
 	}
 
@@ -76,7 +69,7 @@ class PlgSystemMageBridge extends JPlugin
 	public function onAfterInitialise()
 	{
 		// Don't do anything if MageBridge is not enabled
-		if ($this->isEnabled() == false)
+		if ($this->isEnabled() === false)
 		{
 			return false;
 		}
@@ -309,7 +302,6 @@ class PlgSystemMageBridge extends JPlugin
 		{
 			return true;
 		}
-
 
 		if ($this->app->isAdmin() && $this->doc->getType() == 'html' && $this->input->getCmd('option') == 'com_magebridge' && $this->input->getCmd('view') == 'root')
 		{
@@ -922,7 +914,7 @@ class PlgSystemMageBridge extends JPlugin
 
 			if (!$user->guest)
 			{
-				MageBridgeModelUserSSO::checkSSOLogin();
+				MageBridgeModelUserSSO::getInstance()->checkSSOLogin();
 				$this->app->close();
 			}
 		}

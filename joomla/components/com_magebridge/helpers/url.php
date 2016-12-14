@@ -202,7 +202,7 @@ class MageBridgeUrlHelper
 	/**
 	 * Helper-method to get a URL replacement for a specific request
 	 *
-	 * @return string
+	 * @return array
 	 */
 	static public function getReplacementUrls()
 	{

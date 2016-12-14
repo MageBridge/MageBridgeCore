@@ -24,6 +24,45 @@ jimport('joomla.plugin.plugin');
 class MageBridgePlugin extends JPlugin
 {
 	/**
+	 * @var MagebridgeModelDebug
+	 */
+	protected $debug;
+
+	/**
+	 * Constructor
+	 *
+	 * @param   object &$subject
+	 * @param   array  $config
+	 */
+	public function __construct(&$subject, $config = array())
+	{
+		$rt = parent::__construct($subject, $config);
+		$this->initialize();
+
+		return $rt;
+	}
+
+	/**
+	 * Initialization function
+	 */
+	protected function initialize()
+	{
+		$this->debug = MagebridgeModelDebug::getInstance();
+	}
+
+	/**
+	 * Return a MageBridge configuration parameter
+	 *
+	 * @param string $name
+	 *
+	 * @return mixed $value
+	 */
+	protected function getConfigValue($name = null)
+	{
+		return MagebridgeModelConfig::load($name);
+	}
+
+	/**
 	 * Method to check whether a specific component is there
 	 *
 	 * @param string $component
@@ -42,6 +81,7 @@ class MageBridgePlugin extends JPlugin
 
 	/**
 	 * @return \Joomla\Registry\Registry
+	 * @deprecated
 	 */
 	public function getParams()
 	{

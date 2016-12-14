@@ -227,6 +227,10 @@ class MagebridgeModelConfig extends YireoAbstractModel
 		return $this->config;
 	}
 
+	/**
+	 * @param $name
+	 * @param $value
+	 */
 	public function setConfigValue($name, $value)
 	{
 		$this->config[$name]['value'] = $value;

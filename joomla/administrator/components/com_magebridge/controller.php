@@ -24,7 +24,7 @@ class MageBridgeController extends YireoController
 	 */
 	public function __construct()
 	{
-		$this->_default_view = 'home';
+		$this->default_view = 'home';
 
 		parent::__construct();
 
@@ -32,11 +32,11 @@ class MageBridgeController extends YireoController
 		$this->registerTask('login', 'ssoCheck');
 		$this->registerTask('logout', 'ssoCheck');
 
-		$request = $this->_app->input->get('request');
+		$request = $this->app->input->get('request');
 
-		if ($this->_app->input->getCmd('view') == 'root' && !empty($request))
+		if ($this->app->input->getCmd('view') == 'root' && !empty($request))
 		{
-			$this->_app->input->set('format', 'raw');
+			$this->app->input->set('format', 'raw');
 		}
 	}
 
@@ -64,13 +64,13 @@ class MageBridgeController extends YireoController
 	public function display($cachable = false, $urlparams = false)
 	{
 		// If the caching view is called, perform the cache-task instead
-		if ($this->_app->input->getCmd('view') == 'cache')
+		if ($this->app->input->getCmd('view') == 'cache')
 		{
 			return $this->cache();
 		}
 
 		// Redirect to the Magento Admin Panel
-		if ($this->_app->input->getCmd('view') == 'magento')
+		if ($this->app->input->getCmd('view') == 'magento')
 		{
 			$link = MagebridgeModelConfig::load('url') . 'index.php/' . MagebridgeModelConfig::load('backend');
 
@@ -78,13 +78,13 @@ class MageBridgeController extends YireoController
 		}
 
 		// Redirect to the Yireo Forum
-		if ($this->_app->input->getCmd('view') == 'forum')
+		if ($this->app->input->getCmd('view') == 'forum')
 		{
 			return $this->setRedirect('https://www.yireo.com/forum/');
 		}
 
 		// Redirect to the Yireo Tutorials
-		if ($this->_app->input->getCmd('view') == 'tutorials')
+		if ($this->app->input->getCmd('view') == 'tutorials')
 		{
 			return $this->setRedirect('https://www.yireo.com/tutorials/magebridge/');
 		}
@@ -95,9 +95,7 @@ class MageBridgeController extends YireoController
 	/**
 	 * Method to flush caching
 	 *
-	 * @param null
-	 *
-	 * @return null
+	 * @return bool
 	 */
 	public function cache()
 	{
@@ -107,16 +105,18 @@ class MageBridgeController extends YireoController
 			return false;
 		}
 
-		// Clean the backend cache 
+		// Clean the backend cache
+		/** @var JCache $cache */
 		$cache = JFactory::getCache('com_magebridge.admin');
 		$cache->clean();
 
-		// Clean the frontend cache 
+		// Clean the frontend cache
+		///** @var JCache $cache */
 		$cache = JFactory::getCache('com_magebridge');
 		$cache->clean();
 
 		// Build the next URL
-		$view = $this->_app->input->getCmd('view');
+		$view = $this->app->input->getCmd('view');
 
 		if ($view == 'cache')
 		{
@@ -134,20 +134,18 @@ class MageBridgeController extends YireoController
 	/**
 	 * Method to toggle the configuration mode (advanced/basic)
 	 *
-	 * @param null
-	 *
-	 * @return null
+	 * @return void
 	 */
 	public function toggleMode()
 	{
 		// Validate whether this task is allowed
 		if ($this->_validate() == false)
 		{
-			return false;
+			return;
 		}
 
 		// Determine the toggle value
-		$name = 'advanced';
+		$name  = 'advanced';
 		$value = MagebridgeModelConfig::load($name);
 
 		if ($value == 1)
@@ -159,7 +157,8 @@ class MageBridgeController extends YireoController
 			$value = 1;
 		}
 
-		MagebridgeModelConfig::saveValue($name, $value);
+		MagebridgeModelConfig::getSingleton()
+			->saveValue($name, $value);
 
 		$link = 'index.php?option=com_magebridge&view=config';
 		$this->setRedirect($link);
@@ -168,31 +167,33 @@ class MageBridgeController extends YireoController
 	/**
 	 * Method to upgrade specific extensions
 	 *
-	 * @param null
-	 *
-	 * @return null
+	 * @return void
 	 */
 	public function update()
 	{
 		// Validate whether this task is allowed
 		if ($this->_validate() == false)
 		{
-			return false;
+			return;
 		}
 
 		// Get the selected packages
-		$packages = $this->_app->input->getVar('packages');
+		$packages = $this->app->input->get('packages');
 
 		// Get the model and update the packages
+		/** @var MagebridgeModelUpdate $model */
 		$model = $this->getModel('update');
 		$model->updateAll($packages);
 
 		// Clean the MageBridge cache
+		/** @var JCache $cache */
 		$cache = JFactory::getCache('com_magebridge.admin');
 		$cache->clean();
 
 		// Clean the Joomla! plugins cache
 		$options = array('defaultgroup' => 'com_plugins', 'cachebase' => JPATH_ADMINISTRATOR . '/cache');
+
+		/** @var JCache $cache */
 		$cache = JCache::getInstance('callback', $options);
 		$cache->clean();
 
@@ -210,16 +211,14 @@ class MageBridgeController extends YireoController
 	/**
 	 * Method to perform update queries
 	 *
-	 * @param null
-	 *
-	 * @return null
+	 * @return void
 	 */
 	public function updateQueries()
 	{
 		// Validate whether this task is allowed
 		if ($this->_validate() == false)
 		{
-			return false;
+			return;
 		}
 
 		// Initialize the helper
@@ -233,32 +232,32 @@ class MageBridgeController extends YireoController
 
 		// Clean the Joomla! plugins cache
 		$options = array('defaultgroup' => 'com_plugins', 'cachebase' => JPATH_ADMINISTRATOR . '/cache');
+
+		/** @var JCache $cache */
 		$cache = JCache::getInstance('callback', $options);
 		$cache->clean();
 
 		// Redirect
 		$link = 'index.php?option=com_magebridge&view=update';
-		$msg = JText::_('LIB_YIREO_CONTROLLER_DB_UPGRADED');
+		$msg  = JText::_('LIB_YIREO_CONTROLLER_DB_UPGRADED');
 		$this->setRedirect($link, $msg);
 	}
 
 	/**
 	 * Method  to truncate the logs
 	 *
-	 * @param null
-	 *
-	 * @return null
+	 * @return void
 	 */
 	public function delete()
 	{
 		// Validate whether this task is allowed
 		if ($this->_validate() == false)
 		{
-			return false;
+			return;
 		}
 
 		// Only clean items for the right view
-		if ($this->_app->input->getCmd('view') == 'logs')
+		if ($this->app->input->getCmd('view') == 'logs')
 		{
 			// Clean up the database
 			$db = JFactory::getDbo();
@@ -266,12 +265,12 @@ class MageBridgeController extends YireoController
 			$db->execute();
 
 			// Clean up the database
-			$app = $this->_app;
-			$file = JFactory::getConfig()->get('log_path') . '/magebridge.txt';
+			$file = JFactory::getConfig()
+					->get('log_path') . '/magebridge.txt';
 			file_put_contents($file, null);
 
 			// Redirect
-			$msg = JText::_('LIB_YIREO_CONTROLLER_LOGS_TRUNCATED');
+			$msg  = JText::_('LIB_YIREO_CONTROLLER_LOGS_TRUNCATED');
 			$link = 'index.php?option=com_magebridge&view=logs';
 			$this->setRedirect($link, $msg);
 
@@ -285,20 +284,18 @@ class MageBridgeController extends YireoController
 	/**
 	 * Method to export logs to CSV
 	 *
-	 * @param null
-	 *
-	 * @return null
+	 * @return void
 	 */
 	public function export()
 	{
 		// Validate whether this task is allowed
 		if ($this->_validate() == false)
 		{
-			return false;
+			return;
 		}
 
 		// Only clean items for the right view
-		if ($this->_app->input->getCmd('view') == 'logs')
+		if ($this->app->input->getCmd('view') == 'logs')
 		{
 			$link = 'index.php?option=com_magebridge&view=logs&format=csv';
 			$this->setRedirect($link);
@@ -313,34 +310,32 @@ class MageBridgeController extends YireoController
 	/**
 	 * Method to simulate a product purchase
 	 *
-	 * @param null
-	 *
-	 * @return null
+	 * @return void
 	 */
 	public function check_product()
 	{
 		// Validate whether this task is allowed
 		if ($this->_validate() == false)
 		{
-			return false;
+			return;
 		}
 
 		// POST values
-		$user_id = $this->_app->input->getInt('user_id');
-		$product_sku = $this->_app->input->getString('product_sku');
-		$count = $this->_app->input->getInt('count');
-		$status = $this->_app->input->getCmd('order_status');
+		$user_id     = $this->app->input->getInt('user_id');
+		$product_sku = $this->app->input->getString('product_sku');
+		$count       = $this->app->input->getInt('count');
+		$status      = $this->app->input->getCmd('order_status');
 
 		// Validation checks
 		if (!$user_id > 0)
 		{
 			$msgType = 'error';
-			$msg = JText::_('COM_MAGEBRIDGE_CHECK_PRODUCT_POST_ERROR_NO_USER');
+			$msg     = JText::_('COM_MAGEBRIDGE_CHECK_PRODUCT_POST_ERROR_NO_USER');
 		}
 		elseif (empty($product_sku))
 		{
 			$msgType = 'error';
-			$msg = JText::_('COM_MAGEBRIDGE_CHECK_PRODUCT_POST_ERROR_NO_PRODUCT');
+			$msg     = JText::_('COM_MAGEBRIDGE_CHECK_PRODUCT_POST_ERROR_NO_PRODUCT');
 		}
 		else
 		{
@@ -349,7 +344,7 @@ class MageBridgeController extends YireoController
 				->runOnPurchase($product_sku, $count, $user, $status);
 
 			$msgType = null;
-			$msg = JText::_('COM_MAGEBRIDGE_CHECK_PRODUCT_POST_SUCCESS');
+			$msg     = JText::_('COM_MAGEBRIDGE_CHECK_PRODUCT_POST_SUCCESS');
 		}
 
 		$link = 'index.php?option=com_magebridge&view=check&layout=product';
@@ -358,19 +353,16 @@ class MageBridgeController extends YireoController
 
 	/**
 	 * Method to check SSO coming from Magento
-	 *
-	 * @param null
-	 *
-	 * @return null
 	 */
 	public function ssoCheck()
 	{
-		$application = $this->_app;
-		$user = JFactory::getUser();
+		$application = $this->app;
+		$user        = JFactory::getUser();
 
 		if (!$user->guest)
 		{
-			MageBridgeModelUserSSO::checkSSOLogin();
+			MageBridgeModelUserSSO::getInstance()
+				->checkSSOLogin();
 			$application->close();
 		}
 		else
@@ -392,7 +384,7 @@ class MageBridgeController extends YireoController
 		// Check the token
 		if ($check_token == true && (JSession::checkToken('post') == false && JSession::checkToken('get') == false))
 		{
-			$msg = JText::_('JINVALID_TOKEN');
+			$msg  = JText::_('JINVALID_TOKEN');
 			$link = 'index.php?option=com_magebridge&view=home';
 			$this->setRedirect($link, $msg);
 
@@ -402,7 +394,7 @@ class MageBridgeController extends YireoController
 		// Check demo-access
 		if ($check_demo == true && MageBridgeAclHelper::isDemo() == true)
 		{
-			$msg = JText::_('LIB_YIREO_CONTROLLER_DEMO_NO_ACTION');
+			$msg  = JText::_('LIB_YIREO_CONTROLLER_DEMO_NO_ACTION');
 			$link = 'index.php?option=com_magebridge&view=home';
 			$this->setRedirect($link, $msg);
 
