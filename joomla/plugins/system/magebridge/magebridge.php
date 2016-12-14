@@ -628,6 +628,7 @@ class PlgSystemMageBridge extends JPlugin
 			$whitelist[] = 'www.googleadservices.com';
 			$whitelist[] = 'media/jui/js';
 			$whitelist[] = 'protostar/js/template.js';
+			$whitelist[] = 'js/core-uncompressed.js';
 		}
 
 		// Load the blacklist
