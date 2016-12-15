@@ -65,7 +65,8 @@ class MageBridgePluginHelper
 	 */
 	static public function allowEvent($event, $options = array())
 	{
-		return (self::getInstance())->isEventAllowed($event, $options);
+        $instance = self::getInstance();
+		return $instance->isEventAllowed($event, $options);
 	}
 
 	/**

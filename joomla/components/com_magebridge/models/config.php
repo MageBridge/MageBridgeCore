@@ -251,7 +251,7 @@ class MagebridgeModelConfig extends YireoAbstractModel
 
 		if (empty($config))
 		{
-			$config = ($configModel)->getConfiguration();
+			$config = $configModel->getConfiguration();
 		}
 
 		// Allow overriding values
