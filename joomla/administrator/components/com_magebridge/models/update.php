@@ -142,7 +142,13 @@ class MagebridgeModelUpdate extends YireoCommonModel
 		$extension_uri = $extension['name'];
 		$extension_uri .= '_j25';
 		$extension_uri .= '.' . MagebridgeModelConfig::load('update_format');
-		$extension_url = $this->getUrl($extension_uri);
+
+        if (!empty($extension['download_url'])) {
+            $extension_url = $extension['download_url'];
+            $extension_uri = basename($extension['download_url']);
+        } else {
+            $extension_url = $this->getUrl($extension_uri);
+        }
 
 		// Either use fopen() or CURL
 		if (ini_get('allow_url_fopen') == 1 && MagebridgeModelConfig::load('update_method') == 'joomla')

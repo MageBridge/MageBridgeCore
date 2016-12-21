@@ -129,8 +129,6 @@ class MageBridgeUpdateHelper
 	 */
 	static public function getCurrentVersion($package) 
 	{
-		if ($package)
-
 		switch($package['type']) {
 			case 'component':
 				$file = JPATH_ADMINISTRATOR.'/components/'.$package['name'].'/magebridge.xml';
@@ -151,6 +149,11 @@ class MageBridgeUpdateHelper
 			case 'template':
 				$file = JPATH_SITE.'/templates/'.$package['file'].'/templateDetails.xml';
 				break;
+
+            case 'library':
+                $libraryName = preg_replace('/^lib_/', '', $package['name']);
+                $file = JPATH_SITE.'/libraries/'.$libraryName.'/'.$libraryName.'.xml';
+                break;
 		}
 
 		if (JFile::exists($file) == false) {
