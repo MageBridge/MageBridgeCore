@@ -33,6 +33,7 @@
         <filename>metadata.xml</filename>
         <filename>router.php</filename>
         <filename>view.php</filename>
+        <filename>libraries/loader.php</filename>
         <folder>connectors</folder>
         <folder>controllers</folder>
         <folder>helpers</folder>
