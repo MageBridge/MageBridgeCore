@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension version="3.2" type="plugin" group="user">
+<extension version="3.2" type="plugin" group="user" method="upgrade">
 	<name>PLG_SYSTEM_MAGEBRIDGEFIRSTLAST</name>
 	<author>Jisse Reitsma</author>
 	<creationDate>December 2016</creationDate>
