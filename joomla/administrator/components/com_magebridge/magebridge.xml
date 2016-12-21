@@ -33,7 +33,6 @@
         <filename>metadata.xml</filename>
         <filename>router.php</filename>
         <filename>view.php</filename>
-        <filename>libraries/loader.php</filename>
         <folder>connectors</folder>
         <folder>controllers</folder>
         <folder>helpers</folder>
@@ -77,6 +76,7 @@
             <filename>magebridge.php</filename>
             <filename>script.magebridge.php</filename>
             <filename>view.php</filename>
+            <filename>libraries/loader.php</filename>
             <folder>controllers</folder>
             <folder>fields</folder>
             <folder>helpers</folder>
