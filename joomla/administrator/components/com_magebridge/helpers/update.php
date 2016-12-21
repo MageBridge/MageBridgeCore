@@ -61,7 +61,7 @@ class MageBridgeUpdateHelper
 	 */
 	static public function getPackageList()
 	{
-		$url = 'http://api.yireo.com/';
+		$url = 'https://api.yireo.com/';
 		$domain = preg_replace( '/\:(.*)/', '', $_SERVER['HTTP_HOST'] );
 		$arguments = array(
 			'key' => MagebridgeModelConfig::load('supportkey'),
