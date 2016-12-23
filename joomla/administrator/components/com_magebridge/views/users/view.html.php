@@ -34,15 +34,17 @@ class MageBridgeViewUsers extends MageBridgeView
 		JToolbarHelper::custom('import', 'import.png', null, 'Import', false);
 
 		// Initialize common variables
-		$application = JFactory::getApplication();
-		$option      = JFactory::getApplication()->input->getCmd('option') . '-users';
+		$app    = JFactory::getApplication();
+		$option = $app->input->getCmd('option') . '-users';
 
 		// Handle the filters
-		$filter_order     = $application->getUserStateFromRequest($option . 'filter_order', 'filter_order', 'p.ordering', 'cmd');
-		$filter_order_Dir = $application->getUserStateFromRequest($option . 'filter_order_Dir', 'filter_order_Dir', '', 'word');
+		$filter_order     = $app->getUserStateFromRequest($option . 'filter_order', 'filter_order', 'p.ordering', 'cmd');
+		$filter_order_Dir = $app->getUserStateFromRequest($option . 'filter_order_Dir', 'filter_order_Dir', '', 'word');
+
+		$this->setTitle('MageBridge: Users');
 
 		// Get data from the model
-		$this->fetchItems();
+		//$this->fetchItems();
 		$items      = $this->get('Data');
 		$pagination = $this->get('Pagination');
 
@@ -53,7 +55,6 @@ class MageBridgeViewUsers extends MageBridgeView
 		// Prepare the items for display
 		if (!empty($items))
 		{
-
 			// Get a matching user list from the API
 			$musers = $this->getMagentoUsers($items);
 
@@ -96,6 +97,13 @@ class MageBridgeViewUsers extends MageBridgeView
 		$this->lists      = $lists;
 		$this->items      = $items;
 		$this->pagination = $pagination;
+
+		$layout = $app->input->getCmd('layout');
+
+		if ($layout == 'import')
+		{
+			$tpl = 'import';
+		}
 
 		parent::display($tpl);
 	}
