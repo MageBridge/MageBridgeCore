@@ -18,7 +18,7 @@ jimport('joomla.utilities.date');
 /**
  * MageBridge URL model
  */
-class MagebridgeModelUrl extends YireoModel
+class MagebridgeModelUrl extends YireoModelItem
 {
 	/**
 	 * Constructor method
@@ -26,6 +26,7 @@ class MagebridgeModelUrl extends YireoModel
 	public function __construct()
 	{
 		$this->_orderby_title = 'source';
+
 		parent::__construct('url');
 	}
 
@@ -44,7 +45,7 @@ class MagebridgeModelUrl extends YireoModel
 		// Change the setting "load_urls" in the MageBridge configuration
 		if ($data['published'] == 1)
 		{
-			MagebridgeModelConfig::saveValue('load_urls', 1);
+			MagebridgeModelConfig::getSingleton()->saveValue('load_urls', 1);
 		}
 
 		return $rt;

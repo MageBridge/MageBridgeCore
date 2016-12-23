@@ -130,6 +130,7 @@ class MageBridgeViewCommon extends MageBridgeView
 		$current_store = $application->getUserStateFromRequest($option . '.store', 'store');
 
 		require_once JPATH_COMPONENT . '/fields/store.php';
+
 		$field = JFormHelper::loadFieldType('magebridge.store');
 		$field->setName('store');
 		$field->setValue($current_store);
@@ -139,6 +140,7 @@ class MageBridgeViewCommon extends MageBridgeView
 		$lists = array();
 		$lists['search'] = $search;
 		$lists['store'] = $store;
+
 		$this->lists = $lists;
 	}
 

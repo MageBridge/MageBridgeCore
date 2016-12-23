@@ -12,7 +12,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
-include_once JPATH_SITE . '/components/com_magebridge/helper/loader.php';
+include_once JPATH_ADMINISTRATOR . '/components/com_magebridge/libraries/loader.php';
 
 /**
  * MageBridge Element Helper

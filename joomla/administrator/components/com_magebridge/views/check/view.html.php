@@ -18,7 +18,7 @@ defined('_JEXEC') or die();
  * @static
  * @package MageBridge
  */
-class MageBridgeViewCheck extends YireoViewForm
+class MageBridgeViewCheck extends YireoCommonView
 {
 	/**
 	 * @var bool
@@ -39,6 +39,8 @@ class MageBridgeViewCheck extends YireoViewForm
 	 */
 	public function display($tpl = null)
 	{
+		$this->setMenu();
+
 		$input = JFactory::getApplication()->input;
 
 		if ($input->getCmd('layout') == 'browser')
@@ -160,6 +162,7 @@ class MageBridgeViewCheck extends YireoViewForm
 		// Fetch various responses
 		$responses[] = $this->fetchContent('Basic bridge connection succeeded', $url, array('mbtest' => 1));
 		$responses[] = $this->fetchContent('API authentication succeeded', $url, array('mbauthtest' => 1));
+
 		echo implode('<br/>', $responses);
 		exit;
 	}
@@ -195,7 +198,7 @@ class MageBridgeViewCheck extends YireoViewForm
 		}
 
 		// Parse the content
-		if (!empty($content))
+		if (empty($content))
 		{
 			die('ERROR: Empty content');
 		}

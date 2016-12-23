@@ -33,6 +33,8 @@ class MageBridgeViewUsers extends MageBridgeView
 		JToolbarHelper::custom('export', 'export.png', null, 'Export', false);
 		JToolbarHelper::custom('import', 'import.png', null, 'Import', false);
 
+		$this->setMenu();
+
 		// Initialize common variables
 		$app    = JFactory::getApplication();
 		$option = $app->input->getCmd('option') . '-users';

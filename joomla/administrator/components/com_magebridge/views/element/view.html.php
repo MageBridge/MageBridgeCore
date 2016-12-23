@@ -36,6 +36,7 @@ class MageBridgeViewElement extends MageBridgeViewCommon
 		if (JFactory::getApplication()->input->getInt('ajax') == 1)
 		{
 			$this->doAjaxLayout();
+			$tpl = 'ajax';
 
 			parent::display($tpl);
 
