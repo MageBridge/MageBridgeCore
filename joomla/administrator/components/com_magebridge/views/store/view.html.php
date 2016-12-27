@@ -27,13 +27,13 @@ class MageBridgeViewStore extends YireoViewForm
 	 */
 	public function __construct($config = array())
 	{
+		// Call the parent constructor
+		parent::__construct($config);
+
 		if ($this->app->input->getCmd('task') == 'default')
 		{
 			$this->loadToolbar = false;
 		}
-
-		// Call the parent constructor
-		parent::__construct($config);
 	}
 
 	/**
