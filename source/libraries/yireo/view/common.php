@@ -256,7 +256,7 @@ class YireoCommonView extends YireoAbstractView
 	 *
 	 * @param string $stylesheet
 	 *
-	 * @return null
+	 * @return void
 	 */
 	public function addCss($stylesheet)
 	{
@@ -266,34 +266,36 @@ class YireoCommonView extends YireoAbstractView
 		if (file_exists(JPATH_SITE . '/templates/' . $template . '/css/' . $this->getConfig('option') . '/' . $prefix . $stylesheet))
 		{
 			$this->doc->addStyleSheet(JUri::root() . 'templates/' . $template . '/css/' . $this->getConfig('option') . '/' . $prefix . $stylesheet);
+
+			return;
 		}
-		else
+
+		if (file_exists(JPATH_SITE . '/media/' . $this->getConfig('option') . '/css/' . $prefix . $stylesheet))
 		{
-			if (file_exists(JPATH_SITE . '/media/' . $this->getConfig('option') . '/css/' . $prefix . $stylesheet))
-			{
-				$this->doc->addStyleSheet(JUri::root() . 'media/' . $this->getConfig('option') . '/css/' . $prefix . $stylesheet);
-			}
-			else
-			{
-				if (file_exists(JPATH_SITE . '/templates/' . $template . '/css/' . $this->getConfig('option') . '/' . $stylesheet))
-				{
-					$this->doc->addStyleSheet(JUri::root() . 'templates/' . $template . '/css/' . $this->getConfig('option') . '/' . $stylesheet);
-				}
-				else
-				{
-					if (file_exists(JPATH_SITE . '/media/' . $this->getConfig('option') . '/css/' . $stylesheet))
-					{
-						$this->doc->addStyleSheet(JUri::root() . 'media/' . $this->getConfig('option') . '/css/' . $stylesheet);
-					}
-					else
-					{
-						if (file_exists(JPATH_SITE . '/media/lib_yireo/css/' . $stylesheet))
-						{
-							$this->doc->addStyleSheet(JUri::root() . 'media/lib_yireo/css/' . $stylesheet);
-						}
-					}
-				}
-			}
+			$this->doc->addStyleSheet(JUri::root() . 'media/' . $this->getConfig('option') . '/css/' . $prefix . $stylesheet);
+
+			return;
+		}
+
+		if (file_exists(JPATH_SITE . '/templates/' . $template . '/css/' . $this->getConfig('option') . '/' . $stylesheet))
+		{
+			$this->doc->addStyleSheet(JUri::root() . 'templates/' . $template . '/css/' . $this->getConfig('option') . '/' . $stylesheet);
+
+			return;
+		}
+
+		if (file_exists(JPATH_SITE . '/media/' . $this->getConfig('option') . '/css/' . $stylesheet))
+		{
+			$this->doc->addStyleSheet(JUri::root() . 'media/' . $this->getConfig('option') . '/css/' . $stylesheet);
+
+			return;
+		}
+
+		if (file_exists(JPATH_SITE . '/media/lib_yireo/css/' . $stylesheet))
+		{
+			$this->doc->addStyleSheet(JUri::root() . 'media/lib_yireo/css/' . $stylesheet);
+
+			return;
 		}
 	}
 
@@ -314,34 +316,36 @@ class YireoCommonView extends YireoAbstractView
 		if (file_exists(JPATH_SITE . '/templates/' . $template . '/js/' . $this->getConfig('option') . '/' . $prefix . $script))
 		{
 			$this->doc->addScript(JUri::root() . 'templates/' . $template . '/js/' . $this->getConfig('option') . '/' . $prefix . $script);
+
+			return;
 		}
-		else
+
+		if (file_exists(JPATH_SITE . '/media/' . $this->getConfig('option') . '/js/' . $prefix . $script))
 		{
-			if (file_exists(JPATH_SITE . '/media/' . $this->getConfig('option') . '/js/' . $prefix . $script))
-			{
-				$this->doc->addScript(JUri::root() . 'media/' . $this->getConfig('option') . '/js/' . $prefix . $script);
-			}
-			else
-			{
-				if (file_exists(JPATH_SITE . '/templates/' . $template . '/js/' . $this->getConfig('option') . '/' . $script))
-				{
-					$this->doc->addScript(JUri::root() . 'templates/' . $template . '/js/' . $this->getConfig('option') . '/' . $script);
-				}
-				else
-				{
-					if (file_exists(JPATH_SITE . '/media/' . $this->getConfig('option') . '/js/' . $script))
-					{
-						$this->doc->addScript(JUri::root() . 'media/' . $this->getConfig('option') . '/js/' . $script);
-					}
-					else
-					{
-						if (file_exists(JPATH_SITE . '/media/lib_yireo/js/' . $script))
-						{
-							$this->doc->addScript(JUri::root() . 'media/lib_yireo/js/' . $script);
-						}
-					}
-				}
-			}
+			$this->doc->addScript(JUri::root() . 'media/' . $this->getConfig('option') . '/js/' . $prefix . $script);
+
+			return;
+		}
+
+		if (file_exists(JPATH_SITE . '/templates/' . $template . '/js/' . $this->getConfig('option') . '/' . $script))
+		{
+			$this->doc->addScript(JUri::root() . 'templates/' . $template . '/js/' . $this->getConfig('option') . '/' . $script);
+
+			return;
+		}
+
+		if (file_exists(JPATH_SITE . '/media/' . $this->getConfig('option') . '/js/' . $script))
+		{
+			$this->doc->addScript(JUri::root() . 'media/' . $this->getConfig('option') . '/js/' . $script);
+
+			return;
+		}
+
+		if (file_exists(JPATH_SITE . '/media/lib_yireo/js/' . $script))
+		{
+			$this->doc->addScript(JUri::root() . 'media/lib_yireo/js/' . $script);
+
+			return;
 		}
 	}
 
@@ -373,12 +377,12 @@ class YireoCommonView extends YireoAbstractView
 		if ($first)
 		{
 			array_unshift($this->templatePaths, $path);
+
+			return true;
 		}
-		else
-		{
-			// Add this path to the end of the array
-			$this->templatePaths[] = $path;
-		}
+
+		// Add this path to the end of the array
+		$this->templatePaths[] = $path;
 
 		return true;
 	}
