@@ -2,8 +2,8 @@
 <extension version="2.5" type="plugin" group="magento" method="upgrade">
     <name>PLG_MAGENTO_MAGEBRIDGE</name>
     <author>Yireo</author>
-    <creationDate>December 2016</creationDate>
-    <copyright>Copyright (C) 2016 Yireo.com. All rights reserved.</copyright>
+    <creationDate>januari 2017</creationDate>
+    <copyright>Copyright (C) 2017 Yireo.com. All rights reserved.</copyright>
     <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
     <authorEmail>info@yireo.com</authorEmail>
     <authorUrl>www.yireo.com</authorUrl>

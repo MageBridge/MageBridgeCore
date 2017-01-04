@@ -2,8 +2,8 @@
 <extension version="3.2" type="plugin" group="user" method="upgrade">
 	<name>PLG_SYSTEM_MAGEBRIDGEFIRSTLAST</name>
 	<author>Jisse Reitsma</author>
-	<creationDate>December 2016</creationDate>
-	<copyright>Copyright (C) 2016 Yireo.com. All rights reserved.</copyright>
+	<creationDate>januari 2017</creationDate>
+	<copyright>Copyright (C) 2017 Yireo.com. All rights reserved.</copyright>
 	<license>GNU General Public License version 3 or later</license>
 	<authorEmail>jisse@yireo.com</authorEmail>
 	<authorUrl>www.yireo.com</authorUrl>
