@@ -440,7 +440,7 @@ class YireoController extends YireoCommonController
 		$this->store();
 
 		// Redirect back to the form-page
-		$apply_url = $this->input->get('apply_url');
+		$apply_url = $this->input->getString('apply_url');
 
 		if (!empty($apply_url))
 		{
