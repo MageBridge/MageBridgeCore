@@ -77,14 +77,6 @@ function Yireo_MageBridge_ExceptionHandler($exception)
 {
     // If this is an empty exception, skip it
     $exceptionMessage = $exception->getMessage();
-    if (empty($exceptionMessage)) {
-        return;
-    }
-
-    // If this is a session error, skip it
-    if ($exception instanceof Mage_Core_Model_Session_Exception) {
-        return;
-    }
 
     // Make sure this exception is logged in MAGENTO/var/log/exception.log
     if ($exception instanceOf Exception) {
@@ -95,9 +87,9 @@ function Yireo_MageBridge_ExceptionHandler($exception)
 
     // Print the error
     if((bool)Mage::getStoreConfig('magebridge/debug/print') == true) {
-        $text = '<h1>PHP Exception:</h1>';
-        $text .= '<pre>'.$exceptionMessage.'</pre>';
-        $text .= '<pre>'.$exception->getTraceAsString().'</pre>';
+        $text = '<h1>'.get_class($exception).':</h1>';
+        $text .= '<pre>Message: '.$exceptionMessage.'</pre>';
+        $text .= "<pre>Stack trace: \n".$exception->getTraceAsString().'</pre>';
         die($text);
     }
 

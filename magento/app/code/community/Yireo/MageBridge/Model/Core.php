@@ -86,6 +86,8 @@ class Yireo_MageBridge_Model_Core
             Mage::getSingleton('magebridge/debug')->notice('Core session started: ' . $session->getSessionId());
         } catch (Exception $e) {
             Mage::getSingleton('magebridge/debug')->error('Unable to instantiate core/session: ' . $e->getMessage());
+            $_COOKIE = [];
+            $_SESSION = [];
             return false;
         }
 
