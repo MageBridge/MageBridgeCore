@@ -627,6 +627,12 @@ class MageBridgeModelUser
 			$changed = true;
 		}
 
+        // Set the last visit date
+        if ($user instanceof JUser)
+        {
+            $user->setLastVisit();
+        }
+
 		// Do not fire the event when using the onepage-checkout
 		if (MageBridgeTemplateHelper::isPage('checkout/onepage') == true && MageBridgeTemplateHelper::isPage('checkout/onepage/success') == false)
 		{
