@@ -2,207 +2,215 @@
 <form>
     <fields name="config" addfieldpath="/administrator/components/com_magebridge/fields">
         <fieldset name="support" label="COM_MAGEBRIDGE_MODEL_CONFIG_FIELDSET_SUPPORT">
-		    <field type="spacer" name="support" class="fieldgroup" />
-		    <field name="supportkey" type="text" />
+            <field type="spacer" name="support" class="fieldgroup"/>
+            <field name="supportkey" type="text"/>
         </fieldset>
-    
+
         <fieldset name="api" label="COM_MAGEBRIDGE_MODEL_CONFIG_FIELDSET_API">
-		    <field type="spacer" name="magento_server" class="fieldgroup" />
-		    <field name="host" type="text" />
-		    <field name="basedir" type="text" />
+            <field type="spacer" name="magento_server" class="fieldgroup"/>
+            <field name="host" type="text"/>
+            <field name="basedir" type="text"/>
 
-		    <field type="spacer" name="magento_http_auth" class="fieldgroup" />
-		    <field name="http_auth" type="magebridge.boolean" />
-		    <field name="http_authtype" type="magebridge.httpauth" />
-		    <field name="http_user" type="text" />
-		    <field name="http_password" type="password" />
+            <field type="spacer" name="magento_http_auth" class="fieldgroup"/>
+            <field name="http_auth" type="magebridge.boolean"/>
+            <field name="http_authtype" type="magebridge.httpauth"/>
+            <field name="http_user" type="text"/>
+            <field name="http_password" type="password"/>
 
-		    <field type="spacer" name="magento_api" class="fieldgroup" />
-		    <field name="api_user" type="text" />
-		    <field name="api_key" type="password" />
+            <field type="spacer" name="magento_api" class="fieldgroup"/>
+            <field name="api_user" type="text"/>
+            <field name="api_key" type="password"/>
 
-		    <field type="spacer" name="api_encryption" class="fieldgroup" />
-		    <field name="encryption" type="magebridge.boolean" />
-		    <field name="encryption_key" type="textarea" />
+            <field type="spacer" name="api_encryption" class="fieldgroup"/>
+            <field name="encryption" type="magebridge.boolean"/>
+            <field name="encryption_key" type="textarea"/>
         </fieldset>
-    
+
         <fieldset name="bridge" label="COM_MAGEBRIDGE_MODEL_CONFIG_FIELDSET_BRIDGE">
-		    <field type="spacer" name="bridge_website" class="fieldgroup" />
-		    <field name="backend" type="magebridge.backend" />
-		    <field name="website" type="magebridge.website" access="com_magebridge.config.website" />
+            <field type="spacer" name="bridge_website" class="fieldgroup"/>
+            <field name="backend" type="magebridge.backend"/>
+            <field name="website" type="magebridge.website" access="com_magebridge.config.website"/>
 
-		    <field type="spacer" name="bridge_ssl" class="fieldgroup" />
-		    <field name="protocol" type="list">
-			    <option value="http">COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_PROTOCOL_OPTION_HTTP</option>
-			    <option value="https">COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_PROTOCOL_OPTION_HTTPS</option>
-	    	</field>
-		    <field name="enforce_ssl" type="list">
-			    <option value="0">COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_ENFORCE_SSL_OPTION_0</option>
-			    <option value="1">COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_ENFORCE_SSL_OPTION_1</option>
-			    <option value="2">COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_ENFORCE_SSL_OPTION_2</option>
-			    <option value="3">COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_ENFORCE_SSL_OPTION_3</option>
-	    	</field>
-		    <field name="ssl_version" type="list" default="0">
-			    <option value="">COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_SSL_VERSION_OPTION_NONE</option>
-			    <option value="SSLv2">SSLv2</option>
-			    <option value="SSLv3">SSLv3</option>
-			    <option value="TLSv1">TLSv1</option>
-			    <option value="TLSv1_0">TLSv1.0</option>
-			    <option value="TLSv1_2">TLSv1.1</option>
-			    <option value="TLSv1_2">TLSv1.2</option>
-			    <option value="TLSv1_3">TLSv1.3</option>
-	    	</field>
-		    <field name="ssl_ciphers" type="combobox">
-			    <option value="">COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_SSL_CIPHERS_OPTION_DEFAULT</option>
-			    <option value="ALL">COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_SSL_CIPHERS_OPTION_ALL</option>
-			    <option value="HIGH:!SSLv2">COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_SSL_CIPHERS_OPTION_HIGH_NO2</option>
-			    <option value="HIGH:!SSLv2:!SSLv3">COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_SSL_CIPHERS_OPTION_HIGH_NO3</option>
-			    <option value="HIGH:MEDIUM:!SSLv2">COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_SSL_CIPHERS_OPTION_HIGHMEDIUM_NO2</option>
-			    <option value="HIGH:MEDIUM:!SSLv2:!SSLv3">COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_SSL_CIPHERS_OPTION_HIGHMEDIUM_NO3</option>
-	    	</field>
-		    <field name="payment_urls" type="textarea"/>
+            <field type="spacer" name="bridge_ssl" class="fieldgroup"/>
+            <field name="protocol" type="list">
+                <option value="http">COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_PROTOCOL_OPTION_HTTP</option>
+                <option value="https">COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_PROTOCOL_OPTION_HTTPS</option>
+            </field>
+            <field name="enforce_ssl" type="list">
+                <option value="0">COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_ENFORCE_SSL_OPTION_0</option>
+                <option value="1">COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_ENFORCE_SSL_OPTION_1</option>
+                <option value="2">COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_ENFORCE_SSL_OPTION_2</option>
+                <option value="3">COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_ENFORCE_SSL_OPTION_3</option>
+            </field>
+            <field name="ssl_version" type="list" default="0">
+                <option value="">COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_SSL_VERSION_OPTION_NONE</option>
+                <option value="SSLv2">SSLv2</option>
+                <option value="SSLv3">SSLv3</option>
+                <option value="TLSv1">TLSv1</option>
+                <option value="TLSv1_0">TLSv1.0</option>
+                <option value="TLSv1_2">TLSv1.1</option>
+                <option value="TLSv1_2">TLSv1.2</option>
+                <option value="TLSv1_3">TLSv1.3</option>
+            </field>
+            <field name="ssl_ciphers" type="combobox">
+                <option value="">COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_SSL_CIPHERS_OPTION_DEFAULT</option>
+                <option value="ALL">COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_SSL_CIPHERS_OPTION_ALL</option>
+                <option value="HIGH:!SSLv2">COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_SSL_CIPHERS_OPTION_HIGH_NO2</option>
+                <option value="HIGH:!SSLv2:!SSLv3">COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_SSL_CIPHERS_OPTION_HIGH_NO3
+                </option>
+                <option value="HIGH:MEDIUM:!SSLv2">COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_SSL_CIPHERS_OPTION_HIGHMEDIUM_NO2
+                </option>
+                <option value="HIGH:MEDIUM:!SSLv2:!SSLv3">
+                    COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_SSL_CIPHERS_OPTION_HIGHMEDIUM_NO3
+                </option>
+            </field>
+            <field name="payment_urls" type="textarea"/>
 
-		    <field type="spacer" name="bridge_offline" class="fieldgroup" />
-		    <field name="offline" type="magebridge.boolean" />
-		    <field name="offline_message" type="textarea" />
-		    <field name="offline_exclude_ip" type="text" />
+            <field type="spacer" name="bridge_offline" class="fieldgroup"/>
+            <field name="offline" type="magebridge.boolean"/>
+            <field name="offline_message" type="textarea"/>
+            <field name="offline_exclude_ip" type="text"/>
         </fieldset>
-    
+
         <fieldset name="users" label="COM_MAGEBRIDGE_MODEL_CONFIG_FIELDSET_USERS">
-		    <field type="spacer" name="user_sync" class="fieldgroup" />
-		    <field name="customer_group" type="magebridge.customergroup" />
-		    <field name="usergroup" type="magebridge.usergroup" />
-		    <field name="enable_sso" type="magebridge.boolean" />
-		    <field name="enable_usersync" type="magebridge.boolean" />
-		    <field name="username_from_email" type="magebridge.boolean" />
-		    <field name="realname_from_firstlast" type="magebridge.boolean" />
-		    <field name="realname_with_space" type="magebridge.boolean" />
-		    <field name="enable_auth_backend" type="magebridge.boolean" />
-		    <field name="enable_auth_frontend" type="magebridge.boolean" />
-		    <field name="customer_pages" type="textarea" access="com_magebridge.config.website" />
+            <field type="spacer" name="user_sync" class="fieldgroup"/>
+            <field name="customer_group" type="magebridge.customergroup"/>
+            <field name="usergroup" type="magebridge.usergroup"/>
+            <field name="enable_sso" type="magebridge.boolean"/>
+            <field name="enable_usersync" type="magebridge.boolean"/>
+            <field name="username_from_email" type="magebridge.boolean"/>
+            <field name="realname_from_firstlast" type="magebridge.boolean"/>
+            <field name="realname_with_space" type="magebridge.boolean"/>
+            <field name="enable_auth_backend" type="magebridge.boolean"/>
+            <field name="enable_auth_frontend" type="magebridge.boolean"/>
+            <field name="customer_pages" type="textarea" access="com_magebridge.config.website"/>
 
-		    <field type="spacer" name="user_import" class="fieldgroup" />
-		    <field name="users_website_id" type="magebridge.website" access="com_magebridge.config.website" />
-		    <field name="users_group_id" type="magebridge.customergroup" />
+            <field type="spacer" name="user_import" class="fieldgroup"/>
+            <field name="users_website_id" type="magebridge.website" access="com_magebridge.config.website"/>
+            <field name="users_group_id" type="magebridge.customergroup"/>
         </fieldset>
-    
+
         <fieldset name="css" label="COM_MAGEBRIDGE_MODEL_CONFIG_FIELDSET_CSS">
-		    <field type="spacer" name="css" class="fieldgroup" />
-		    <field name="disable_css" type="magebridge.stylesheets" />
-		    <field name="disable_default_css" type="magebridge.boolean" />
+            <field type="spacer" name="css" class="fieldgroup"/>
+            <field name="disable_css" type="magebridge.stylesheets"/>
+            <field name="disable_default_css" type="magebridge.boolean"/>
+            <field name="merge_css" type="list">
+                <option value="0">JNO</option>
+                <option value="1">COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_MERGE_CSS_OPTION_CSS_MERGE</option>
+            </field>
         </fieldset>
-    
+
         <fieldset name="javascript" label="COM_MAGEBRIDGE_MODEL_CONFIG_FIELDSET_JAVASCRIPT">
-		    <field type="spacer" name="javascript_joomla" class="fieldgroup" />
-		    <field name="disable_js" type="magebridge.disablejs" />
-		    <field name="disable_js_mootools" type="magebridge.boolean" />
-		    <field name="disable_js_jquery" type="magebridge.boolean" />
+            <field type="spacer" name="javascript_joomla" class="fieldgroup"/>
+            <field name="disable_js" type="magebridge.disablejs"/>
+            <field name="disable_js_mootools" type="magebridge.boolean"/>
+            <field name="disable_js_jquery" type="magebridge.boolean"/>
 
-		    <field type="spacer" name="javascript_magento" class="fieldgroup" />
-		    <field name="disable_js_prototype" type="magebridge.boolean" />
-		    <field name="disable_js_mage" type="magebridge.scripts" />
-		    <field name="merge_js" type="list">
-			    <option value="0">JNO</option>
-			    <option value="1">COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_MERGE_JS_OPTION_JS_INDEX</option>
-			    <option value="2">COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_MERGE_JS_OPTION_JS_MERGE</option>
-	    	</field>
-		    <field name="use_google_api" type="magebridge.boolean" />
-		    <field name="use_protoculous" type="magebridge.boolean" />
-		    <field name="use_protoaculous" type="magebridge.boolean" />
-		    <field name="replace_jquery" type="magebridge.boolean" />
+            <field type="spacer" name="javascript_magento" class="fieldgroup"/>
+            <field name="disable_js_prototype" type="magebridge.boolean"/>
+            <field name="disable_js_mage" type="magebridge.scripts"/>
+            <field name="merge_js" type="list">
+                <option value="0">JNO</option>
+                <option value="1">COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_MERGE_JS_OPTION_JS_INDEX</option>
+                <option value="2">COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_MERGE_JS_OPTION_JS_MERGE</option>
+            </field>
+            <field name="use_google_api" type="magebridge.boolean"/>
+            <field name="use_protoculous" type="magebridge.boolean"/>
+            <field name="use_protoaculous" type="magebridge.boolean"/>
+            <field name="replace_jquery" type="magebridge.boolean"/>
 
-		    <field type="spacer" name="javascript_advanced" class="fieldgroup" />
-		    <field name="disable_js_footools" type="magebridge.boolean" />
-		    <field name="disable_js_frototype" type="magebridge.boolean" />
+            <field type="spacer" name="javascript_advanced" class="fieldgroup"/>
+            <field name="disable_js_footools" type="magebridge.boolean"/>
+            <field name="disable_js_frototype" type="magebridge.boolean"/>
         </fieldset>
 
         <fieldset name="theming" label="COM_MAGEBRIDGE_MODEL_CONFIG_FIELDSET_THEMING">
-		    <field type="spacer" name="theming_other" class="fieldgroup" />
-		    <field name="template" type="magebridge.template" />
-		    <field name="magento_theme" type="magebridge.theme" />
-		    <field name="mobile_joomla_theme" type="magebridge.template" />
-		    <field name="mobile_magento_theme" type="magebridge.theme" />
-		    <field name="module_chrome" type="text" />
+            <field type="spacer" name="theming_other" class="fieldgroup"/>
+            <field name="template" type="magebridge.template"/>
+            <field name="magento_theme" type="magebridge.theme"/>
+            <field name="mobile_joomla_theme" type="magebridge.template"/>
+            <field name="mobile_magento_theme" type="magebridge.theme"/>
+            <field name="module_chrome" type="text"/>
         </fieldset>
 
         <fieldset name="debugging" label="COM_MAGEBRIDGE_MODEL_CONFIG_FIELDSET_DEBUGGING">
-		    <field type="spacer" name="debugging" class="fieldgroup" />
-		    <field name="debug" type="magebridge.boolean" default="0" />
-		    <field name="debug_ip" type="magebridge.ip" />
-		    <field name="debug_level" type="list">
-			    <option value="all">COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_DEBUG_LEVEL_OPTION_ALL</option>
-			    <option value="error">COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_DEBUG_LEVEL_OPTION_ERROR</option>
-			    <option value="profiler">COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_DEBUG_LEVEL_OPTION_PROFILER</option>
-	    	</field>
-		    <field name="debug_log" type="list">
-			    <option value="">JNONE</option>
-			    <option value="db">COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_DEBUG_LOG_OPTION_DB</option>
-			    <option value="file">COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_DEBUG_LOG_OPTION_FILE</option>
-			    <option value="both">COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_DEBUG_LOG_OPTION_BOTH</option>
-	    	</field>
-		    <field name="debug_console" type="magebridge.boolean" />
-		    <field name="debug_display_errors" type="magebridge.boolean" />
+            <field type="spacer" name="debugging" class="fieldgroup"/>
+            <field name="debug" type="magebridge.boolean" default="0"/>
+            <field name="debug_ip" type="magebridge.ip"/>
+            <field name="debug_level" type="list">
+                <option value="all">COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_DEBUG_LEVEL_OPTION_ALL</option>
+                <option value="error">COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_DEBUG_LEVEL_OPTION_ERROR</option>
+                <option value="profiler">COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_DEBUG_LEVEL_OPTION_PROFILER</option>
+            </field>
+            <field name="debug_log" type="list">
+                <option value="">JNONE</option>
+                <option value="db">COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_DEBUG_LOG_OPTION_DB</option>
+                <option value="file">COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_DEBUG_LOG_OPTION_FILE</option>
+                <option value="both">COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_DEBUG_LOG_OPTION_BOTH</option>
+            </field>
+            <field name="debug_console" type="magebridge.boolean"/>
+            <field name="debug_display_errors" type="magebridge.boolean"/>
 
-		    <field type="spacer" name="debugging_bar" class="fieldgroup" />
-		    <field name="debug_bar" type="magebridge.boolean" default="0" />
-		    <field name="debug_bar_parts" type="magebridge.boolean" />
-		    <field name="debug_bar_request" type="magebridge.boolean" />
-		    <field name="debug_bar_store" type="magebridge.boolean" />
+            <field type="spacer" name="debugging_bar" class="fieldgroup"/>
+            <field name="debug_bar" type="magebridge.boolean" default="0"/>
+            <field name="debug_bar_parts" type="magebridge.boolean"/>
+            <field name="debug_bar_request" type="magebridge.boolean"/>
+            <field name="debug_bar_store" type="magebridge.boolean"/>
         </fieldset>
 
         <fieldset name="other" label="COM_MAGEBRIDGE_MODEL_CONFIG_FIELDSET_OTHER">
 
-		    <field type="spacer" name="plugin_events" class="fieldgroup" />
-		    <field name="enable_block_rendering" type="magebridge.boolean" />
-		    <field name="enable_content_plugins" type="magebridge.boolean" />
-		    <field name="enable_jdoc_tags" type="magebridge.boolean" />
+            <field type="spacer" name="plugin_events" class="fieldgroup"/>
+            <field name="enable_block_rendering" type="magebridge.boolean"/>
+            <field name="enable_content_plugins" type="magebridge.boolean"/>
+            <field name="enable_jdoc_tags" type="magebridge.boolean"/>
 
-		    <field type="spacer" name="cookies" class="fieldgroup" />
-		    <field name="bridge_cookie_all" type="magebridge.boolean" />
-		    <field name="bridge_cookie_custom" type="textarea" />
+            <field type="spacer" name="cookies" class="fieldgroup"/>
+            <field name="bridge_cookie_all" type="magebridge.boolean"/>
+            <field name="bridge_cookie_custom" type="textarea"/>
 
-		    <field type="spacer" name="advanced" class="fieldgroup" />
-		    <field name="use_rootmenu" type="magebridge.boolean" />
-		    <field name="enforce_rootmenu" type="magebridge.boolean" />
-		    <field name="enable_messages" type="magebridge.boolean" />
-		    <field name="enable_breadcrumbs" type="magebridge.boolean" />
-		    <field name="enable_notfound" type="magebridge.boolean" />
-		    <field name="enable_canonical" type="magebridge.boolean" />
-		    <field name="use_referer_for_homepage_redirects" type="magebridge.boolean" />
-		    <field name="use_homepage_for_homepage_redirects" type="magebridge.boolean" />
+            <field type="spacer" name="advanced" class="fieldgroup"/>
+            <field name="use_rootmenu" type="magebridge.boolean"/>
+            <field name="enforce_rootmenu" type="magebridge.boolean"/>
+            <field name="enable_messages" type="magebridge.boolean"/>
+            <field name="enable_breadcrumbs" type="magebridge.boolean"/>
+            <field name="enable_notfound" type="magebridge.boolean"/>
+            <field name="enable_canonical" type="magebridge.boolean"/>
+            <field name="use_referer_for_homepage_redirects" type="magebridge.boolean"/>
+            <field name="use_homepage_for_homepage_redirects" type="magebridge.boolean"/>
 
-		    <field type="spacer" name="backend" class="fieldgroup" />
-		    <field name="api_widgets" type="magebridge.boolean" />
-		    <field name="backend_feed" type="magebridge.boolean" />
+            <field type="spacer" name="backend" class="fieldgroup"/>
+            <field name="api_widgets" type="magebridge.boolean"/>
+            <field name="backend_feed" type="magebridge.boolean"/>
 
-		    <field type="spacer" name="expert" class="fieldgroup" />
-		    <field name="modify_url" type="magebridge.boolean" />
-		    <field name="link_to_magento" type="magebridge.boolean" />
-		    <field name="spoof_browser" type="magebridge.boolean" />
-		    <field name="spoof_headers" type="magebridge.boolean" />
-		    <field name="filter_content" type="magebridge.boolean" />
-		    <field name="filter_store_from_url" type="magebridge.boolean" />
-		    <field name="preload_all_modules" type="magebridge.boolean" />
-		    <field name="method" type="list">
-			    <option value="post">COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_METHOD_OPTION_POST</option>
-			    <option value="get">COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_METHOD_OPTION_GET</option>
-	    	</field>
-		    <field name="curl_post_as_array" type="magebridge.boolean" />
-		    <field name="curl_timeout" type="input" />
-		    <field name="direct_output" type="textarea" />
-		    <field name="update_format" type="list">
-			    <option value="tar.gz">COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_UPDATE_FORMAT_OPTION_TAR</option>
-			    <option value="zip">COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_UPDATE_FORMAT_OPTION_ZIP</option>
-	    	</field>
-		    <field name="update_method" type="list">
-			    <option value="joomla">COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_UPDATE_METHOD_OPTION_JOOMLA</option>
-			    <option value="curl">COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_UPDATE_METHOD_OPTION_CURL</option>
-	    	</field>
+            <field type="spacer" name="expert" class="fieldgroup"/>
+            <field name="modify_url" type="magebridge.boolean"/>
+            <field name="link_to_magento" type="magebridge.boolean"/>
+            <field name="spoof_browser" type="magebridge.boolean"/>
+            <field name="spoof_headers" type="magebridge.boolean"/>
+            <field name="filter_content" type="magebridge.boolean"/>
+            <field name="filter_store_from_url" type="magebridge.boolean"/>
+            <field name="preload_all_modules" type="magebridge.boolean"/>
+            <field name="method" type="list">
+                <option value="post">COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_METHOD_OPTION_POST</option>
+                <option value="get">COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_METHOD_OPTION_GET</option>
+            </field>
+            <field name="curl_post_as_array" type="magebridge.boolean"/>
+            <field name="curl_timeout" type="input"/>
+            <field name="direct_output" type="textarea"/>
+            <field name="update_format" type="list">
+                <option value="tar.gz">COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_UPDATE_FORMAT_OPTION_TAR</option>
+                <option value="zip">COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_UPDATE_FORMAT_OPTION_ZIP</option>
+            </field>
+            <field name="update_method" type="list">
+                <option value="joomla">COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_UPDATE_METHOD_OPTION_JOOMLA</option>
+                <option value="curl">COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_UPDATE_METHOD_OPTION_CURL</option>
+            </field>
 
-		    <field type="spacer" name="performance" class="fieldgroup" />
-		    <field name="enable_cache" type="magebridge.boolean" />
-		    <field name="cache_time" type="input" />
-		    <field name="keep_alive" type="magebridge.boolean" />
+            <field type="spacer" name="performance" class="fieldgroup"/>
+            <field name="enable_cache" type="magebridge.boolean"/>
+            <field name="cache_time" type="input"/>
+            <field name="keep_alive" type="magebridge.boolean"/>
         </fieldset>
     </fields>
 </form>

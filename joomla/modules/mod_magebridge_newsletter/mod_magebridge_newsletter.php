@@ -4,9 +4,9 @@
  *
  * @author	Yireo (info@yireo.com)
  * @package   MageBridge
- * @copyright Copyright 2015
+ * @copyright Copyright 2016
  * @license   GNU Public License
- * @link	  http://www.yireo.com
+ * @link	  https://www.yireo.com
  */
 
 // No direct access
@@ -31,7 +31,7 @@ $redirect_url = MageBridgeUrlHelper::route(MageBridgeUrlHelper::getRequest());
 $redirect_url = MageBridgeEncryptionHelper::base64_encode($redirect_url);
 
 // Require form validation
-JHTML::_('behavior.formvalidation');
+JHtml::_('behavior.formvalidation');
 
 // Include the layout-file
 require(JModuleHelper::getLayoutPath('mod_magebridge_newsletter', $layout));

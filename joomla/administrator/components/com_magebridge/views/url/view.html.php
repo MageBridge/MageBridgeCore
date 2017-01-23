@@ -4,9 +4,9 @@
  *
  * @author Yireo (info@yireo.com)
  * @package MageBridge
- * @copyright Copyright 2015
+ * @copyright Copyright 2016
  * @license GNU Public License
- * @link http://www.yireo.com
+ * @link https://www.yireo.com
  */
 
 // Check to ensure this file is included in Joomla!
@@ -21,7 +21,7 @@ jimport('joomla.filter.output');
 /**
  * HTML View class
  */
-class MageBridgeViewUrl extends MageBridgeView
+class MageBridgeViewUrl extends YireoViewItem
 {
 	/**
 	 * Method to prepare the content for display
@@ -52,6 +52,6 @@ class MageBridgeViewUrl extends MageBridgeView
 			array( 'value' => 0, 'text' => JText::_('COM_MAGEBRIDGE_VIEW_URLS_MAGENTO_URL')),
 			array( 'value' => 1, 'text' => JText::_('COM_MAGEBRIDGE_VIEW_URLS_PARTIAL_MATCH')),
 		);
-		return JHTML::_('select.genericlist', $options, 'source_type', null, 'value', 'text', $current);
+		return JHtml::_('select.genericlist', $options, 'source_type', null, 'value', 'text', $current);
 	}
 }

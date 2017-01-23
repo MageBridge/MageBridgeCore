@@ -4,9 +4,9 @@
  *
  * @author Yireo (info@yireo.com)
  * @package MageBridge
- * @copyright Copyright 2015
+ * @copyright Copyright 2016
  * @license GNU Public License
- * @link http://www.yireo.com
+ * @link https://www.yireo.com
  */
 
 defined('_JEXEC') or die('Restricted access');
@@ -39,6 +39,6 @@ defined('_JEXEC') or die('Restricted access');
 </tbody>
 </table>
 <input type="hidden" name="default" value="1" />
-<input type="hidden" name="apply_url" value="<?php echo JRoute::_('index.php?option=com_magebridge&view=store&task=default'); ?>" />
+<input type="hidden" name="apply_url" value="<?php echo JRoute::_('index.php?option=com_magebridge&view=store&task=default', true); ?>" />
 <?php echo $this->loadTemplate('formend'); ?>
 </form>

@@ -4,9 +4,9 @@
  *
  * @author    Yireo (info@yireo.com)
  * @package   MageBridge
- * @copyright Copyright 2015
+ * @copyright Copyright 2016
  * @license   GNU Public License
- * @link      http://www.yireo.com
+ * @link      https://www.yireo.com
  */
 
 // No direct access
@@ -18,13 +18,18 @@ defined('_JEXEC') or die('Restricted access');
 class MageBridgeProxyHelper
 {
 	/**
-	 * @param $app JApplicationSite
+	 * @var JApplicationWeb
+	 */
+	protected $app;
+
+	/**
+	 * @param $app JApplicationWeb
 	 */
 	public function __construct($app)
 	{
 		$this->app = $app;
 	}
-	
+
 	/**
 	 * Proxy uploads
 	 *
@@ -143,7 +148,7 @@ class MageBridgeProxyHelper
 	public function getUploadPath()
 	{
 		$config = JFactory::getConfig();
-		
+
 		return $config->get('tmp_path');
 	}
 

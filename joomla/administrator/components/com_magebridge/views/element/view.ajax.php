@@ -4,9 +4,9 @@
  *
  * @author Yireo (info@yireo.com)
  * @package MageBridge
- * @copyright Copyright 2015
+ * @copyright Copyright 2016
  * @license GNU Public License
- * @link http://www.yireo.com
+ * @link https://www.yireo.com
  */
 
 // Check to ensure this file is included in Joomla!  
@@ -31,8 +31,10 @@ class MageBridgeViewElement extends MageBridgeViewCommon
 	 */
 	public function display($tpl = null)
 	{
+		$layoutType = $this->app->input->getCmd('type');
+
 		// Determine the layout and data 
-		switch(JFactory::getApplication()->input->getCmd('type')) {
+		switch($layoutType) {
 
 			case 'product':
 				$this->doProductLayout();
@@ -51,6 +53,8 @@ class MageBridgeViewElement extends MageBridgeViewCommon
 				$this->doCategoryLayout();
 				break;
 		}
+
+		$tpl = $layoutType;
 
 		parent::display($tpl);
 	}

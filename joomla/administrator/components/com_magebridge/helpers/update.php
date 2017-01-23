@@ -4,9 +4,9 @@
  *
  * @author Yireo (info@yireo.com)
  * @package MageBridge
- * @copyright Copyright 2015
+ * @copyright Copyright 2016
  * @license GNU Public License
- * @link http://www.yireo.com
+ * @link https://www.yireo.com
  */
 
 // Check to ensure this file is included in Joomla!
@@ -61,7 +61,7 @@ class MageBridgeUpdateHelper
 	 */
 	static public function getPackageList()
 	{
-		$url = 'http://api.yireo.com/';
+		$url = 'https://api.yireo.com/';
 		$domain = preg_replace( '/\:(.*)/', '', $_SERVER['HTTP_HOST'] );
 		$arguments = array(
 			'key' => MagebridgeModelConfig::load('supportkey'),
@@ -88,7 +88,7 @@ class MageBridgeUpdateHelper
 		$packages = $packages['joomla'];
 
 		// Load the currently configured connectors
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$query = 'SELECT DISTINCT(`connector`) FROM `#__magebridge_products`';
 		$db->setQuery($query);
 		$usedConnectorsList = $db->loadObjectList();
@@ -129,8 +129,6 @@ class MageBridgeUpdateHelper
 	 */
 	static public function getCurrentVersion($package) 
 	{
-		if ($package)
-
 		switch($package['type']) {
 			case 'component':
 				$file = JPATH_ADMINISTRATOR.'/components/'.$package['name'].'/magebridge.xml';
@@ -151,6 +149,11 @@ class MageBridgeUpdateHelper
 			case 'template':
 				$file = JPATH_SITE.'/templates/'.$package['file'].'/templateDetails.xml';
 				break;
+
+            case 'library':
+                $libraryName = preg_replace('/^lib_/', '', $package['name']);
+                $file = JPATH_SITE.'/libraries/'.$libraryName.'/'.$libraryName.'.xml';
+                break;
 		}
 
 		if (JFile::exists($file) == false) {

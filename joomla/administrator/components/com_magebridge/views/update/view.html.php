@@ -4,9 +4,9 @@
  *
  * @author Yireo (info@yireo.com)
  * @package MageBridge
- * @copyright Copyright 2015
+ * @copyright Copyright 2016
  * @license GNU Public License
- * @link http://www.yireo.com
+ * @link https://www.yireo.com
  */
 
 // Check to ensure this file is included in Joomla! 
@@ -56,7 +56,7 @@ class MageBridgeViewUpdate extends YireoView
 		);
 		$filter_type = $this->getFilter('type');
 		$javascript = 'onchange="document.adminForm.submit();"';
-		$this->lists['type'] = JHTML::_('select.genericlist', $options, 'filter_type', $javascript, 'value', 'text', $filter_type );
+		$this->lists['type'] = JHtml::_('select.genericlist', $options, 'filter_type', $javascript, 'value', 'text', $filter_type );
 
 		// Filters - search
 		$filter_search = $this->getFilter('search');

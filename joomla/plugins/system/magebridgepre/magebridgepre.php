@@ -4,9 +4,9 @@
  *
  * @author    Yireo (info@yireo.com)
  * @package   MageBridge
- * @copyright Copyright 2015
+ * @copyright Copyright 2016
  * @license   GNU Public License
- * @link      http://www.yireo.com
+ * @link      https://www.yireo.com
  */
 
 // Check to ensure this file is included in Joomla!
@@ -40,7 +40,7 @@ class plgSystemMageBridgePre extends JPlugin
 			// If the user is already logged in, remove the cookie
 			if (JFactory::getUser()->id > 0)
 			{
-				setcookie('mb_postlogin', '', time() - 3600, '/', '.' . JURI::getInstance()
+				setcookie('mb_postlogin', '', time() - 3600, '/', '.' . JUri::getInstance()
 						->toString(array('host')));
 			}
 
@@ -54,7 +54,10 @@ class plgSystemMageBridgePre extends JPlugin
 		}
 
 		// Perform a postlogin if needed
-		$post = $application->input->post->getArray();
+        if (YireoHelper::isJoomla35())
+        {
+    		$post = $application->input->post->getArray();
+        }
 
 		if (empty($post))
 		{

@@ -4,9 +4,9 @@
  *
  * @author Yireo
  * @package Magento Bridge
- * @copyright Copyright 2015
+ * @copyright Copyright 2016
  * @license Open Source License
- * @link http://www.yireo.com
+ * @link https://www.yireo.com
  */
 
 /*
@@ -184,12 +184,14 @@ class MageBridge
             // Set the REQUEST_URI
             $_SERVER['REQUEST_URI'] = $request_uri;
             $_SERVER['HTTP_X_REWRITE_URL'] = $request_uri;
+            $_SERVER['HTTP_X_ORIGINAL_URL'] = $request_uri;
 
 
         // Set defaults otherwise
         } else {
             $_SERVER['REQUEST_URI'] = '/';
             $_SERVER['HTTP_X_REWRITE_URL'] = '/';
+            $_SERVER['HTTP_X_ORIGINAL_URL'] = '/';
         }
 
         // Mask the HTTP_USER_AGENT
@@ -208,13 +210,10 @@ class MageBridge
             $_SERVER['REMOTE_ADDR'] = $data['remote_addr'];
         }
 
-        // Mask the HTTP_HOST
-        //if(!empty($data['http_host'])) {
-        //    $_SERVER['HTTP_HOST'] = $data['http_host'];
-        //}
-
         // Mask the REQUEST_METHOD
-        if($_SERVER['REQUEST_METHOD'] == 'POST' && empty($_POST)) $_SERVER['REQUEST_METHOD'] = 'GET';
+        if(isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST' && empty($_POST)) {
+            $_SERVER['REQUEST_METHOD'] = 'GET';
+        }
 
         // Make sure all globals are arrays
         if(empty($_GET)) $_GET = array();
@@ -231,14 +230,14 @@ class MageBridge
         }
 
         // Initialize the Magento session by SID-parameter
-        if(isset($_GET['SID']) && self::isValidSession($_GET['SID'])) {
+        if(isset($_GET['SID']) && self::isValidSessionId($_GET['SID'])) {
             session_name('frontend');
             session_id($_GET['SID']);
             setcookie('frontend', $_GET['SID']);
             $_COOKIE['frontend'] = $_GET['SID'];
 
         // Initialize the Magento session by the session-ID tracked by MageBridge
-        } elseif(!empty($data['magento_session']) && self::isValidSession($data['magento_session'])) {
+        } elseif(!empty($data['magento_session']) && self::isValidSessionId($data['magento_session'])) {
             session_name('frontend');
             session_id($data['magento_session']);
             setcookie('frontend', $data['magento_session']);
@@ -246,17 +245,17 @@ class MageBridge
 
         // Initialize Single Sign On
         } elseif(!empty($_GET['sso']) && !empty($_GET['app'])) {
-            if($_GET['app'] == 'admin' && isset($_COOKIE['adminhtml']) && self::isValidSession($_COOKIE['adminhtml'])) {
+            if($_GET['app'] == 'admin' && isset($_COOKIE['adminhtml']) && self::isValidSessionId($_COOKIE['adminhtml'])) {
                 session_name('adminhtml');
                 session_id($_COOKIE['adminhtml']);
-            } elseif(isset($_COOKIE['frontend']) && self::isValidSession($_COOKIE['frontend'])) {
+            } elseif(isset($_COOKIE['frontend']) && self::isValidSessionId($_COOKIE['frontend'])) {
                 session_name('frontend');
                 session_id($_COOKIE['frontend']);
             }
         }
 
         // Initialize the Persistent Shopping Cart
-        if(!empty($data['magento_persistent_session']) && self::isValidSession($data['magento_persistent_session'])) {
+        if(!empty($data['magento_persistent_session']) && self::isValidSessionId($data['magento_persistent_session'])) {
             setcookie('persistent_shopping_cart', $data['magento_persistent_session']);
             $_COOKIE['persistent_shopping_cart'] = $data['magento_persistent_session'];
         }
@@ -267,8 +266,16 @@ class MageBridge
             $_COOKIE['user_allowed_save_cookie'] = $data['magento_user_allowed_save_cookie'];
         }
 
+        // Recheck cookies
+        foreach ($_COOKIE as $cookieName => $cookieValue) {
+            $cookieValue = trim($cookieValue);
+            if (self::isValidSessionId($cookieValue) == false) {
+                $_COOKIE[$cookieName] = null;
+            }
+        }
+
         // Check for a correct cookie
-        if((isset($_COOKIE['frontend']) && self::isValidSession($_COOKIE['frontend']) == false)) {
+        if((isset($_COOKIE['frontend']) && self::isValidSessionId($_COOKIE['frontend']) == false)) {
             $_COOKIE['frontend'] = null;
         }
 
@@ -285,18 +292,25 @@ class MageBridge
      * @param null
      * @return null
      */
-    public function isValidSession($session_id)
+    public function isValidSessionId($session_id, $session_name = null)
     {
-        $forbidden = array('deleted');
+        $forbidden = ['deleted'];
+        $magento_sessions = ['adminhtml', 'frontend', 'SID', 'magento_session'];
+
         $session_id = trim($session_id);
 
         if(in_array($session_id, $forbidden)) {
             return false;
         }
 
-        if(empty($session_id) || !preg_match('/^([a-zA-Z0-9\-\_\,]{10,100})$/', $session_id)) {
+        if(in_array($session_name, $magento_sessions) && empty($session_id)) {
             return false;
         }
+
+        if(in_array($session_name, $magento_sessions) && !preg_match('/^([a-zA-Z0-9\-\_\,]{10,100})$/', $session_id)) {
+            return false;
+        }
+
         return true;
     }
 

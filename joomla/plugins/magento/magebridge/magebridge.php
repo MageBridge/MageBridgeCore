@@ -4,9 +4,9 @@
  *
  * @author    Yireo (info@yireo.com)
  * @package   MageBridge
- * @copyright Copyright 2014
+ * @copyright Copyright 2016
  * @license   GNU Public License
- * @link      http://www.yireo.com
+ * @link      https://www.yireo.com
  */
 
 // Check to ensure this file is included in Joomla!
@@ -90,9 +90,8 @@ class PlgMagentoMageBridge extends JPlugin
 		$options = array('disable_bridge' => true, 'action' => 'core.login.site');
 
 		// Call the Joomla! event "onLogoutUser"
-		$eventName = (MageBridgeHelper::isJoomla15()) ? 'onLogoutUser' : 'onUserLogout';
 		JPluginHelper::importPlugin('user');
-		JFactory::getApplication()->triggerEvent($eventName, array($customer, $options));
+		JFactory::getApplication()->triggerEvent('onUserLogout', array($customer, $options));
 
 		return true;
 	}

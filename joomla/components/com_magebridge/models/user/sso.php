@@ -2,11 +2,11 @@
 /**
  * Joomla! component MageBridge
  *
- * @author Yireo (info@yireo.com)
- * @package MageBridge
- * @copyright Copyright 2015
- * @license GNU Public License
- * @link http://www.yireo.com
+ * @author    Yireo (info@yireo.com)
+ * @package   MageBridge
+ * @copyright Copyright 2016
+ * @license   GNU Public License
+ * @link      https://www.yireo.com
  */
 
 // No direct access
@@ -15,141 +15,229 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Bridge Single Sign On class
  */
-class MageBridgeModelUserSSO extends MageBridgeModelUser
+class MageBridgeModelUserSSO
 {
 	/**
-	 * Method for logging in with Magento (Single Sign On)
-	 * 
-	 * @param array $user
-	 * @return bool|exit
+	 * Instance variable
 	 */
-	static public function doSSOLogin($user = null)
+	protected static $_instance = null;
+
+	/**
+	 * @var JApplicationCms
+	 */
+	protected $app;
+
+	/**
+	 * @var MageBridgeModelBridge
+	 */
+	protected $bridge;
+
+	/**
+	 * @var MagebridgeModelDebug
+	 */
+	protected $debug;
+
+	/**
+	 * Singleton
+	 *
+	 * @return MageBridgeModelUserSSO $_instance
+	 */
+	public static function getInstance()
 	{
+		static $instance;
+
+		if (null === self::$_instance)
+		{
+			self::$_instance = new self();
+		}
+
+		return self::$_instance;
+	}
+
+	/**
+	 * MageBridgeModelUser constructor.
+	 */
+	public function __construct()
+	{
+		$this->app    = JFactory::getApplication();
+		$this->bridge = MageBridgeModelBridge::getInstance();
+		$this->debug  = MagebridgeModelDebug::getInstance();
+	}
+
+	/**
+	 * Method for logging in with Magento (Single Sign On)
+	 *
+	 * @param array $user
+	 *
+	 * @return bool
+	 */
+	public function doSSOLogin($user = null)
+	{
+		if ($user instanceof JUser)
+		{
+			$user = \Joomla\Utilities\ArrayHelper::fromObject($user);
+		}
+
 		// Abort if the input is not valid
-		if (empty($user) || (empty($user['email']) && empty($user['username']))) {
+		if (empty($user) || (empty($user['email']) && empty($user['username'])))
+		{
 			return false;
 		}
 
 		// Get system variables
-		$application = JFactory::getApplication();
 		$session = JFactory::getSession();
 
 		// Store the current page, so we can redirect to it after SSO is done
-		if ($return = JFactory::getApplication()->input->get('return', '', 'base64')) {
+		if ($return = $this->app->input->get('return', '', 'base64'))
+		{
 			$return = base64_decode($return);
-		} else {
+		}
+		else
+		{
 			$return = MageBridgeUrlHelper::current();
 		}
 
 		$session->set('magento_redirect', $return);
 
 		// Determine the user-name
-		$application_name = ($application->isAdmin()) ? 'admin' : 'frontend';
-		if ($application_name == 'admin') {
+		$appName = $this->getCurrentApp();
+
+		if ($appName == 'admin')
+		{
 			$username = $user['username'];
-		} else if (!empty($user['email'])) {
-			$username = $user['email'];
-		} else {
-			$username = $user['username'];
+		}
+		else
+		{
+			if (!empty($user['email']))
+			{
+				$username = $user['email'];
+			}
+			else
+			{
+				$username = $user['username'];
+			}
 		}
 
 		// Get the security token
-		$token = (method_exists('JSession', 'getFormToken')) ? JSession::getFormToken() : JUtility::getToken();
+		$token = JSession::getFormToken();
 
 		// Construct the URL
 		$arguments = array(
 			'sso=login',
-			'app='.$application_name,
-			'base='.base64_encode(JURI::base()),
-			'userhash='.MageBridgeEncryptionHelper::encrypt($username),
-			'token='.$token,
+			'app=' . $appName,
+			'base=' . base64_encode(JUri::base()),
+			'userhash=' . MageBridgeEncryptionHelper::encrypt($username),
+			'token=' . $token,
 		);
 
-		$url = MageBridgeModelBridge::getInstance()->getMagentoBridgeUrl().'?'.implode('&', $arguments);
+		$url = $this->bridge->getMagentoBridgeUrl() . '?' . implode('&', $arguments);
 
 		// Redirect the browser to Magento
-		MageBridgeModelDebug::getInstance()->trace( "SSO: Sending arguments", $arguments );
-		$application->redirect($url);
+		$this->debug->trace("SSO: Sending arguments", $arguments);
+		$this->app->redirect($url);
 
 		return true;
 	}
 
 	/**
 	 * Method for logging out with Magento (Single Sign On)
-	 * 
+	 *
 	 * @param string $username
-	 * @return bool|exit
+	 *
+	 * @return bool
 	 */
-	static public function doSSOLogout($username = null)
+	public function doSSOLogout($username = null)
 	{
 		// Abort if the input is not valid
-		if (empty($username)) {
+		if (empty($username))
+		{
 			return false;
 		}
 
-		// Get system variables
-		$application = JFactory::getApplication();
-		$session = JFactory::getSession();
-
 		// Determine the application
-		$application_name = ($application->isAdmin()) ? 'admin' : 'frontend';
+		$appName = $this->getCurrentApp();
 
 		// Get the security token
-		$token = (method_exists('JSession', 'getFormToken')) ? JSession::getFormToken() : JUtility::getToken();
-		
-		// Set the redirection URL
-		if ($application_name == 'admin') {
-			$redirect = JURI::current();
-		} else {
-			$redirect = MageBridgeUrlHelper::current();
-		}
+		$token = JSession::getFormToken();
+
+		// Get the redirection URL
+		$redirect = $this->getCurrentUrl();
 
 		// Construct the URL
 		$arguments = array(
 			'sso=logout',
-			'app='.$application_name,
-			'redirect='.base64_encode($redirect),
-			'userhash='.MageBridgeEncryptionHelper::encrypt($username),
-			'token='.$token,
+			'app=' . $appName,
+			'redirect=' . base64_encode($redirect),
+			'userhash=' . MageBridgeEncryptionHelper::encrypt($username),
+			'token=' . $token,
 		);
-		$url = MageBridgeModelBridge::getInstance()->getMagentoBridgeUrl().'?'.implode('&', $arguments);
+
+		$url = $this->bridge->getMagentoBridgeUrl() . '?' . implode('&', $arguments);
 
 		// Redirect the browser to Magento
-		MageBridgeModelDebug::getInstance()->notice( "SSO: Logout of '$username' from ".$application_name);
-		$application->redirect($url);
+		$this->debug->notice("SSO: Logout of '$username' from " . $appName);
+		$this->app->redirect($url);
 
 		return true;
 	}
 
 	/**
 	 * Method to check the SSO-request coming back from Magento
-	 * 
+	 *
 	 * @param null
-	 * @return bool|exit
+	 *
+	 * @return bool
 	 */
-	static public function checkSSOLogin()
+	public function checkSSOLogin()
 	{
 		// Check the security token
 		JSession::checkToken('get') or die('SSO redirect failed due to wrong token');
 
 		// Get system variables
-		$application = JFactory::getApplication();
 		$session = JFactory::getSession();
 
 		// Get the current Magento session
-		$magento_session = JFactory::getApplication()->input->getCmd('session');
-		if (!empty($magento_session)) {
-			MageBridgeModelBridge::getInstance()->setMageSession($magento_session);
-			MageBridgeModelDebug::getInstance()->notice( "SSO: Magento session ".$magento_session);
+		$magento_session = $this->app->input->getCmd('session');
+
+		if (!empty($magento_session))
+		{
+			$this->bridge->setMageSession($magento_session);
+			$this->debug->notice("SSO: Magento session " . $magento_session);
 		}
 
 		// Redirect back to the original URL
-		$redirect = $session->get('magento_redirect', JURI::base());
-		if (empty($redirect)) {
+		$redirect = $session->get('magento_redirect', JUri::base());
+
+		if (empty($redirect))
+		{
 			$redirect = MageBridgeUrlHelper::route('customer/account');
 		}
-		MageBridgeModelDebug::getInstance()->notice( "SSO: Redirect to $redirect" );
-		$application->redirect($redirect);
+
+		$this->debug->notice("SSO: Redirect to $redirect");
+		$this->app->redirect($redirect);
+
 		return true;
+	}
+
+	/**
+	 * @return string
+	 */
+	protected function getCurrentApp()
+	{
+		return ($this->app->isAdmin()) ? 'admin' : 'frontend';
+	}
+
+	/**
+	 * @return string
+	 */
+	protected function getCurrentUrl()
+	{
+		// Set the redirection URL
+		if ($this->getCurrentApp() == 'admin')
+		{
+			return JUri::current();
+		}
+
+		return MageBridgeUrlHelper::current();
 	}
 }

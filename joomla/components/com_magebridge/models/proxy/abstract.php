@@ -4,9 +4,9 @@
  *
  * @author	Yireo (info@yireo.com)
  * @package   MageBridge
- * @copyright Copyright 2015
+ * @copyright Copyright 2016
  * @license   GNU Public License
- * @link	  http://www.yireo.com
+ * @link	  https://www.yireo.com
  */
 
 // No direct access
@@ -39,6 +39,41 @@ abstract class MageBridgeModelProxyAbstract
 	protected $init = self::CONNECTION_FALSE;
 
 	/**
+	 * @var MageBridgeModelBridge
+	 */
+	protected $bridge;
+
+	/**
+	 * @var MagebridgeModelDebug
+	 */
+	protected $debug;
+
+	/**
+	 * @var JApplicationWeb
+	 */
+	protected $app;
+
+	/**
+	 * @var MageBridgeProxyHelper
+	 */
+	protected $helper;
+
+	/**
+	 * @var JInput
+	 */
+	protected $input;
+
+	/**
+	 * @var \Joomla\Registry\Registry
+	 */
+	protected $config;
+
+	/**
+	 * @var MageBridgeModelUser
+	 */
+	protected $user;
+
+	/**
 	 * Method to fetch the data
 	 *
 	 * @return MageBridgeModelProxy
@@ -69,6 +104,8 @@ abstract class MageBridgeModelProxyAbstract
 		$this->helper = new MageBridgeProxyHelper($this->app);
 
 		$this->input = $this->app->input;
+
+		$this->user = MageBridgeModelUser::getInstance();
 
 		$this->config = JFactory::getConfig();
 	}

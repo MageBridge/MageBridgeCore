@@ -2,11 +2,11 @@
 /**
  * Joomla! component MageBridge
  *
- * @author	Yireo (info@yireo.com)
+ * @author    Yireo (info@yireo.com)
  * @package   MageBridge
- * @copyright Copyright 2015
+ * @copyright Copyright 2016
  * @license   GNU Public License
- * @link	  http://www.yireo.com
+ * @link      https://www.yireo.com
  */
 
 // No direct access
@@ -21,14 +21,10 @@ jimport('joomla.application.module.helper');
 /**
  * Helper for handling the register
  */
-
 class MageBridgeRegisterHelper extends JModuleHelper
 {
 	/**
 	 * Pre-register the modules, because they are loaded after the component output
-	 *
-	 * @param null
-	 * @return null
 	 */
 	public static function preload()
 	{
@@ -39,6 +35,7 @@ class MageBridgeRegisterHelper extends JModuleHelper
 		{
 			return null;
 		}
+
 		$preload = true;
 
 		// Don't preload anything if this is the API
@@ -78,17 +75,20 @@ class MageBridgeRegisterHelper extends JModuleHelper
 					$name = null;
 
 					$params = YireoHelper::toRegistry($module->params);
-					$app = JFactory::getApplication();
 					$user = JFactory::getUser();
 
 					// Check whether caching returns a valid module-output
-					if ($params->get('cache', 0) && JFactory::getConfig()->get('caching'))
+					if ($params->get('cache', 0) && JFactory::getConfig()
+							->get('caching')
+					)
 					{
 						$cache = JFactory::getCache($module->module);
-						$cache->setLifeTime($params->get('cache_time', JFactory::getConfig()->get('cachetime') * 60));
+						$cache->setLifeTime($params->get('cache_time', JFactory::getConfig()
+								->get('cachetime') * 60));
 						$contents = $cache->get(array('JModuleHelper', 'renderModule'), array(
 							$module,
-							$params->toArray()), $module->id . $user->get('aid', 0));
+							$params->toArray()
+						), $module->id . $user->get('aid', 0));
 						$contents = trim($contents);
 
 						// If the contents are not empty, there is a cached version so we skip this
@@ -150,7 +150,8 @@ class MageBridgeRegisterHelper extends JModuleHelper
 						continue;
 					}
 
-					MageBridgeModelDebug::getInstance()->notice('Preloading module-resource for ' . $module->module);
+					MageBridgeModelDebug::getInstance()
+						->notice('Preloading module-resource for ' . $module->module);
 
 					// Fetch the requested tasks
 					$requests = $o->register($params);
