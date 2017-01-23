@@ -4,9 +4,9 @@
  *
  * @author    Yireo (info@yireo.com)
  * @package   MageBridge
- * @copyright Copyright 2015
+ * @copyright Copyright 2016
  * @license   GNU Public License
- * @link      http://www.yireo.com
+ * @link      https://www.yireo.com
  */
 
 // No direct access
@@ -15,7 +15,6 @@ defined('_JEXEC') or die('Restricted access');
 // Load the libraries
 require_once JPATH_SITE . '/components/com_magebridge/libraries/factory.php';
 require_once JPATH_SITE . '/components/com_magebridge/helpers/loader.php';
-require_once JPATH_ADMINISTRATOR . '/components/com_magebridge/libraries/loader.php';
 require_once JPATH_COMPONENT . '/helpers/acl.php';
 
 $app = JFactory::getApplication();

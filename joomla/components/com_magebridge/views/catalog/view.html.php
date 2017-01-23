@@ -4,9 +4,9 @@
  *
  * @author	Yireo (info@yireo.com)
  * @package   MageBridge
- * @copyright Copyright 2015
+ * @copyright Copyright 2016
  * @license   GNU Public License
- * @link	  http://www.yireo.com
+ * @link	  https://www.yireo.com
  */
 
 // No direct access
@@ -43,7 +43,10 @@ class MageBridgeViewCatalog extends MageBridgeView
 		if (is_numeric($prefix))
 		{
 			$request = MageBridgeUrlHelper::getLayoutUrl($layout, $prefix);
-
+            if (!empty($request))
+            {
+                $request .= '?' . $suffix;
+            }
 		}
 		else
 		{

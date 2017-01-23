@@ -4,9 +4,9 @@
  *
  * @author    Yireo (info@yireo.com)
  * @package   MageBridge
- * @copyright Copyright 2015
+ * @copyright Copyright 2016
  * @license   GNU Public License
- * @link      http://www.yireo.com
+ * @link      https://www.yireo.com
  */
 
 // No direct access
@@ -22,8 +22,8 @@ class MageBridgeApi
 	 */
 	public function __construct()
 	{
-		MageBridgeModelDebug::getDebugOrigin(MageBridgeModelDebug::MAGEBRIDGE_DEBUG_ORIGIN_JOOMLA_JSONRPC);
-		$this->debug = MageBridgeModelDebug::getInstance();
+		MagebridgeModelDebug::getDebugOrigin(MagebridgeModelDebug::MAGEBRIDGE_DEBUG_ORIGIN_JOOMLA_JSONRPC);
+		$this->debug = MagebridgeModelDebug::getInstance();
 		$this->app = JFactory::getApplication();
 	}
 
@@ -44,7 +44,7 @@ class MageBridgeApi
 	 *
 	 * @param array $params
 	 *
-	 * @return bool
+	 * @return false|array
 	 */
 	public function login($params = array())
 	{
@@ -54,7 +54,7 @@ class MageBridgeApi
 
 		$rt = $this->app->login($credentials);
 
-		if ($rt == true)
+		if ($rt === true)
 		{
 			return array('email' => $params[0]);
 		}
@@ -83,7 +83,6 @@ class MageBridgeApi
 
 		// Start debugging
 		$this->debug->trace('JSON-RPC: firing mageEvent ', $event);
-		//$this->debug->trace( 'JSON-RPC: plugin arguments', $arguments );
 
 		// Initialize the plugin-group "magento"
 		JPluginHelper::importPlugin('magento');
@@ -127,7 +126,7 @@ class MageBridgeApi
 	 *
 	 * @param array $params
 	 *
-	 * @return bool
+	 * @return string
 	 */
 	public function position($params = array())
 	{
@@ -152,7 +151,7 @@ class MageBridgeApi
 			foreach ($modules as $module)
 			{
 				$moduleHtml = JModuleHelper::renderModule($module, $attributes);
-				$moduleHtml = preg_replace('/href=\"\/([^\"]{0,})\"/', 'href="' . JURI::root() . '\1"', $moduleHtml);
+				$moduleHtml = preg_replace('/href=\"\/([^\"]{0,})\"/', 'href="' . JUri::root() . '\1"', $moduleHtml);
 				$outputHtml .= $moduleHtml;
 			}
 		}
@@ -169,28 +168,42 @@ class MageBridgeApi
 	 */
 	public function getUsers($params = array())
 	{
-		// System variables
-		$db = JFactory::getDBO();
-
-		// Construct the query
-		$query = 'SELECT * FROM #__users';
-
-		if (isset($params['search']))
-		{
-			$query .= ' WHERE username LIKE ' . $db->Quote($params['search']);
-		}
-
-		$db->setQuery($query);
-		$rows = $db->loadObjectList();
+		$rows = $this->loadUsersFromQuery($params['search']);
 
 		foreach ($rows as $index => $row)
 		{
-			require_once JPATH_ADMINISTRATOR . '/components/com_magebridge/libraries/helper.php';
+			require_once JPATH_SITE . '/components/com_magebridge/helpers/loader.php';
 
 			$params = YireoHelper::toRegistry($row->params);
 			$row->params = $params->toArray();
 			$rows[$index] = $row;
 		}
+
+		return $rows;
+	}
+
+	/**
+	 * @param null $search
+	 *
+	 * @return array
+	 */
+	protected function loadUsersFromQuery($search = null)
+	{
+		// System variables
+		$db = JFactory::getDbo();
+
+		// Construct the query
+		$query = $db->getQuery(true);
+		$query->select('*');
+		$query->from($db->quoteName('#__users'));
+
+		if (isset($params['search']))
+		{
+			$query->where($db->quoteName('username') . ' LIKE ' . $db->quote($search));
+		}
+
+		$db->setQuery($query);
+		$rows = $db->loadObjectList();
 
 		return $rows;
 	}

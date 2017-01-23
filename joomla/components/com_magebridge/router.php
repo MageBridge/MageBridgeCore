@@ -4,9 +4,9 @@
  *
  * @author Yireo (info@yireo.com)
  * @package MageBridge
- * @copyright Copyright 2015
+ * @copyright Copyright 2016
  * @license GNU Public License
- * @link http://www.yireo.com
+ * @link https://www.yireo.com
  */
 
 // No direct access
@@ -213,7 +213,7 @@ function MagebridgeParseRoute($segments)
 	// Fix the segments when Root Menu-Item is enforced
 	if(MageBridgeUrlHelper::enforceRootMenu()) {
 		$current_item = $root_item;
-		$current_path = JURI::getInstance()->toString(array('path'));
+		$current_path = JUri::getInstance()->toString(array('path'));
 		$current_segments = explode('/', preg_replace('/^\//', '', $current_path));
 		$root_path = JRoute::_($root_item->link.'&Itemid='.$root_item->id);
 		$root_segments = explode('/', preg_replace('/^\//', '', $root_path));

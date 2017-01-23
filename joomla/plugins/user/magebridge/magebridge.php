@@ -4,9 +4,9 @@
  *
  * @author    Yireo (info@yireo.com)
  * @package   MageBridge
- * @copyright Copyright 2015
+ * @copyright Copyright 2016
  * @license   GNU Public License
- * @link      http://www.yireo.com/
+ * @link      https://www.yireo.com/
  */
 
 // Check to ensure this file is included in Joomla!
@@ -21,33 +21,36 @@ require_once JPATH_SITE . '/components/com_magebridge/helpers/loader.php';
 /**
  * MageBridge User Plugin
  */
-class PlgUserMageBridge extends JPlugin
+class PlgUserMageBridge extends MageBridgePlugin
 {
+	/**
+	 * @var JApplicationCms
+	 */
+	protected $app;
+
+	/**
+	 * @var MageBridgeModelUser
+	 */
+	protected $userModel;
+
+	/**
+	 * @var MageBridgePluginHelper
+	 */
+	protected $pluginHelper;
+
 	/*
 	 * Temporary container for original user-data
 	 */
 	private $original_data = array();
 
 	/**
-	 * Return a MageBridge configuration parameter
-	 *
-	 * @param string $name
-	 *
-	 * @return mixed $value
+	 * Initialization function
 	 */
-	private function getParam($name = null)
+	protected function initialize()
 	{
-		return MagebridgeModelConfig::load($name);
-	}
-
-	/**
-	 * Return the MageBridge user-object
-	 *
-	 * @return mixed $value
-	 */
-	private function getUser()
-	{
-		return MageBridge::getUser();
+		$this->userModel    = MageBridge::getUser();
+		$this->debug        = MagebridgeModelDebug::getInstance();
+		$this->pluginHelper = MageBridgePluginHelper::getInstance();
 	}
 
 	/**
@@ -61,16 +64,16 @@ class PlgUserMageBridge extends JPlugin
 	 */
 	public function onUserAfterDelete($user, $success, $msg = '')
 	{
-		MageBridgeModelDebug::getInstance()->notice("onUserAfterDelete::userDelete on user " . $user['username']);
+		$this->debug->notice("onUserAfterDelete::userDelete on user " . $user['username']);
 
 		// Check if we can run this event or not
-		if (MageBridgePluginHelper::allowEvent('onUserAfterDelete') == false)
+		if ($this->pluginHelper->isEventAllowed('onUserAfterDelete') == false)
 		{
 			return;
 		}
 
 		// Use the delete-function in the bridge
-		$this->getUser()->delete($user);
+		$this->userModel->delete($user);
 
 		return;
 	}
@@ -127,32 +130,29 @@ class PlgUserMageBridge extends JPlugin
 		}
 
 		// Check if we can run this event or not
-		if (MageBridgePluginHelper::allowEvent('onUserAfterSave') == false)
+		if ($this->pluginHelper->isEventAllowed('onUserAfterSave') == false)
 		{
 			return false;
 		}
 
-		// Get system variables
-		$application = JFactory::getApplication();
-
 		// Copy the username to the email address (if this is configured)
-		if ($application->isSite() == true && $this->getParam('username_from_email') == 1 && $user['username'] != $user['email'])
+		if ($this->app->isSite() == true && $this->getConfigValue('username_from_email') == 1 && $user['username'] != $user['email'])
 		{
-			MageBridgeModelDebug::getInstance()->notice("onUserAfterSave::bind on user " . $user['username']);
+			$this->debug->notice("onUserAfterSave::bind on user " . $user['username']);
 
 			// Load the right JUser object
-			$data = array('username' => $user['email']);
+			$data   = array('username' => $user['email']);
 			$object = JFactory::getUser($user['id']);
 
 			// Check whether user-syncing is allowed for this user
-			if ($this->getUser()->allowSynchronization($object, 'save') == true)
+			if ($this->userModel->allowSynchronization($object, 'save') == true)
 			{
 				// Change the record in the database
 				$object->bind($data);
 				$object->save();
 
 				// Bind this new user-object into the session
-				$session = JFactory::getSession();
+				$session      = JFactory::getSession();
 				$session_user = $session->get('user');
 
 				if ($session_user->id == $user['id'])
@@ -163,12 +163,12 @@ class PlgUserMageBridge extends JPlugin
 		}
 
 		// Synchronize this user-record with Magento
-		if ($this->getParam('enable_usersync') == 1)
+		if ($this->getConfigValue('enable_usersync') == 1)
 		{
-			MageBridgeModelDebug::getInstance()->notice("onUserAfterSave::usersync on user " . $user['username']);
+			$this->debug->notice("onUserAfterSave::usersync on user " . $user['username']);
 
 			// Sync this user-record with the bridge
-			$this->getUser()->synchronize($user);
+			$this->userModel->synchronize($user);
 		}
 
 		return true;
@@ -185,23 +185,20 @@ class PlgUserMageBridge extends JPlugin
 	public function onUserLogin($user = null, $options = array())
 	{
 		// Check if we can run this event or not
-		if (MageBridgePluginHelper::allowEvent('onUserLogin', $options) == false)
+		if ($this->pluginHelper->isEventAllowed('onUserLogin', $options) == false)
 		{
 			return true;
 		}
 
-		// Get system variables
-		$application = JFactory::getApplication();
-
 		// Synchronize this user-record with Magento
-		if ($this->getParam('enable_usersync') == 1 && $application->isSite())
+		if ($this->getConfigValue('enable_usersync') == 1 && $this->app->isSite())
 		{
 			$user['id'] = JFactory::getUser()->id;
-			$user = $this->getUser()->synchronize($user);
+			$user       = $this->userModel->synchronize($user);
 		}
 
 		// Perform a login
-		$this->getUser()->login($user['email']);
+		$this->userModel->login($user['email']);
 
 		return true;
 	}
@@ -215,32 +212,28 @@ class PlgUserMageBridge extends JPlugin
 	 */
 	public function onUserAfterLogin($options = array())
 	{
-		$application = JFactory::getApplication();
-
 		// Check if we can run this event or not
-		if (MageBridgePluginHelper::allowEvent('onUserLogin', $options) == false)
+		if ($this->pluginHelper->isEventAllowed('onUserLogin', $options) === false)
+		{
+			//return true;
+		}
+
+		// Check whether SSO is enabled
+		if ($this->getConfigValue('enable_sso') != 1)
 		{
 			return true;
 		}
 
-		// Check whether SSO is enabled
-		if ($this->getParam('enable_sso') == 1)
+		$user = $options['user'];
+
+		if ($this->app->isSite() && $this->getConfigValue('enable_auth_frontend') == 1)
 		{
+			MageBridgeModelUserSSO::getInstance()->doSSOLogin($user);
+		}
 
-			$user = $options['user'];
-
-			if ($application->isSite() && $this->getParam('enable_auth_frontend') == 1)
-			{
-				MageBridgeModelUserSSO::doSSOLogin($user);
-
-			}
-			else
-			{
-				if ($application->isAdmin() && $this->getParam('enable_auth_backend') == 1)
-				{
-					MageBridgeModelUserSSO::doSSOLogin($user);
-				}
-			}
+		if ($this->app->isAdmin() && $this->getConfigValue('enable_auth_backend') == 1)
+		{
+			MageBridgeModelUserSSO::getInstance()->doSSOLogin($user);
 		}
 
 		return true;
@@ -257,15 +250,16 @@ class PlgUserMageBridge extends JPlugin
 	public function onUserLogout($user = null, $options = array())
 	{
 		// Check if we can run this event or not
-		if (MageBridgePluginHelper::allowEvent('onUserLogout', $options) == false)
+		if ($this->pluginHelper->isEventAllowed('onUserLogout', $options) == false)
 		{
 			return true;
 		}
 
 		// Get system variables
-		$application = JFactory::getApplication();
 		$session = JFactory::getSession();
-		$bridge = MageBridgeModelBridge::getInstance();
+		$uri     = JUri::getInstance();
+
+		$bridge   = MageBridgeModelBridge::getInstance();
 		$register = MageBridgeModelRegister::getInstance();
 
 		// Remove the Magento cookies
@@ -280,19 +274,20 @@ class PlgUserMageBridge extends JPlugin
 
 			setcookie($cookie, '', time() - 1000);
 			setcookie($cookie, '', time() - 1000, '/');
-			setcookie($cookie, '', time() - 1000, '/', '.' . JURI::getInstance()->toString(array('host')));
-			$application->input->set($cookie, null, 'cookie');
-			JFactory::getSession()->set('magebridge.cookie.' . $cookie, null);
+			setcookie($cookie, '', time() - 1000, '/', '.' . $uri->toString(array('host')));
+
+			$this->app->input->set($cookie, null, 'cookie');
+			$session->set('magebridge.cookie.' . $cookie, null);
 		}
 
 		// Set the Magento session to null
 		$session->set('magento_session', null);
 
 		// Build the bridge and fetch the result
-		if ($this->getParam('link_to_magento') == 0)
+		if ($this->getConfigValue('link_to_magento') == 0)
 		{
 			$arguments = array('disable_events' => 1);
-			$id = $register->add('logout', null, $arguments);
+			$id        = $register->add('logout', null, $arguments);
 			$bridge->build();
 		}
 
@@ -308,29 +303,26 @@ class PlgUserMageBridge extends JPlugin
 	 */
 	public function onUserAfterLogout($options = array())
 	{
-		$application = JFactory::getApplication();
-
 		// Check if we can run this event or not
-		if (MageBridgePluginHelper::allowEvent('onUserLogout', $options) == false)
+		if ($this->pluginHelper->isEventAllowed('onUserLogout', $options) == false)
 		{
 			return true;
 		}
 
 		// Check whether SSO is enabled
-		if ($this->getParam('enable_sso') == 1 && isset($options['username']))
+		if ($this->getConfigValue('enable_sso') !== 1 || !isset($options['username']))
 		{
-			if ($application->isSite() && $this->getParam('enable_auth_frontend') == 1)
-			{
-				MageBridgeModelUserSSO::doSSOLogout($options['username']);
+			return true;
+		}
 
-			}
-			else
-			{
-				if ($application->isAdmin() && $this->getParam('enable_auth_backend') == 1)
-				{
-					MageBridgeModelUserSSO::doSSOLogout($options['username']);
-				}
-			}
+		if ($this->app->isSite() && $this->getConfigValue('enable_auth_frontend') == 1)
+		{
+			MageBridgeModelUserSSO::getInstance()->doSSOLogout($options['username']);
+		}
+
+		if ($this->app->isAdmin() && $this->getConfigValue('enable_auth_backend') == 1)
+		{
+			MageBridgeModelUserSSO::getInstance()->doSSOLogout($options['username']);
 		}
 
 		return true;

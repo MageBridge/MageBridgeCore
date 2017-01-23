@@ -4,16 +4,13 @@
  *
  * @author    Yireo (info@yireo.com)
  * @package   MageBridge
- * @copyright Copyright 2015
+ * @copyright Copyright 2016
  * @license   GNU Public License
- * @link      http://www.yireo.com
+ * @link      https://www.yireo.com
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
-
-// Include the parent controller
-require_once JPATH_ADMINISTRATOR . '/components/com_magebridge/libraries/controller.php';
 
 /**
  * MageBridge Controller
@@ -91,7 +88,39 @@ class MageBridgeControllerConfig extends YireoCommonController
 
 		// Fetch the POST-data
 		$post = $this->_app->input->post->getArray();
+		$post = $this->fixPost($post);
+		
+		// Get the model
+		$model = $this->getModel('config');
 
+		// Store these data with the model
+		if ($model->store($post))
+		{
+			$this->msg = JText::sprintf('LIB_YIREO_CONTROLLER_ITEM_SAVED', $this->_app->input->getCmd('view'));
+
+			return true;
+		}
+
+		$this->msg = JText::sprintf('LIB_YIREO_CONTROLLER_ITEM_NOT_SAVED', $this->_app->input->getCmd('view'));
+		$error = $model->getError();
+			
+		if (!empty($error))
+		{
+			$this->msg .= ': ' . $error;
+		}
+			
+		$this->msg_type = 'error';
+
+		return false;
+	}
+
+	/**
+	 * @param $post
+	 *
+	 * @return mixed
+	 */
+	protected function fixPost($post)
+	{
 		$post['api_key'] = $this->_app->input->post->get('api_key', '', 'raw');
 		$post['api_user'] = $this->_app->input->post->get('api_user', '', 'raw');
 
@@ -105,31 +134,8 @@ class MageBridgeControllerConfig extends YireoCommonController
 
 			unset($post['config']);
 		}
-		
-		// Get the model
-		$model = $this->getModel('config');
 
-		// Store these data with the model
-		if ($model->store($post))
-		{
-			$this->msg = JText::sprintf('LIB_YIREO_CONTROLLER_ITEM_SAVED', $this->_app->input->getCmd('view'));
-
-			return true;
-		}
-		else
-		{
-			$this->msg = JText::sprintf('LIB_YIREO_CONTROLLER_ITEM_NOT_SAVED', $this->_app->input->getCmd('view'));
-			$error = $model->getError();
-			
-			if (!empty($error))
-			{
-				$this->msg .= ': ' . $error;
-			}
-			
-			$this->msg_type = 'error';
-
-			return false;
-		}
+		return $post;
 	}
 
 	/**
@@ -167,6 +173,36 @@ class MageBridgeControllerConfig extends YireoCommonController
 	}
 
 	/**
+	 * @param $upload
+	 *
+	 * @return bool
+	 */
+	protected function isValidUpload($upload)
+	{
+		if (empty($upload))
+		{
+			return false;
+		}
+
+		if (empty($upload['name']))
+		{
+			return false;
+		}
+
+		if (empty($upload['tmp_name']))
+		{
+			return false;
+		}
+
+		if (empty($upload['size']))
+		{
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
 	 * Method to handle the upload of a new CSV-file
 	 *
 	 * @return array
@@ -177,7 +213,7 @@ class MageBridgeControllerConfig extends YireoCommonController
 		$upload = $this->_app->input->get('xml', null, 'files');
 
 		// Check whether this is a valid download
-		if (empty($upload) || empty($upload['name']) || empty($upload['tmp_name']) || empty($upload['size']))
+		if ($this->isValidUpload($upload) == false)
 		{
 			$this->setRedirect('index.php?option=com_magebridge&view=config&task=import', JText::_('File upload failed on system level'), 'error');
 
@@ -186,6 +222,7 @@ class MageBridgeControllerConfig extends YireoCommonController
 
 		// Check for empty content
 		$xmlString = @file_get_contents($upload['tmp_name']);
+
 		if (empty($xmlString))
 		{
 			$this->setRedirect('index.php?option=com_magebridge&view=config&task=import', JText::_('Empty file upload'), 'error');
@@ -194,6 +231,7 @@ class MageBridgeControllerConfig extends YireoCommonController
 		}
 
 		$xml = @simplexml_load_string($xmlString);
+
 		if (!$xml)
 		{
 			$this->setRedirect('index.php?option=com_magebridge&view=config&task=import', JText::_('Invalid XML-configuration'), 'error');
@@ -202,6 +240,7 @@ class MageBridgeControllerConfig extends YireoCommonController
 		}
 
 		$config = array();
+
 		foreach ($xml->children() as $parameter)
 		{
 			$name = (string) $parameter->name;
@@ -219,7 +258,7 @@ class MageBridgeControllerConfig extends YireoCommonController
 			return false;
 		}
 
-		MagebridgeModelConfig::store($config);
+		MagebridgeModelConfig::getSingleton()->store($config);
 		$this->setRedirect('index.php?option=com_magebridge&view=config', JText::_('Imported configuration succesfully'));
 
 		return true;
@@ -231,9 +270,11 @@ class MageBridgeControllerConfig extends YireoCommonController
 	private function getOutput($config)
 	{
 		$xml = null;
+
 		if (!empty($config))
 		{
 			$xml .= "<configuration>\n";
+
 			foreach ($config as $c)
 			{
 				$xml .= "	<parameter>\n";
@@ -242,6 +283,7 @@ class MageBridgeControllerConfig extends YireoCommonController
 				$xml .= "		<value><![CDATA[" . $c['value'] . "]]></value>\n";
 				$xml .= "	</parameter>\n";
 			}
+
 			$xml .= "</configuration>\n";
 		}
 

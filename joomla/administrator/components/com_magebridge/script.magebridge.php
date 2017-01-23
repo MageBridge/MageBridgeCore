@@ -4,9 +4,9 @@
  *
  * @author Yireo (info@yireo.com)
  * @package MageBridge
- * @copyright Copyright 2015
+ * @copyright Copyright 2016
  * @license GNU Public License
- * @link http://www.yireo.com
+ * @link https://www.yireo.com
  */
 
 // Check to ensure this file is included in Joomla!
@@ -42,7 +42,7 @@ if(class_exists('com_magebridgeInstallerScript') == false) {
 		{
 			// Initialize important variables
 			$application = JFactory::getApplication();
-			$db = JFactory::getDBO();
+			$db = JFactory::getDbo();
 
 			// Perform
 			$sql = dirname(__FILE__).'/administrator/components/com_magebridge/sql/install.mysql.utf8.sql';
@@ -108,7 +108,7 @@ if(class_exists('com_magebridgeInstallerScript') == false) {
 			$installer = JInstaller::getInstance();
 
 			// Select all MageBridge modules and remove them
-			$db = JFactory::getDBO();
+			$db = JFactory::getDbo();
 			$query = "SELECT `id`,`client_id` FROM #__modules WHERE `module` LIKE 'mod_magebridge%'";
 			$db->setQuery($query);
 			$rows = $db->loadObjectList();
@@ -119,7 +119,7 @@ if(class_exists('com_magebridgeInstallerScript') == false) {
 			} 
 
 			// Select all MageBridge plugins and remove them
-			$db = JFactory::getDBO();
+			$db = JFactory::getDbo();
 			$query = "SELECT `id`,`client_id` FROM #__plugins WHERE `element` LIKE 'magebridge%' OR `folder` = 'magento'";
 			$db->setQuery($query);
 			$rows = $db->loadObjectList();

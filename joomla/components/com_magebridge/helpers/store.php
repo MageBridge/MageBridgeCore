@@ -2,11 +2,11 @@
 /**
  * Joomla! component MageBridge
  *
- * @author	Yireo (info@yireo.com)
+ * @author    Yireo (info@yireo.com)
  * @package   MageBridge
- * @copyright Copyright 2015
+ * @copyright Copyright 2016
  * @license   GNU Public License
- * @link	  http://www.yireo.com
+ * @link      https://www.yireo.com
  */
 
 // No direct access
@@ -15,7 +15,6 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Block helper for usage in Joomla!
  */
-
 class MageBridgeStoreHelper
 {
 	/**
@@ -27,7 +26,9 @@ class MageBridgeStoreHelper
 	 * Singleton
 	 *
 	 * @access public
+	 *
 	 * @param null
+	 *
 	 * @return MageBridgeStoreHelper
 	 */
 	public static function getInstance()
@@ -46,6 +47,7 @@ class MageBridgeStoreHelper
 	 * Method to get the current Magento application-type
 	 *
 	 * @param null
+	 *
 	 * @return null
 	 */
 	public function getAppType()
@@ -62,6 +64,7 @@ class MageBridgeStoreHelper
 	 * Method to get the current Magento application-value
 	 *
 	 * @param null
+	 *
 	 * @return null
 	 */
 	public function getAppValue()
@@ -78,6 +81,7 @@ class MageBridgeStoreHelper
 	 * Method to get the current Magento application-type
 	 *
 	 * @param null
+	 *
 	 * @return null
 	 */
 	private function setApp()
@@ -92,8 +96,10 @@ class MageBridgeStoreHelper
 		$application = JFactory::getApplication();
 
 		// Check if the current Menu-Item has something to say about this
-		$store = MageBridgeHelper::getParams()->get('store');
-		$website = MageBridgeHelper::getParams()->get('website');
+		$store = MageBridgeHelper::getParams()
+			->get('store');
+		$website = MageBridgeHelper::getParams()
+			->get('website');
 
 		if (!empty($store) && $store = explode(':', $store))
 		{
@@ -159,7 +165,8 @@ class MageBridgeStoreHelper
 		// Determine the current store using MageBridge Store Plugins
 		if ($application->isSite())
 		{
-			$store = MageBridgeConnectorStore::getInstance()->getStore();
+			$store = MageBridgeConnectorStore::getInstance()
+				->getStore();
 
 			if (!empty($store))
 			{

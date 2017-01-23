@@ -4,9 +4,9 @@
  *
  * @author    Yireo (info@yireo.com)
  * @package   MageBridge
- * @copyright Copyright 2015
+ * @copyright Copyright 2016
  * @license   GNU Public License
- * @link      http://www.yireo.com
+ * @link      https://www.yireo.com
  */
 
 // Check to ensure this file is included in Joomla! 
@@ -32,10 +32,15 @@ class MageBridgeViewElement extends MageBridgeViewCommon
 	 */
 	public function display($tpl = null)
 	{
+        JHtml::_('jquery.ui');
+        JHtml::_('behavior.core');
+        JHtml::_('script', 'jui/cms.js', false, true);
+
 		// Check for AJAX
 		if (JFactory::getApplication()->input->getInt('ajax') == 1)
 		{
 			$this->doAjaxLayout();
+			$tpl = 'ajax';
 
 			parent::display($tpl);
 

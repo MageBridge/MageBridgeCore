@@ -4,9 +4,9 @@
  *
  * @author    Yireo (info@yireo.com)
  * @package   MageBridge
- * @copyright Copyright 2015
+ * @copyright Copyright 2016
  * @license   GNU Public License
- * @link      http://www.yireo.com
+ * @link      https://www.yireo.com
  */
 
 // No direct access
@@ -64,7 +64,7 @@ class MageBridgeModelBridge
 	{
 		// Get important variables
 		$application = JFactory::getApplication();
-		$uri = JURI::getInstance();
+		$uri = JUri::getInstance();
 
 		// Catch the backend URLs
 		if ($application->isAdmin())
@@ -73,7 +73,7 @@ class MageBridgeModelBridge
 				'scheme',
 				'host',
 				'port'));
-			
+
 			return $baseUri . '/administrator/index.php?option=com_magebridge&view=root&format=raw&request=' . $request;
 		}
 		else
@@ -111,7 +111,7 @@ class MageBridgeModelBridge
 			// Prepend the hostname
 			if (!preg_match('/^(http|https):\/\//', $route))
 			{
-				$url = JURI::getInstance()
+				$url = JUri::getInstance()
 					->toString(array('scheme', 'host', 'port'));
 				if (!preg_match('/^\//', $route) && !preg_match('/\/$/', $url))
 				{
@@ -203,7 +203,7 @@ class MageBridgeModelBridge
 	 * Method to handle Magento events
 	 *
 	 * @param array $data
-	 * 
+	 *
 	 * @return mixed
 	 */
 	public function setEvents($data = null)
@@ -277,7 +277,7 @@ class MageBridgeModelBridge
 	 * Method to get the category tree
 	 *
 	 * @param array $arguments
-	 * 
+	 *
 	 * @return array
 	 */
 	public function getCatalogTree($arguments = null)
@@ -289,7 +289,7 @@ class MageBridgeModelBridge
 	 * Method to get the products by tag
 	 *
 	 * @param array $tags
-	 * 
+	 *
 	 * @return array
 	 */
 	public function getProductsByTags($tags = array())
@@ -597,12 +597,12 @@ class MageBridgeModelBridge
 		// If this is a non-MageBridge page, use it
 		if (JFactory::getApplication()->input->getCmd('option') != 'com_magebridge')
 		{
-			$referer = JURI::getInstance()
+			$referer = JUri::getInstance()
 				->toString();
 
 			// If the referer is set on the URL, use it also
 		}
-		elseif (preg_match('/\/(uenc|referer)\/([a-zA-Z0-9\,\_\-]+)/', JURI::current(), $match))
+		elseif (preg_match('/\/(uenc|referer)\/([a-zA-Z0-9\,\_\-]+)/', JUri::current(), $match))
 		{
 			$referer = MageBridgeEncryptionHelper::base64_decode($match[2]);
 
@@ -610,7 +610,7 @@ class MageBridgeModelBridge
 		}
 		else
 		{
-			if (preg_match('/\/checkout\/cart\/([a-zA-Z0-9]+)Post/', JURI::current()) == true)
+			if (preg_match('/\/checkout\/cart\/([a-zA-Z0-9]+)Post/', JUri::current()) == true)
 			{
 				$referer = MageBridgeUrlHelper::route('checkout/cart');
 
@@ -618,9 +618,9 @@ class MageBridgeModelBridge
 			}
 			else
 			{
-				if (preg_match('/\/customer\/account\//', JURI::current()) == false && preg_match('/\/persistent\/index/', JURI::current()) == false && preg_match('/\/review\/product\/post/', JURI::current()) == false && preg_match('/\/remove\/item/', JURI::current()) == false && preg_match('/\/newsletter\/subscriber/', JURI::current()) == false && preg_match('/\/checkout\/cart/', JURI::current()) == false && $this->isAjax() == false && JURI::current() != $this->getJoomlaBridgeUrl())
+				if (preg_match('/\/customer\/account\//', JUri::current()) == false && preg_match('/\/persistent\/index/', JUri::current()) == false && preg_match('/\/review\/product\/post/', JUri::current()) == false && preg_match('/\/remove\/item/', JUri::current()) == false && preg_match('/\/newsletter\/subscriber/', JUri::current()) == false && preg_match('/\/checkout\/cart/', JUri::current()) == false && $this->isAjax() == false && JUri::current() != $this->getJoomlaBridgeUrl())
 				{
-					$referer = JURI::getInstance()
+					$referer = JUri::getInstance()
 						->toString();
 				}
 			}
@@ -636,7 +636,7 @@ class MageBridgeModelBridge
 		// Use the default referer
 		if (empty($this->_http_referer))
 		{
-			if (isset($_SERVER['HTTP_REFERER']) && $_SERVER['HTTP_REFERER'] != JURI::current())
+			if (isset($_SERVER['HTTP_REFERER']) && $_SERVER['HTTP_REFERER'] != JUri::current())
 			{
 				$referer = $_SERVER['HTTP_REFERER'];
 			}
@@ -652,7 +652,7 @@ class MageBridgeModelBridge
 	 *
 	 * @param string $httpReferer
 	 * @param string $type
-	 * 
+	 *
 	 * @return string
 	 */
 	public function setHttpReferer($httpReferer = null, $type = 'magento')
@@ -745,7 +745,7 @@ class MageBridgeModelBridge
 	 *
 	 * @deprecated Use getSessionData() instead
 	 *
-	 * @param string $name
+	 * @param string  $name
 	 * @param boolean $allow_cache
 	 *
 	 * @return mixed
@@ -758,7 +758,7 @@ class MageBridgeModelBridge
 	/**
 	 * Helper-method to return the Magento configuration
 	 *
-	 * @param string $name
+	 * @param string  $name
 	 * @param boolean $allow_cache
 	 *
 	 * @return mixed
@@ -806,7 +806,7 @@ class MageBridgeModelBridge
 	 * Helper-method to set a specific value in MageBridge session
 	 *
 	 * @param string $name
-	 * @param mixed $value
+	 * @param mixed  $value
 	 *
 	 * @return mixed
 	 */
@@ -884,7 +884,7 @@ class MageBridgeModelBridge
 	{
 		if (!headers_sent())
 		{
-			setcookie('frontend', $mage_session, 0, '/', '.' . JURI::getInstance()
+			setcookie('frontend', $mage_session, 0, '/', '.' . JUri::getInstance()
 					->toString(array('host')));
 		}
 		JFactory::getSession()
@@ -1055,6 +1055,12 @@ class MageBridgeModelBridge
 	 */
 	public function isOffline()
 	{
+        // Set the bridge offline by using a flag
+        if (JFactory::getApplication()->input->getInt('offline', 0) == 2)
+        {
+            return false;
+        }
+
 		// Set the bridge offline by using a flag
 		if (JFactory::getApplication()->input->getInt('offline', 0) == 1)
 		{

@@ -4,9 +4,9 @@
  *
  * @author    Yireo (info@yireo.com)
  * @package   MageBridge
- * @copyright Copyright 2015
+ * @copyright Copyright 2016
  * @license   GNU Public License
- * @link      http://www.yireo.com
+ * @link      https://www.yireo.com
  */
 
 // No direct access
@@ -234,7 +234,7 @@ class MageBridgeModelBridgeBlock extends MageBridgeModelBridgeSegment
 		}
 
 		// Get system variables
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 
 		$query = 'SELECT `element` FROM `#__extensions`' . ' WHERE `type` = "plugin" AND `enabled` = 1 AND `element` NOT LIKE "magebridge%" AND `element` != "emailcloak"' . ' ORDER BY `ordering`';
 

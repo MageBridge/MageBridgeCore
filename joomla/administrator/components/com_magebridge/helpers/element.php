@@ -4,13 +4,15 @@
  *
  * @author    Yireo (info@yireo.com)
  * @package   MageBridge
- * @copyright Copyright 2015
+ * @copyright Copyright 2016
  * @license   GNU Public License
- * @link      http://www.yireo.com
+ * @link      https://www.yireo.com
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
+
+include_once JPATH_ADMINISTRATOR . '/components/com_magebridge/libraries/loader.php';
 
 /**
  * MageBridge Element Helper
@@ -27,8 +29,6 @@ class MageBridgeElementHelper
 	 */
 	static public function ajax($url, $div)
 	{
-		include_once JPATH_ADMINISTRATOR . '/components/com_magebridge/libraries/helper/view.php';
-
 		return YireoHelperView::ajax($url, $div);
 	}
 

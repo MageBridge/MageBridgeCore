@@ -4,9 +4,9 @@
  *
  * @author Yireo (info@yireo.com)
  * @package MageBridge
- * @copyright Copyright 2015
+ * @copyright Copyright 2016
  * @license GNU Public License
- * @link http://www.yireo.com
+ * @link https://www.yireo.com
  */
 
 // Check to ensure this file is included in Joomla!
@@ -54,7 +54,7 @@ class MageBridgeFormHelper
 	static public function getUsergroupOptions()
 	{
 		$query = 'SELECT `id` AS `value`, `title` AS `text` FROM `#__usergroups` WHERE `parent_id` > 0';
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$db->setQuery($query);
 		return $db->loadObjectList();
 	}

@@ -5,16 +5,16 @@
  *
  * @author Yireo
  * @package JoomlaApi
- * @copyright Copyright 2015
+ * @copyright Copyright 2016
  * @license Open Source License v3
- * @link http://www.yireo.com
+ * @link https://www.yireo.com
  */
 -->
 <config>
 
     <modules>
         <Yireo_JoomlaApi>
-            <version>1.0.2</version>
+            <version>1.0.3</version>
         </Yireo_JoomlaApi>
     </modules>
 

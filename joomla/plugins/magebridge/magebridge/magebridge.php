@@ -4,9 +4,9 @@
  *
  * @author    Yireo (info@yireo.com)
  * @package   MageBridge
- * @copyright Copyright 2015
+ * @copyright Copyright 2016
  * @license   GNU Public License
- * @link      http://www.yireo.com
+ * @link      https://www.yireo.com
  */
 
 // Check to ensure this file is included in Joomla!
@@ -21,8 +21,26 @@ include_once JPATH_SITE . '/components/com_magebridge/helpers/loader.php';
 /**
  * MageBridge MageBridge Plugin
  */
-class PlgMagebridgeMagebridge extends JPlugin
+class PlgMagebridgeMagebridge extends MageBridgePlugin
 {
+	/**
+	 * @var JApplicationCms
+	 */
+	protected $app;
+
+	/**
+	 * @var MageBridgeModelBridge
+	 */
+	protected $bridge;
+
+	/**
+	 * Initialization function
+	 */
+	protected function initialize()
+	{
+		$this->bridge = MageBridgeModelBridge::getInstance();
+	}
+
 	/**
 	 * Return a MageBridge configuration parameter
 	 *
@@ -51,30 +69,26 @@ class PlgMagebridgeMagebridge extends JPlugin
 	 */
 	public function onBeforeBuildMageBridge()
 	{
-		// Get base variables
-		$application = JFactory::getApplication();
-
 		// Get the current Magento request
 		$request = MageBridgeUrlHelper::getRequest();
 
 		// Check for the logout-page
 		if ($request == 'customer/account/logoutSuccess')
 		{
-			$application->logout();
+			$this->app->logout();
 		}
 
 		// When visiting the checkout/cart/add URL without a valid session, the action will fail because the session does not exist yet
 		// The following workaround makes sure we first redirect to another page (to initialize the session) after which we can add the product
 		if (preg_match('/checkout\/cart\/add\//', $request) && !preg_match('/redirect=1/', $request))
 		{
-			$bridge = MageBridgeModelBridge::getInstance();
-			$session = $bridge->getMageSession(); // Check for the Magento session-key stored in the Joomla! session
+			$session = $this->bridge->getMageSession(); // Check for the Magento session-key stored in the Joomla! session
 
 			// Session is NOT yet initialized, therefor addtocart is not working yet either
 			if (empty($session) && !empty($_COOKIE))
 			{
 				// Redirect the client to an intermediate page to properly initialize the session
-				$bridge->setHttpReferer(MageBridgeUrlHelper::route($request . '?redirect=1'));
+				$this->bridge->setHttpReferer(MageBridgeUrlHelper::route($request . '?redirect=1'));
 				MageBridgeUrlHelper::setRequest('magebridge/redirect/index/url/' . base64_encode($request));
 				MageBridgeModelBridgeMeta::getInstance()->reset();
 			}
@@ -87,9 +101,7 @@ class PlgMagebridgeMagebridge extends JPlugin
 	public function onAfterBuildMageBridge()
 	{
 		// Perform actions on the frontend
-		$application = JFactory::getApplication();
-
-		if ($application->isSite())
+		if ($this->app->isSite())
 		{
 			$this->doDelayedRedirect();
 			$this->doDelayedLogin();
@@ -101,15 +113,13 @@ class PlgMagebridgeMagebridge extends JPlugin
 	 */
 	private function doDelayedRedirect()
 	{
-		$bridge = MageBridge::getBridge();
-		$redirect_url = $bridge->getSessionData('redirect_url');
+		$redirectUrl = $this->bridge->getSessionData('redirect_url');
 
-		if (!empty($redirect_url))
+		if (!empty($redirectUrl))
 		{
-			$redirect_url = MageBridgeUrlHelper::route($redirect_url);
-			$application = JFactory::getApplication();
-			$application->redirect($redirect_url);
-			$application->close();
+			$redirectUrl = MageBridgeUrlHelper::route($redirectUrl);
+			$this->app->redirect($redirectUrl);
+			$this->app->close();
 		}
 	}
 
@@ -118,10 +128,10 @@ class PlgMagebridgeMagebridge extends JPlugin
 	 */
 	private function doDelayedLogin()
 	{
-		$bridge = MageBridge::getBridge();
-		$user_email = $bridge->getSessionData('customer/email');
-		$user_id = $bridge->getSessionData('customer/joomla_id');
+		$userEmail = $this->bridge->getSessionData('customer/email');
+		$userId = $this->bridge->getSessionData('customer/joomla_id');
+		$userModel = MageBridge::getUser();
 
-		return MageBridge::getUser()->postlogin($user_email, $user_id);
+		return $userModel->postlogin($userEmail, $userId);
 	}
 }
