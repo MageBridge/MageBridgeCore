@@ -32,10 +32,15 @@ class MageBridgeViewElement extends MageBridgeViewCommon
 	 */
 	public function display($tpl = null)
 	{
+        JHtml::_('jquery.ui');
+        JHtml::_('behavior.core');
+        JHtml::_('script', 'jui/cms.js', false, true);
+
 		// Check for AJAX
 		if (JFactory::getApplication()->input->getInt('ajax') == 1)
 		{
 			$this->doAjaxLayout();
+			$tpl = 'ajax';
 
 			parent::display($tpl);
 

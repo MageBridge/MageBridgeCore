@@ -2,11 +2,11 @@
 /**
  * Joomla! component MageBridge
  *
- * @author Yireo (info@yireo.com)
- * @package MageBridge
+ * @author    Yireo (info@yireo.com)
+ * @package   MageBridge
  * @copyright Copyright 2016
- * @license GNU Public License
- * @link https://www.yireo.com
+ * @license   GNU Public License
+ * @link      https://www.yireo.com
  */
 
 // No direct access
@@ -34,15 +34,18 @@ class MageBridgeConnectorProfile extends MageBridgeConnector
 	 * Singleton method
 	 *
 	 * @param null
+	 *
 	 * @return MageBridgeConnectorProfile
 	 */
 	public static function getInstance()
 	{
 		static $instance;
 
-		if (null === self::$_instance) {
+		if (null === self::$_instance)
+		{
 			self::$_instance = new self();
 		}
+
 		return self::$_instance;
 	}
 
@@ -52,73 +55,91 @@ class MageBridgeConnectorProfile extends MageBridgeConnector
 	 * @param JUser $user
 	 * @param array $customer
 	 * @param array $address
+	 *
 	 * @return mixed
 	 */
 	public function onSave($user = null, $customer = null, $address = null)
 	{
 		// Merge the address data into the customer field
-		if (!empty($address)) {
-			foreach ($address as $name => $value) {
-				$name = 'address_'.$name;
+		if (!empty($address))
+		{
+			foreach ($address as $name => $value)
+			{
+				$name            = 'address_' . $name;
 				$customer[$name] = $value;
 			}
 		}
 
 		// Import the plugins
 		JPluginHelper::importPlugin('magebridgeprofile');
-		JFactory::getApplication()->triggerEvent('onMageBridgeProfileSave', array($user, $customer));
+		$this->app->triggerEvent('onMageBridgeProfileSave', array($user, $customer));
 	}
 
 	/**
 	 * Method to execute when the user-data need to be synced
-	 * 
+	 *
 	 * @param array $user
-	 * @return bool
+	 *
+	 * @return array
 	 */
 	public function modifyUserFields($user)
 	{
-		if (isset($user['joomla_id'])) {
-			$user_id = $user['joomla_id'];
-		} else if (isset($user['id'])) {
-			$user_id = $user['id'];
-		} else {
-			$user_id = null;
+		$user_id = null;
+
+		if (isset($user['joomla_id']))
+		{
+			$user_id = (int) $user['joomla_id'];
 		}
 
-		if (!$user_id > 0) {
+		if (empty($user_id) && isset($user['id']))
+		{
+			$user_id = (int) $user['id'];
+		}
+
+		if (!$user_id > 0)
+		{
 			return $user;
 		}
 
 		// Import the plugins
 		JPluginHelper::importPlugin('magebridgeprofile');
-		JFactory::getApplication()->triggerEvent('onMageBridgeProfileModifyFields', array($user_id, &$user));
+		$this->app->triggerEvent('onMageBridgeProfileModifyFields', array($user_id, &$user));
 
 		return $user;
 	}
 
 	/**
 	 * Method to execute when the profile is saved
-	 * 
+	 *
 	 * @param int $user_id
+	 *
 	 * @return bool
 	 */
 	public function synchronize($user_id = 0)
 	{
 		// Exit if there is no user_id
-		if (empty($user_id)) return false;
+		if (empty($user_id))
+		{
+			return false;
+		}
 
 		// Get a general user-array from Joomla! itself
-		$db = JFactory::getDbo();
-		$query = "SELECT `name`,`username`,`email` FROM `#__users` WHERE `id`=".(int)$user_id;
+		$db    = JFactory::getDbo();
+		$query = "SELECT `name`,`username`,`email` FROM `#__users` WHERE `id`=" . (int) $user_id;
 		$db->setQuery($query);
 		$user = $db->loadAssoc();
 
 		// Exit if this is giving us no result
-		if (empty($user)) return false;
+		if (empty($user))
+		{
+			return false;
+		}
 
 		// Sync this user-record with the bridge
-		MageBridgeModelDebug::getInstance()->trace( 'Synchronizing user', $user);
-		MageBridge::getUser()->synchronize($user);
+		MageBridgeModelDebug::getInstance()
+			->trace('Synchronizing user', $user);
+		MageBridge::getUser()
+			->synchronize($user);
 
 		$session = JFactory::getSession();
 		$session->set('com_magebridge.task_queue', array());

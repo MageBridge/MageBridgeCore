@@ -268,9 +268,6 @@ class Yireo_MageBridge_Block_Check extends Mage_Core_Block_Template
         $result = (in_array('ssl', stream_get_transports())) ? self::CHECK_OK : self::CHECK_WARNING;
         $this->addResult('system', 'OpenSSL', $result, 'PHP support for OpenSSL is needed if you want to use HTTPS');
 
-        $result = (function_exists('mcrypt_get_iv_size')) ? self::CHECK_OK : self::CHECK_ERROR;
-        $this->addResult('system', 'mcrypt', $result, 'The mcrypt-extension for PHP is needed');
-
         $result = (function_exists('iconv')) ? self::CHECK_OK : self::CHECK_ERROR;
         $this->addResult('system', 'iconv', $result, 'The iconv-extension for PHP is needed');
 

@@ -2,11 +2,11 @@
 /**
  * Joomla! component MageBridge
  *
- * @author Yireo (info@yireo.com)
- * @package MageBridge
+ * @author    Yireo (info@yireo.com)
+ * @package   MageBridge
  * @copyright Copyright 2016
- * @license GNU Public License
- * @link https://www.yireo.com
+ * @license   GNU Public License
+ * @link      https://www.yireo.com
  */
 
 // Check to ensure this file is included in Joomla!
@@ -21,18 +21,14 @@ jimport('joomla.filter.output');
 class MageBridgeViewStore extends YireoViewForm
 {
 	/**
-	 * Constructor
-	 */
-	/**
 	 * Main constructor method
 	 *
-	 * @access public
 	 * @param array $config
-	 * @return null
 	 */
 	public function __construct($config = array())
 	{
-		if(JFactory::getApplication()->input->getCmd('task') == 'default') {
+		if (JFactory::getApplication()->input->getCmd('task') == 'default')
+		{
 			$this->loadToolbar = false;
 		}
 
@@ -44,11 +40,13 @@ class MageBridgeViewStore extends YireoViewForm
 	 * Method to prepare the content for display
 	 *
 	 * @param string $tpl
-	 * @return null
+	 *
+	 * @return void
 	 */
 	public function display($tpl = null)
 	{
-		switch(JFactory::getApplication()->input->getCmd('task')) {
+		switch ($this->app->input->getCmd('task'))
+		{
 			case 'default':
 				$this->showDefaultForm($tpl);
 				break;
@@ -63,7 +61,6 @@ class MageBridgeViewStore extends YireoViewForm
 	 * Method to prepare the content for display
 	 *
 	 * @param string $tpl
-	 * @return null
 	 */
 	public function showDefaultForm($tpl = null)
 	{
@@ -77,18 +74,26 @@ class MageBridgeViewStore extends YireoViewForm
 
 		// Load values from the configuration
 		$storegroup = MageBridgeModelConfig::load('storegroup');
-		$storeview = MageBridgeModelConfig::load('storeview');
+		$storeview  = MageBridgeModelConfig::load('storeview');
 
 		// Construct the arguments for the HTML-element
-		if (!empty($storeview)) {
+		if (!empty($storeview))
+		{
 			$type = 'storeview';
 			$name = $storeview;
-		} else if (!empty($storegroup)) {
-			$type = 'storegroup';
-			$name = $storegroup;
-		} else {
-			$type = null;
-			$name = null;
+		}
+		else
+		{
+			if (!empty($storegroup))
+			{
+				$type = 'storegroup';
+				$name = $storegroup;
+			}
+			else
+			{
+				$type = null;
+				$name = null;
+			}
 		}
 
 		// Fetch the HTML-element
@@ -101,7 +106,6 @@ class MageBridgeViewStore extends YireoViewForm
 	 * Method to prepare the content for display
 	 *
 	 * @param string $tpl
-	 * @return null
 	 */
 	public function showForm($tpl = null)
 	{
@@ -112,26 +116,31 @@ class MageBridgeViewStore extends YireoViewForm
 		$this->lists['store'] = $this->getFieldStore($this->item->type, $this->item->name);
 
 		// Initialize the form-file
-		$file = JPATH_ADMINISTRATOR.'/components/com_magebridge/models/store.xml';
+		$file = JPATH_ADMINISTRATOR . '/components/com_magebridge/models/store.xml';
 
 		// Prepare the params-form
-		$params = YireoHelper::toRegistry($this->item->params)->toArray();
+		$params      = YireoHelper::toRegistry($this->item->params)
+			->toArray();
 		$params_form = JForm::getInstance('params', $file);
 		$params_form->bind(array('params' => $params));
 		$this->params_form = $params_form;
 
 		// Prepare the actions-form
-		$actions = YireoHelper::toRegistry($this->item->actions)->toArray();
+		$actions      = YireoHelper::toRegistry($this->item->actions)
+			->toArray();
 		$actions_form = JForm::getInstance('actions', $file);
 		JPluginHelper::importPlugin('magebridgestore');
-		JFactory::getApplication()->triggerEvent('onMageBridgeStorePrepareForm', array(&$actions_form, (array)$this->item));
+		$this->app->triggerEvent('onMageBridgeStorePrepareForm', array(&$actions_form, (array) $this->item));
 		$actions_form->bind(array('actions' => $actions));
 		$this->actions_form = $actions_form;
 
 		// Check for a previous connector-value
-		if(!empty($this->item->connector)) {
+		if (!empty($this->item->connector))
+		{
 			$plugin = JPluginHelper::getPlugin('magebridgestore', $this->item->connector);
-			if(empty($plugin)) {
+
+			if (empty($plugin))
+			{
 				$plugin_warning = JText::sprintf('COM_MAGEBRIDGE_STORE_PLUGIN_WARNING', $this->item->connector);
 				JError::raiseWarning(500, $plugin_warning);
 			}
@@ -144,19 +153,26 @@ class MageBridgeViewStore extends YireoViewForm
 	 * Helper method to get the HTML-formelement for a store
 	 *
 	 * @param string $type
-	 * @param string $name
-	 * @param string $title
+	 * @param string $value
+	 *
 	 * @return string
 	 */
 	protected function getFieldStore($type = null, $value = null)
 	{
-		if (!empty($type) && !empty($value)) {
-			$value = ($type == 'storegroup') ? 'g:'.$value : 'v:'.$value;
-		} else {
+		if (!empty($type) && !empty($value))
+		{
+			$value = ($type == 'storegroup') ? 'g:' . $value : 'v:' . $value;
+		}
+		else
+		{
 			$value = null;
 		}
-	
-		if (empty($name)) $name = 'store';
+
+		if (empty($name))
+		{
+			$name = 'store';
+		}
+
 		return MageBridgeFormHelper::getField('magebridge.store', $name, $value, null);
 	}
 
@@ -164,6 +180,7 @@ class MageBridgeViewStore extends YireoViewForm
 	 * Helper method to get the HTML-formelement for a storeview
 	 *
 	 * @param string $default
+	 *
 	 * @return string
 	 */
 	protected function getFieldStoreview($default = null)
@@ -175,6 +192,7 @@ class MageBridgeViewStore extends YireoViewForm
 	 * Helper method to get the HTML-formelement for a storegroup
 	 *
 	 * @param string $default
+	 *
 	 * @return string
 	 */
 	protected function getFieldStoregroup($default = null)

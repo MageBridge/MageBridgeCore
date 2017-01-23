@@ -4,10 +4,10 @@
     <author>Yireo</author>
     <authoremail>development@yireo.com</authoremail>
     <authorurl>https://www.yireo.com</authorurl>
-    <creationDate>May 2016</creationDate>
-    <copyright>Copyright (C) 2016 Yireo.com. All rights reserved.</copyright>
+    <creationDate>januari 2017</creationDate>
+    <copyright>Copyright (C) 2017 Yireo.com. All rights reserved.</copyright>
     <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
-    <version>1.9.5398</version>
+    <version>1.9.5431</version>
     <description>COM_MAGEBRIDGE_DESC</description>
 
     <!-- installation part -->
@@ -76,10 +76,10 @@
             <filename>magebridge.php</filename>
             <filename>script.magebridge.php</filename>
             <filename>view.php</filename>
+            <filename>libraries/loader.php</filename>
             <folder>controllers</folder>
             <folder>fields</folder>
             <folder>helpers</folder>
-            <folder>libraries</folder>
             <folder>models</folder>
             <folder>tables</folder>
             <folder>sql</folder>

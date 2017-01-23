@@ -39,6 +39,6 @@ defined('_JEXEC') or die('Restricted access');
 </tbody>
 </table>
 <input type="hidden" name="default" value="1" />
-<input type="hidden" name="apply_url" value="<?php echo JRoute::_('index.php?option=com_magebridge&view=store&task=default'); ?>" />
+<input type="hidden" name="apply_url" value="<?php echo JRoute::_('index.php?option=com_magebridge&view=store&task=default', true); ?>" />
 <?php echo $this->loadTemplate('formend'); ?>
 </form>

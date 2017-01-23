@@ -2,43 +2,47 @@
 /**
  * Joomla! component MageBridge
  *
- * @author Yireo (info@yireo.com)
- * @package MageBridge
+ * @author    Yireo (info@yireo.com)
+ * @package   MageBridge
  * @copyright Copyright 2016
- * @license GNU Public License
- * @link https://www.yireo.com
+ * @license   GNU Public License
+ * @link      https://www.yireo.com
  */
 
 // Check to ensure this file is included in Joomla!  
 defined('_JEXEC') or die();
 
 /**
- * HTML View class 
+ * HTML View class
  *
  * @static
  * @package MageBridge
  */
-class MageBridgeView extends YireoView
+class MageBridgeView extends YireoCommonView
 {
 	/**
 	 * Display method
 	 *
 	 * @param string $tpl
+	 *
 	 * @return null
 	 */
 	public function display($tpl = null)
 	{
 		// Add CSS-code
 		$this->addCss('backend.css', 'media/com_magebridge/css/');
-		if (MageBridgeHelper::isJoomla25()) $this->addCss('backend-j25.css', 'media/com_magebridge/css/');
-		if (MageBridgeHelper::isJoomla35()) $this->addCss('backend-j35.css', 'media/com_magebridge/css/');
+		$this->addCss('backend-j35.css', 'media/com_magebridge/css/');
 
 		// If we detect the API is down, report it
 		$bridge = MageBridgeModelBridge::getInstance();
-		if ($bridge->getApiState() != null) {
+		$debug  = MagebridgeModelDebug::getInstance();
 
+		if ($bridge->getApiState() != null)
+		{
 			$message = null;
-			switch(strtoupper($bridge->getApiState())) {
+
+			switch (strtoupper($bridge->getApiState()))
+			{
 
 				case 'EMPTY METADATA':
 					$message = JText::_('COM_MAGEBRIDGE_VIEW_API_ERROR_EMPTY_METADATA');
@@ -49,7 +53,7 @@ class MageBridgeView extends YireoView
 					break;
 
 				case 'AUTHENTICATION FAILED':
-					$message = JText::_('COM_MAGEBRIDGE_VIEW_API_ERROR_AUTHENTICATION_FAILED' );
+					$message = JText::_('COM_MAGEBRIDGE_VIEW_API_ERROR_AUTHENTICATION_FAILED');
 					break;
 
 				case 'INTERNAL ERROR':
@@ -65,12 +69,19 @@ class MageBridgeView extends YireoView
 					break;
 			}
 
-			MageBridgeModelDebug::getInstance()->feedback($message);
+			$debug->feedback($message);
 		}
 
 		// If debugging is enabled report it
-		if (MagebridgeModelConfig::load('debug') == 1 && JFactory::getApplication()->input->getCmd('tmpl') != 'component' && in_array(JFactory::getApplication()->input->getCmd('view'), array('config', 'home'))) {
-			MageBridgeModelDebug::getInstance()->feedback('COM_MAGEBRIDGE_VIEW_API_DEBUGGING_ENABLED');
+		$input = $this->app->input;
+
+		if (MagebridgeModelConfig::load('debug') == 1 && $input->getCmd('tmpl') != 'component' && in_array($input->getCmd('view'), array(
+				'config',
+				'home'
+			))
+		)
+		{
+			$debug->feedback('COM_MAGEBRIDGE_VIEW_API_DEBUGGING_ENABLED');
 		}
 
 		parent::display($tpl);

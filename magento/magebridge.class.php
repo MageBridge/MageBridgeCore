@@ -292,16 +292,22 @@ class MageBridge
      * @param null
      * @return null
      */
-    public function isValidSessionId($session_id)
+    public function isValidSessionId($session_id, $session_name = null)
     {
-        $forbidden = array('deleted');
+        $forbidden = ['deleted'];
+        $magento_sessions = ['adminhtml', 'frontend', 'SID', 'magento_session'];
+
         $session_id = trim($session_id);
 
         if(in_array($session_id, $forbidden)) {
             return false;
         }
 
-        if(empty($session_id) || !preg_match('/^([a-zA-Z0-9\-\_\,]{10,100})$/', $session_id)) {
+        if(in_array($session_name, $magento_sessions) && empty($session_id)) {
+            return false;
+        }
+
+        if(in_array($session_name, $magento_sessions) && !preg_match('/^([a-zA-Z0-9\-\_\,]{10,100})$/', $session_id)) {
             return false;
         }
 

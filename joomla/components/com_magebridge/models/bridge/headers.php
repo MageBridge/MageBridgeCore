@@ -36,7 +36,7 @@ class MageBridgeModelBridgeHeaders extends MageBridgeModelBridgeSegment
 	 *
 	 * @var $_stylesheets
 	 */
-	private $_stylesheets = null;
+	private $stylesheets = null;
 
 	/**
 	 * Singleton method
@@ -170,7 +170,7 @@ class MageBridgeModelBridgeHeaders extends MageBridgeModelBridgeSegment
 	 *
 	 * @param array $headers
 	 *
-	 * @return null
+	 * @return bool
 	 */
 	public function loadCommon($headers)
 	{
@@ -206,6 +206,8 @@ class MageBridgeModelBridgeHeaders extends MageBridgeModelBridgeSegment
 		{
 			$this->setCanonicalLinks($headers['items']);
 		}
+
+		return true;
 	}
 
 	/**
@@ -268,7 +270,7 @@ class MageBridgeModelBridgeHeaders extends MageBridgeModelBridgeSegment
 		}
 
 		$this->stylesheets[] = $headers['merge_css'];
-		$this->doc->addStylesheet($headers['merge_css']);
+		$this->doc->addStyleSheet($headers['merge_css']);
 
 		return true;
 	}
@@ -355,14 +357,14 @@ class MageBridgeModelBridgeHeaders extends MageBridgeModelBridgeSegment
 				continue;
 			}
 		}
+
+		return true;
 	}
 
 	/**
 	 * Method to load the CSS headers
 	 *
-	 * @param null
-	 *
-	 * @return null
+	 * @return bool
 	 */
 	public function loadDefaultCss()
 	{
@@ -373,49 +375,56 @@ class MageBridgeModelBridgeHeaders extends MageBridgeModelBridgeSegment
 		}
 
 		// Determine whether to load the default CSS or not
-		if (MagebridgeModelConfig::load('disable_default_css') == 0)
+		if (MagebridgeModelConfig::load('disable_default_css') !== 0)
 		{
-
-			// Load common stylesheets
-			MageBridgeTemplateHelper::load('css', 'default.css');
-			MageBridgeTemplateHelper::load('css', 'custom.css');
-
-			// Load specific stylesheets per page
-			if (MageBridgeTemplateHelper::isHomePage())
-			{
-				MageBridgeTemplateHelper::load('css', 'homepage.css');
-			}
-
-			if (MageBridgeTemplateHelper::isProductPage())
-			{
-				MageBridgeTemplateHelper::load('css', 'product.css');
-			}
-
-			if (MageBridgeTemplateHelper::isCategoryPage())
-			{
-				MageBridgeTemplateHelper::load('css', 'category.css');
-			}
-
-			// Determine browser-specific stylesheets
-			jimport('joomla.environment.browser');
-			$browser = JBrowser::getInstance();
-			if ($browser->getBrowser() == 'msie')
-			{
-				MageBridgeTemplateHelper::load('css', 'default-ie.css');
-			}
-			if ($browser->getBrowser() == 'msie' && $browser->getVersion() == '6.0')
-			{
-				MageBridgeTemplateHelper::load('css', 'default-ie6.css');
-			}
-			if ($browser->getBrowser() == 'msie' && $browser->getVersion() == '7.0')
-			{
-				MageBridgeTemplateHelper::load('css', 'default-ie7.css');
-			}
-			if ($browser->getBrowser() == 'msie' && $browser->getVersion() == '8.0')
-			{
-				MageBridgeTemplateHelper::load('css', 'default-ie8.css');
-			}
+			return true;
 		}
+
+		// Load common stylesheets
+		MageBridgeTemplateHelper::load('css', 'default.css');
+		MageBridgeTemplateHelper::load('css', 'custom.css');
+
+		// Load specific stylesheets per page
+		if (MageBridgeTemplateHelper::isHomePage())
+		{
+			MageBridgeTemplateHelper::load('css', 'homepage.css');
+		}
+
+		if (MageBridgeTemplateHelper::isProductPage())
+		{
+			MageBridgeTemplateHelper::load('css', 'product.css');
+		}
+
+		if (MageBridgeTemplateHelper::isCategoryPage())
+		{
+			MageBridgeTemplateHelper::load('css', 'category.css');
+		}
+
+		// Determine browser-specific stylesheets
+		jimport('joomla.environment.browser');
+		$browser = JBrowser::getInstance();
+
+		if ($browser->getBrowser() == 'msie')
+		{
+			MageBridgeTemplateHelper::load('css', 'default-ie.css');
+		}
+
+		if ($browser->getBrowser() == 'msie' && $browser->getVersion() == '6.0')
+		{
+			MageBridgeTemplateHelper::load('css', 'default-ie6.css');
+		}
+
+		if ($browser->getBrowser() == 'msie' && $browser->getVersion() == '7.0')
+		{
+			MageBridgeTemplateHelper::load('css', 'default-ie7.css');
+		}
+
+		if ($browser->getBrowser() == 'msie' && $browser->getVersion() == '8.0')
+		{
+			MageBridgeTemplateHelper::load('css', 'default-ie8.css');
+		}
+
+		return true;
 	}
 
 	/**
@@ -423,7 +432,7 @@ class MageBridgeModelBridgeHeaders extends MageBridgeModelBridgeSegment
 	 *
 	 * @param array $headers
 	 *
-	 * @return null
+	 * @return bool
 	 */
 	public function loadJs($headers)
 	{
@@ -435,7 +444,7 @@ class MageBridgeModelBridgeHeaders extends MageBridgeModelBridgeSegment
 
 		// Check whether all scripts are disabled
 		$disable_js = MagebridgeModelConfig::load('disable_js_mage');
-		if ($disable_js == 'all')
+		if (strtolower($disable_js) == 'all')
 		{
 			return false;
 		}
@@ -473,7 +482,7 @@ class MageBridgeModelBridgeHeaders extends MageBridgeModelBridgeSegment
 					}
 
 					$this->stylesheets[] = $item['name'];
-					$this->scripts[] = $item['name'];
+					$this->scripts[]     = $item['name'];
 
 					if (empty($item['name']))
 					{
@@ -488,7 +497,7 @@ class MageBridgeModelBridgeHeaders extends MageBridgeModelBridgeSegment
 						{
 							$item['path'] = $bridge->getMagentoUrl() . $item['path'];
 						}
-						$tag = '<script type="text/javascript" src="' . $item['path'] . '"></script>' . "\n";
+						$tag      = '<script type="text/javascript" src="' . $item['path'] . '"></script>' . "\n";
 						$jstags[] = $tag;
 						continue;
 					}
@@ -524,7 +533,8 @@ class MageBridgeModelBridgeHeaders extends MageBridgeModelBridgeSegment
 								'scriptaculous/effects.js',
 								'scriptaculous/dragdrop.js',
 								'scriptaculous/controls.js',
-								'scriptaculous/slider.js',);
+								'scriptaculous/slider.js',
+							);
 
 							if (in_array($item['name'], $skip_scripts))
 							{
@@ -570,21 +580,16 @@ class MageBridgeModelBridgeHeaders extends MageBridgeModelBridgeSegment
 					}
 					else
 					{
-						if (MagebridgeModelConfig::load('merge_js') == 2 && !empty($headers['merge_js']))
+						if (MagebridgeModelConfig::load('merge_js') !== 2 || empty($headers['merge_js']))
 						{
-							// Don't do anything here yet
-
-						}
-						else
-						{
-
 							if (!preg_match('/^http/', $item['path']))
 							{
 								$item['path'] = $bridge->getMagentoUrl() . $item['path'];
 							}
+
 							$item['path'] = $this->convertUrl($item['path']);
-							$tag = '<script type="text/javascript" src="' . $item['path'] . '"></script>' . "\n";
-							$jstags[] = $tag;
+							$tag          = '<script type="text/javascript" src="' . $item['path'] . '"></script>' . "\n";
+							$jstags[]     = $tag;
 						}
 					}
 				}
@@ -624,17 +629,17 @@ class MageBridgeModelBridgeHeaders extends MageBridgeModelBridgeSegment
 				$custom = preg_replace('/Mage.Cookies.domain([^;]+)\;/m', 'Mage.Cookies.domain = null;', $custom);
 				$this->doc->addCustomTag($custom);
 			}
-		}
-		else
-		{
-			if (isset($translate) && $translate == true)
-			{
-				$html = '<script type="text/javascript">var Translator = new Translate([]);</script>';
-				$this->doc->addCustomTag($html);
-			}
+
+			return true;
 		}
 
-		return;
+		if (isset($translate) && $translate == true)
+		{
+			$html = '<script type="text/javascript">var Translator = new Translate([]);</script>';
+			$this->doc->addCustomTag($html);
+		}
+
+		return true;
 	}
 
 	/**
@@ -642,7 +647,7 @@ class MageBridgeModelBridgeHeaders extends MageBridgeModelBridgeSegment
 	 *
 	 * @param array $headers
 	 *
-	 * @return null
+	 * @return bool
 	 */
 	public function loadRss($headers)
 	{
@@ -666,11 +671,14 @@ class MageBridgeModelBridgeHeaders extends MageBridgeModelBridgeSegment
 					$url = preg_replace('/(.*)index.php?option=com_magebridge/', '', $url);
 					$url = MageBridgeHelper::filterUrl($url);
 					$this->doc->addHeadLink($url, 'alternate', 'rel', array(
-						'type' => 'application/rss+xml',
-						'title' => 'RSS 2.0'));
+						'type'  => 'application/rss+xml',
+						'title' => 'RSS 2.0'
+					));
 				}
 			}
 		}
+
+		return true;
 	}
 
 	/**
@@ -689,16 +697,12 @@ class MageBridgeModelBridgeHeaders extends MageBridgeModelBridgeSegment
 	 * Add script
 	 *
 	 * @param string
-	 *
-	 * @return null
 	 */
 	private function addScript($url)
 	{
-		$url = $this->convertUrl($url);
+		$url  = $this->convertUrl($url);
 		$html = '<script type="text/javascript" src="' . $url . '"></script>';
 		$this->doc->addCustomTag($html);
-
-		return null;
 	}
 
 	/**

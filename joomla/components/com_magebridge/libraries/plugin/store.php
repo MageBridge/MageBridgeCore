@@ -100,4 +100,11 @@ class MageBridgePluginStore extends MageBridgePlugin
 			}
 		}
 	}
+
+	/**
+	 * To be overridden by child plugins
+	 */
+	public function onMageBridgeValidate($actions, $condition)
+	{
+	}
 }

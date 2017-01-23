@@ -75,20 +75,26 @@ function Yireo_MageBridge_ErrorHandler($errno, $errstr, $errfile, $errline)
  */
 function Yireo_MageBridge_ExceptionHandler($exception)
 {
+    // If this is an empty exception, skip it
+    $exceptionMessage = $exception->getMessage();
+
     // Make sure this exception is logged in MAGENTO/var/log/exception.log
     if ($exception instanceOf Exception) {
         Mage::logException($exception);
     } else {
-        Mage::log($exception->getMessage());
+        Mage::log($exceptionMessage);
     }
 
     // Print the error
     if((bool)Mage::getStoreConfig('magebridge/debug/print') == true) {
-        die('<h1>PHP Exception:</h1><pre>'.$exception->getMessage().'</pre>');
+        $text = '<h1>'.get_class($exception).':</h1>';
+        $text .= '<pre>Message: '.$exceptionMessage.'</pre>';
+        $text .= "<pre>Stack trace: \n".$exception->getTraceAsString().'</pre>';
+        die($text);
     }
 
     // Make sure this exception is added to the bridge-data
-    Mage::getSingleton('magebridge/debug')->error("PHP Fatal Error: ".$exception->getMessage());
+    Mage::getSingleton('magebridge/debug')->error("PHP Fatal Error: ".$exceptionMessage);
 
     // Output the bridge
     $bridge = Mage::getSingleton('magebridge/core');

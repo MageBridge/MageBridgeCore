@@ -21,7 +21,7 @@ jimport('joomla.filter.output');
 /**
  * HTML View class
  */
-class MageBridgeViewProduct extends MageBridgeView
+class MageBridgeViewProduct extends YireoViewForm
 {
 	/**
 	 * Display method

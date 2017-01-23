@@ -46,6 +46,7 @@ class MagebridgeFormFieldScripts extends MagebridgeFormFieldAbstract
 				$current_options = MageBridgeHelper::getDisableJs();
 				$size            = (count($options) > 10) ? 10 : count($options);
 				array_unshift($options, array('value' => '', 'label' => '- ' . JText::_('None') . ' -'));
+				array_unshift($options, array('value' => 'ALL', 'label' => '- ' . JText::_('JALL') . ' -'));
 
 				return JHtml::_('select.genericlist', $options, $name . '[]', 'multiple="multiple" size="' . $size . '"', 'value', 'label', $current_options);
 			}

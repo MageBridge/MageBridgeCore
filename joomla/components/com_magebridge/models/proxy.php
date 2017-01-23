@@ -146,7 +146,7 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 	 */
 	protected function matchDirectOutputUrls()
 	{
-		$direct_output_urls = MageBridgeHelper::csvToArray(MagebridgeModelConfig::load('direct_output'));
+		$direct_output_urls   = MageBridgeHelper::csvToArray(MagebridgeModelConfig::load('direct_output'));
 		$direct_output_urls[] = 'checkout/onepage/getAdditional';
 
 		if (!empty($direct_output_urls))
@@ -232,7 +232,7 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 			if (!empty($url))
 			{
 				$decodedResponse['redirect'] = $url;
-				$this->data = $this->encode($decodedResponse);
+				$this->data                  = $this->encode($decodedResponse);
 			}
 		}
 
@@ -281,6 +281,10 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 
 	/**
 	 * Check for a certain HTTP Status code
+	 *
+	 * @param string $code
+	 *
+	 * @return bool
 	 */
 	protected function isHttpStatus($code)
 	{
@@ -295,8 +299,8 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 	/**
 	 * Handle non-bridge output
 	 *
-	 * @param $rawResponse
-	 * @param $decodedResponse
+	 * @param string $rawResponse
+	 * @param string $decodedResponse
 	 *
 	 * @return boolean
 	 */
@@ -417,12 +421,12 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 	 *
 	 * @param string  $url
 	 * @param array   $arguments
-	 * @param string  $type
+	 * @param string  $requestType
 	 * @param boolean $runBridge
 	 *
 	 * @return string
 	 */
-	public function getRemote($url = '', $arguments = array(), $type = null, $runBridge = false)
+	public function getRemote($url = '', $arguments = [], $requestType = null, $runBridge = false)
 	{
 		// Do not continue if the URL is empty
 		if (empty($url))
@@ -431,31 +435,33 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 		}
 
 		// Take over the _POST data
-		if ($type == null)
+		if ($requestType === null)
 		{
 			if (!empty($_POST))
 			{
-				$type = 'post';
+				$requestType = 'post';
 			}
 			else
 			{
-				$type = 'get';
+				$requestType = 'get';
 			}
 		}
 
 		// Ignore an empty POST, because this wouldn't matter anyway
-		if ($type == 'post' && empty($arguments))
+		if ($requestType == 'post' && empty($arguments))
 		{
-			$type = 'get';
+			$requestType = 'get';
 		}
 
 		// Convert the arguments into an URL-string
-		if ($type == 'get' && !empty($arguments))
+		if ($requestType == 'get' && !empty($arguments))
 		{
 			$url .= '?' . http_build_query($arguments);
 		}
 
-		return $this->getCURL($url, $type, $arguments, $runBridge);
+		$curlResponse = $this->getCURL($url, $requestType, $arguments, $runBridge);
+
+		return $curlResponse;
 	}
 
 	/**
@@ -464,19 +470,19 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 	protected function getCurlDefaultArguments()
 	{
 		return array(
-			CURLOPT_RETURNTRANSFER => true,
-			CURLOPT_HEADER => true,
-			CURLOPT_MAXREDIRS => 0,
-			CURLOPT_SSL_VERIFYPEER => false,
-			CURLOPT_SSL_VERIFYHOST => false,
-			CURLOPT_CONNECTTIMEOUT => MagebridgeModelConfig::load('curl_timeout'),
-			CURLOPT_TIMEOUT => MagebridgeModelConfig::load('curl_timeout'),
-			CURLOPT_DNS_CACHE_TIMEOUT => MagebridgeModelConfig::load('curl_timeout'),
+			CURLOPT_RETURNTRANSFER       => true,
+			CURLOPT_HEADER               => true,
+			CURLOPT_MAXREDIRS            => 0,
+			CURLOPT_SSL_VERIFYPEER       => false,
+			CURLOPT_SSL_VERIFYHOST       => false,
+			CURLOPT_CONNECTTIMEOUT       => MagebridgeModelConfig::load('curl_timeout'),
+			CURLOPT_TIMEOUT              => MagebridgeModelConfig::load('curl_timeout'),
+			CURLOPT_DNS_CACHE_TIMEOUT    => MagebridgeModelConfig::load('curl_timeout'),
 			CURLOPT_DNS_USE_GLOBAL_CACHE => true,
-			CURLOPT_COOKIESESSION => true,
-			CURLOPT_FRESH_CONNECT => false,
-			CURLOPT_FORBID_REUSE => false,
-			CURLOPT_BUFFERSIZE => 8192
+			CURLOPT_COOKIESESSION        => true,
+			CURLOPT_FRESH_CONNECT        => false,
+			CURLOPT_FORBID_REUSE         => false,
+			CURLOPT_BUFFERSIZE           => 8192
 		);
 	}
 
@@ -516,7 +522,7 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 	protected function setCurlHttpAuthentication(&$handle)
 	{
 		// CURL HTTP-authentication
-		$http_user = MagebridgeModelConfig::load('http_user');
+		$http_user     = MagebridgeModelConfig::load('http_user');
 		$http_password = MagebridgeModelConfig::load('http_password');
 
 		if (MagebridgeModelConfig::load('http_auth') == 1)
@@ -533,12 +539,12 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 	 */
 	protected function setCurlCookies(&$handle)
 	{
-		$cookies = MageBridgeBridgeHelper::getBridgableCookies();
+		$cookies     = MageBridgeBridgeHelper::getBridgableCookies();
 		$curlCookies = array();
 
 		foreach ($cookies as $cookieName)
 		{
-            $cookieValue = (isset($_COOKIE[$cookieName])) ? $_COOKIE[$cookieName] : null;
+			$cookieValue = (isset($_COOKIE[$cookieName])) ? $_COOKIE[$cookieName] : null;
 
 			if (empty($cookieValue))
 			{
@@ -566,11 +572,11 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 	 * @param string $url
 	 * @param string $type
 	 * @param array  $arguments
-	 * @param        boolean @run_bridge
+	 * @param bool   $runBridge
 	 *
 	 * @return string
 	 */
-	public function getCURL($url, $type = 'get', $arguments = null, $runBridge = false)
+	public function getCURL($url, $type = 'get', $arguments = [], $runBridge = false)
 	{
 		// Load variables
 		$httpHeaders = array();
@@ -721,10 +727,10 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 
 		// Separate the headers from the body
 		$this->head['header_found'] = false;
-		$this->head['last_url'] = curl_getinfo($handle, CURLINFO_EFFECTIVE_URL);
-		$this->head['http_code'] = curl_getinfo($handle, CURLINFO_HTTP_CODE);
-		$this->head['size'] = curl_getinfo($handle, CURLINFO_HEADER_SIZE);
-		$this->head['info'] = curl_getinfo($handle);
+		$this->head['last_url']     = curl_getinfo($handle, CURLINFO_EFFECTIVE_URL);
+		$this->head['http_code']    = curl_getinfo($handle, CURLINFO_HTTP_CODE);
+		$this->head['size']         = curl_getinfo($handle, CURLINFO_HEADER_SIZE);
+		$this->head['info']         = curl_getinfo($handle);
 
 		// Determine the separator
 		$separator = null;
@@ -740,7 +746,7 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 		// Split data into segments
 		if (strpos($data, $separator) > 0)
 		{
-			$dataSegments = explode($separator, $data);
+			$dataSegments               = explode($separator, $data);
 			$this->head['header_found'] = true;
 
 			foreach ($dataSegments as $dataSegmentIndex => $dataSegment)
@@ -763,7 +769,7 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 		}
 
 		// Exit when no proper headers have been found
-		if ($this->head['header_found'] == false)
+		if ($this->head['header_found'] === false)
 		{
 			$this->debug->warning('CURL contains no HTTP headers');
 
@@ -789,7 +795,7 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 		{
 			foreach ($matches[0] as $index => $match)
 			{
-				$type = $matches[1][$index];
+				$type    = $matches[1][$index];
 				$message = $matches[2][$index];
 
 				if (!empty($type) && !empty($message))
@@ -838,7 +844,7 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 		// If we receive an exception, exit the bridge
 		if ($this->head['http_code'] == 0 || $this->head['http_code'] == 500)
 		{
-			$this->init = self::CONNECTION_ERROR;
+			$this->init  = self::CONNECTION_ERROR;
 			$this->state = 'INTERNAL ERROR';
 
 			curl_close($handle);
@@ -850,7 +856,7 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 		if ($this->head['http_code'] == 404)
 		{
 
-			$this->init = self::CONNECTION_ERROR;
+			$this->init  = self::CONNECTION_ERROR;
 			$this->state = '404 NOT FOUND';
 			curl_close($handle);
 
@@ -880,7 +886,7 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 		}
 
 		// Define which cookies to spoof
-		$cookies = MageBridgeBridgeHelper::getBridgableCookies();
+		$cookies            = MageBridgeBridgeHelper::getBridgableCookies();
 		$defaultSessionName = ini_get('session.name');
 
 		if (empty($defaultSessionName))
@@ -909,7 +915,7 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 			{
 
 				// Extract the cookie-information
-				$cookieName = $matches[1][$index];
+				$cookieName  = $matches[1][$index];
 				$cookieValue = $matches[2][$index];
 
 				// Strip the meta-data from the cookie
@@ -978,15 +984,15 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 				// Create the encryption key, apply extra hardening using the user agent string.
 				$privateKey = JApplication::getHash(@$_SERVER['HTTP_USER_AGENT']);
 
-				$key = new JCryptKey('simple', $privateKey, $privateKey);
-				$crypt = new JCrypt(new JCryptCipherSimple, $key);
-				$rcookie = $crypt->encrypt(serialize($credentials));
+				$key      = new JCryptKey('simple', $privateKey, $privateKey);
+				$crypt    = new JCrypt(new JCryptCipherSimple, $key);
+				$rcookie  = $crypt->encrypt(serialize($credentials));
 				$lifetime = time() + 365 * 24 * 60 * 60;
 
 				// Use domain and path set in config for cookie if it exists.
 				$cookie_domain = JFactory::getConfig()
 					->get('cookie_domain', '');
-				$cookie_path = JFactory::getConfig()
+				$cookie_path   = JFactory::getConfig()
 					->get('cookie_path', '/');
 				setcookie(JApplication::getHash('JLOGIN_REMEMBER'), $rcookie, $lifetime, $cookie_path, $cookie_domain);
 			}
@@ -999,7 +1005,7 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 		{
 
 			$originalLocation = trim(array_pop($matches));
-			$location = $originalLocation;
+			$location         = $originalLocation;
 
 			// Check for a location-override
 			if ($this->getHeader('X-MageBridge-Location') != null)
@@ -1097,14 +1103,14 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 		}
 
 		// Construct the temporary cached files to use
-		$tmp_body = $this->config->get('tmp_path') . '/' . $id;
+		$tmp_body   = $this->config->get('tmp_path') . '/' . $id;
 		$tmp_header = $this->config->get('tmp_path') . '/' . $id . '_header';
 
 		// Check whether the cached files exist, otherwise create them
 		if (!file_exists($tmp_body) || !file_exists($tmp_header) || filesize($tmp_body) == 0 || filesize($tmp_header) == 0)
 		{
 			// Open the file handles
-			$tmp_body_handle = fopen($tmp_body, 'w');
+			$tmp_body_handle   = fopen($tmp_body, 'w');
 			$tmp_header_handle = fopen($tmp_header, 'w');
 
 			// Make the CURL call
@@ -1467,8 +1473,8 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 		if (!empty($menuitem))
 		{
 			$root_path = str_replace('/', '\/', $menuitem->route);
-			$redirect = preg_replace('/^\//', '', $redirect);
-			$redirect = preg_replace('/^' . $root_path . '/', '', $redirect);
+			$redirect  = preg_replace('/^\//', '', $redirect);
+			$redirect  = preg_replace('/^' . $root_path . '/', '', $redirect);
 		}
 
 		// When the URL doesnt start with HTTP or HTTPS, assume it is still the original Magento request
@@ -1568,7 +1574,7 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 	 */
 	public function reset()
 	{
-		$this->init = self::CONNECTION_FALSE;
+		$this->init  = self::CONNECTION_FALSE;
 		$this->state = null;
 	}
 
@@ -1608,7 +1614,7 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 	public function getCookieFile()
 	{
 		return JFactory::getConfig()
-			->get('log_path') . '/magento.tmp';
+				->get('log_path') . '/magento.tmp';
 	}
 }
 
