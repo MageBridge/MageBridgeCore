@@ -700,7 +700,6 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 			curl_setopt($handle, CURLOPT_POST, true);
 			curl_setopt($handle, CURLOPT_POSTFIELDS, $arguments);
 			$httpHeaders[] = 'Expect:';
-			//print_r($arguments);exit;
 		}
 
 		// Add the HTTP headers
