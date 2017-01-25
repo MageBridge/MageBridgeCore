@@ -69,7 +69,7 @@ class MageBridgeHelper
 			),
 			'changelog' => array(
 				'title' => 'MageBridge Changelog',
-				'link' => 'https://www.yireo.com/tutorials/magebridge/updates/975-magebridge-changelog',
+				'link' => 'https://www.yireo.com/software/magebridge/downloads/changelog',
 				'internal' => 0,
 			),
 			'subscriptions' => array(

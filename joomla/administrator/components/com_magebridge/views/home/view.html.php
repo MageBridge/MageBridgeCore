@@ -47,7 +47,7 @@ class MageBridgeViewHome extends YireoViewHome
 		$urls['facebook'] ='http://www.facebook.com/yireo';
 		$urls['tutorials'] = 'https://www.yireo.com/tutorials/magebridge';
 		$urls['jed'] ='http://extensions.joomla.org/extensions/bridges/e-commerce-bridges/9440';
-		$urls['changelog'] ='https://www.yireo.com/tutorials/magebridge/updates/975-magebridge-changelog'; // @todo: Use this
+		$urls['changelog'] ='https://www.yireo.com/software/magebridge/downloads/changelog'; // @todo: Use this
 		$this->urls = $urls;
 
 		parent::display($tpl);
