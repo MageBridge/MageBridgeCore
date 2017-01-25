@@ -267,7 +267,7 @@ class MagebridgeModelConfig extends YireoAbstractModel
 		{
 			if (!isset($config[$element]['value']))
 			{
-				print_r($config[$element]);
+				//print_r($config[$element]);
 			}
 
 			return $config[$element]['value'];
