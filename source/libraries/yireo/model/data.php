@@ -70,11 +70,6 @@ class YireoDataModel extends YireoCommonModel
 		return $rt;
 	}
 
-    public function getQuery()
-    {
-        return $this->query;
-    }
-
 	/**
 	 * @return $this
 	 */
