@@ -457,7 +457,7 @@ class YireoView extends YireoCommonView
 		// Assign the published-list
 		if (isset($this->item->published))
 		{
-			$this->lists['published'] = JHtml::_('select.booleanlist', 'published', 'class="btn-group btn-group-yesno"', $this->item->published);
+			$this->lists['published'] = YireoFormFieldPublished::getFieldInput($this->item->published);
 		}
 		else
 		{
