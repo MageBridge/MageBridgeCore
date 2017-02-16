@@ -36,13 +36,38 @@ class YireoFormFieldPublished extends JFormFieldRadio
 	public function setup(SimpleXMLElement $element, $value, $group = null)
 	{
 		$rt = parent::setup($element, $value, $group);
-
-		$this->element['label'] = 'JPUBLISHED';
-		$this->element['required'] = 1;
-		$this->required = 1;
+        $this->specificSetup();
 
 		return $rt;
 	}
+
+    static public function getFieldInput($value)
+    {
+        $field = new self();
+        $field->setValue($value);
+        return $field->toString();
+    }
+
+    public function setValue($value)
+    {
+        $this->value = $value;
+    }
+
+    protected function specificSetup()
+    {
+		$this->element['label'] = 'JPUBLISHED';
+		$this->element['required'] = 1;
+		$this->required = 1;
+    }
+
+    public function toString()
+    {
+        $this->fieldName = 'published';
+        $this->name = 'published';
+        $this->specificSetup();
+
+        return $this->getInput();
+    }
 
 	/*
 	 * Method to construct the HTML of this element
