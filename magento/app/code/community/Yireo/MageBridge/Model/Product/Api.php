@@ -316,8 +316,7 @@ class Yireo_MageBridge_Model_Product_Api extends Mage_Catalog_Model_Api_Resource
         $productIds = $collection->getAllIds();
         shuffle($productIds);
 
-        //$collection->addIdFilter(implode(',', $productIds));
-        $collection->addAttributeToFilter('entity_id', array('in' => $productIds));
+        $collection->addIdFilter(implode(',', $productIds));
     }
 
     protected function applyPaging(&$collection)
