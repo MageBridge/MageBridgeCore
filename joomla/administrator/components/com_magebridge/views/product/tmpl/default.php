@@ -18,56 +18,42 @@ defined('_JEXEC') or die('Restricted access');
 <td width="50%" valign="top">
 	<fieldset class="adminform">
 		<legend><?php echo JText::_('LIB_YIREO_TABLE_FIELDNAME_LABEL'); ?></legend>
-		<table class="admintable" width="100%">
-		<tbody>
-		<tr>
-			<td width="100" align="right" class="key">
-				<label for="label">
-					<?php echo JText::_('LIB_YIREO_TABLE_FIELDNAME_LABEL'); ?>:
-				</label>
-			</td>
-			<td>
+        <div class="row-fluid form-group" style="margin-bottom:5px;">
+            <div class="span4 col-md-4">
+				<?php echo JText::_('LIB_YIREO_TABLE_FIELDNAME_LABEL'); ?>:
+            </div>
+            <div class="span8 col-md-8">
 				<input type="text" name="label" value="<?php echo $this->item->label; ?>" size="30" />
-			</td>
-		</tr>
-		</tbody>
-		</table>
+            </div>
+	    </div>
 	</fieldset>
 
 	<fieldset class="adminform">
 		<legend><?php echo JText::_('COM_MAGEBRIDGE_VIEW_PRODUCT_FIELDSET_RELATION'); ?></legend>
-		<table class="admintable" width="100%">
-		<tbody>
-		<tr>
-			<td width="100" align="right" class="key">
-				<label for="sku">
-					<?php echo JText::_('COM_MAGEBRIDGE_VIEW_PRODUCT_FIELD_SKU'); ?>:
-				</label>
-			</td>
-			<td class="value">
+        <div class="row-fluid form-group" style="margin-bottom:5px;">
+            <div class="span4 col-md-4">
+				<?php echo JText::_('COM_MAGEBRIDGE_VIEW_PRODUCT_FIELD_SKU'); ?>:
+            </div>
+            <div class="span8 col-md-8">
 				<?php echo $this->lists['product']; ?>
-			</td>
-		</tr>
-		<tr>
-			<td valign="top" align="right" class="key">
+            </div>
+	    </div>
+        <div class="row-fluid form-group" style="margin-bottom:5px;">
+            <div class="span4 col-md-4">
 				<?php echo JText::_('JPUBLISHED'); ?>:
-			</td>
-			<td class="value">
+            </div>
+            <div class="span8 col-md-4">
 				<?php echo $this->lists['published']; ?>
-			</td>
-		</tr>
-		<tr>
-			<td valign="top" align="right" class="key">
-				<label for="ordering">
+            </div>
+	    </div>
+        <div class="row-fluid form-group" style="margin-bottom:5px;">
+            <div class="span4 col-md-4">
 					<?php echo JText::_('JORDERING'); ?>:
-				</label>
-			</td>
-			<td class="value">
+            </div>
+            <div class="span8 col-md-8">
 				<?php echo $this->lists['ordering']; ?>
-			</td>
-		</tr>
-		</tbody>
-		</table>
+            </div>
+	    </div>
 	</fieldset>
 
 	<?php echo $this->loadTemplate('actions'); ?>
