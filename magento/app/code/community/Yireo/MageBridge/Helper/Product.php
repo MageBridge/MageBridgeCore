@@ -192,8 +192,13 @@ class Yireo_MageBridge_Helper_Product extends Mage_Core_Helper_Abstract
         $imageHelper = Mage::helper('catalog/image');
         $imageHelper->init($product, $attributeName);
 
-        $imageWidth = $imageHelper->getOriginalWidth();
-        $imageHeight = $imageHelper->getOriginalHeight();
+        try {
+            $imageWidth = $imageHelper->getOriginalWidth();
+            $imageHeight = $imageHelper->getOriginalHeight();
+        } catch(Exception $e) {
+            Mage::logException($e);
+            return;
+        }
 
         if (is_array($size) && count($size) == 1) {
             $imageWidth = $size[0];
