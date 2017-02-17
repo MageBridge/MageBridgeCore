@@ -35,6 +35,7 @@ class Autoloader
 		'YireoAbstractView'       => 'view/abstract',
 		'YireoCommonController'   => 'controller/common',
 		'YireoAbstractController' => 'controller/abstract',
+        'YireoFormFieldPublished' => 'form/fields/published',
 	);
 
 	/**
