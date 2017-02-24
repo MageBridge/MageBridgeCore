@@ -79,10 +79,6 @@ class YireoViewList extends YireoView
 	 */
 	public function display($tpl = null)
 	{
-		// Extra behaviors
-		JHtml::_('behavior.tooltip');
-		JHtml::_('behavior.modal');
-
 		// Automatically fetch items, total and pagination - and assign them to the template
 		$this->fetchItems();
 
