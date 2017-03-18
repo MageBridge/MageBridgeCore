@@ -43,7 +43,10 @@ class PluginCase extends JoomlaCase
 
 		$dispatcher = JEventDispatcher::getInstance();
 		$className = '\\' . $this->getTargetClassName();
-		$plugin     = new $className($dispatcher, array('params' => $this->pluginParams));
+		$pluginParams = new \Joomla\Registry\Registry;
+		$pluginParams->loadArray($this->pluginParams);
+
+		$plugin     = new $className($dispatcher, array('params' => $pluginParams));
 
 		return $plugin;
 	}
