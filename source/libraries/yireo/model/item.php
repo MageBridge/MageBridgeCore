@@ -147,7 +147,7 @@ class YireoModelItem extends YireoDataModel
 				->setId($this->getId())
 				->build();
 
-			$data  = $this->getDbResult($query, 'object');
+			$data = $this->getDbResult($query, 'object');
 
 			if (!empty($data))
 			{
@@ -359,6 +359,14 @@ class YireoModelItem extends YireoDataModel
 			$this->throwDbException();
 		}
 
+		// Fix primary key for copying
+		$key = $this->getPrimaryKey();
+
+		if (empty($data[$key]) && empty($data['id']))
+		{
+			$this->table->$key = 0;
+		}
+
 		// Make sure the table is valid
 		if (!$this->table->check())
 		{
@@ -398,7 +406,7 @@ class YireoModelItem extends YireoDataModel
 			return false;
 		}
 
-		$tableName = $this->table->getTableName();
+		$tableName  = $this->table->getTableName();
 		$primaryKey = $this->table->getKeyName();
 
 		if (empty($tableName))
@@ -412,7 +420,7 @@ class YireoModelItem extends YireoDataModel
 		}
 
 		\Joomla\Utilities\ArrayHelper::toInteger($cid);
-		$cids  = implode(',', $cid);
+		$cids = implode(',', $cid);
 
 		$query = $this->_db->getQuery(true);
 		$query->delete($this->_db->quoteName($tableName));
