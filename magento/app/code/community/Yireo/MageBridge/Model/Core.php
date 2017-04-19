@@ -216,7 +216,7 @@ class Yireo_MageBridge_Model_Core
     protected function setCurrentStore()
     {
         try {
-            Mage::app()->setCurrentStore(Mage::app()->getStore($this->getStore()));
+            Mage::app()->setCurrentStore($this->getStoreObject());
         } catch (Exception $e) {
             Mage::getSingleton('magebridge/debug')->error('Failed to intialize store "' . $this->getStore() . '":' . $e->getMessage());
             // Do not return, but just keep on going with the default configuration
@@ -264,7 +264,7 @@ class Yireo_MageBridge_Model_Core
             return false;
         }
 
-        $location = Mage::app()->getStore()->getBaseUrl();
+        $location = $this->getStoreObject()->getBaseUrl();
         if (preg_match('/(uenc|referer)\/([^\/]+)/', $this->getRequestUrl(), $match)) {
             $location = Mage::helper('magebridge/encryption')->base64_decode($match[2]);
         }
@@ -462,7 +462,7 @@ class Yireo_MageBridge_Model_Core
         );
 
         // Rewrite the configuration
-        $store = Mage::app()->getStore($this->getStore());
+        $store = $this->getStoreObject();
         foreach ($config_values as $path => $value) {
             if (method_exists($store, 'overrideCachedConfig')) {
                 $store->overrideCachedConfig($path, $value);
@@ -505,6 +505,10 @@ class Yireo_MageBridge_Model_Core
             }
         }
 
+        // Automatically append current host to allowed IPs (which is save because API authentication already succeeded)
+        $allowedIps = Mage::getModel('magebridge/config_allowedIps', $this->getStoreObject());
+        $allowedIps->appendUrlAsIp($this->getMetaData('api_url'));
+
         // Refresh the cache
         if ($refresh_cache == true && Mage::app()->useCache('config') && Mage::helper('magebridge')->useApiDetect() == true) {
             Mage::getSingleton('magebridge/debug')->notice('Refresh configuration cache');
@@ -527,13 +531,17 @@ class Yireo_MageBridge_Model_Core
     public function saveConfig($key, $value, $scope, $scopeId, $override = false)
     {
         // Do not save empty values
-        if (empty($value)) return false;
+        if (empty($value)) {
+            return false;
+        }
 
         // Make sure the scope-ID is an integer
         $scopeId = (int)$scopeId;
 
         // Skip the Admin-scope
-        if ($scope == 'websites' && $scopeId == 0) return false;
+        if ($scope == 'websites' && $scopeId == 0) {
+            return false;
+        }
 
         // Fetch the current value
         if ($scope == 'default') {
@@ -715,7 +723,7 @@ class Yireo_MageBridge_Model_Core
 
         // Determine whether to preoutput compare links
         if (strstr($this->getRequestUrl(), 'catalog/product_compare/index')) {
-            if (Mage::app()->getStore()->getConfig('magebridge/settings/preoutput_compare') == 1) {
+            if ($this->getStore()->getConfig('magebridge/settings/preoutput_compare') == 1) {
                 echo $controller->getAction()->getLayout()->getOutput();
                 return true;
             } else {
@@ -725,7 +733,7 @@ class Yireo_MageBridge_Model_Core
 
         // Determine whether to preoutput gallery links
         if (strstr($this->getRequestUrl(), 'catalog/product/gallery')) {
-            if (Mage::app()->getStore()->getConfig('magebridge/settings/preoutput_gallery') == 1) {
+            if ($this->getStore()->getConfig('magebridge/settings/preoutput_gallery') == 1) {
                 echo $controller->getAction()->getLayout()->getOutput();
                 return true;
             } else {
@@ -887,7 +895,7 @@ class Yireo_MageBridge_Model_Core
         $currentProductSku = Mage::helper('magebridge/core')->getCurrentProductSku();
 
         // Construct extra data
-        $store = Mage::app()->getStore($this->getStore());
+        $store = $this->getStoreObject();
         $data = array(
             'session_id' => Mage::getModel('core/session')->getSessionId(),
             'catalog/seo/product_url_suffix' => $store->getConfig('catalog/seo/product_url_suffix'),
@@ -899,13 +907,13 @@ class Yireo_MageBridge_Model_Core
             'customer/magento_id' => Mage::getModel('customer/session')->getCustomerId(),
             'customer/magento_group_id' => Mage::getModel('customer/session')->getCustomer()->getGroupId(),
             'backend/path' => $this->getAdminPath(),
-            'store_name' => Mage::app()->getStore()->getName(),
-            'store_code' => Mage::app()->getStore()->getCode(),
+            'store_name' => $store->getName(),
+            'store_code' => $store->getCode(),
             'base_js_url' => Mage::getBaseUrl('js'),
             'base_media_url' => Mage::getBaseUrl('media'),
             'form_key' => Mage::getSingleton('core/session')->getFormKey(),
             'root_template' => $this->getRootTemplate(),
-            'root_category' => Mage::app()->getStore($this->getStore())->getRootCategoryId(),
+            'root_category' => $store->getRootCategoryId(),
             'current_category_id' => $currentCategoryId,
             'current_category_path' => $currentCategoryPath,
             'current_product_id' => $currentProductId,
@@ -1290,10 +1298,6 @@ class Yireo_MageBridge_Model_Core
     /**
      * Helper-method to get the requested store-name from the meta-data
      *
-     * @access public
-     *
-     * @param null
-     *
      * @return string
      */
     public function getStore()
@@ -1302,11 +1306,17 @@ class Yireo_MageBridge_Model_Core
     }
 
     /**
+     * Helper-method to get the requested store-name from the meta-data
+     *
+     * @return Mage_Core_Model_Store
+     */
+    public function getStoreObject()
+    {
+        return Mage::app()->getStore($this->getStore());
+    }
+
+    /**
      * Return the configured license key
-     *
-     * @access public
-     *
-     * @param null
      *
      * @return string
      */
@@ -1318,10 +1328,6 @@ class Yireo_MageBridge_Model_Core
     /**
      * Return the current session ID
      *
-     * @access public
-     *
-     * @param null
-     *
      * @return string
      */
     public function getMageSession()
@@ -1332,9 +1338,7 @@ class Yireo_MageBridge_Model_Core
     /**
      * Encrypt data for security
      *
-     * @access public
-     *
-     * @param null
+     * @param mixed $data
      *
      * @return string
      */
@@ -1346,9 +1350,7 @@ class Yireo_MageBridge_Model_Core
     /**
      * Decrypt data after encryption
      *
-     * @access public
-     *
-     * @param null
+     * @param mixed $data
      *
      * @return string
      */
@@ -1360,10 +1362,6 @@ class Yireo_MageBridge_Model_Core
     /**
      * Determine whether event forwarding is enabled
      *
-     * @access public
-     *
-     * @param null
-     *
      * @return bool
      */
     public function isEnabledEvents()
@@ -1373,10 +1371,6 @@ class Yireo_MageBridge_Model_Core
 
     /**
      * Disable event forwarding
-     *
-     * @access public
-     *
-     * @param null
      *
      * @return bool
      */
