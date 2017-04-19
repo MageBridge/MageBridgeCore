@@ -45,10 +45,12 @@ class Yireo_MageBridge_Model_Product_Api extends Mage_Catalog_Model_Api_Resource
         $i = 0;
         foreach($collection as $item) {
 
-            if($i == $options['search_limit']) break;
+            if($i == $options['search_limit']) {
+                break;
+            }
+
             $product = Mage::getModel('catalog/product')->load($item->getId());
-                
-            $product_price_tax = Mage::helper('tax')->getProductPrice($product);
+            $store = Mage::app()->getStore();
 
             $result[] = array( // Basic product data
                 'product_id'        => $product->getId(),
@@ -68,13 +70,15 @@ class Yireo_MageBridge_Model_Product_Api extends Mage_Catalog_Model_Api_Resource
                 'thumbnail'         => $product->getThumbnailUrl(),
                 'image'             => $product->getImageUrl(),
                 'small_image'       => $product->getSmallImageUrl(),
-                'price'             => Mage::app()->getStore()->formatPrice($product->getPrice()),
-                'price_tax'         => Mage::app()->getStore()->formatPrice($product_price_tax),
-                'price_tax_raw'     => $product_price_tax,
+                'price'             => $store->formatPrice($product->getPrice()),
+                'price_tax'         => $store->formatPrice($store->convertPrice($product->getPrice())),
+                'price_tax_raw'     => $store->convertPrice($product->getPrice()),
                 'price_raw'         => $product->getPrice(),
                 'price_tier'        => $product->getTierPrice(1),
-                'special_price'     => Mage::app()->getStore()->formatPrice($product->getSpecialPrice()),
+                'special_price'     => $store->formatPrice($product->getSpecialPrice()),
                 'special_price_raw' => $product->getSpecialPrice(),
+                'special_price_tax' => $store->formatPrice($store->convertPrice($product->getSpecialPrice())),
+                'special_price_tax_raw' => $store->convertPrice($product->getSpecialPrice()),
                 'special_from_date' => $product->getSpecialFromDate(),
                 'special_to_date'   => $product->getSpecialToDate(),
                 'created_at'        => $product->getCreatedAt(),
