@@ -279,10 +279,19 @@ class Yireo_MageBridge_Model_Product_Api extends Mage_Catalog_Model_Api_Resource
         }
 
         // Add the category by its ID
-        if(isset($this->arguments['category_id']) && $this->arguments['category_id'] > 0) {
+        if(!empty($this->arguments['category_id'])) {
             /** @var Mage_Catalog_Model_Category $category */
-            $category = Mage::getModel('catalog/category')->load($this->arguments['category_id']);
-            $collection->addCategoryFilter($category);
+            $category = Mage::getModel('catalog/category');
+
+            if (is_numeric($this->arguments['category_id'])) {
+                $category = $category->load($this->arguments['category_id']);
+            } else {
+                $category = $category->loadByAttribute('url_key', $this->arguments['category_id']);
+            }
+
+            if ($category->getId() > 0) {
+                $collection->addCategoryFilter($category);
+            }
         }
     }
 
