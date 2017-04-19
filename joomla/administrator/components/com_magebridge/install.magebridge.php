@@ -18,14 +18,10 @@ defined('_JEXEC') or die();
 function com_install() 
 {
 	require_once(dirname(__FILE__).'/helpers/install.php');
+
 	$helper = new MageBridgeInstallHelper();
-
-	// Initialize important variables
-	$application = JFactory::getApplication();
-	$db = JFactory::getDbo();
-
-	// Upgrade the database tables
 	$helper->updateQueries();
+	$helper->removeObsoleteFiles();
 
 	// Done
 	return true;
