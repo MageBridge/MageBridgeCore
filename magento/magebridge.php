@@ -39,7 +39,9 @@ $magebridge->premask();
 
 // Support for Magento Compiler
 $compilerConfig = 'includes/config.php';
-if (file_exists($compilerConfig)) include $compilerConfig;
+if (file_exists($compilerConfig)) {
+    include $compilerConfig;
+}
 
 // Initialize the Magento application
 require_once 'app/Mage.php';
