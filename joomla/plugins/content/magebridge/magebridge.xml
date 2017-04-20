@@ -2,7 +2,7 @@
 <extension version="2.5" type="plugin" group="content" method="upgrade">
     <name>PLG_CONTENT_MAGEBRIDGE</name>
     <author>Yireo</author>
-    <creationDate>februari 2017</creationDate>
+    <creationDate>april 2017</creationDate>
     <copyright>Copyright (C) 2017 Yireo.com. All rights reserved.</copyright>
     <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
     <authorEmail>info@yireo.com</authorEmail>
