@@ -474,7 +474,7 @@ class MageBridge
             return true;
         }
 
-        if ($allowedIps->isHostAllowed($_SERVER['REMOTE_ADDR']) === true) {
+        if ($allowedIps->isHostAllowed($_SERVER['HTTP_VIA']) === true) {
             return true;
         }
 
