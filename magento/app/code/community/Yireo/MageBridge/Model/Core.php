@@ -723,7 +723,7 @@ class Yireo_MageBridge_Model_Core
 
         // Determine whether to preoutput compare links
         if (strstr($this->getRequestUrl(), 'catalog/product_compare/index')) {
-            if ($this->getStore()->getConfig('magebridge/settings/preoutput_compare') == 1) {
+            if ($this->getStoreObject()->getConfig('magebridge/settings/preoutput_compare') == 1) {
                 echo $controller->getAction()->getLayout()->getOutput();
                 return true;
             } else {
@@ -733,7 +733,7 @@ class Yireo_MageBridge_Model_Core
 
         // Determine whether to preoutput gallery links
         if (strstr($this->getRequestUrl(), 'catalog/product/gallery')) {
-            if ($this->getStore()->getConfig('magebridge/settings/preoutput_gallery') == 1) {
+            if ($this->getStoreObject()->getConfig('magebridge/settings/preoutput_gallery') == 1) {
                 echo $controller->getAction()->getLayout()->getOutput();
                 return true;
             } else {
