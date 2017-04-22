@@ -359,7 +359,7 @@ class Yireo_MageBridge_Model_Product_Api extends Mage_Catalog_Model_Api_Resource
     {
         $productIds = $collection->getAllIds();
 
-        $numberOfItems = 3;
+        $numberOfItems = (!empty($this->arguments['count'])) ? $this->arguments['count'] : 3;
         $choosenIds = [];
         $maxKey = count($productIds)-1;
         while (count($choosenIds) < $numberOfItems) {
