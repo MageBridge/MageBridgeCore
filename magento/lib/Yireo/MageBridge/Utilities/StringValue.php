@@ -32,7 +32,7 @@ class StringValue
     public function asArray()
     {
         $partsArray = [];
-        $parts = explode(', ', $this->string);
+        $parts = explode(',', $this->string);
         foreach ($parts as $part) {
             $part = trim($part);
             if (empty($part)) {
