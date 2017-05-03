@@ -92,26 +92,18 @@ class Yireo_MageBridge_Model_Core
         }
 
         // Optionally disable form_key security
-        $disableFormKey = false;
-        if (Mage::getStoreConfig('magebridge/settings/disable_form_key') == 1) {
-            $disableFormKey = true;
-        } elseif (strstr($this->getRequestUrl(), 'checkout/cart/add')) {
-            $disableFormKey = true;
-        }
-
-        if ($disableFormKey) {
-            $formKey = Mage::getSingleton('core/session')->getFormKey();
-            $request = Mage::app()->getRequest();
-            $request->setPathInfo(preg_replace('/\/form_key\/([^\/]+)/', '', $request->getPathInfo()));
-            $request->setRequestUri(preg_replace('/\/form_key\/([^\/]+)/', '', $request->getRequestUri()));
-            $request->setParam('form_key', $formKey);
-            Mage::getSingleton('magebridge/debug')->notice('Spoofing form key: ' . $formKey);
-        }
+        $this->disableFormKey();
 
         // Set the magebridge-URLs
         $this->setConfig();
+
+        // Handle post logins
         $this->postLoginUser();
+
+        // Handle persistent logins
         $this->handlePersistentLogins();
+
+        // Set the current store and URLs
         $this->setCurrentStore();
         $this->rewriteNonSefCategoryUrls();
         $this->setContinueShoppingToPreviousUrl();
@@ -122,6 +114,28 @@ class Yireo_MageBridge_Model_Core
         //Mage::getSingleton('magebridge/debug')->notice('Quote: '.$session->getQuoteId());
 
         return true;
+    }
+
+    /**
+     * Disable the form key if configured
+     */
+    protected function disableFormKey()
+    {
+        if (Mage::getStoreConfig('magebridge/settings/disable_form_key') !== 1) {
+            return false;
+        }
+
+        if (strstr($this->getRequestUrl(), 'checkout/cart/add')) {
+            return false;
+        }
+
+        $formKey = Mage::getSingleton('core/session')->getFormKey();
+        $request = Mage::app()->getRequest();
+        $request->setPathInfo(preg_replace('/\/form_key\/([^\/]+)/', '', $request->getPathInfo()));
+        $request->setRequestUri(preg_replace('/\/form_key\/([^\/]+)/', '', $request->getRequestUri()));
+        $request->setParam('form_key', $formKey);
+
+        Mage::getSingleton('magebridge/debug')->notice('Spoofing form key: ' . $formKey);
     }
 
     /**
