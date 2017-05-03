@@ -46,13 +46,12 @@ class Yireo_MageBridge_Model_Config_AllowedIps
             return $currentIps;
         }
 
-        $hostPart = parse_url($url, PHP_URL_HOST);
-        $ip = gethostbyname($hostPart);
+        $ip = $this->getIpFromUrl($url);
 
         if (empty($ip)) {
             return $currentIps;
         }
-        
+
         if (in_array($ip, $currentIps)) {
             return $currentIps;
         }
@@ -99,5 +98,18 @@ class Yireo_MageBridge_Model_Config_AllowedIps
         $valueObject = new Yireo\MageBridge\Utilities\StringValue($value);
 
         return $valueObject->asArray();
+    }
+
+    /**
+     * @param string $url
+     *
+     * @return string
+     */
+    protected function getIpFromUrl($url)
+    {
+        $hostPart = parse_url($url, PHP_URL_HOST);
+        $ip = gethostbyname($hostPart);
+
+        return $ip;
     }
 }
