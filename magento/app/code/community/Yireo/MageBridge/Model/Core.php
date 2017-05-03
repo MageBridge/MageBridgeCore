@@ -122,21 +122,7 @@ class Yireo_MageBridge_Model_Core
             Mage::getModel('magebridge/user_api')->login($data);
         }
 
-        // Workaround for guaranteeing persistent logins
-        if (Mage::getSingleton('customer/session')->isLoggedIn() == false) {
-            $modules = (array)Mage::getConfig()->getNode('modules')->children();
-            if (array_key_exists('Mage_Persistent', $modules)) {
-                $persistentHelper = Mage::helper('persistent/session');
-                $persistentCustomerId = (int)$persistentHelper->getSession()->getCustomerId();
-                if (!empty($persistentCustomerId)) {
-                    $customer = Mage::getModel('customer/customer')->load($persistentCustomerId);
-                    if ($customer->getId() > 0) {
-                        Mage::getSingleton('customer/session')->setCustomerAsLoggedIn($customer)->renewSession();
-                    }
-                }
-            }
-        }
-
+        $this->handlePersistentLogins();
         $this->setCurrentStore();
         $this->rewriteNonSefCategoryUrls();
         $this->setContinueShoppingToPreviousUrl();
@@ -146,6 +132,35 @@ class Yireo_MageBridge_Model_Core
         //$session = Mage::getSingleton('checkout/session');
         //Mage::getSingleton('magebridge/debug')->notice('Quote: '.$session->getQuoteId());
 
+        return true;
+    }
+
+    /**
+     * Workaround for persistent logins
+     */
+    protected function handlePersistentLogins()
+    {
+        if (Mage::getSingleton('customer/session')->isLoggedIn()) {
+            return false;
+        }
+
+        $modules = (array)Mage::getConfig()->getNode('modules')->children();
+        if (!array_key_exists('Mage_Persistent', $modules)) {
+            return false;
+        }
+
+        $persistentHelper = Mage::helper('persistent/session');
+        $persistentCustomerId = (int)$persistentHelper->getSession()->getCustomerId();
+        if (empty($persistentCustomerId)) {
+            return false;
+        }
+
+        $customer = Mage::getModel('customer/customer')->load($persistentCustomerId);
+        if (!$customer->getId() > 0) {
+            return false;
+        }
+
+        Mage::getSingleton('customer/session')->setCustomerAsLoggedIn($customer)->renewSession();
         return true;
     }
 
