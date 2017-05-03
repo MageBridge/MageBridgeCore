@@ -9,6 +9,7 @@
  * @link https://www.yireo.com
  */
 
+// Imports
 use \Mage_Core_Model_Store as Store;
 
 /**
@@ -28,7 +29,9 @@ class Yireo_MageBridge_Model_Config_AllowedIps
      */
     public function __construct(Store $store)
     {
-        Mage::helper('magebridge/autoloader')->load();
+        /** @var Yireo_MageBridge_Helper_Autoloader $autoLoader */
+        $autoLoader = Mage::helper('magebridge/autoloader');
+        $autoLoader->load();
 
         $this->storeConfig = new \Yireo\MageBridge\Utilities\Config($store);
     }
