@@ -506,8 +506,10 @@ class Yireo_MageBridge_Model_Core
         }
 
         // Automatically append current host to allowed IPs (which is save because API authentication already succeeded)
+        /** @var Yireo_MageBridge_Model_Config_AllowedIps $allowedIps */
         $allowedIps = Mage::getModel('magebridge/config_allowedIps', $this->getStoreObject());
-        $allowedIps->appendUrlAsIp($this->getMetaData('api_url'));
+        $currentIps = $allowedIps->appendUrlAsIp($this->getMetaData('api_url'));
+        $allowedIps->save($currentIps);
 
         // Refresh the cache
         if ($refresh_cache == true && Mage::app()->useCache('config') && Mage::helper('magebridge')->useApiDetect() == true) {

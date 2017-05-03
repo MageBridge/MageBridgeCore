@@ -36,32 +36,31 @@ class Yireo_MageBridge_Model_Config_AllowedIps
     /**
      * @param $url
      *
-     * @return bool
+     * @return array
      */
     public function appendUrlAsIp($url)
     {
+        $currentIps = $this->getCurrentIps();
+
         if (empty($url)) {
-            return false;
+            return $currentIps;
         }
 
         $hostPart = parse_url($url, PHP_URL_HOST);
         $ip = gethostbyname($hostPart);
 
         if (empty($ip)) {
-            return false;
+            return $currentIps;
         }
-
-        $currentIps = $this->getCurrentIps();
+        
         if (in_array($ip, $currentIps)) {
-            return false;
+            return $currentIps;
         }
 
         $currentIps[] = $ip;
         array_unique($currentIps);
 
-        $this->save($currentIps);
-
-        return true;
+        return $currentIps;
     }
 
     /**
@@ -84,6 +83,14 @@ class Yireo_MageBridge_Model_Config_AllowedIps
     }
 
     /**
+     * @param array $ips
+     */
+    public function save($ips = [])
+    {
+        $this->storeConfig->save('api_allowed_ips', implode(',', $ips));
+    }
+
+    /**
      * @return array
      */
     protected function getCurrentIps()
@@ -92,13 +99,5 @@ class Yireo_MageBridge_Model_Config_AllowedIps
         $valueObject = new Yireo\MageBridge\Utilities\StringValue($value);
 
         return $valueObject->asArray();
-    }
-
-    /**
-     * @param array $ips
-     */
-    protected function save($ips = [])
-    {
-        $this->storeConfig->save('api_allowed_ips', implode(',', $ips));
     }
 }
