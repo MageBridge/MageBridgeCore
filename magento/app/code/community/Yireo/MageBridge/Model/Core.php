@@ -588,18 +588,30 @@ class Yireo_MageBridge_Model_Core
 
     /**
      * Automatically save allowed IPs settings
+     *
+     * @return bool
      */
     protected function autosaveAllowedIps()
     {
         /** @var Yireo_MageBridge_Model_Config_AllowedIps $allowedIps */
         $allowedIps = Mage::getModel('magebridge/config_allowedIps', $this->getStoreObject());
 
+        if ($allowedIps->allowAutoConfig()) {
+            return false;
+        }
+
         $currentIps = $allowedIps->appendUrlAsIp($this->getMetaData('api_url'));
 
-        $currentIps[] = $_SERVER['REMOTE_ADDR'];
-        $currentIps[] = $_SERVER['SERVER_ADDR'];
+        if (isset($_SERVER['REMOTE_ADDR'])) {
+            $currentIps[] = $_SERVER['REMOTE_ADDR'];
+        }
+
+        if (isset($_SERVER['SERVER_ADDR'])) {
+            $currentIps[] = $_SERVER['SERVER_ADDR'];
+        }
 
         $allowedIps->save($currentIps);
+        return true;
     }
 
     /**

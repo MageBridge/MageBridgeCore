@@ -37,6 +37,14 @@ class Yireo_MageBridge_Model_Config_AllowedIps
     }
 
     /**
+     * @return bool
+     */
+    public function allowAutoConfig()
+    {
+        return (bool) $this->storeConfig->get('autoadd_allowed_ips');
+    }
+
+    /**
      * @param $url
      *
      * @return array
