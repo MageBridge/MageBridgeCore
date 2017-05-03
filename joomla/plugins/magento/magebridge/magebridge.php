@@ -92,7 +92,7 @@ class PlgMagentoMageBridge extends JPlugin
 		// - remember = 1
 		// - return = {URL}
 		// - entry_url = {URL}
-		$options = array('disable_bridge' => true, 'action' => 'core.login.site', , 'clientid' => $this->app->getClientId());
+		$options = array('disable_bridge' => true, 'action' => 'core.login.site', 'clientid' => $this->app->getClientId());
 
 		// Call the Joomla! event "onLogoutUser"
 		JPluginHelper::importPlugin('user');
