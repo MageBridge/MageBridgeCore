@@ -451,26 +451,32 @@
 
     <default>
         <magebridge>
+            <joomla>
+                <api_detect>1</api_detect>
+                <map>1</map>
+                <auth>0</auth>
+                <remotesso>0</remotesso>
+                <autoadd_allowed_ips>1</autoadd_allowed_ips>
+                <encryption>0</encryption>
+                <encryption_key></encryption_key>
+            </joomla>
+            <cache>
+                <caching>0</caching>
+                <caching_gzip>0</caching_gzip>
+            </cache>
+            <debug>
+                <log>0</log>
+                <print>0</print>
+            </debug>
             <settings>
                 <preoutput_gallery>1</preoutput_gallery>
                 <preoutput_compare>1</preoutput_compare>
                 <bridge_downloads>1</bridge_downloads>
                 <bridge_all>0</bridge_all>
-                <joomla_map>1</joomla_map>
-                <joomla_auth>0</joomla_auth>
-                <joomla_remotesso>0</joomla_remotesso>
-                <caching>0</caching>
-                <caching_gzip>0</caching_gzip>
-                <debug_log>0</debug_log>
-                <debug_print>0</debug_print>
                 <full_dispatch>1</full_dispatch>
-                <api_detect>1</api_detect>
-                <encryption>0</encryption>
-                <encryption_key></encryption_key>
                 <continue_shopping_to_previous>1</continue_shopping_to_previous>
                 <direct_output>magebridge/output/test4</direct_output>
                 <disable_form_key>1</disable_form_key>
-                <autoadd_allowed_ips>1</autoadd_allowed_ips>
             </settings>
         </magebridge>
     </default>
