@@ -374,129 +374,143 @@ class Yireo_MageBridge_Model_Core
         // Loop through the stores to modify data
         foreach ($stores as $store) {
 
+            /** @var Mage_Core_Model_Store $store */
+
             // Do not override stores outside this website
             if ($store->getWebsiteId() != $websiteId) {
                 continue;
             }
 
-            //Mage::getSingleton('magebridge/debug')->notice('Override store configuration "'.$store->getCode().'"');
             try {
-
-                $config_values = array();
-
-                // If URL-modification is disabled, exit
-                if ($this->getMetaData('modify_url') == 1) {
-
-                    // Get the current store
-                    //Mage::getSingleton('magebridge/debug')->notice('Set URLs of store "'.$store->getName().'" to '.$this->getMageBridgeSefUrl());
-
-                    // Collect the unmodified original URLs from the Configuration
-                    $urls = array();
-                    $urls['web/unsecure/base_url'] = $store->getConfig('web/unsecure/base_url');
-                    $urls['web/unsecure/base_link_url'] = $store->getConfig('web/unsecure/base_link_url');
-                    $urls['web/unsecure/base_media_url'] = $store->getConfig('web/unsecure/base_media_url');
-                    $urls['web/unsecure/base_skin_url'] = $store->getConfig('web/unsecure/base_skin_url');
-                    $urls['web/unsecure/base_js_url'] = $store->getConfig('web/unsecure/base_js_url');
-                    $urls['web/secure/base_url'] = $store->getConfig('web/secure/base_url');
-                    $urls['web/secure/base_link_url'] = $store->getConfig('web/secure/base_link_url');
-                    $urls['web/secure/base_media_url'] = $store->getConfig('web/secure/base_media_url');
-                    $urls['web/secure/base_skin_url'] = $store->getConfig('web/secure/base_skin_url');
-                    $urls['web/secure/base_js_url'] = $store->getConfig('web/secure/base_js_url');
-
-                    // Store the unmodified URLs in the registry for later reference
-                    if (Mage::registry('original_urls') == null) {
-                        Mage::register('original_urls', $urls);
-                    }
-
-                    // Proxy static content as well
-                    /**
-                     * if($store->getConfig('magebridge/settings/bridge_all') == 1) {
-                     * $proxy = 'index.php?option=com_magebridge&view=proxy&url=';
-                     * $base_media_url = str_replace($base_url, $proxy, $base_media_url);
-                     * $base_skin_url = str_replace($base_url, $proxy, $base_skin_url);
-                     * $base_js_url = str_replace($base_url, $proxy, $base_js_url);
-                     * }
-                     */
-
-                    // Set the main URL to Joomla! instead of Magento
-                    $urls['web/unsecure/base_url'] = $this->getMageBridgeSefUrl();
-                    $urls['web/secure/base_url'] = $this->getMageBridgeSefUrl();
-                    $urls['web/unsecure/base_link_url'] = $this->getMageBridgeSefUrl();
-                    $urls['web/secure/base_link_url'] = $this->getMageBridgeSefUrl();
-
-                    // Correct HTTP and HTTPS URLs in all URLs
-                    $has_ssl = Mage::getSingleton('magebridge/core')->getMetaData('has_ssl');
-                    foreach ($urls as $index => $url) {
-                        if ($has_ssl == true) {
-                            $urls[$index] = preg_replace('/^http:/', 'https:', $url);
-                        } else {
-                            $urls[$index] = preg_replace('/^https:/', 'http:', $url);
-                        }
-                    }
-
-                    // Rewrite of configuration values
-                    $config_values['web/unsecure/base_url'] = $urls['web/unsecure/base_url'];
-                    $config_values['web/unsecure/base_link_url'] = $urls['web/unsecure/base_link_url'];
-                    $config_values['web/unsecure/base_media_url'] = $urls['web/unsecure/base_media_url'];
-                    $config_values['web/unsecure/base_skin_url'] = $urls['web/unsecure/base_skin_url'];
-                    $config_values['web/unsecure/base_js_url'] = $urls['web/unsecure/base_js_url'];
-                    $config_values['web/secure/base_url'] = $urls['web/secure/base_url'];
-                    $config_values['web/secure/base_link_url'] = $urls['web/secure/base_link_url'];
-                    $config_values['web/secure/base_media_url'] = $urls['web/secure/base_media_url'];
-                    $config_values['web/secure/base_skin_url'] = $urls['web/secure/base_skin_url'];
-                    $config_values['web/secure/base_js_url'] = $urls['web/secure/base_js_url'];
-                }
-
-                // Apply other settings
-                $config_values['web/seo/use_rewrites'] = 1;
-                $config_values['web/session/use_remote_addr'] = 0;
-                $config_values['web/session/use_http_via'] = 0;
-                $config_values['web/session/use_http_x_forwarded_for'] = 0;
-                $config_values['web/session/use_http_user_agent'] = 0;
-                $config_values['web/cookie/cookie_domain'] = '';
-
-                // Rewrite specific values
-                if ($this->getMetaData('joomla_conf_lifetime') > 0) $config_values['web/cookie/cookie_lifetime'] = $this->getMetaData('joomla_conf_lifetime');
-                if ($this->getMetaData('customer_group') > 0) $config_values['customer/create_account/default_group'] = $this->getMetaData('customer_group');
-                if (strlen($this->getMetaData('theme')) > 0) {
-                    $theme = $this->getMetaData('theme');
-                    if (preg_match('/([a-zA-Z0-9\-\_]+)\/([a-zA-Z0-9\-\_]+)/', $theme, $match)) {
-                        $config_values['design/package/name'] = $match[1];
-                        $config_values['design/theme/default'] = $match[2];
-                        $config_values['design/theme/skin'] = $match[2];
-                        $config_values['design/theme/locale'] = $match[2];
-                        $config_values['design/theme/layout'] = $match[2];
-                        $config_values['design/theme/template'] = $match[2];
-                    } else {
-                        $config_values['design/theme/default'] = $theme;
-                        $config_values['design/theme/skin'] = $theme;
-                        $config_values['design/theme/locale'] = $theme;
-                        $config_values['design/theme/layout'] = $theme;
-                        $config_values['design/theme/template'] = $theme;
-                    }
-                }
-
-                // Rewrite these values for all stores
-                foreach ($config_values as $path => $value) {
-                    if (method_exists($store, 'overrideCachedConfig')) {
-                        $store->overrideCachedConfig($path, $value);
-                    }
-                }
-
-                // Make sure we do not use SID= in the URL
-                Mage::getModel('core/url')->setUseSession(false);
-                Mage::getModel('core/url')->setUseSessionVar(true);
-                //Mage::getSingleton('magebridge/debug')->notice('URL test 1: '.Mage::app()->getRequest()->getHttpHost());
-                //Mage::getSingleton('magebridge/debug')->notice('URL test 2: '.Mage::helper('core/url')->getCurrentUrl());
-                //Mage::getSingleton('magebridge/debug')->notice('URL test 3: '.Mage::helper('catalog/product')->getProductUrl(17));
-                //Mage::getSingleton('magebridge/debug')->notice('URL test 4: '.$this->getRequestUrl());
-
+                $this->setConfigPerStore($store);
             } catch (Exception $e) {
                 Mage::getSingleton('magebridge/debug')->error('Unable to modify configuration: ' . $e->getMessage());
             }
         }
 
         return true;
+    }
+
+    /**
+     * @param Mage_Core_Model_Store $store
+     */
+    protected function setConfigPerStore(Mage_Core_Model_Store $store)
+    {
+        //Mage::getSingleton('magebridge/debug')->notice('Override store configuration "'.$store->getCode().'"');
+        $config_values = array();
+
+        // If URL-modification is disabled, exit
+        if ($this->getMetaData('modify_url') == 1) {
+
+            // Get the current store
+            //Mage::getSingleton('magebridge/debug')->notice('Set URLs of store "'.$store->getName().'" to '.$this->getMageBridgeSefUrl());
+
+            // Collect the unmodified original URLs from the Configuration
+            $urls = array();
+            $urls['web/unsecure/base_url'] = $store->getConfig('web/unsecure/base_url');
+            $urls['web/unsecure/base_link_url'] = $store->getConfig('web/unsecure/base_link_url');
+            $urls['web/unsecure/base_media_url'] = $store->getConfig('web/unsecure/base_media_url');
+            $urls['web/unsecure/base_skin_url'] = $store->getConfig('web/unsecure/base_skin_url');
+            $urls['web/unsecure/base_js_url'] = $store->getConfig('web/unsecure/base_js_url');
+            $urls['web/secure/base_url'] = $store->getConfig('web/secure/base_url');
+            $urls['web/secure/base_link_url'] = $store->getConfig('web/secure/base_link_url');
+            $urls['web/secure/base_media_url'] = $store->getConfig('web/secure/base_media_url');
+            $urls['web/secure/base_skin_url'] = $store->getConfig('web/secure/base_skin_url');
+            $urls['web/secure/base_js_url'] = $store->getConfig('web/secure/base_js_url');
+
+            // Store the unmodified URLs in the registry for later reference
+            if (Mage::registry('original_urls') == null) {
+                Mage::register('original_urls', $urls);
+            }
+
+            // Proxy static content as well
+            /**
+             * if($store->getConfig('magebridge/settings/bridge_all') == 1) {
+             * $proxy = 'index.php?option=com_magebridge&view=proxy&url=';
+             * $base_media_url = str_replace($base_url, $proxy, $base_media_url);
+             * $base_skin_url = str_replace($base_url, $proxy, $base_skin_url);
+             * $base_js_url = str_replace($base_url, $proxy, $base_js_url);
+             * }
+             */
+
+            // Set the main URL to Joomla! instead of Magento
+            $urls['web/unsecure/base_url'] = $this->getMageBridgeSefUrl();
+            $urls['web/secure/base_url'] = $this->getMageBridgeSefUrl();
+            $urls['web/unsecure/base_link_url'] = $this->getMageBridgeSefUrl();
+            $urls['web/secure/base_link_url'] = $this->getMageBridgeSefUrl();
+
+            // Correct HTTP and HTTPS URLs in all URLs
+            $has_ssl = Mage::getSingleton('magebridge/core')->getMetaData('has_ssl');
+            foreach ($urls as $index => $url) {
+                if ($has_ssl == true) {
+                    $urls[$index] = preg_replace('/^http:/', 'https:', $url);
+                } else {
+                    $urls[$index] = preg_replace('/^https:/', 'http:', $url);
+                }
+            }
+
+            // Rewrite of configuration values
+            $config_values['web/unsecure/base_url'] = $urls['web/unsecure/base_url'];
+            $config_values['web/unsecure/base_link_url'] = $urls['web/unsecure/base_link_url'];
+            $config_values['web/unsecure/base_media_url'] = $urls['web/unsecure/base_media_url'];
+            $config_values['web/unsecure/base_skin_url'] = $urls['web/unsecure/base_skin_url'];
+            $config_values['web/unsecure/base_js_url'] = $urls['web/unsecure/base_js_url'];
+            $config_values['web/secure/base_url'] = $urls['web/secure/base_url'];
+            $config_values['web/secure/base_link_url'] = $urls['web/secure/base_link_url'];
+            $config_values['web/secure/base_media_url'] = $urls['web/secure/base_media_url'];
+            $config_values['web/secure/base_skin_url'] = $urls['web/secure/base_skin_url'];
+            $config_values['web/secure/base_js_url'] = $urls['web/secure/base_js_url'];
+        }
+
+        // Apply other settings
+        $config_values['web/seo/use_rewrites'] = 1;
+        $config_values['web/session/use_remote_addr'] = 0;
+        $config_values['web/session/use_http_via'] = 0;
+        $config_values['web/session/use_http_x_forwarded_for'] = 0;
+        $config_values['web/session/use_http_user_agent'] = 0;
+        $config_values['web/cookie/cookie_domain'] = '';
+
+        // Rewrite specific values
+        if ($this->getMetaData('joomla_conf_lifetime') > 0) {
+            $config_values['web/cookie/cookie_lifetime'] = $this->getMetaData('joomla_conf_lifetime');
+        }
+
+        if ($this->getMetaData('customer_group') > 0) {
+            $config_values['customer/create_account/default_group'] = $this->getMetaData('customer_group');
+        }
+
+        if (strlen($this->getMetaData('theme')) > 0) {
+            $theme = $this->getMetaData('theme');
+            if (preg_match('/([a-zA-Z0-9\-\_]+)\/([a-zA-Z0-9\-\_]+)/', $theme, $match)) {
+                $config_values['design/package/name'] = $match[1];
+                $config_values['design/theme/default'] = $match[2];
+                $config_values['design/theme/skin'] = $match[2];
+                $config_values['design/theme/locale'] = $match[2];
+                $config_values['design/theme/layout'] = $match[2];
+                $config_values['design/theme/template'] = $match[2];
+            } else {
+                $config_values['design/theme/default'] = $theme;
+                $config_values['design/theme/skin'] = $theme;
+                $config_values['design/theme/locale'] = $theme;
+                $config_values['design/theme/layout'] = $theme;
+                $config_values['design/theme/template'] = $theme;
+            }
+        }
+
+        // Rewrite these values for all stores
+        foreach ($config_values as $path => $value) {
+            if (method_exists($store, 'overrideCachedConfig')) {
+                $store->overrideCachedConfig($path, $value);
+            }
+        }
+
+        // Make sure we do not use SID= in the URL
+        Mage::getModel('core/url')->setUseSession(false);
+        Mage::getModel('core/url')->setUseSessionVar(true);
+        //Mage::getSingleton('magebridge/debug')->notice('URL test 1: '.Mage::app()->getRequest()->getHttpHost());
+        //Mage::getSingleton('magebridge/debug')->notice('URL test 2: '.Mage::helper('core/url')->getCurrentUrl());
+        //Mage::getSingleton('magebridge/debug')->notice('URL test 3: '.Mage::helper('catalog/product')->getProductUrl(17));
+        //Mage::getSingleton('magebridge/debug')->notice('URL test 4: '.$this->getRequestUrl());
     }
 
     /**
