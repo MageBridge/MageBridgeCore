@@ -80,16 +80,7 @@ class Yireo_MageBridge_Model_Core
         set_exception_handler('Yireo_MageBridge_ExceptionHandler');
 
         // Try to initialize the session
-        try {
-            $session = Mage::getSingleton('core/session', array('name' => 'frontend'));
-            $session->start();
-            Mage::getSingleton('magebridge/debug')->notice('Core session started: ' . $session->getSessionId());
-        } catch (Exception $e) {
-            Mage::getSingleton('magebridge/debug')->error('Unable to instantiate core/session: ' . $e->getMessage());
-            $_COOKIE = [];
-            $_SESSION = [];
-            return false;
-        }
+        $this->reinitializeSession();
 
         // Optionally disable form_key security
         $this->disableFormKey();
@@ -117,7 +108,28 @@ class Yireo_MageBridge_Model_Core
     }
 
     /**
+     * @return bool
+     */
+    protected function reinitializeSession()
+    {
+        try {
+            $session = Mage::getSingleton('core/session', array('name' => 'frontend'));
+            $session->start();
+            Mage::getSingleton('magebridge/debug')->notice('Core session started: ' . $session->getSessionId());
+        } catch (Exception $e) {
+            Mage::getSingleton('magebridge/debug')->error('Unable to instantiate core/session: ' . $e->getMessage());
+            $_COOKIE = [];
+            $_SESSION = [];
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
      * Disable the form key if configured
+     *
+     * @return bool
      */
     protected function disableFormKey()
     {
@@ -140,6 +152,8 @@ class Yireo_MageBridge_Model_Core
 
     /**
      * Post-login a Joomla! user
+     *
+     * @return bool
      */
     protected function postLoginUser()
     {
@@ -163,6 +177,8 @@ class Yireo_MageBridge_Model_Core
 
     /**
      * Workaround for persistent logins
+     *
+     * @return bool
      */
     protected function handlePersistentLogins()
     {
@@ -191,7 +207,7 @@ class Yireo_MageBridge_Model_Core
     }
 
     /**
-     *
+     * Rewrite non SEF URLs
      */
     protected function rewriteNonSefUrls()
     {
