@@ -110,18 +110,7 @@ class Yireo_MageBridge_Model_Core
 
         // Set the magebridge-URLs
         $this->setConfig();
-
-        // Post-login a Joomla! user
-        $joomla_user_email = $this->getMetaData('joomla_user_email');
-        if (!empty($joomla_user_email) && Mage::getModel('customer/session')->isLoggedIn() == false) {
-            $data = array(
-                'email' => $joomla_user_email,
-                'application' => 'site',
-                'disable_events' => true,
-            );
-            Mage::getModel('magebridge/user_api')->login($data);
-        }
-
+        $this->postLoginUser();
         $this->handlePersistentLogins();
         $this->setCurrentStore();
         $this->rewriteNonSefCategoryUrls();
@@ -133,6 +122,29 @@ class Yireo_MageBridge_Model_Core
         //Mage::getSingleton('magebridge/debug')->notice('Quote: '.$session->getQuoteId());
 
         return true;
+    }
+
+    /**
+     * Post-login a Joomla! user
+     */
+    protected function postLoginUser()
+    {
+        $joomlaUserEmail = $this->getMetaData('joomla_user_email');
+        if (empty($joomlaUserEmail)) {
+            return false;
+        }
+
+        if (Mage::getModel('customer/session')->isLoggedIn()) {
+            return false;
+        }
+
+        $data = array(
+            'email' => $joomlaUserEmail,
+            'application' => 'site',
+            'disable_events' => true,
+        );
+
+        Mage::getModel('magebridge/user_api')->login($data);
     }
 
     /**
