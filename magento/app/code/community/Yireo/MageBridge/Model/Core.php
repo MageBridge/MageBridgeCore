@@ -596,7 +596,7 @@ class Yireo_MageBridge_Model_Core
         /** @var Yireo_MageBridge_Model_Config_AllowedIps $allowedIps */
         $allowedIps = Mage::getModel('magebridge/config_allowedIps', $this->getStoreObject());
 
-        if ($allowedIps->allowAutoConfig()) {
+        if ($allowedIps->allowAutoConfig() === false) {
             return false;
         }
 
