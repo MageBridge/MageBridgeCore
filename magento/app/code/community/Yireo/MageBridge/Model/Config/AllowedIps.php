@@ -60,7 +60,6 @@ class Yireo_MageBridge_Model_Config_AllowedIps
         }
 
         $currentIps[] = $ip;
-        array_unique($currentIps);
 
         return $currentIps;
     }
@@ -89,6 +88,8 @@ class Yireo_MageBridge_Model_Config_AllowedIps
      */
     public function save($ips = [])
     {
+        $ips = array_unique($ips);
+
         $this->storeConfig->save('api_allowed_ips', implode(',', $ips));
     }
 

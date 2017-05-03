@@ -562,31 +562,44 @@ class Yireo_MageBridge_Model_Core
         );
 
         // Check the Joomla! settings
-        $refresh_cache = false;
+        $refreshCache = false;
         foreach ($keys as $meta_key => $key) {
 
             $rt = $this->saveConfig($key, $this->getMetaData($meta_key), 'default', 0);
-            if ($rt == true) {
-                $refresh_cache = true;
+            if ($rt === true) {
+                $refreshCache = true;
             }
 
             $rt = $this->saveConfig($key, $this->getMetaData($meta_key), 'websites', $this->getMetaData('website'));
-            if ($rt == true) {
-                $refresh_cache = true;
+            if ($rt === true) {
+                $refreshCache = true;
             }
         }
 
-        // Automatically append current host to allowed IPs (which is save because API authentication already succeeded)
-        /** @var Yireo_MageBridge_Model_Config_AllowedIps $allowedIps */
-        $allowedIps = Mage::getModel('magebridge/config_allowedIps', $this->getStoreObject());
-        $currentIps = $allowedIps->appendUrlAsIp($this->getMetaData('api_url'));
-        $allowedIps->save($currentIps);
-
         // Refresh the cache
-        if ($refresh_cache == true && Mage::app()->useCache('config') && Mage::helper('magebridge')->useApiDetect() == true) {
+        if ($refreshCache == true && Mage::app()->useCache('config') && Mage::helper('magebridge')->useApiDetect() == true) {
             Mage::getSingleton('magebridge/debug')->notice('Refresh configuration cache');
             Mage::getConfig()->removeCache();
         }
+
+        // Automatically append current host to allowed IPs (which is save because API authentication already succeeded)
+        $this->autosaveAllowedIps();
+    }
+
+    /**
+     * Automatically save allowed IPs settings
+     */
+    protected function autosaveAllowedIps()
+    {
+        /** @var Yireo_MageBridge_Model_Config_AllowedIps $allowedIps */
+        $allowedIps = Mage::getModel('magebridge/config_allowedIps', $this->getStoreObject());
+
+        $currentIps = $allowedIps->appendUrlAsIp($this->getMetaData('api_url'));
+
+        $currentIps[] = $_SERVER['REMOTE_ADDR'];
+        $currentIps[] = $_SERVER['SERVER_ADDR'];
+
+        $allowedIps->save($currentIps);
     }
 
     /**
