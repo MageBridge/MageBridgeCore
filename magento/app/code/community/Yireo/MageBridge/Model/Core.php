@@ -133,11 +133,9 @@ class Yireo_MageBridge_Model_Core
      */
     protected function disableFormKey()
     {
-        if (Mage::getStoreConfig('magebridge/settings/disable_form_key') !== 1) {
-            return false;
-        }
+        $disableFormKey = (bool) Mage::getStoreConfig('magebridge/settings/disable_form_key');
 
-        if (strstr($this->getRequestUrl(), 'checkout/cart/add')) {
+        if ($disableFormKey === false && !strstr($this->getRequestUrl(), 'checkout/cart/add')) {
             return false;
         }
 
