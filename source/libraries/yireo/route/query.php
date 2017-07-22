@@ -41,13 +41,19 @@ class YireoRouteQuery
 
 		if (empty($items))
 		{
-			$application = JFactory::getApplication();
+			$cache = JFactory::getCache();
 			$component = JComponentHelper::getComponent($componentName);
-			$menu = $application->getMenu();
-			$items = $menu->getItems('component_id', $component->id);
+			$items = $cache->call(array(self::class, 'getMenuItemsByComponentId'), $component->id);
 		}
 
 		return $items;
+	}
+
+	static public function getMenuItemsByComponentId($componentId)
+	{
+		$application = JFactory::getApplication();
+		$menu = $application->getMenu();
+		return $menu->getItems('component_id', $componentId);
 	}
 
 	/**
