@@ -28,9 +28,29 @@ class YireoRouteQuery
 	protected $segments = array();
 
 	/**
+	 * @var array
+	 */
+	protected $query = array();
+
+	/**
 	 * @var string
 	 */
-	protected $query;
+	protected $cacheId = '';
+
+	/**
+	 * @return mixed
+	 */
+	public function getSegmentsFromCache()
+	{
+		/** @var JCache $cache */
+		$cache = $this->getCache();
+		$cacheId = $this->getCacheId();
+		$segments = $cache->get($cacheId);
+
+		if (is_array($segments) && !empty($segments)) {
+			return $segments;
+		}
+	}
 
 	/**
 	 * @return array|null
@@ -41,19 +61,58 @@ class YireoRouteQuery
 
 		if (empty($items))
 		{
-			$cache = JFactory::getCache();
+			/** @var JCache $cache */
+			$cache = $this->getCache();
 			$component = JComponentHelper::getComponent($componentName);
-			$items = $cache->call(array(self::class, 'getMenuItemsByComponentId'), $component->id);
+			$cacheId = 'menuitems_' . $component->id;
+			$items = $cache->get($cacheId);
+		}
+
+		if (empty($items))
+		{
+			$application = JFactory::getApplication();
+			$menu = $application->getMenu();
+			$items = $menu->getItems('component_id', $component->id);
+			$cache->store($items, $cacheId);
 		}
 
 		return $items;
 	}
 
-	static public function getMenuItemsByComponentId($componentId)
+	/**
+	 * @return string
+	 */
+	public function getCacheId()
 	{
-		$application = JFactory::getApplication();
-		$menu = $application->getMenu();
-		return $menu->getItems('component_id', $componentId);
+		if (!empty($this->cacheId))
+		{
+			return $this->cacheId;
+		}
+
+		if (empty($this->query) || !is_array($this->query))
+		{
+			$this->cacheId = 'empty';
+			return 'empty';
+		}
+
+		$cacheId = implode('_', $this->query);
+		$cacheId = md5($cacheId);
+		$this->cacheId = $cacheId;
+
+		return $this->cacheId;
+	}
+
+	/**
+	 * @return JCacheController
+	 */
+	private function getCache()
+	{
+		/** @var JCache $cache */
+		$cache = JFactory::getCache('lib_yireo_router', '');
+		$cache->setCaching(true);
+		$cache->setLifeTime(86400);
+
+		return $cache;
 	}
 
 	/**
@@ -61,6 +120,15 @@ class YireoRouteQuery
 	 */
 	public function getSegments()
 	{
+		if (empty($this->segments))
+		{
+			return $this->segments;
+		}
+
+		$cache = $this->getCache();
+		$cacheId = $this->getCacheId();
+		$cache->store($this->segments, $cacheId);
+
 		return $this->segments;
 	}
 
@@ -92,7 +160,7 @@ class YireoRouteQuery
 	}
 
 	/**
-	 * @return string
+	 * @return array
 	 */
 	public function getData()
 	{
