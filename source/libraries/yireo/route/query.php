@@ -262,19 +262,19 @@ class YireoRouteQuery
      */
     public function matchValue($name, $item, $type = null, $allowEmpty = true)
     {
-        if (empty($type) && preg_match('/\_id$/', $name))
+        if (empty($type) && substr($name, -strlen('_id')) == '_id')
         {
             $type = 'int';
         }
 
         $currentValue = $this->getValue($name);
         
-        if ($allowEmpty == false && empty($currentValue))
+        if ($allowEmpty === false && empty($currentValue))
         {
             return false;
         }
 
-        if ($type == 'int' && (int) $currentValue == (int) $this->getValue($name, $item))
+        if ($type == 'int' && (int) $currentValue === (int) $this->getValue($name, $item))
         {
             return true;
         }
