@@ -34,7 +34,7 @@ class Yireo_MageBridge_Model_Search extends Mage_Core_Model_Abstract
                 Mage::getSingleton('magebridge/debug')->error('Empty search-query');
                 return false;
 
-            } elseif(Mage::helper('core/string')->strlen($text < $helper->getMinQueryLength())) {
+            } elseif(Mage::helper('core/string')->strlen($text) < $helper->getMinQueryLength()) {
                 Mage::getSingleton('magebridge/debug')->error('Search-query shorted than minimum length');
                 return false;
             }
