@@ -415,11 +415,6 @@ class YireoHelper
 
 	public static function strlen($string)
 	{
-		if (function_exists('mb_strlen'))
-		{
-			return mb_strlen($string);
-		}
-
 		return strlen($string);
 	}
 }

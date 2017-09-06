@@ -427,7 +427,7 @@ class YireoModel extends YireoCommonModel
 	 * Method to override a default user-state value
 	 *
 	 * @param string $key
-	 * @param mixed  $value
+	 * @param mixed $value
 	 *
 	 * @return bool
 	 */
@@ -825,25 +825,32 @@ class YireoModel extends YireoCommonModel
 			}
 		}
 
-		// Bind the fields to the table
-		if (!$this->table->bind($data))
+		try
 		{
-			$this->saveTmpSession($data);
-			$this->throwDbException();
-		}
+			// Bind the fields to the table
+			if (!$this->table->bind($data))
+			{
+				$this->saveTmpSession($data);
+				$this->throwDbException();
+			}
 
-		// Make sure the table is valid
-		if (!$this->table->check())
-		{
-			$this->saveTmpSession($data);
-			$this->throwDbException();
-		}
+			// Make sure the table is valid
+			if (!$this->table->check())
+			{
+				$this->saveTmpSession($data);
+				$this->throwDbException();
+			}
 
-		// Store the table to the database
-		if (!$this->table->store())
+			// Store the table to the database
+			if (!$this->table->store())
+			{
+				$this->saveTmpSession($data);
+				$this->throwDbException();
+			}
+		}
+		catch (Exception $e)
 		{
-			$this->saveTmpSession($data);
-			$this->throwDbException();
+			throw $e;
 		}
 
 		// Try to fetch the last ID from the table
@@ -871,7 +878,7 @@ class YireoModel extends YireoCommonModel
 			return false;
 		}
 
-		$tableName = $this->table->getTableName();
+		$tableName  = $this->table->getTableName();
 		$primaryKey = $this->table->getKeyName();
 
 		if (empty($tableName))
@@ -885,7 +892,7 @@ class YireoModel extends YireoCommonModel
 		}
 
 		\Joomla\Utilities\ArrayHelper::toInteger($cid);
-		$cids  = implode(',', $cid);
+		$cids = implode(',', $cid);
 
 		$query = $this->_db->getQuery(true);
 		$query->delete($this->_db->quoteName($tableName));
@@ -905,7 +912,7 @@ class YireoModel extends YireoCommonModel
 	 * Method to (un)publish an item
 	 *
 	 * @param array $cid
-	 * @param int   $publish
+	 * @param int $publish
 	 *
 	 * @return bool
 	 */
@@ -924,9 +931,9 @@ class YireoModel extends YireoCommonModel
 	/**
 	 * Method to move an item
 	 *
-	 * @param mixed  $direction
+	 * @param mixed $direction
 	 * @param string $field_name
-	 * @param int    $field_id
+	 * @param int $field_id
 	 *
 	 * @return bool
 	 */
@@ -957,7 +964,7 @@ class YireoModel extends YireoCommonModel
 	/**
 	 * Method to reorder items
 	 *
-	 * @param array  $cid
+	 * @param array $cid
 	 * @param string $order
 	 *
 	 * @return bool
@@ -1030,7 +1037,7 @@ class YireoModel extends YireoCommonModel
 	/**
 	 * Method to toggle a certain field
 	 *
-	 * @param int    $id
+	 * @param int $id
 	 * @param string $name
 	 * @param string $value
 	 *
@@ -1391,8 +1398,8 @@ class YireoModel extends YireoCommonModel
 	/**
 	 * Method to add a new WHERE argument
 	 *
-	 * @param mixed  $where WHERE statement in the form of an array ($name, $value) or string
-	 * @param string $type  Type of WHERE statement. Either "is" or "like".
+	 * @param mixed $where WHERE statement in the form of an array ($name, $value) or string
+	 * @param string $type Type of WHERE statement. Either "is" or "like".
 	 *
 	 * @return $this
 	 */

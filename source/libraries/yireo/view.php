@@ -87,7 +87,7 @@ class YireoView extends YireoCommonView
 	 * @var null|YireoTable
 	 */
 	protected $table;
-	
+
 	/**
 	 * @var null|YireoTable
 	 * @deprecated Use $this->table instead
@@ -135,10 +135,10 @@ class YireoView extends YireoCommonView
 		}
 
 		// Insert the model & table
-		$this->model = $this->getModel(null, false);
+		$this->model  = $this->getModel(null, false);
 		$this->_model = $this->model;
-		
-        if (!empty($this->model) && method_exists($this->model, 'getTable'))
+
+		if (!empty($this->model) && method_exists($this->model, 'getTable'))
 		{
 			$useTable = false;
 
@@ -156,7 +156,7 @@ class YireoView extends YireoCommonView
 
 			if ($useTable === true)
 			{
-				$this->table = $this->model->getTable();
+				$this->table  = $this->model->getTable();
 				$this->_table = $this->table;
 			}
 		}
@@ -397,14 +397,14 @@ class YireoView extends YireoCommonView
 		$isNew       = ($this->model->getId() > 0) ? true : false;
 
 		// Override in case of copying
-		if ($this->input->getCmd('task') == 'copy')
+		if ($this->input->getCmd('task') === 'copy')
 		{
 			$this->item->$primary_key = 0;
-			$isNew = true;
+			$isNew                    = true;
 		}
 
 		// If there is a key, fetch the data
-		if ($isNew == false)
+		if ($isNew === false)
 		{
 			// Extra checks in the backend
 			if ($this->app->isAdmin())
@@ -424,27 +424,9 @@ class YireoView extends YireoCommonView
 			}
 
 			// Clean data
-			if ($this->app->isAdmin() == false || ($this->input->getCmd('task') != 'edit' && $this->_viewParent != 'form'))
+			if ($this->app->isAdmin() === false || ($this->input->getCmd('task') !== 'edit' && $this->_viewParent !== 'form'))
 			{
-				if ($this->autoclean == true)
-				{
-					JFilterOutput::objectHTMLSafe($this->item, ENT_QUOTES, 'text');
-
-					if (isset($this->item->title))
-					{
-						$this->item->title = htmlspecialchars($this->item->title);
-					}
-
-					if (isset($this->item->text))
-					{
-						$this->item->text = htmlspecialchars($this->item->text);
-					}
-
-					if (isset($this->item->description))
-					{
-						$this->item->description = htmlspecialchars($this->item->description);
-					}
-				}
+				$this->autocleanItem();
 			}
 		}
 
@@ -454,7 +436,49 @@ class YireoView extends YireoCommonView
 			$this->model->hit();
 		}
 
-		// Assign the published-list
+		$this->assignList();
+	}
+
+	/**
+	 *
+	 * @return bool
+	 */
+	private function autocleanItem()
+	{
+		if ($this->autoclean === false)
+		{
+			return false;
+		}
+
+		JFilterOutput::objectHTMLSafe($this->item, ENT_QUOTES, 'text');
+
+		if (isset($this->item->title))
+		{
+			$this->item->title = htmlspecialchars($this->item->title);
+		}
+
+		if (isset($this->item->text))
+		{
+			$this->item->text = htmlspecialchars($this->item->text);
+		}
+
+		if (isset($this->item->description))
+		{
+			$this->item->description = htmlspecialchars($this->item->description);
+		}
+
+		return true;
+	}
+
+	private function assignList()
+	{
+		$this->assignListPublished();
+		$this->assignListAccess();
+		$this->assignListOrdering();
+	}
+
+	private function assignListPublished()
+	{
 		if (isset($this->item->published))
 		{
 			$this->lists['published'] = YireoFormFieldPublished::getFieldInput($this->item->published);
@@ -463,8 +487,10 @@ class YireoView extends YireoCommonView
 		{
 			$this->lists['published'] = null;
 		}
+	}
 
-		// Assign the access-list
+	private function assignListAccess()
+	{
 		if (isset($this->item->access))
 		{
 			if (class_exists('JHtmlAccess'))
@@ -480,7 +506,12 @@ class YireoView extends YireoCommonView
 		{
 			$this->lists['access'] = null;
 		}
+	}
 
+	/**
+	 */
+	private function assignListOrdering()
+	{
 		$ordering = (method_exists($this->model, 'getOrderByDefault')) ? $this->model->getOrderByDefault() : null;
 
 		if ($this->app->isAdmin() && !empty($ordering) && $ordering == 'ordering')
@@ -557,7 +588,7 @@ class YireoView extends YireoCommonView
 	 * @param bool $generateFatalError
 	 *
 	 * @return mixed
-	 * 
+	 *
 	 * @throws Yireo\Exception\View\ModelNotFound
 	 */
 	public function getModel($name = null, $generateFatalError = true)
@@ -608,8 +639,8 @@ class YireoView extends YireoCommonView
 		if ($type == 'orderby')
 		{
 			$field = $this->get('OrderByDefault');
-			$html .= JHtml::_('grid.sort', $title, $field, $this->lists['order_Dir'], $this->lists['order']);
-			$html .= JHtml::_('grid.order', $this->items);
+			$html  .= JHtml::_('grid.sort', $title, $field, $this->lists['order_Dir'], $this->lists['order']);
+			$html  .= JHtml::_('grid.order', $this->items);
 		}
 
 		return $html;
@@ -620,8 +651,8 @@ class YireoView extends YireoCommonView
 	 *
 	 * @param string $type
 	 * @param object $item
-	 * @param int    $i
-	 * @param int    $n
+	 * @param int $i
+	 * @param int $n
 	 *
 	 * @return string
 	 */
@@ -710,7 +741,7 @@ class YireoView extends YireoCommonView
 	 * Add a layout to this view
 	 *
 	 * @param string $name
-	 * @param array  $variables
+	 * @param array $variables
 	 *
 	 * @return string
 	 */
