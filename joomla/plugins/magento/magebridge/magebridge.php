@@ -23,6 +23,11 @@ require_once JPATH_SITE . '/components/com_magebridge/helpers/loader.php';
  */
 class PlgMagentoMageBridge extends JPlugin
 {
+    /**
+     * @var JApplicationWeb
+     */
+    protected $app;
+
 	/**
 	 * Get the MageBridge user-class
 	 *
@@ -87,11 +92,11 @@ class PlgMagentoMageBridge extends JPlugin
 		// - remember = 1
 		// - return = {URL}
 		// - entry_url = {URL}
-		$options = array('disable_bridge' => true, 'action' => 'core.login.site');
+		$options = array('disable_bridge' => true, 'action' => 'core.login.site', 'clientid' => $this->app->getClientId());
 
 		// Call the Joomla! event "onLogoutUser"
 		JPluginHelper::importPlugin('user');
-		JFactory::getApplication()->triggerEvent('onUserLogout', array($customer, $options));
+		$this->app->triggerEvent('onUserLogout', array($customer, $options));
 
 		return true;
 	}
@@ -323,7 +328,7 @@ class PlgMagentoMageBridge extends JPlugin
             if (isset($customer['is_subscribed']))
             {
         		JPluginHelper::importPlugin('magebridgenewsletter');
-		        JFactory::getApplication()->triggerEvent('onNewsletterSubscribe', array($user, (bool)$customer['is_subscribed']));
+		        $this->app->triggerEvent('onNewsletterSubscribe', array($user, (bool)$customer['is_subscribed']));
             }
 
 			// Return the user ID for convenience
@@ -390,7 +395,7 @@ class PlgMagentoMageBridge extends JPlugin
 
 		// Run the newsletter plugins
 		JPluginHelper::importPlugin('magebridgenewsletter');
-		JFactory::getApplication()->triggerEvent('onNewsletterSubscribe', array($user, $state));
+		$this->app->triggerEvent('onNewsletterSubscribe', array($user, $state));
 
 		return true;
 	}

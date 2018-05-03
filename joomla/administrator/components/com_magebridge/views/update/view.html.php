@@ -63,7 +63,7 @@ class MageBridgeViewUpdate extends YireoView
 
 		// Toolbar options
 		JToolBarHelper::custom('home', 'back', '', 'LIB_YIREO_VIEW_TOOLBAR_HOME', false);
-		JToolBarHelper::custom('refresh', 'preview.png', 'preview_f2.png', 'LIB_YIREO_VIEW_TOOLBAR_REFRESH', false);
+		JToolBarHelper::custom('refresh', 'loop', '', 'LIB_YIREO_VIEW_TOOLBAR_REFRESH', false);
 		JToolBarHelper::custom('updateQueries', 'archive', '', 'LIB_YIREO_VIEW_TOOLBAR_DBUPGRADE', false);
 
 		// Add jQuery for selection effects

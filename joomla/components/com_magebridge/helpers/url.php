@@ -242,7 +242,6 @@ class MageBridgeUrlHelper
 			return $items;
 		}
 
-		//require_once JPATH_SITE.'/includes/application.php'; // 2013-10-13 throws error in J32
 		$app = JFactory::getApplication();
 		$component = JComponentHelper::getComponent('com_magebridge');
 		$menu = $app->getMenu('site');

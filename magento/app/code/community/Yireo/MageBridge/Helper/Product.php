@@ -17,17 +17,17 @@ class Yireo_MageBridge_Helper_Product extends Mage_Core_Helper_Abstract
     /**
      * Helper-method to export a product to the bridge
      *
-     * @access public
      * @param Mage_Catalog_Model_Product
+     *
      * @return array
      */
     public function export($product, $arguments)
     {
         // Debugging 
-        Mage::getSingleton('magebridge/debug')->notice('Exporting product-data: '.$product->getId());
+        Mage::getSingleton('magebridge/debug')->notice('Exporting product-data: ' . $product->getId());
 
         // Correct the price for Grouped Products, by grabbing the first price (credits to Luke Collymore)
-        if($product->getTypeId() == Mage_Catalog_Model_Product_Type::TYPE_GROUPED) {
+        if ($product->getTypeId() == Mage_Catalog_Model_Product_Type::TYPE_GROUPED) {
             $childProductIds = $product->getTypeInstance()->getChildrenIds($product->getId());
             $prices = array();
             foreach ($childProductIds as $ids) {
@@ -41,7 +41,7 @@ class Yireo_MageBridge_Helper_Product extends Mage_Core_Helper_Abstract
         }
 
         // Set the custom size
-        if(!empty($arguments['custom_image_size'])) {
+        if (!empty($arguments['custom_image_size'])) {
             $product->setCustomImageSize((int)$arguments['custom_image_size']);
         }
 
@@ -53,7 +53,7 @@ class Yireo_MageBridge_Helper_Product extends Mage_Core_Helper_Abstract
         $p['category_ids'] = $product->getCategoryIds();
         $p['label'] = htmlentities($product->getName());
 
-        if($product->getCustomImageSize() > 1) {
+        if ($product->getCustomImageSize() > 1) {
             $p['image'] = $this->getImageUrl($product, 'image', $product->getCustomImageSize());
             $p['image_data'] = $this->getImageData($product, 'image', $product->getCustomImageSize());
             $p['small_image'] = $this->getImageUrl($product, 'small_image', $product->getCustomImageSize());
@@ -76,14 +76,14 @@ class Yireo_MageBridge_Helper_Product extends Mage_Core_Helper_Abstract
 
         // Determine the normal price
         $price = $product->getPrice();
-        if($price > 0 == false && $product->getMinimalPrice() > 0) {
+        if ($price > 0 == false && $product->getMinimalPrice() > 0) {
             $price = $product->getMinimalPrice();
         }
 
         // Determine the special price
         $special_price = $product->getSpecialPrice();
         $special_percentage = 0;
-        if($special_price > 0 && $product->getTypeId() == Mage_Catalog_Model_Product_Type::TYPE_BUNDLE) {
+        if ($special_price > 0 && $product->getTypeId() == Mage_Catalog_Model_Product_Type::TYPE_BUNDLE) {
             $special_percentage = $special_price;
             $special_price = $price / 100 * $special_percentage;
         }
@@ -91,14 +91,14 @@ class Yireo_MageBridge_Helper_Product extends Mage_Core_Helper_Abstract
         // Get other prices
         try {
             $final_price = $product->getFinalPrice();
-            if($final_price == $price) $final_price = false;
-        } catch(Exception $e) {
+            if ($final_price == $price) $final_price = false;
+        } catch (Exception $e) {
             $final_price = false;
         }
 
         try {
             $minimal_price = $product->getMinimalPrice();
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             $minimal_price = false;
         }
 
@@ -128,31 +128,18 @@ class Yireo_MageBridge_Helper_Product extends Mage_Core_Helper_Abstract
         $p['has_minimal_price'] = (!empty($p['final_minimal_raw'])) ? 1 : 0;
 
         // Construct search-options
-        if(isset($arguments['search']) && $arguments['search'] == 1) {
-            $attributes = $product->getAttributes();
-            $search = array();
-            foreach($attributes as $attribute){
-                if($attribute->getIsSearchable()) {
-                    $attributeCode = $attribute->getAttributeCode();
-                    $attributeValue = $product->getData($attributeCode);
-                    if(!empty($attributeValue)) {
-                        $search[$attributeCode] = $attributeValue;
-                    }
-                }
-            }
-            $p['search'] = $search;
-        }
+        $this->addSearchOptions($p, $product);
 
         // Construct other options
         $p['url_key'] = $product->getUrlKey();
         $p['parent_product_ids'] = Mage::getModel('catalog/product_type_configurable')->getParentIdsByChild($product->getId());
         $p['store'] = $product->getStoreId();
 
-        if(count($p['category_ids']) == 1 && empty($arguments['category_id'])) {
+        if (count($p['category_ids']) === 1 && empty($arguments['category_id'])) {
             $arguments['category_id'] = $p['category_ids'][0];
         }
 
-        if(isset($arguments['category_id']) && $arguments['category_id'] > 0) {
+        if (isset($arguments['category_id']) && $arguments['category_id'] > 0) {
             $category = Mage::getModel('catalog/category')->load($arguments['category_id']);
             $p['url'] = $product->getUrlPath($category);
         } else {
@@ -160,40 +147,85 @@ class Yireo_MageBridge_Helper_Product extends Mage_Core_Helper_Abstract
         }
 
         // Unset unwanted values
-        unset($p['entity_id']);
-        unset($p['entity_type_id']);
-        unset($p['attribute_set_id']);
+        $this->unsetData($p);
 
         return $p;
     }
 
     /**
-     * @param $product
-     * @param $attributeName
-     * @param $size
+     * @param array $productData
+     * @param Mage_Catalog_Model_Product $product
+     * @return array
+     */
+    protected function addSearchOptions(&$productData, Mage_Catalog_Model_Product $product)
+    {
+        $search = array();
+        if (empty($arguments['search'])) {
+            return $search;
+        }
+
+        $attributes = $product->getAttributes();
+        foreach ($attributes as $attribute) {
+            /** @var Mage_Catalog_Model_Resource_Eav_Attribute $attribute */
+            if (!$attribute->getIsSearchable()) {
+                continue;
+            }
+
+            $attributeCode = $attribute->getAttributeCode();
+            $attributeValue = $product->getData($attributeCode);
+
+            if (empty($attributeValue)) {
+                continue;
+            }
+
+            $search[$attributeCode] = $attributeValue;
+        }
+
+        $productData['search'] = $search;
+    }
+
+    /**
+     * @param array $p
+     */
+    protected function unsetData(&$p)
+    {
+        unset($p['entity_id']);
+        unset($p['entity_type_id']);
+        unset($p['attribute_set_id']);
+    }
+
+    /**
+     * @param Mage_Catalog_Model_Product $product
+     * @param string $attributeName
+     * @param array $size
      *
      * @return mixed
      */
-    public function getImageUrl($product, $attributeName, $size)
+    public function getImageUrl(Mage_Catalog_Model_Product $product, $attributeName, $size = array())
     {
         $imageData = $this->getImageData($product, $attributeName, $size);
         return $imageData['url'];
     }
 
     /**
-     * @param $product
-     * @param $attributeName
-     * @param $size
+     * @param Mage_Catalog_Model_Product $product
+     * @param string $attributeName
+     * @param array $size
      *
      * @return array
      */
-    public function getImageData($product, $attributeName, $size = array())
+    public function getImageData(Mage_Catalog_Model_Product $product, $attributeName, $size = array())
     {
         $imageHelper = Mage::helper('catalog/image');
         $imageHelper->init($product, $attributeName);
 
-        $imageWidth = $imageHelper->getOriginalWidth();
-        $imageHeight = $imageHelper->getOriginalHeight();
+        try {
+            $imageWidth = $imageHelper->getOriginalWidth();
+            $imageHeight = $imageHelper->getOriginalHeight();
+        } catch (Exception $e) {
+            Mage::logException($e);
+            return [];
+        }
 
         if (is_array($size) && count($size) == 1) {
             $imageWidth = $size[0];
@@ -202,15 +234,15 @@ class Yireo_MageBridge_Helper_Product extends Mage_Core_Helper_Abstract
             $imageWidth = $size[0];
             $imageHeight = $size[1];
         } elseif (!empty($size)) {
-            $size = (int) $size;
+            $size = (int)$size;
             if ($size > 0) {
                 $imageWidth = $size;
                 $imageHeight = $size;
             }
         }
 
-        $imageUrl = (string) $imageHelper->resize($imageWidth, $imageHeight);
-    
+        $imageUrl = (string)$imageHelper->resize($imageWidth, $imageHeight);
+
         return array(
             'url' => $imageUrl,
             'width' => $imageWidth,

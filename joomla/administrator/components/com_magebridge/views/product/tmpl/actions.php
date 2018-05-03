@@ -23,16 +23,25 @@ $fieldsetCount = count($form->getFieldsets('actions'));
 	<?php echo JText::_('COM_MAGEBRIDGE_VIEW_PRODUCT_FIELDSET_ACTIONS'); ?>: 
 	<?php echo (!empty($fieldset->label)) ? JText::_($fieldset->label) : $fieldset->name; ?>
 </legend>
-<table class="admintable">
 	<?php foreach($form->getFieldset($fieldset->name) as $field): ?>
-	<tr>
-		<td class="key"><?php echo $field->label; ?></td>
-		<td class="value"><?php echo $field->input; ?></td>
-	</tr>
+    <div class="row-fluid form-group" style="margin-bottom:5px;">
+        <div class="span4 col-md-4">
+		    <?php echo $field->label; ?>
+        </div>
+        <div class="span8 col-md-8">
+		    <?php echo $field->input; ?>
+        </div>
+	</div>
 	<?php endforeach; ?>
-</table>
 </fieldset>
 <?php endforeach; ?>
 <?php else: ?>
 <p><?php echo JText::_('COM_MAGEBRIDGE_PRODUCT_NO_PLUGINS'); ?></p>
 <?php endif; ?>
+
+<style>
+select.form-control {
+    min-width: 100%;
+    width:auto !important;
+}
+</style>

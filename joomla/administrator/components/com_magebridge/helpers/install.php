@@ -4,7 +4,7 @@
  *
  * @author Yireo (info@yireo.com)
  * @package MageBridge
- * @copyright Copyright 2016
+ * @copyright Copyright 2017
  * @license GNU Public License
  * @link https://www.yireo.com
  */
@@ -18,10 +18,7 @@ defined('_JEXEC') or die();
 class MageBridgeInstallHelper
 {
 	/** 
-	 * Method to remove obsolete files
-	 *
-	 * @param null
-	 * @return null
+	 * Method to run update queries
 	 */
 	public function updateQueries()
 	{
@@ -53,6 +50,22 @@ class MageBridgeInstallHelper
 			try {
 				$db->execute();
 			} catch(Exception $e) {
+			}
+		}
+	}
+
+	/**
+	 * Method to remove obsolete files
+	 */
+	public function removeObsoleteFiles()
+	{
+		$obsoleteFiles = array(
+			JPATH_ADMINISTRATOR . '/components/com_magebridge/models/element.php',
+		);
+
+		foreach ($obsoleteFiles as $obsoleteFile) {
+			if (is_file($obsoleteFile)) {
+				unlink($obsoleteFile);
 			}
 		}
 	}

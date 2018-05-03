@@ -202,6 +202,7 @@ class MageBridgeController extends YireoController
 
 		// Upgrade the database tables
 		$helper->updateQueries();
+		$helper->removeObsoleteFiles();
 
 		// Redirect
 		$link = 'index.php?option=com_magebridge&view=update';

@@ -13,11 +13,13 @@ defined('_JEXEC') or die('Restricted access');
 
 $form = $this->params_form;
 ?>
-<table class="admintable">
 <?php foreach($form->getFieldset('params') as $field): ?>
-	<tr>
-		<td class="key"><?php echo $field->label; ?></td>
-		<td class="value"><?php echo $field->input; ?></td>
-	</tr>
+<div class="row-fluid form-group" style="margin-bottom:5px;">
+    <div class="span4 col-md-4">
+		<?php echo $field->label; ?>
+    </div>
+    <div class="span4 col-md-4">
+		<?php echo $field->input; ?>
+    </div>
+</div>
 <?php endforeach; ?>
-</table>

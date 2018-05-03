@@ -80,63 +80,21 @@ class Yireo_MageBridge_Model_Core
         set_exception_handler('Yireo_MageBridge_ExceptionHandler');
 
         // Try to initialize the session
-        try {
-            $session = Mage::getSingleton('core/session', array('name' => 'frontend'));
-            $session->start();
-            Mage::getSingleton('magebridge/debug')->notice('Core session started: ' . $session->getSessionId());
-        } catch (Exception $e) {
-            Mage::getSingleton('magebridge/debug')->error('Unable to instantiate core/session: ' . $e->getMessage());
-            $_COOKIE = [];
-            $_SESSION = [];
-            return false;
-        }
+        $this->reinitializeSession();
 
         // Optionally disable form_key security
-        $disableFormKey = false;
-        if (Mage::getStoreConfig('magebridge/settings/disable_form_key') == 1) {
-            $disableFormKey = true;
-        } elseif (strstr($this->getRequestUrl(), 'checkout/cart/add')) {
-            $disableFormKey = true;
-        }
-
-        if ($disableFormKey) {
-            $formKey = Mage::getSingleton('core/session')->getFormKey();
-            $request = Mage::app()->getRequest();
-            $request->setPathInfo(preg_replace('/\/form_key\/([^\/]+)/', '', $request->getPathInfo()));
-            $request->setRequestUri(preg_replace('/\/form_key\/([^\/]+)/', '', $request->getRequestUri()));
-            $request->setParam('form_key', $formKey);
-            Mage::getSingleton('magebridge/debug')->notice('Spoofing form key: ' . $formKey);
-        }
+        $this->disableFormKey();
 
         // Set the magebridge-URLs
         $this->setConfig();
 
-        // Post-login a Joomla! user
-        $joomla_user_email = $this->getMetaData('joomla_user_email');
-        if (!empty($joomla_user_email) && Mage::getModel('customer/session')->isLoggedIn() == false) {
-            $data = array(
-                'email' => $joomla_user_email,
-                'application' => 'site',
-                'disable_events' => true,
-            );
-            Mage::getModel('magebridge/user_api')->login($data);
-        }
+        // Handle post logins
+        $this->postLoginUser();
 
-        // Workaround for guaranteeing persistent logins
-        if (Mage::getSingleton('customer/session')->isLoggedIn() == false) {
-            $modules = (array)Mage::getConfig()->getNode('modules')->children();
-            if (array_key_exists('Mage_Persistent', $modules)) {
-                $persistentHelper = Mage::helper('persistent/session');
-                $persistentCustomerId = (int)$persistentHelper->getSession()->getCustomerId();
-                if (!empty($persistentCustomerId)) {
-                    $customer = Mage::getModel('customer/customer')->load($persistentCustomerId);
-                    if ($customer->getId() > 0) {
-                        Mage::getSingleton('customer/session')->setCustomerAsLoggedIn($customer)->renewSession();
-                    }
-                }
-            }
-        }
+        // Handle persistent logins
+        $this->handlePersistentLogins();
 
+        // Set the current store and URLs
         $this->setCurrentStore();
         $this->rewriteNonSefCategoryUrls();
         $this->setContinueShoppingToPreviousUrl();
@@ -150,7 +108,104 @@ class Yireo_MageBridge_Model_Core
     }
 
     /**
+     * @return bool
+     */
+    protected function reinitializeSession()
+    {
+        try {
+            $session = Mage::getSingleton('core/session', array('name' => 'frontend'));
+            $session->start();
+            Mage::getSingleton('magebridge/debug')->notice('Core session started: ' . $session->getSessionId());
+        } catch (Exception $e) {
+            Mage::getSingleton('magebridge/debug')->error('Unable to instantiate core/session: ' . $e->getMessage());
+            $_COOKIE = [];
+            $_SESSION = [];
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Disable the form key if configured
      *
+     * @return bool
+     */
+    protected function disableFormKey()
+    {
+        $disableFormKey = (bool) Mage::getStoreConfig('magebridge/settings/disable_form_key');
+
+        if ($disableFormKey === false && !strstr($this->getRequestUrl(), 'checkout/cart/add')) {
+            return false;
+        }
+
+        $formKey = Mage::getSingleton('core/session')->getFormKey();
+        $request = Mage::app()->getRequest();
+        $request->setPathInfo(preg_replace('/\/form_key\/([^\/]+)/', '', $request->getPathInfo()));
+        $request->setRequestUri(preg_replace('/\/form_key\/([^\/]+)/', '', $request->getRequestUri()));
+        $request->setParam('form_key', $formKey);
+
+        Mage::getSingleton('magebridge/debug')->notice('Spoofing form key: ' . $formKey);
+    }
+
+    /**
+     * Post-login a Joomla! user
+     *
+     * @return bool
+     */
+    protected function postLoginUser()
+    {
+        $joomlaUserEmail = $this->getMetaData('joomla_user_email');
+        if (empty($joomlaUserEmail)) {
+            return false;
+        }
+
+        if (Mage::getModel('customer/session')->isLoggedIn()) {
+            return false;
+        }
+
+        $data = array(
+            'email' => $joomlaUserEmail,
+            'application' => 'site',
+            'disable_events' => true,
+        );
+
+        Mage::getModel('magebridge/user_api')->login($data);
+    }
+
+    /**
+     * Workaround for persistent logins
+     *
+     * @return bool
+     */
+    protected function handlePersistentLogins()
+    {
+        if (Mage::getSingleton('customer/session')->isLoggedIn()) {
+            return false;
+        }
+
+        $modules = (array)Mage::getConfig()->getNode('modules')->children();
+        if (!array_key_exists('Mage_Persistent', $modules)) {
+            return false;
+        }
+
+        $persistentHelper = Mage::helper('persistent/session');
+        $persistentCustomerId = (int)$persistentHelper->getSession()->getCustomerId();
+        if (empty($persistentCustomerId)) {
+            return false;
+        }
+
+        $customer = Mage::getModel('customer/customer')->load($persistentCustomerId);
+        if (!$customer->getId() > 0) {
+            return false;
+        }
+
+        Mage::getSingleton('customer/session')->setCustomerAsLoggedIn($customer)->renewSession();
+        return true;
+    }
+
+    /**
+     * Rewrite non SEF URLs
      */
     protected function rewriteNonSefUrls()
     {
@@ -216,7 +271,7 @@ class Yireo_MageBridge_Model_Core
     protected function setCurrentStore()
     {
         try {
-            Mage::app()->setCurrentStore(Mage::app()->getStore($this->getStore()));
+            Mage::app()->setCurrentStore($this->getStoreObject());
         } catch (Exception $e) {
             Mage::getSingleton('magebridge/debug')->error('Failed to intialize store "' . $this->getStore() . '":' . $e->getMessage());
             // Do not return, but just keep on going with the default configuration
@@ -264,7 +319,7 @@ class Yireo_MageBridge_Model_Core
             return false;
         }
 
-        $location = Mage::app()->getStore()->getBaseUrl();
+        $location = $this->getStoreObject()->getBaseUrl();
         if (preg_match('/(uenc|referer)\/([^\/]+)/', $this->getRequestUrl(), $match)) {
             $location = Mage::helper('magebridge/encryption')->base64_decode($match[2]);
         }
@@ -317,129 +372,143 @@ class Yireo_MageBridge_Model_Core
         // Loop through the stores to modify data
         foreach ($stores as $store) {
 
+            /** @var Mage_Core_Model_Store $store */
+
             // Do not override stores outside this website
             if ($store->getWebsiteId() != $websiteId) {
                 continue;
             }
 
-            //Mage::getSingleton('magebridge/debug')->notice('Override store configuration "'.$store->getCode().'"');
             try {
-
-                $config_values = array();
-
-                // If URL-modification is disabled, exit
-                if ($this->getMetaData('modify_url') == 1) {
-
-                    // Get the current store
-                    //Mage::getSingleton('magebridge/debug')->notice('Set URLs of store "'.$store->getName().'" to '.$this->getMageBridgeSefUrl());
-
-                    // Collect the unmodified original URLs from the Configuration
-                    $urls = array();
-                    $urls['web/unsecure/base_url'] = $store->getConfig('web/unsecure/base_url');
-                    $urls['web/unsecure/base_link_url'] = $store->getConfig('web/unsecure/base_link_url');
-                    $urls['web/unsecure/base_media_url'] = $store->getConfig('web/unsecure/base_media_url');
-                    $urls['web/unsecure/base_skin_url'] = $store->getConfig('web/unsecure/base_skin_url');
-                    $urls['web/unsecure/base_js_url'] = $store->getConfig('web/unsecure/base_js_url');
-                    $urls['web/secure/base_url'] = $store->getConfig('web/secure/base_url');
-                    $urls['web/secure/base_link_url'] = $store->getConfig('web/secure/base_link_url');
-                    $urls['web/secure/base_media_url'] = $store->getConfig('web/secure/base_media_url');
-                    $urls['web/secure/base_skin_url'] = $store->getConfig('web/secure/base_skin_url');
-                    $urls['web/secure/base_js_url'] = $store->getConfig('web/secure/base_js_url');
-
-                    // Store the unmodified URLs in the registry for later reference
-                    if (Mage::registry('original_urls') == null) {
-                        Mage::register('original_urls', $urls);
-                    }
-
-                    // Proxy static content as well
-                    /**
-                     * if($store->getConfig('magebridge/settings/bridge_all') == 1) {
-                     * $proxy = 'index.php?option=com_magebridge&view=proxy&url=';
-                     * $base_media_url = str_replace($base_url, $proxy, $base_media_url);
-                     * $base_skin_url = str_replace($base_url, $proxy, $base_skin_url);
-                     * $base_js_url = str_replace($base_url, $proxy, $base_js_url);
-                     * }
-                     */
-
-                    // Set the main URL to Joomla! instead of Magento
-                    $urls['web/unsecure/base_url'] = $this->getMageBridgeSefUrl();
-                    $urls['web/secure/base_url'] = $this->getMageBridgeSefUrl();
-                    $urls['web/unsecure/base_link_url'] = $this->getMageBridgeSefUrl();
-                    $urls['web/secure/base_link_url'] = $this->getMageBridgeSefUrl();
-
-                    // Correct HTTP and HTTPS URLs in all URLs
-                    $has_ssl = Mage::getSingleton('magebridge/core')->getMetaData('has_ssl');
-                    foreach ($urls as $index => $url) {
-                        if ($has_ssl == true) {
-                            $urls[$index] = preg_replace('/^http:/', 'https:', $url);
-                        } else {
-                            $urls[$index] = preg_replace('/^https:/', 'http:', $url);
-                        }
-                    }
-
-                    // Rewrite of configuration values
-                    $config_values['web/unsecure/base_url'] = $urls['web/unsecure/base_url'];
-                    $config_values['web/unsecure/base_link_url'] = $urls['web/unsecure/base_link_url'];
-                    $config_values['web/unsecure/base_media_url'] = $urls['web/unsecure/base_media_url'];
-                    $config_values['web/unsecure/base_skin_url'] = $urls['web/unsecure/base_skin_url'];
-                    $config_values['web/unsecure/base_js_url'] = $urls['web/unsecure/base_js_url'];
-                    $config_values['web/secure/base_url'] = $urls['web/secure/base_url'];
-                    $config_values['web/secure/base_link_url'] = $urls['web/secure/base_link_url'];
-                    $config_values['web/secure/base_media_url'] = $urls['web/secure/base_media_url'];
-                    $config_values['web/secure/base_skin_url'] = $urls['web/secure/base_skin_url'];
-                    $config_values['web/secure/base_js_url'] = $urls['web/secure/base_js_url'];
-                }
-
-                // Apply other settings
-                $config_values['web/seo/use_rewrites'] = 1;
-                $config_values['web/session/use_remote_addr'] = 0;
-                $config_values['web/session/use_http_via'] = 0;
-                $config_values['web/session/use_http_x_forwarded_for'] = 0;
-                $config_values['web/session/use_http_user_agent'] = 0;
-                $config_values['web/cookie/cookie_domain'] = '';
-
-                // Rewrite specific values
-                if ($this->getMetaData('joomla_conf_lifetime') > 0) $config_values['web/cookie/cookie_lifetime'] = $this->getMetaData('joomla_conf_lifetime');
-                if ($this->getMetaData('customer_group') > 0) $config_values['customer/create_account/default_group'] = $this->getMetaData('customer_group');
-                if (strlen($this->getMetaData('theme')) > 0) {
-                    $theme = $this->getMetaData('theme');
-                    if (preg_match('/([a-zA-Z0-9\-\_]+)\/([a-zA-Z0-9\-\_]+)/', $theme, $match)) {
-                        $config_values['design/package/name'] = $match[1];
-                        $config_values['design/theme/default'] = $match[2];
-                        $config_values['design/theme/skin'] = $match[2];
-                        $config_values['design/theme/locale'] = $match[2];
-                        $config_values['design/theme/layout'] = $match[2];
-                        $config_values['design/theme/template'] = $match[2];
-                    } else {
-                        $config_values['design/theme/default'] = $theme;
-                        $config_values['design/theme/skin'] = $theme;
-                        $config_values['design/theme/locale'] = $theme;
-                        $config_values['design/theme/layout'] = $theme;
-                        $config_values['design/theme/template'] = $theme;
-                    }
-                }
-
-                // Rewrite these values for all stores
-                foreach ($config_values as $path => $value) {
-                    if (method_exists($store, 'overrideCachedConfig')) {
-                        $store->overrideCachedConfig($path, $value);
-                    }
-                }
-
-                // Make sure we do not use SID= in the URL
-                Mage::getModel('core/url')->setUseSession(false);
-                Mage::getModel('core/url')->setUseSessionVar(true);
-                //Mage::getSingleton('magebridge/debug')->notice('URL test 1: '.Mage::app()->getRequest()->getHttpHost());
-                //Mage::getSingleton('magebridge/debug')->notice('URL test 2: '.Mage::helper('core/url')->getCurrentUrl());
-                //Mage::getSingleton('magebridge/debug')->notice('URL test 3: '.Mage::helper('catalog/product')->getProductUrl(17));
-                //Mage::getSingleton('magebridge/debug')->notice('URL test 4: '.$this->getRequestUrl());
-
+                $this->setConfigPerStore($store);
             } catch (Exception $e) {
                 Mage::getSingleton('magebridge/debug')->error('Unable to modify configuration: ' . $e->getMessage());
             }
         }
 
         return true;
+    }
+
+    /**
+     * @param Mage_Core_Model_Store $store
+     */
+    protected function setConfigPerStore(Mage_Core_Model_Store $store)
+    {
+        //Mage::getSingleton('magebridge/debug')->notice('Override store configuration "'.$store->getCode().'"');
+        $config_values = array();
+
+        // If URL-modification is disabled, exit
+        if ($this->getMetaData('modify_url') == 1) {
+
+            // Get the current store
+            //Mage::getSingleton('magebridge/debug')->notice('Set URLs of store "'.$store->getName().'" to '.$this->getMageBridgeSefUrl());
+
+            // Collect the unmodified original URLs from the Configuration
+            $urls = array();
+            $urls['web/unsecure/base_url'] = $store->getConfig('web/unsecure/base_url');
+            $urls['web/unsecure/base_link_url'] = $store->getConfig('web/unsecure/base_link_url');
+            $urls['web/unsecure/base_media_url'] = $store->getConfig('web/unsecure/base_media_url');
+            $urls['web/unsecure/base_skin_url'] = $store->getConfig('web/unsecure/base_skin_url');
+            $urls['web/unsecure/base_js_url'] = $store->getConfig('web/unsecure/base_js_url');
+            $urls['web/secure/base_url'] = $store->getConfig('web/secure/base_url');
+            $urls['web/secure/base_link_url'] = $store->getConfig('web/secure/base_link_url');
+            $urls['web/secure/base_media_url'] = $store->getConfig('web/secure/base_media_url');
+            $urls['web/secure/base_skin_url'] = $store->getConfig('web/secure/base_skin_url');
+            $urls['web/secure/base_js_url'] = $store->getConfig('web/secure/base_js_url');
+
+            // Store the unmodified URLs in the registry for later reference
+            if (Mage::registry('original_urls') == null) {
+                Mage::register('original_urls', $urls);
+            }
+
+            // Proxy static content as well
+            /**
+             * if($store->getConfig('magebridge/settings/bridge_all') == 1) {
+             * $proxy = 'index.php?option=com_magebridge&view=proxy&url=';
+             * $base_media_url = str_replace($base_url, $proxy, $base_media_url);
+             * $base_skin_url = str_replace($base_url, $proxy, $base_skin_url);
+             * $base_js_url = str_replace($base_url, $proxy, $base_js_url);
+             * }
+             */
+
+            // Set the main URL to Joomla! instead of Magento
+            $urls['web/unsecure/base_url'] = $this->getMageBridgeSefUrl();
+            $urls['web/secure/base_url'] = $this->getMageBridgeSefUrl();
+            $urls['web/unsecure/base_link_url'] = $this->getMageBridgeSefUrl();
+            $urls['web/secure/base_link_url'] = $this->getMageBridgeSefUrl();
+
+            // Correct HTTP and HTTPS URLs in all URLs
+            $has_ssl = Mage::getSingleton('magebridge/core')->getMetaData('has_ssl');
+            foreach ($urls as $index => $url) {
+                if ($has_ssl == true) {
+                    $urls[$index] = preg_replace('/^http:/', 'https:', $url);
+                } else {
+                    $urls[$index] = preg_replace('/^https:/', 'http:', $url);
+                }
+            }
+
+            // Rewrite of configuration values
+            $config_values['web/unsecure/base_url'] = $urls['web/unsecure/base_url'];
+            $config_values['web/unsecure/base_link_url'] = $urls['web/unsecure/base_link_url'];
+            $config_values['web/unsecure/base_media_url'] = $urls['web/unsecure/base_media_url'];
+            $config_values['web/unsecure/base_skin_url'] = $urls['web/unsecure/base_skin_url'];
+            $config_values['web/unsecure/base_js_url'] = $urls['web/unsecure/base_js_url'];
+            $config_values['web/secure/base_url'] = $urls['web/secure/base_url'];
+            $config_values['web/secure/base_link_url'] = $urls['web/secure/base_link_url'];
+            $config_values['web/secure/base_media_url'] = $urls['web/secure/base_media_url'];
+            $config_values['web/secure/base_skin_url'] = $urls['web/secure/base_skin_url'];
+            $config_values['web/secure/base_js_url'] = $urls['web/secure/base_js_url'];
+        }
+
+        // Apply other settings
+        $config_values['web/seo/use_rewrites'] = 1;
+        $config_values['web/session/use_remote_addr'] = 0;
+        $config_values['web/session/use_http_via'] = 0;
+        $config_values['web/session/use_http_x_forwarded_for'] = 0;
+        $config_values['web/session/use_http_user_agent'] = 0;
+        $config_values['web/cookie/cookie_domain'] = '';
+
+        // Rewrite specific values
+        if ($this->getMetaData('joomla_conf_lifetime') > 0) {
+            $config_values['web/cookie/cookie_lifetime'] = $this->getMetaData('joomla_conf_lifetime');
+        }
+
+        if ($this->getMetaData('customer_group') > 0) {
+            $config_values['customer/create_account/default_group'] = $this->getMetaData('customer_group');
+        }
+
+        if (strlen($this->getMetaData('theme')) > 0) {
+            $theme = $this->getMetaData('theme');
+            if (preg_match('/([a-zA-Z0-9\-\_]+)\/([a-zA-Z0-9\-\_]+)/', $theme, $match)) {
+                $config_values['design/package/name'] = $match[1];
+                $config_values['design/theme/default'] = $match[2];
+                $config_values['design/theme/skin'] = $match[2];
+                $config_values['design/theme/locale'] = $match[2];
+                $config_values['design/theme/layout'] = $match[2];
+                $config_values['design/theme/template'] = $match[2];
+            } else {
+                $config_values['design/theme/default'] = $theme;
+                $config_values['design/theme/skin'] = $theme;
+                $config_values['design/theme/locale'] = $theme;
+                $config_values['design/theme/layout'] = $theme;
+                $config_values['design/theme/template'] = $theme;
+            }
+        }
+
+        // Rewrite these values for all stores
+        foreach ($config_values as $path => $value) {
+            if (method_exists($store, 'overrideCachedConfig')) {
+                $store->overrideCachedConfig($path, $value);
+            }
+        }
+
+        // Make sure we do not use SID= in the URL
+        Mage::getModel('core/url')->setUseSession(false);
+        Mage::getModel('core/url')->setUseSessionVar(true);
+        //Mage::getSingleton('magebridge/debug')->notice('URL test 1: '.Mage::app()->getRequest()->getHttpHost());
+        //Mage::getSingleton('magebridge/debug')->notice('URL test 2: '.Mage::helper('core/url')->getCurrentUrl());
+        //Mage::getSingleton('magebridge/debug')->notice('URL test 3: '.Mage::helper('catalog/product')->getProductUrl(17));
+        //Mage::getSingleton('magebridge/debug')->notice('URL test 4: '.$this->getRequestUrl());
     }
 
     /**
@@ -462,7 +531,7 @@ class Yireo_MageBridge_Model_Core
         );
 
         // Rewrite the configuration
-        $store = Mage::app()->getStore($this->getStore());
+        $store = $this->getStoreObject();
         foreach ($config_values as $path => $value) {
             if (method_exists($store, 'overrideCachedConfig')) {
                 $store->overrideCachedConfig($path, $value);
@@ -491,25 +560,56 @@ class Yireo_MageBridge_Model_Core
         );
 
         // Check the Joomla! settings
-        $refresh_cache = false;
+        $refreshCache = false;
         foreach ($keys as $meta_key => $key) {
 
             $rt = $this->saveConfig($key, $this->getMetaData($meta_key), 'default', 0);
-            if ($rt == true) {
-                $refresh_cache = true;
+            if ($rt === true) {
+                $refreshCache = true;
             }
 
             $rt = $this->saveConfig($key, $this->getMetaData($meta_key), 'websites', $this->getMetaData('website'));
-            if ($rt == true) {
-                $refresh_cache = true;
+            if ($rt === true) {
+                $refreshCache = true;
             }
         }
 
         // Refresh the cache
-        if ($refresh_cache == true && Mage::app()->useCache('config') && Mage::helper('magebridge')->useApiDetect() == true) {
+        if ($refreshCache == true && Mage::app()->useCache('config') && Mage::helper('magebridge')->useApiDetect() == true) {
             Mage::getSingleton('magebridge/debug')->notice('Refresh configuration cache');
             Mage::getConfig()->removeCache();
         }
+
+        // Automatically append current host to allowed IPs (which is save because API authentication already succeeded)
+        $this->autosaveAllowedIps();
+    }
+
+    /**
+     * Automatically save allowed IPs settings
+     *
+     * @return bool
+     */
+    protected function autosaveAllowedIps()
+    {
+        /** @var Yireo_MageBridge_Model_Config_AllowedIps $allowedIps */
+        $allowedIps = Mage::getModel('magebridge/config_allowedIps', $this->getStoreObject());
+
+        if ($allowedIps->allowAutoConfig() === false) {
+            return false;
+        }
+
+        $currentIps = $allowedIps->appendUrlAsIp($this->getMetaData('api_url'));
+
+        if (isset($_SERVER['REMOTE_ADDR'])) {
+            $currentIps[] = $_SERVER['REMOTE_ADDR'];
+        }
+
+        if (isset($_SERVER['SERVER_ADDR'])) {
+            $currentIps[] = $_SERVER['SERVER_ADDR'];
+        }
+
+        $allowedIps->save($currentIps);
+        return true;
     }
 
     /**
@@ -527,13 +627,17 @@ class Yireo_MageBridge_Model_Core
     public function saveConfig($key, $value, $scope, $scopeId, $override = false)
     {
         // Do not save empty values
-        if (empty($value)) return false;
+        if (empty($value)) {
+            return false;
+        }
 
         // Make sure the scope-ID is an integer
         $scopeId = (int)$scopeId;
 
         // Skip the Admin-scope
-        if ($scope == 'websites' && $scopeId == 0) return false;
+        if ($scope == 'websites' && $scopeId == 0) {
+            return false;
+        }
 
         // Fetch the current value
         if ($scope == 'default') {
@@ -715,7 +819,7 @@ class Yireo_MageBridge_Model_Core
 
         // Determine whether to preoutput compare links
         if (strstr($this->getRequestUrl(), 'catalog/product_compare/index')) {
-            if (Mage::app()->getStore()->getConfig('magebridge/settings/preoutput_compare') == 1) {
+            if ($this->getStoreObject()->getConfig('magebridge/settings/preoutput_compare') == 1) {
                 echo $controller->getAction()->getLayout()->getOutput();
                 return true;
             } else {
@@ -725,7 +829,7 @@ class Yireo_MageBridge_Model_Core
 
         // Determine whether to preoutput gallery links
         if (strstr($this->getRequestUrl(), 'catalog/product/gallery')) {
-            if (Mage::app()->getStore()->getConfig('magebridge/settings/preoutput_gallery') == 1) {
+            if ($this->getStoreObject()->getConfig('magebridge/settings/preoutput_gallery') == 1) {
                 echo $controller->getAction()->getLayout()->getOutput();
                 return true;
             } else {
@@ -887,7 +991,7 @@ class Yireo_MageBridge_Model_Core
         $currentProductSku = Mage::helper('magebridge/core')->getCurrentProductSku();
 
         // Construct extra data
-        $store = Mage::app()->getStore($this->getStore());
+        $store = $this->getStoreObject();
         $data = array(
             'session_id' => Mage::getModel('core/session')->getSessionId(),
             'catalog/seo/product_url_suffix' => $store->getConfig('catalog/seo/product_url_suffix'),
@@ -899,13 +1003,13 @@ class Yireo_MageBridge_Model_Core
             'customer/magento_id' => Mage::getModel('customer/session')->getCustomerId(),
             'customer/magento_group_id' => Mage::getModel('customer/session')->getCustomer()->getGroupId(),
             'backend/path' => $this->getAdminPath(),
-            'store_name' => Mage::app()->getStore()->getName(),
-            'store_code' => Mage::app()->getStore()->getCode(),
+            'store_name' => $store->getName(),
+            'store_code' => $store->getCode(),
             'base_js_url' => Mage::getBaseUrl('js'),
             'base_media_url' => Mage::getBaseUrl('media'),
             'form_key' => Mage::getSingleton('core/session')->getFormKey(),
             'root_template' => $this->getRootTemplate(),
-            'root_category' => Mage::app()->getStore($this->getStore())->getRootCategoryId(),
+            'root_category' => $store->getRootCategoryId(),
             'current_category_id' => $currentCategoryId,
             'current_category_path' => $currentCategoryPath,
             'current_product_id' => $currentProductId,
@@ -1290,10 +1394,6 @@ class Yireo_MageBridge_Model_Core
     /**
      * Helper-method to get the requested store-name from the meta-data
      *
-     * @access public
-     *
-     * @param null
-     *
      * @return string
      */
     public function getStore()
@@ -1302,11 +1402,17 @@ class Yireo_MageBridge_Model_Core
     }
 
     /**
+     * Helper-method to get the requested store-name from the meta-data
+     *
+     * @return Mage_Core_Model_Store
+     */
+    public function getStoreObject()
+    {
+        return Mage::app()->getStore($this->getStore());
+    }
+
+    /**
      * Return the configured license key
-     *
-     * @access public
-     *
-     * @param null
      *
      * @return string
      */
@@ -1318,10 +1424,6 @@ class Yireo_MageBridge_Model_Core
     /**
      * Return the current session ID
      *
-     * @access public
-     *
-     * @param null
-     *
      * @return string
      */
     public function getMageSession()
@@ -1332,9 +1434,7 @@ class Yireo_MageBridge_Model_Core
     /**
      * Encrypt data for security
      *
-     * @access public
-     *
-     * @param null
+     * @param mixed $data
      *
      * @return string
      */
@@ -1346,9 +1446,7 @@ class Yireo_MageBridge_Model_Core
     /**
      * Decrypt data after encryption
      *
-     * @access public
-     *
-     * @param null
+     * @param mixed $data
      *
      * @return string
      */
@@ -1360,10 +1458,6 @@ class Yireo_MageBridge_Model_Core
     /**
      * Determine whether event forwarding is enabled
      *
-     * @access public
-     *
-     * @param null
-     *
      * @return bool
      */
     public function isEnabledEvents()
@@ -1373,10 +1467,6 @@ class Yireo_MageBridge_Model_Core
 
     /**
      * Disable event forwarding
-     *
-     * @access public
-     *
-     * @param null
      *
      * @return bool
      */
