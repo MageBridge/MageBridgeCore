@@ -38,7 +38,7 @@ trait YireoModelTraitConfigurable
 			$this->config = array();
 		}
 		
-		if (is_array($name) && empty($value) && !is_bool($value) && !is_int($value))
+		if (is_array($name) && empty($value))
 		{
 			$this->config = $name;
 
@@ -63,16 +63,11 @@ trait YireoModelTraitConfigurable
 			return $this->config;
 		}
 
-        if (!isset($this->config[$name])) {
-		    return $default;
-        }
-
-        $value = $this->config[$name];
-		if (empty($value) && !is_bool($value) && !is_int($value))
+		if (empty($this->config[$name]))
 		{
 			return $default;
 		}
 
-		return $value;
+		return $this->config[$name];
 	}
 }
