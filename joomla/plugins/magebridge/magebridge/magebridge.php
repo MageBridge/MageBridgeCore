@@ -73,7 +73,7 @@ class PlgMagebridgeMagebridge extends MageBridgePlugin
 		$request = MageBridgeUrlHelper::getRequest();
 
 		// Check for the logout-page
-        if (preg_match('/^customer\/account\/logoutSuccess/', $request))
+		if ($request == 'customer/account/logoutSuccess')
 		{
 			$this->app->logout();
 		}
