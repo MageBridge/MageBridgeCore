@@ -742,8 +742,10 @@ class MageBridgeModelBridgeHeaders extends MageBridgeModelBridgeSegment
 		// Load Prototype through Google API
 		if (MagebridgeModelConfig::load('use_google_api') == 1)
 		{
-			$this->addScript('http://ajax.googleapis.com/ajax/libs/prototype/1.6.0.3/prototype.js');
-			$this->addScript('http://ajax.googleapis.com/ajax/libs/scriptaculous/1.8.2/scriptaculous.js');
+			//$this->addScript('http://ajax.googleapis.com/ajax/libs/prototype/1.6.0.3/prototype.js');
+			$this->addScript('https://cdnjs.cloudflare.com/ajax/libs/prototype/1.7.0.0/prototype.min.js');
+			//$this->addScript('http://ajax.googleapis.com/ajax/libs/scriptaculous/1.8.2/scriptaculous.js');
+			$this->addScript('https://cdnjs.cloudflare.com/ajax/libs/scriptaculous/1.8.3/scriptaculous.min.js');
 
 			return true;
 
@@ -763,7 +765,8 @@ class MageBridgeModelBridgeHeaders extends MageBridgeModelBridgeSegment
 			{
 				if (MagebridgeModelConfig::load('use_protoculous') == 1)
 				{
-					$this->addScript('media/com_magebridge/js/protoculous-1.0.2-packed.js');
+					//$this->addScript('media/com_magebridge/js/protoculous-1.0.2-packed.js');
+					$this->addScript('media/com_magebridge/js/protoculous-2.0-packed.js');
 
 					return true;
 				}
