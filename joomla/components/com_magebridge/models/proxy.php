@@ -85,7 +85,7 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 	protected function isNonBridgeOutput($response)
 	{
 		// Check whether the Content-Type is indicating bridge output
-		if (!empty($this->head['headers']) && preg_match('/Content-Type: application\/magebridge/', $this->head['headers']))
+		if (!empty($this->head['headers']) && preg_match('/Content-Type: application\/magebridge/i', $this->head['headers']))
 		{
 			return false;
 		}
@@ -118,7 +118,7 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 	 */
 	protected function isContentTypeHtml()
 	{
-		if (!empty($this->head['headers']) && preg_match('/Content-Type: (application|text)\/(xml|javascript|json|octetstream|pdf|x-pdf)/', $this->head['headers']))
+		if (!empty($this->head['headers']) && preg_match('/Content-Type: (application|text)\/(xml|javascript|json|octetstream|pdf|x-pdf)/i', $this->head['headers']))
 		{
 			return false;
 		}
@@ -751,7 +751,7 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 			foreach ($dataSegments as $dataSegmentIndex => $dataSegment)
 			{
 				// Check for a segment that seems to contain HTTP-headers
-				if (preg_match('/(Set-Cookie|Content-Type|Transfer-Encoding):/', $dataSegment))
+				if (preg_match('/(Set-Cookie|Content-Type|Transfer-Encoding):/i', $dataSegment))
 				{
 					// Get this segment 
 					$this->head['headers'] = trim($dataSegment);
@@ -790,7 +790,7 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 		//$this->debug->trace( "HTTP body", $this->body );
 
 		// Handle MageBridge HTTP-messaging
-		if (preg_match_all('/X-MageBridge-(Notice|Error|Warning): ([^\s]+)/', $this->head['headers'], $matches))
+		if (preg_match_all('/X-MageBridge-(Notice|Error|Warning): ([^\s]+)/i', $this->head['headers'], $matches))
 		{
 			foreach ($matches[0] as $index => $match)
 			{
@@ -898,11 +898,11 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 		// Handle cookies
 		if (MagebridgeModelConfig::load('bridge_cookie_all') == 1)
 		{
-			preg_match_all('/Set-Cookie: ([a-zA-Z0-9\-\_\.]+)\=(.*)/', $this->head['headers'], $matches);
+			preg_match_all('/Set-Cookie: ([a-zA-Z0-9\-\_\.]+)\=(.*)/i', $this->head['headers'], $matches);
 		}
 		else
 		{
-			preg_match_all('/Set-Cookie: (' . implode('|', $cookies) . ')\=(.*)/', $this->head['headers'], $matches);
+			preg_match_all('/Set-Cookie: (' . implode('|', $cookies) . ')\=(.*)/i', $this->head['headers'], $matches);
 		}
 
 		// Loop through the matches
@@ -998,7 +998,7 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 		}
 
 		// Handle redirects
-		preg_match('/^Location: ([^\s]+)/m', $this->head['headers'], $matches);
+		preg_match('/^Location: ([^\s]+)/mi', $this->head['headers'], $matches);
 
 		if ($this->allow_redirects && (preg_match('/^3([0-9]+)/', $this->head['http_code']) || !empty($matches)))
 		{
@@ -1162,7 +1162,7 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 
 		// Handle redirects
 		$matches = null;
-		@preg_match('/Location: ([^\s]+)/', $headers, $matches);
+		@preg_match('/Location: ([^\s]+)/i', $headers, $matches);
 		$location = trim(array_pop($matches));
 
 		if (!empty($location))
@@ -1235,7 +1235,7 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 	 */
 	protected function getHeader($name)
 	{
-		if (preg_match('/' . $name . ': (.*)/', $this->head['headers'], $match))
+		if (preg_match('/' . $name . ': (.*)/i', $this->head['headers'], $match))
 		{
 			return trim($match[1]);
 		}
