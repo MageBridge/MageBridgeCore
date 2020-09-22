@@ -444,7 +444,8 @@ class MageBridge
         $bridge = Mage::getSingleton('magebridge/core');
 
         if ($this->isAllowed() === false) {
-            Mage::getSingleton('magebridge/debug')->error('IP not allowed to connect');
+            $ip = gethostbyname($_SERVER['HTTP_VIA']);
+            Mage::getSingleton('magebridge/debug')->error(sprintf("IP: %s not allowed to connect",$ip));
             return false;
         }
 
