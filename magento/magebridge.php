@@ -48,8 +48,14 @@ require_once 'app/Mage.php';
 try {
 
     // Determine the Mage::app() arguments from the bridge
-    $app_value = (string) $magebridge->getMeta('app_value');
-    $app_type = (string) $magebridge->getMeta('app_type');
+    $app_value = $magebridge->getMeta('app_value');
+    $app_type = $magebridge->getMeta('app_type');
+    if (is_array($app_type)){
+        $app_type = empty($app_type) ? null : array_shift($app_type);
+    }
+    if (is_array($app_value)){
+        $app_value = empty($app_value) ? null : array_shift($app_value);
+    }
 
     // Doublecheck certain values
     if($app_type == 'website' && $app_value != 'admin') $app_value = (int)$app_value;

@@ -14,3 +14,4 @@ magento/js/magebridge js/magebridge
 magento/magebridge.class.php magebridge.class.php
 magento/magebridge.php magebridge.php
 magento/skin/adminhtml/default/default/images/magebridge skin/adminhtml/default/default/images/magebridge
+magento/lib/Yireo lib/Yireo

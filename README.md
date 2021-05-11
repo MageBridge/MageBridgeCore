@@ -1,14 +1,9 @@
 MageBridgeCore
 ==============
-This is the repository for the MageBridge Open Core. It includes the
-main Joomla! component as well as vital plugins, plus the Magento
-extension. With it, a fully bridged site can be built.
 
-For support options , see the following URL:
-http://www.yireo.com/software/magebridge/products-and-pricing
+This is the repository for the MageBridge Open Core. It includes the main Joomla! component as well as vital plugins, plus the Magento extension. With it, a fully bridged site can be built.
 
-Pull requests are welcome in this project. Support requests need to be
-placed on the Yireo Forum.
+**THIS PROJECT IS NO LONGER MAINTAINED**
+Please note that MageBridge is compatible with Magento 1 which is deprecated and it will not be made compatible with Magento 2. As of such, this project is no longer maintained.
 
-All sources in the folder magento/ are compatible with Magento 1.x.
-All sources in the folder joomla/ are compatible with Joomla! 2.5 and Joomla! 3.x.
+Pull requests are welcome in this project. No release packages will be distributed though.
