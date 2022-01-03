@@ -91,15 +91,15 @@ class Yireo_MageBridge_Helper_Encryption extends Mage_Core_Helper_Abstract
         }
 
         // Detect data that is not encrypted
-        $data = urldecode($data);
-        if (strstr($data, '|=|') == false) {
+        $decoded = urldecode($data);
+        if (strstr($decoded, '|=|') == false) {
             return $data;
         }
 
-        $data = str_replace(' ', '+', $data);
+        $decoded = str_replace(' ', '+', $decoded);
 
         // Continue with decryption
-        $array = explode('|=|', $data);
+        $array = explode('|=|', $decoded);
         if (!isset($array[0]) || !isset($array[1])) {
             return null;
         }

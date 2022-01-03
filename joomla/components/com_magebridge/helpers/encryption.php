@@ -143,14 +143,14 @@ class MageBridgeEncryptionHelper
 		}
 
 		// Detect data that is not encrypted
-		$data = urldecode($data);
+		$decoded = urldecode($data);
 
-		if (strstr($data, '|=|') == false)
+		if (strstr($decoded, '|=|') == false)
 		{
 			return $data;
 		}
 
-		$array = explode('|=|', $data);
+		$array = explode('|=|', $decoded);
 		$encrypted = self::base64_decode($array[0]);
 		$iv = self::base64_decode($array[1]);
 
