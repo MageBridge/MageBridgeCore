@@ -1257,7 +1257,7 @@ class Yireo_MageBridge_Model_Core
      *
      * @return null
      */
-    public function addResponseData($name = null, $data)
+    public function addResponseData($name, $data)
     {
         $this->_response[$name] = $data;
         return true;
