@@ -323,7 +323,7 @@ class Zend_Json_Decoder
 		$i		  = $this->_offset;
 		$start	  = $i;
 
-		switch ($str{$i}) {
+		switch ($str[$i]) {
 			case '{':
 			   $this->_token = self::LBRACE;
 			   break;
