@@ -1343,7 +1343,7 @@ class PlgSystemMageBridge extends MageBridgePlugin
 			}
 
 			$originalContent = str_replace('<?php', "namespace Joomla;", $originalContent);
-			$originalContent = preg_replace('/\J([a-zA-Z0-9]+)::/', "\\J$1::", $originalContent);
+			$originalContent = preg_replace('/J([a-zA-Z0-9]+)::/', "J$1::", $originalContent);
 			eval($originalContent);
 
 			if (class_exists('\Joomla\\' . $originalClass) == false)
