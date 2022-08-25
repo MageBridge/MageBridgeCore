@@ -1,4 +1,5 @@
 <?php
+
 /**
  * MageBridge
  *
@@ -70,8 +71,8 @@ class Yireo_MageBridge_Helper_Encryption extends Mage_Core_Helper_Abstract
         $iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length('aes-256-cbc'));
         $encrypted = openssl_encrypt($data, 'aes-256-cbc', $this->getEncryptionKey(), null, $iv);
 
-        $encoded = $this->base64_encode($encrypted);
-        $encodedIv = $this->base64_encode($iv);
+        $encoded = self::base64_encode($encrypted);
+        $encodedIv = self::base64_encode($iv);
         $encodedSum = $encoded . '|=|' . $encodedIv;
 
         return $encodedSum;
@@ -91,21 +92,21 @@ class Yireo_MageBridge_Helper_Encryption extends Mage_Core_Helper_Abstract
         }
 
         // Detect data that is not encrypted
-        $data = urldecode($data);
-        if (strstr($data, '|=|') == false) {
+        $decoded = urldecode($data);
+        if (strstr($decoded, '|=|') == false) {
             return $data;
         }
 
-        $data = str_replace(' ', '+', $data);
+        $decoded = str_replace(' ', '+', $decoded);
 
         // Continue with decryption
-        $array = explode('|=|', $data);
+        $array = explode('|=|', $decoded);
         if (!isset($array[0]) || !isset($array[1])) {
             return null;
         }
 
-        $encrypted = Mage::helper('magebridge/encryption')->base64_decode($array[0]);
-        $iv = Mage::helper('magebridge/encryption')->base64_decode($array[1]);
+        $encrypted = self::base64_decode($array[0]);
+        $iv = self::base64_decode($array[1]);
         $result = openssl_decrypt($encrypted, 'aes-256-cbc', $this->getEncryptionKey(), null, $iv);
 
         if ($result) {

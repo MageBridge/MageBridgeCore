@@ -41,8 +41,10 @@ class Yireo_MageBridge_Helper_Event extends Mage_Core_Helper_Abstract
         if(empty($address)) return;
 
         // Small hack to make sure we load the English country-name
-        Mage::getSingleton('core/locale')->setLocale('en_US');
-
+        /** @var Mage_Core_Model_Locale */
+        $locale = Mage::getSingleton('core/locale');
+        $originLocale = $locale->getLocaleCode();
+        $locale->setLocale('en_US');
         $addressArray[] = array_merge(
             Mage::helper('magebridge/event')->cleanAssoc($address->debug()),
             Mage::helper('magebridge/event')->cleanAssoc(array(
@@ -50,7 +52,11 @@ class Yireo_MageBridge_Helper_Event extends Mage_Core_Helper_Abstract
                 'is_subscribed' => $address->getIsSubscribed(),
             ))
         );
-        
+
+        // Restore original locale
+        if (!empty($originLocale) && $originLocale !== 'en_US') {
+            $locale->setLocale($originLocale);
+        }
         return $addressArray;
     }
 

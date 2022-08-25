@@ -53,10 +53,6 @@ class MageBridge
             return $string;
         }
 
-        if (get_magic_quotes_gpc()) {
-            $string = stripslashes($string);
-        }
-
         $data = json_decode($string, true);
         if ($data == null) {
             $data = json_decode(stripslashes($string), true);
