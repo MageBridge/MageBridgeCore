@@ -888,7 +888,7 @@ class MageBridgeTemplateHelper
 				{
 					$prefix = (JUri::getInstance()
 						->isSSL()) ? 'https' : 'http';
-					$document->addScript($prefix . '://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js');
+					$document->addScript($prefix . '://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js');
 				}
 				else
 				{
