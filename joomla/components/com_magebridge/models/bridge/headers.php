@@ -753,7 +753,7 @@ class MageBridgeModelBridgeHeaders extends MageBridgeModelBridgeSegment
 		{
 			if (MagebridgeModelConfig::load('use_protoaculous') == 1)
 			{
-				$this->addScript('media/com_magebridge/js/protoaculous.1.9.0.min.js');
+				$this->addScript('media/com_magebridge/js/protoaculous.1.9.0-1.7.3.0.min.js');
 
 				return true;
 
