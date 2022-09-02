@@ -742,8 +742,8 @@ class MageBridgeModelBridgeHeaders extends MageBridgeModelBridgeSegment
 		// Load Prototype through Google API
 		if (MagebridgeModelConfig::load('use_google_api') == 1)
 		{
-			$this->addScript('http://ajax.googleapis.com/ajax/libs/prototype/1.6.0.3/prototype.js');
-			$this->addScript('http://ajax.googleapis.com/ajax/libs/scriptaculous/1.8.2/scriptaculous.js');
+			$this->addScript('https://ajax.googleapis.com/ajax/libs/prototype/1.7.3.0/prototype.js');
+			$this->addScript('https://ajax.googleapis.com/ajax/libs/scriptaculous/1.9.0/scriptaculous.js');
 
 			return true;
 
@@ -753,7 +753,7 @@ class MageBridgeModelBridgeHeaders extends MageBridgeModelBridgeSegment
 		{
 			if (MagebridgeModelConfig::load('use_protoaculous') == 1)
 			{
-				$this->addScript('media/com_magebridge/js/protoaculous.1.9.0.min.js');
+				$this->addScript('media/com_magebridge/js/protoaculous.1.9.0-1.7.3.0.min.js');
 
 				return true;
 
