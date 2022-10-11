@@ -1,1 +1,7 @@
 magento/var
+.php-cs-fixer.cache
+.vscode/*
+!.vscode/launch.json
+!.vscode/extensions.json
+dist/
+vendor/
