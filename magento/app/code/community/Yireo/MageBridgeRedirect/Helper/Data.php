@@ -34,7 +34,9 @@ class Yireo_MageBridgeRedirect_Helper_Data extends Mage_Core_Helper_Abstract
     public function getMageBridgeRoot()
     {
         $value = trim(Mage::getStoreConfig('magebridge/redirect/magebridge_root'));
-        if(!empty($value) && preg_match('/\/$/', $value) == false) $value .= '/';
+        if (!empty($value) && preg_match('/\/$/', $value) == false) {
+            $value .= '/';
+        }
         return $value;
     }
 
@@ -50,27 +52,26 @@ class Yireo_MageBridgeRedirect_Helper_Data extends Mage_Core_Helper_Abstract
         $value = Mage::getStoreConfig('magebridge/redirect/magebridge_ipv4');
         $value = trim($value);
 
-        if(empty($value)) {
+        if (empty($value)) {
             $value = null;
         }
 
-        if($value != null) {
+        if ($value != null) {
             $ips = explode(PHP_EOL, $value);
             foreach ($ips as $key => &$ip) {
-            	$ip = trim($ip);
-            	if(!filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
-            		unset($ips[$key]);
-            		continue;
-            	}
+                $ip = trim($ip);
+                if (!filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
+                    unset($ips[$key]);
+                    continue;
+                }
             }
 
             $ips = array_values($ips);
-            if(in_array($_SERVER['REMOTE_ADDR'], $ips)) {
+            if (in_array($_SERVER['REMOTE_ADDR'], $ips)) {
                 return true;
             }
         }
 
         return false;
     }
-
 }

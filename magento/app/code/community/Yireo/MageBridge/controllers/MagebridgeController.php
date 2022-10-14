@@ -25,7 +25,7 @@ class Yireo_MageBridge_MagebridgeController extends Mage_Adminhtml_Controller_Ac
     {
         // Give a warning if Mage::getResourceModel('api/user_collection') returns zero
         $collection = Mage::getResourceModel('api/user_collection');
-        if(!count($collection) > 0) {
+        if (!count($collection) > 0) {
             Mage::getModel('adminhtml/session')->addError('You have not configured any API-user yet [MageBridge Installation Guide]');
         }
 
@@ -33,12 +33,12 @@ class Yireo_MageBridge_MagebridgeController extends Mage_Adminhtml_Controller_Ac
         $store = Mage::app()->getStore(Mage::getModel('magebridge/core')->getStore());
 
         // Give a warning if the URL suffix is still set to ".html"
-        if($store->getConfig('catalog/seo/product_url_suffix') == '.html' || $store->getConfig('catalog/seo/category_url_suffix') == '.html') {
+        if ($store->getConfig('catalog/seo/product_url_suffix') == '.html' || $store->getConfig('catalog/seo/category_url_suffix') == '.html') {
             Mage::getModel('adminhtml/session')->addError('You have configured the URL-suffix ".html" which conflicts with Joomla! [MageBridge Magento Settings Guide]');
         }
 
         // Give a warning if the setting "Redirect to Base URL" is still enabled
-        if($store->getConfig('web/url/redirect_to_base') == '1') {
+        if ($store->getConfig('web/url/redirect_to_base') == '1') {
             Mage::getModel('adminhtml/session')->addError('The setting "Auto-redirect to Base URL" is not configured properly [MageBridge Magento Settings Guide]');
         }
 
@@ -49,7 +49,7 @@ class Yireo_MageBridge_MagebridgeController extends Mage_Adminhtml_Controller_Ac
             ->_addBreadcrumb(Mage::helper('adminhtml')->__('MageBridge'), Mage::helper('adminhtml')->__('MageBridge'))
         ;
 
-        $this->prependTitle(array('MageBridge', 'CMS'));
+        $this->prependTitle(['MageBridge', 'CMS']);
         return $this;
     }
 
@@ -62,7 +62,7 @@ class Yireo_MageBridge_MagebridgeController extends Mage_Adminhtml_Controller_Ac
      */
     public function indexAction()
     {
-        if(strlen(Mage::helper('magebridge')->getLicenseKey()) == '') {
+        if (strlen(Mage::helper('magebridge')->getLicenseKey()) == '') {
             $block = 'license';
         } else {
             $block = 'settings';
@@ -101,7 +101,7 @@ class Yireo_MageBridge_MagebridgeController extends Mage_Adminhtml_Controller_Ac
     }
 
     /**
-     * System Check page 
+     * System Check page
      *
      * @access public
      * @param null
@@ -115,7 +115,7 @@ class Yireo_MageBridge_MagebridgeController extends Mage_Adminhtml_Controller_Ac
     }
 
     /**
-     * Browse page 
+     * Browse page
      *
      * @access public
      * @param null
@@ -129,7 +129,7 @@ class Yireo_MageBridge_MagebridgeController extends Mage_Adminhtml_Controller_Ac
     }
 
     /**
-     * Log page 
+     * Log page
      *
      * @access public
      * @param null
@@ -166,7 +166,7 @@ class Yireo_MageBridge_MagebridgeController extends Mage_Adminhtml_Controller_Ac
         }
         file_put_contents($file, '');
 
-        $url = Mage::getModel('adminhtml/url')->getUrl('adminhtml/magebridge/log', array('type' => $type));
+        $url = Mage::getModel('adminhtml/url')->getUrl('adminhtml/magebridge/log', ['type' => $type]);
         $this->getResponse()->setRedirect($url);
     }
 
@@ -179,7 +179,7 @@ class Yireo_MageBridge_MagebridgeController extends Mage_Adminhtml_Controller_Ac
      */
     public function updatesAction()
     {
-        if(defined('COMPILER_INCLUDE_PATH')) {
+        if (defined('COMPILER_INCLUDE_PATH')) {
             Mage::getModel('adminhtml/session')->addError('Magento Compiler is enabled. Disable it before making any changes to your site');
         }
 
@@ -216,7 +216,7 @@ class Yireo_MageBridge_MagebridgeController extends Mage_Adminhtml_Controller_Ac
     public function doupdateAction()
     {
         $update = Mage::getSingleton('magebridge/update');
-        if($update->upgradeNeeded() == true) {
+        if ($update->upgradeNeeded() == true) {
             $status = $update->doUpgrade();
         } else {
             $status = 'No upgrade needed';
@@ -239,21 +239,19 @@ class Yireo_MageBridge_MagebridgeController extends Mage_Adminhtml_Controller_Ac
     {
         $page = 'adminhtml/magebridge/index';
         if ($data = $this->getRequest()->getPost()) {
-                
-            if(isset($data['license_key'])) {
+            if (isset($data['license_key'])) {
                 Mage::getConfig()->saveConfig('magebridge/hidden/support_key', trim($data['license_key']));
                 $page = 'adminhtml/magebridge/supportkey';
             }
 
-            if(!empty($data['event_forwarding'])) {
-                foreach($data['event_forwarding'] as $name => $value) {
+            if (!empty($data['event_forwarding'])) {
+                foreach ($data['event_forwarding'] as $name => $value) {
                     Mage::getConfig()->saveConfig('magebridge/settings/event_forwarding/'.$name, $value);
                 }
             }
 
             Mage::getModel('adminhtml/session')->addSuccess('Settings saved');
             Mage::getConfig()->removeCache();
-            
         }
 
         $url = Mage::getModel('adminhtml/url')->getUrl($page);
@@ -273,7 +271,7 @@ class Yireo_MageBridge_MagebridgeController extends Mage_Adminhtml_Controller_Ac
 
         $connection = Mage::getSingleton('core/resource')->getConnection('core_write');
         $table = Mage::getSingleton('core/resource')->getTableName('core/config_data');
-        foreach(array('api_url', 'api_user', 'api_key') as $path) {  
+        foreach (['api_url', 'api_user', 'api_key'] as $path) {
             $query = 'DELETE FROM `'.$table.'` WHERE path = "magebridge/settings/'.$path.'";';
             $data = $connection->query($query);
         }
@@ -282,13 +280,13 @@ class Yireo_MageBridge_MagebridgeController extends Mage_Adminhtml_Controller_Ac
         Mage::getConfig()->removeCache();
 
         Mage::getModel('adminhtml/session')->addSuccess('API-details are reset to default');
-            
+
         $url = Mage::getModel('adminhtml/url')->getUrl($page);
         $this->getResponse()->setRedirect($url);
     }
 
     /*
-     * Reset usermapping 
+     * Reset usermapping
      *
      * @access public
      * @param null
@@ -304,7 +302,7 @@ class Yireo_MageBridge_MagebridgeController extends Mage_Adminhtml_Controller_Ac
         $data = $connection->query($query);
 
         Mage::getModel('adminhtml/session')->addSuccess('User-mapping is removed');
-            
+
         $url = Mage::getModel('adminhtml/url')->getUrl($page);
         $this->getResponse()->setRedirect($url);
     }
@@ -321,13 +319,13 @@ class Yireo_MageBridge_MagebridgeController extends Mage_Adminhtml_Controller_Ac
         $page = 'adminhtml/magebridge/index';
 
         $events = Mage::getModel('magebridge/listener')->getEvents();
-        foreach($events as $event) {
+        foreach ($events as $event) {
             Mage::getConfig()->saveConfig('magebridge/settings/event_forwarding/'.$event[0], $event[1]);
         }
 
         Mage::getConfig()->removeCache();
         Mage::getModel('adminhtml/session')->addSuccess('Events-settings are reset to their recommended value');
-            
+
         $url = Mage::getModel('adminhtml/url')->getUrl($page);
         $this->getResponse()->setRedirect($url);
     }
@@ -356,7 +354,9 @@ class Yireo_MageBridge_MagebridgeController extends Mage_Adminhtml_Controller_Ac
     {
         $headBlock = $this->getLayout()->getBlock('head');
         $title = $headBlock->getTitle();
-        if(!is_array($subtitles)) $subtitles = array($subtitles);
+        if (!is_array($subtitles)) {
+            $subtitles = [$subtitles];
+        }
         $headBlock->setTitle(implode(' / ', $subtitles).' / '.$title);
     }
 }

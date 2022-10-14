@@ -26,11 +26,11 @@ class Yireo_MageBridge_Model_Block_Api extends Mage_Api_Model_Resource_Abstract
         $blocks = Mage::getModel('block/block')->getCollection();
 
         $result = $this->getKnownBlocks();
-        foreach($blocks as $block) {
-            $result[$block->getName()] = array(
+        foreach ($blocks as $block) {
+            $result[$block->getName()] = [
                 'name' => $block->getName(),
                 'description' => $block->getName(),
-            );
+            ];
         }
         return $result;
     }
@@ -44,10 +44,10 @@ class Yireo_MageBridge_Model_Block_Api extends Mage_Api_Model_Resource_Abstract
      */
     public function getKnownBlocks()
     {
-        return array(
-            'left' => array('description' => 'Structural column on the left'),
-            'right' => array('description' => 'Structural column on the right'),
-            'content' => array('description' => 'Main content-block'),
-        );
+        return [
+            'left' => ['description' => 'Structural column on the left'],
+            'right' => ['description' => 'Structural column on the right'],
+            'content' => ['description' => 'Main content-block'],
+        ];
     }
 }

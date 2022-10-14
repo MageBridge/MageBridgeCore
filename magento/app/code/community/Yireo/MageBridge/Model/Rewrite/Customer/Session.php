@@ -16,13 +16,13 @@ class Yireo_MageBridge_Model_Rewrite_Customer_Session extends Mage_Customer_Mode
 {
     /*
      * Rewrite method
-     * 
+     *
      * @access public
      * @return object
      */
     public function regenerateSessionId()
     {
-        if(Mage::helper('magebridge')->isBridge() == false) {
+        if (Mage::helper('magebridge')->isBridge() == false) {
             return parent::regenerateSessionId();
         }
 

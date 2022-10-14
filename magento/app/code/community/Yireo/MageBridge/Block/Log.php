@@ -84,6 +84,6 @@ class Yireo_MageBridge_Block_Log extends Mage_Core_Block_Template
     public function getWipelogUrl($type = null)
     {
         $type = $this->getRequest()->getParam('type');
-        return Mage::getModel('adminhtml/url')->getUrl('adminhtml/magebridge/wipelog', array('type' => $type));
+        return Mage::getModel('adminhtml/url')->getUrl('adminhtml/magebridge/wipelog', ['type' => $type]);
     }
 }

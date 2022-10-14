@@ -20,80 +20,74 @@ require_once JPATH_SITE . '/components/com_magebridge/helpers/loader.php';
  */
 class MagebridgeFormFieldScripts extends MagebridgeFormFieldAbstract
 {
-	/**
-	 * Form field type
-	 */
-	public $type = 'Magento scripts';
+    /**
+     * Form field type
+     */
+    public $type = 'Magento scripts';
 
-	/**
-	 * Method to get the HTML of this element
-	 *
-	 * @return string
-	 */
-	protected function getInput()
-	{
-		$name      = $this->name;
-		$value     = $this->value;
+    /**
+     * Method to get the HTML of this element
+     *
+     * @return string
+     */
+    protected function getInput()
+    {
+        $name      = $this->name;
+        $value     = $this->value;
 
-		if ($this->getConfig('api_widgets') == true)
-		{
-			$cache   = JFactory::getCache('com_magebridge.admin');
-			$options = $cache->call(array('MagebridgeFormFieldScripts', 'getResult'));
+        if ($this->getConfig('api_widgets') == true) {
+            $cache   = JFactory::getCache('com_magebridge.admin');
+            $options = $cache->call(['MagebridgeFormFieldScripts', 'getResult']);
 
-			// Parse the result into an HTML form-field
-			if (!empty($options) && is_array($options))
-			{
-				$current_options = MageBridgeHelper::getDisableJs();
-				$size            = (count($options) > 10) ? 10 : count($options);
-				array_unshift($options, array('value' => '', 'label' => '- ' . JText::_('None') . ' -'));
-				array_unshift($options, array('value' => 'ALL', 'label' => '- ' . JText::_('JALL') . ' -'));
+            // Parse the result into an HTML form-field
+            if (!empty($options) && is_array($options)) {
+                $current_options = MageBridgeHelper::getDisableJs();
+                $size            = (count($options) > 10) ? 10 : count($options);
+                array_unshift($options, ['value' => '', 'label' => '- ' . JText::_('None') . ' -']);
+                array_unshift($options, ['value' => 'ALL', 'label' => '- ' . JText::_('JALL') . ' -']);
 
-				return JHtml::_('select.genericlist', $options, $name . '[]', 'multiple="multiple" size="' . $size . '"', 'value', 'label', $current_options);
-			}
+                return JHtml::_('select.genericlist', $options, $name . '[]', 'multiple="multiple" size="' . $size . '"', 'value', 'label', $current_options);
+            }
 
-			$this->debugger->warning('Unable to obtain MageBridge API Widget "scripts"', $options);
-		}
+            $this->debugger->warning('Unable to obtain MageBridge API Widget "scripts"', $options);
+        }
 
-		return '<input type="text" name="' . $name . '" value="' . $value . '" />';
-	}
+        return '<input type="text" name="' . $name . '" value="' . $value . '" />';
+    }
 
-	/**
-	 * Method to get a list of scripts from the API
-	 *
-	 * @return array
-	 */
-	static public function getResult()
-	{
-		$bridge  = MageBridgeModelBridge::getInstance();
-		$headers = $bridge->getHeaders();
+    /**
+     * Method to get a list of scripts from the API
+     *
+     * @return array
+     */
+    public static function getResult()
+    {
+        $bridge  = MageBridgeModelBridge::getInstance();
+        $headers = $bridge->getHeaders();
 
-		if (empty($headers))
-		{
-			// Send the request to the bridge
-			$register = MageBridgeModelRegister::getInstance();
-			$register->add('headers');
+        if (empty($headers)) {
+            // Send the request to the bridge
+            $register = MageBridgeModelRegister::getInstance();
+            $register->add('headers');
 
-			$bridge->build();
+            $bridge->build();
 
-			$headers = $bridge->getHeaders();
-		}
+            $headers = $bridge->getHeaders();
+        }
 
-		$scripts = array();
+        $scripts = [];
 
-		if (!empty($headers['items']))
-		{
-			foreach ($headers['items'] as $item)
-			{
-				if (strstr($item['type'], 'js'))
-				{
-					$scripts[] = array(
-						'value' => $item['name'],
-						'label' => $item['name'],
-					);
-				}
-			}
-		}
+        if (!empty($headers['items'])) {
+            foreach ($headers['items'] as $item) {
+                if (strstr($item['type'], 'js')) {
+                    $scripts[] = [
+                        'value' => $item['name'],
+                        'label' => $item['name'],
+                    ];
+                }
+            }
+        }
 
-		return $scripts;
-	}
+        return $scripts;
+    }
 }

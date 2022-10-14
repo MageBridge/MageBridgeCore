@@ -21,20 +21,19 @@ class Yireo_MageBridge_Model_Tag_Api extends Mage_Api_Model_Resource_Abstract
      * @param array $tags
      * @return array
      */
-    public function items($tags = array())
+    public function items($tags = [])
     {
-        if(empty($tags) || !is_array($tags)) {
+        if (empty($tags) || !is_array($tags)) {
             return false;
         }
 
-        $result = array();
-        foreach($tags as $tag) {
-
+        $result = [];
+        foreach ($tags as $tag) {
             $tagModel = Mage::getModel('tag/tag')->loadByName((string)$tag);
             $products = $tagModel->getEntityCollection()->addTagFilter($tagModel->getTagId());
 
-            foreach($products as $product) {
-                $p = array();
+            foreach ($products as $product) {
+                $p = [];
                 $p['name'] = $product->getName();
                 $p['url'] = $product->getProductUrl(false);
                 $result[$product->getId()] = $p;

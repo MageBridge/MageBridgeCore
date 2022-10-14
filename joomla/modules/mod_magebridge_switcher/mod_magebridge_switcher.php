@@ -25,34 +25,27 @@ require_once(dirname(__FILE__) . '/helper.php');
 // If this is not a MageBridge page, exit
 $option = JFactory::getApplication()->input->getCmd('option');
 
-if ($option != 'com_magebridge')
-{
-	return;
+if ($option != 'com_magebridge') {
+    return;
 }
 
 // Fetch the API data
 $stores = ModMageBridgeSwitcherHelper::build($params);
 
-if (empty($stores))
-{
-	return false;
+if (empty($stores)) {
+    return false;
 }
 
 // Set extra variables
 $redirect_url = JFactory::getURI()->toString();
 
 // Build HTML elements
-if ($layout == 'language')
-{
-	$select = ModMageBridgeSwitcherHelper::getStoreSelect($stores, $params);
-}
-elseif ($layout == 'flags')
-{
-	$languages = ModMageBridgeSwitcherHelper::getLanguages($stores, $params);
-}
-else
-{
-	$select = ModMageBridgeSwitcherHelper::getFullSelect($stores, $params);
+if ($layout == 'language') {
+    $select = ModMageBridgeSwitcherHelper::getStoreSelect($stores, $params);
+} elseif ($layout == 'flags') {
+    $languages = ModMageBridgeSwitcherHelper::getLanguages($stores, $params);
+} else {
+    $select = ModMageBridgeSwitcherHelper::getFullSelect($stores, $params);
 }
 
 // Include the layout-file

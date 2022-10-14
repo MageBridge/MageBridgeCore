@@ -25,13 +25,13 @@ class Yireo_MageBridge_Model_Widget_Api extends Mage_Api_Model_Resource_Abstract
     {
         $widgets = Mage::getModel('widget/widget_instance')->getCollection();
 
-        $result = array();
-        foreach($widgets as $widget) {
-            $result[] = array(
+        $result = [];
+        foreach ($widgets as $widget) {
+            $result[] = [
                 'id' => $widget->getId(),
                 'name' => $widget->getTitle(),
                 'type' => $widget->getType(),
-            );
+            ];
         }
         return $result;
     }

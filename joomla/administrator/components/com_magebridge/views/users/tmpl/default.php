@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * Joomla! component MageBridge
  *
@@ -26,19 +26,19 @@ $disabled_img = JHtml::image(JUri::base().'/images/check.png', JText::_('Enabled
 	<thead>
 		<tr>
 			<th width="5">
-				<?php echo JText::_( 'NUM' ); ?>
+				<?php echo JText::_('NUM'); ?>
 			</th>
 			<th width="20">
-				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->items ); ?>);" />
+				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->items); ?>);" />
 			</th>
 			<th width="150" class="title">
-				<?php echo JHtml::_('grid.sort',  'Name', 'u.name', $this->lists['order_Dir'], $this->lists['order'] ); ?>
+				<?php echo JHtml::_('grid.sort', 'Name', 'u.name', $this->lists['order_Dir'], $this->lists['order']); ?>
 			</th>
 			<th width="150" class="title">
-				<?php echo JHtml::_('grid.sort',  'Username', 'u.username', $this->lists['order_Dir'], $this->lists['order'] ); ?>
+				<?php echo JHtml::_('grid.sort', 'Username', 'u.username', $this->lists['order_Dir'], $this->lists['order']); ?>
 			</th>
 			<th width="150" class="title">
-				<?php echo JHtml::_('grid.sort',  'Email', 'u.email', $this->lists['order_Dir'], $this->lists['order'] ); ?>
+				<?php echo JHtml::_('grid.sort', 'Email', 'u.email', $this->lists['order_Dir'], $this->lists['order']); ?>
 			</th>
 			<th width="150" class="title">
 				<?php echo JText::_('Magento Name'); ?>
@@ -66,20 +66,19 @@ $disabled_img = JHtml::image(JUri::base().'/images/check.png', JText::_('Enabled
 	</tfoot>
 	<tbody>
 	<?php
-	$k = 0;
-	if ( count( $this->items ) > 0 ) {
-		for ($i=0, $n=count( $this->items ); $i < $n; $i++)
-		{
-			$item = $this->items[$i];
-			$migration_enabled = true;
-			$item->checked_out = 0;
+    $k = 0;
+if (count($this->items) > 0) {
+    for ($i=0, $n=count($this->items); $i < $n; $i++) {
+        $item = $this->items[$i];
+        $migration_enabled = true;
+        $item->checked_out = 0;
 
-			$checked = ($migration_enabled) ? $this->checkbox($item, $i) : '<input type="checkbox" disabled/>';
-			$enabled = ($item->block == 0) ? $enabled_img : $disabled_img;
-			?>
+        $checked = ($migration_enabled) ? $this->checkbox($item, $i) : '<input type="checkbox" disabled/>';
+        $enabled = ($item->block == 0) ? $enabled_img : $disabled_img;
+        ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
-					<?php echo $this->pagination->getRowOffset( $i ); ?>
+					<?php echo $this->pagination->getRowOffset($i); ?>
 				</td>
 				<td>
 					<?php echo $checked; ?>
@@ -100,7 +99,7 @@ $disabled_img = JHtml::image(JUri::base().'/images/check.png', JText::_('Enabled
 					<?php echo ''; ?>
 				</td>
 				<td>
-					<?php echo ($item->password) ? '****': '[empty]' ; ?>
+					<?php echo ($item->password) ? '****' : '[empty]' ; ?>
 				</td>
 				<td>
 					<?php echo $item->magento_id; ?>
@@ -110,18 +109,18 @@ $disabled_img = JHtml::image(JUri::base().'/images/check.png', JText::_('Enabled
 				</td>
 			</tr>
 			<?php
-			$k = 1 - $k;
-		}
-	} else {
-		?>
+        $k = 1 - $k;
+    }
+} else {
+    ?>
 		<tr>
 		<td colspan="11">
-			<?php echo JText::_( 'No items' ); ?>
+			<?php echo JText::_('No items'); ?>
 		</td>
 		</tr>
 		<?php
-	}
-	?>
+}
+?>
 	</tbody>
 	</table>
 </div>
@@ -131,5 +130,5 @@ $disabled_img = JHtml::image(JUri::base().'/images/check.png', JText::_('Enabled
 <input type="hidden" name="boxchecked" value="0" />
 <input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
 <input type="hidden" name="filter_order_Dir" value="" />
-<?php echo JHtml::_( 'form.token' ); ?>
+<?php echo JHtml::_('form.token'); ?>
 </form>

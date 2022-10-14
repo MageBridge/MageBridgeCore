@@ -106,23 +106,23 @@ class Yireo_MageBridge_Block_Settings extends Mage_Core_Block_Template
     {
         $accordion = $this->getLayout()->createBlock('adminhtml/widget_accordion')->setId('magebridge');
 
-        $accordion->addItem('joomla', array(
+        $accordion->addItem('joomla', [
             'title' => Mage::helper('adminhtml')->__('Joomla! API Connections'),
             'content' => $this->getLayout()->createBlock('magebridge/settings_joomla')->toHtml(),
             'open' => true,
-        ));
+        ]);
 
-        $accordion->addItem('events', array(
+        $accordion->addItem('events', [
             'title' => Mage::helper('adminhtml')->__('Event Forwarding'),
             'content' => $this->getLayout()->createBlock('magebridge/settings_events')->toHtml(),
             'open' => true,
-        ));
+        ]);
 
-        $accordion->addItem('other', array(
+        $accordion->addItem('other', [
             'title' => Mage::helper('adminhtml')->__('Other Settings'),
             'content' => $this->getLayout()->createBlock('magebridge/settings_other')->toHtml(),
             'open' => true,
-        ));
+        ]);
 
         $this->setChild('accordion', $accordion);
     }
@@ -132,33 +132,36 @@ class Yireo_MageBridge_Block_Settings extends Mage_Core_Block_Template
      */
     protected function addToolbarButtons()
     {
-        $this->setChild('resetevents_button',
+        $this->setChild(
+            'resetevents_button',
             $this->getLayout()->createBlock('adminhtml/widget_button')
-                ->setData(array(
+                ->setData([
                     'label' => Mage::helper('catalog')->__('Reset Events'),
                     'onclick' => 'magebridgeForm.submit(\'' . $this->getResetEventsUrl() . '\')',
-                    'class' => 'delete'
-                ))
+                    'class' => 'delete',
+                ])
         );
 
         if (Mage::helper('magebridge')->useJoomlaMap()) {
-            $this->setChild('resetusermap_button',
+            $this->setChild(
+                'resetusermap_button',
                 $this->getLayout()->createBlock('adminhtml/widget_button')
-                    ->setData(array(
+                    ->setData([
                         'label' => Mage::helper('catalog')->__('Reset Usermap'),
                         'onclick' => 'magebridgeForm.submit(\'' . $this->getResetUsermapUrl() . '\')',
-                        'class' => 'delete'
-                    ))
+                        'class' => 'delete',
+                    ])
             );
         }
 
-        $this->setChild('resetapi_button',
+        $this->setChild(
+            'resetapi_button',
             $this->getLayout()->createBlock('adminhtml/widget_button')
-                ->setData(array(
+                ->setData([
                     'label' => Mage::helper('catalog')->__('Reset API'),
                     'onclick' => 'magebridgeForm.submit(\'' . $this->getResetApiUrl() . '\')',
-                    'class' => 'delete'
-                ))
+                    'class' => 'delete',
+                ])
         );
     }
 }

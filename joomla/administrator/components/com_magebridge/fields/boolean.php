@@ -20,33 +20,33 @@ include_once JPATH_LIBRARIES . '/joomla/form/fields/radio.php';
  */
 class MagebridgeFormFieldBoolean extends JFormFieldRadio
 {
-	/**
-	 * Form field type
-	 */
-	public $type = 'Boolean';
+    /**
+     * Form field type
+     */
+    public $type = 'Boolean';
 
-	/**
-	 * Method to construct the HTML of this element
-	 *
-	 * @return string
-	 */
-	protected function getInput()
-	{
-		$this->class = 'radio btn-group btn-group-yesno';
+    /**
+     * Method to construct the HTML of this element
+     *
+     * @return string
+     */
+    protected function getInput()
+    {
+        $this->class = 'radio btn-group btn-group-yesno';
 
-		return parent::getInput();
-	}
+        return parent::getInput();
+    }
 
-	/**
-	 * @return array
-	 */
-	protected function getOptions()
-	{
-		$options = array(
-			JHtml::_('select.option', '0', JText::_('JNO')),
-			JHtml::_('select.option', '1', JText::_('JYES')),
-		);
+    /**
+     * @return array
+     */
+    protected function getOptions()
+    {
+        $options = [
+            JHtml::_('select.option', '0', JText::_('JNO')),
+            JHtml::_('select.option', '1', JText::_('JYES')),
+        ];
 
-		return $options;
-	}
+        return $options;
+    }
 }

@@ -25,22 +25,23 @@ class Yireo_MageBridge_Model_Session_Api extends Mage_Catalog_Model_Api_Resource
     {
         $quote = Mage::getSingleton('checkout/session')->getQuote();
         $cart = Mage::helper('checkout/cart')->getCart();
-        
-        $data = array();
+
+        $data = [];
         $data['cart_url'] = Mage::helper('checkout/url')->getCartUrl();
         $data['subtotal'] = $quote->getSubtotal();
         $data['subtotal_formatted'] = Mage::helper('checkout')->formatPrice($quote->getSubtotal());
         $data['subtotal_inc_tax'] = (int)$quote->getSubtotalInclTax();
-        $data['items'] = array();
+        $data['items'] = [];
 
         $count = 0;
-        foreach($cart->getItems() as $item) {
-
+        foreach ($cart->getItems() as $item) {
             // Convert this object into an export-array
             $product = Mage::helper('magebridge/product')->export($item['product']);
 
             // Skip subproducts of Configurable Products
-            if(!empty($product['parent_product_ids'])) continue;
+            if (!empty($product['parent_product_ids'])) {
+                continue;
+            }
 
             // Add the quantity
             $product['qty'] = $item->getQty();

@@ -38,14 +38,16 @@ class Yireo_MageBridge_Model_Session extends Mage_Core_Model_Session_Abstract
     public function addEvent($group, $event, $arguments)
     {
         $events = $this->getData('events');
-        if(empty($events)) $events = array();
+        if (empty($events)) {
+            $events = [];
+        }
 
-        $events[] = array(
+        $events[] = [
             'type' => 'magento',
             'group' => $group,
             'event' => $event,
             'arguments' => $arguments,
-        );
+        ];
         $this->setData('events', $events);
     }
 

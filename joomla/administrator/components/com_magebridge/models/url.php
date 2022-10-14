@@ -20,34 +20,33 @@ jimport('joomla.utilities.date');
  */
 class MagebridgeModelUrl extends YireoModelItem
 {
-	/**
-	 * Constructor method
-	 */
-	public function __construct()
-	{
-		$this->_orderby_title = 'source';
+    /**
+     * Constructor method
+     */
+    public function __construct()
+    {
+        $this->_orderby_title = 'source';
 
-		parent::__construct('url');
-	}
+        parent::__construct('url');
+    }
 
-	/**
-	 * Method to store the item
-	 *
-	 * @param array $data
-	 *
-	 * @return bool
-	 */
-	public function store($data)
-	{
-		// Store the item
-		$rt = parent::store($data);
+    /**
+     * Method to store the item
+     *
+     * @param array $data
+     *
+     * @return bool
+     */
+    public function store($data)
+    {
+        // Store the item
+        $rt = parent::store($data);
 
-		// Change the setting "load_urls" in the MageBridge configuration
-		if ($data['published'] == 1)
-		{
-			MagebridgeModelConfig::getSingleton()->saveValue('load_urls', 1);
-		}
+        // Change the setting "load_urls" in the MageBridge configuration
+        if ($data['published'] == 1) {
+            MagebridgeModelConfig::getSingleton()->saveValue('load_urls', 1);
+        }
 
-		return $rt;
-	}
+        return $rt;
+    }
 }

@@ -42,7 +42,6 @@ class Yireo_MageBridge_Block_Menu extends Mage_Core_Block_Template
 
         // Parse the array into usable URLs and CSS-classes
         foreach ($items as $index => $item) {
-
             // Set the CSS-class
             if ($item['action'] == $current_action) {
                 $item['class'] = 'active';
@@ -64,23 +63,23 @@ class Yireo_MageBridge_Block_Menu extends Mage_Core_Block_Template
      */
     protected function getMenuItemArray()
     {
-        return array(
-            array(
+        return [
+            [
                 'action' => 'settings',
                 'title' => 'Settings',
-            ),
-            array(
+            ],
+            [
                 'action' => 'check',
                 'title' => 'System Check',
-            ),
-            array(
+            ],
+            [
                 'action' => 'updates',
                 'title' => 'Updates',
-            ),
-            array(
+            ],
+            [
                 'action' => 'supportkey',
                 'title' => 'Support Key',
-            ),
-        );
+            ],
+        ];
     }
 }

@@ -38,7 +38,7 @@ class Yireo_MageBridge_Helper_Data extends Mage_Core_Helper_Abstract
     public function isBridge()
     {
         $metadata = Mage::getSingleton('magebridge/core')->getMetaData();
-        if(empty($metadata)) {
+        if (empty($metadata)) {
             return false;
         }
         return true;
@@ -66,7 +66,7 @@ class Yireo_MageBridge_Helper_Data extends Mage_Core_Helper_Abstract
     public function getStore()
     {
         $store = $this->magebridge_store;
-        if(!empty($store)) {
+        if (!empty($store)) {
             return $store;
         }
         return Mage::app()->getStore()->getId();
@@ -82,7 +82,7 @@ class Yireo_MageBridge_Helper_Data extends Mage_Core_Helper_Abstract
     public function allowJoomlaAuth()
     {
         $joomla_auth = Mage::getStoreConfig('magebridge/joomla/auth');
-        if(empty($joomla_auth)) {
+        if (empty($joomla_auth)) {
             return false;
         }
 
@@ -99,7 +99,7 @@ class Yireo_MageBridge_Helper_Data extends Mage_Core_Helper_Abstract
     public function useJoomlaMap()
     {
         $joomla_map = Mage::getStoreConfig('magebridge/joomla/map');
-        if(empty($joomla_map)) {
+        if (empty($joomla_map)) {
             return false;
         }
 
@@ -139,25 +139,25 @@ class Yireo_MageBridge_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function getApiUrl($arguments = null, $store = null)
     {
-        if(empty($store)) {
+        if (empty($store)) {
             $store = self::getStore();
         }
 
         $apiUrl = Mage::getSingleton('magebridge/core')->getMetaData('api_url');
-        if(empty($apiUrl)) {
+        if (empty($apiUrl)) {
             $apiUrl = Mage::getStoreConfig('magebridge/joomla/api_url', $store);
-        } 
+        }
 
-        if(is_array($arguments) && !empty($arguments)) {
-            foreach($arguments as $argumentName => $argumentValue) {
-                if(($argumentName == 'controller' || $argumentName == 'task') && stristr($apiUrl, $argumentName.'=')) {
+        if (is_array($arguments) && !empty($arguments)) {
+            foreach ($arguments as $argumentName => $argumentValue) {
+                if (($argumentName == 'controller' || $argumentName == 'task') && stristr($apiUrl, $argumentName.'=')) {
                     $apiUrl = preg_replace('/'.$argumentName.'=([a-zA-Z0-9]+)/', $argumentName.'='.$argumentValue, $apiUrl);
                 } else {
                     $apiUrl .= '&'.$argumentName.'='.$argumentValue;
                 }
             }
         }
-    
+
         return $apiUrl;
     }
 
@@ -170,14 +170,14 @@ class Yireo_MageBridge_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function getApiUser($store = null)
     {
-        if(empty($store)) {
+        if (empty($store)) {
             $store = self::getStore();
         }
 
         $value = Mage::getSingleton('magebridge/core')->getMetaData('api_user');
-        if(empty($value)) {
+        if (empty($value)) {
             $value = Mage::getStoreConfig('magebridge/joomla/api_user', $store);
-        } 
+        }
         return $value;
     }
 
@@ -190,14 +190,14 @@ class Yireo_MageBridge_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function getApiKey($store = null)
     {
-        if(empty($store)) {
+        if (empty($store)) {
             $store = self::getStore($store);
         }
 
         $value = Mage::getSingleton('magebridge/core')->getMetaData('api_key');
-        if(empty($value)) {
+        if (empty($value)) {
             $value = Mage::getStoreConfig('magebridge/joomla/api_key', $store);
-        } 
+        }
         return $value;
     }
 
@@ -210,19 +210,19 @@ class Yireo_MageBridge_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function getDirectOutputUrls()
     {
-        $return = array(
+        $return = [
             'rss/catalog',
             'sales/order/print',
             'sales/order/printInvoice',
-        );
+        ];
 
         $value = Mage::getStoreConfig('magebridge/settings/direct_output', self::getStore());
-        if(!empty($value)) {
+        if (!empty($value)) {
             $value = str_replace("\n", ',', $value);
             $values = explode(',', $value);
-            foreach($values as $value) {
+            foreach ($values as $value) {
                 $value = trim($value);
-                if(!empty($value)) {
+                if (!empty($value)) {
                     $return[] = $value;
                 }
             }
@@ -234,7 +234,7 @@ class Yireo_MageBridge_Helper_Data extends Mage_Core_Helper_Abstract
      * Helper-method to convert a string into a method-name
      *
      * @access public
-     * @param string $string 
+     * @param string $string
      * @param string $prefix
      * @return string
      */
@@ -242,17 +242,17 @@ class Yireo_MageBridge_Helper_Data extends Mage_Core_Helper_Abstract
     {
         $method = '';
         $array = explode('_', $string);
-        foreach($array as $i => $a) {
+        foreach ($array as $i => $a) {
             $method .= ucfirst($a);
         }
 
-        if(preg_match('/^([0-9]+)/', $method) || strlen($method) < 2) {
+        if (preg_match('/^([0-9]+)/', $method) || strlen($method) < 2) {
             return null;
         }
 
         $method = $prefix.$method;
         return $method;
-    } 
+    }
 
     /*
      * Helper-method to quickly write debugging information to a file
@@ -265,17 +265,17 @@ class Yireo_MageBridge_Helper_Data extends Mage_Core_Helper_Abstract
     public function debug($message, $variable = null)
     {
         // Do not write anything to the log if disabled
-        if(Mage::getStoreConfig('magebridge/debug/log') == 0) {
+        if (Mage::getStoreConfig('magebridge/debug/log') == 0) {
             return false;
         }
 
         // Append the variable if needed
-        if(!empty($variable)) {
+        if (!empty($variable)) {
             $message .= ': '.var_export($variable, true);
         }
 
         // Add the remote IP if set
-        if(isset($_SERVER['REMOTE_ADDR'])) {
+        if (isset($_SERVER['REMOTE_ADDR'])) {
             $message = $_SERVER['REMOTE_ADDR'].': '.$message;
         }
 
@@ -284,8 +284,10 @@ class Yireo_MageBridge_Helper_Data extends Mage_Core_Helper_Abstract
         $log_file = $log_dir.DS.'magebridge.log';
 
         // Actually log to the log-file is possible
-        if(is_dir($log_dir) == false) @mkdir($log_dir);
-        if(is_writable($log_file) || is_writable($log_dir)) {
+        if (is_dir($log_dir) == false) {
+            @mkdir($log_dir);
+        }
+        if (is_writable($log_file) || is_writable($log_dir)) {
             $message = $message."\n";
             $message = str_replace("\n\n", "\n", $message);
             @file_put_contents($log_file, $message, FILE_APPEND);

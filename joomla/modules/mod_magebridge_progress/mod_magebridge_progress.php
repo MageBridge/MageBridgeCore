@@ -20,9 +20,8 @@ require_once(dirname(__FILE__) . '/helper.php');
 $data = ModMageBridgeProgressHelper::build($params);
 
 // Abort when there is no data
-if (empty($data))
-{
-	return;
+if (empty($data)) {
+    return;
 }
 
 // Include the layout-file

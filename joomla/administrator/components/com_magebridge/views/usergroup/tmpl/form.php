@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * Joomla! component MageBridge
  *
@@ -104,5 +104,5 @@ defined('_JEXEC') or die('Restricted access');
 <input type="hidden" name="option" value="com_magebridge" />
 <input type="hidden" name="cid[]" value="<?php echo $this->item->id; ?>" />
 <input type="hidden" name="task" value="" />
-<?php echo JHtml::_( 'form.token' ); ?>
+<?php echo JHtml::_('form.token'); ?>
 </form>

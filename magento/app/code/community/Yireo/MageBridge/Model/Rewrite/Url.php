@@ -13,43 +13,43 @@ class Yireo_MageBridge_Model_Rewrite_Url extends Mage_Core_Model_Url
 {
     /*
      * Rewrite of original method
-     * 
+     *
      * @param   null
      * @return  boolean
      */
     public function getSecure()
     {
-        if(Mage::helper('magebridge')->isBridge() == false) {
+        if (Mage::helper('magebridge')->isBridge() == false) {
             return parent::getSecure();
         }
-        
+
         $request = Mage::getSingleton('magebridge/core')->getRequestUrl();
         return $this->isSecurePage($request);
     }
 
     /*
      * Rewrite of original method
-     * 
+     *
      * @param   string $routePath
      * @param   array $routeParams
      * @return  string
      */
     public function getUrl($routePath = null, $routeParams = null)
     {
-        if(Mage::helper('magebridge')->isBridge() == false) {
+        if (Mage::helper('magebridge')->isBridge() == false) {
             return parent::getUrl($routePath, $routeParams);
         }
-        
+
         // Set the original URL when dealing with direct download-links
         $bridge_downloads = Mage::app()->getStore()->getConfig('magebridge/settings/bridge_downloads');
-        if($bridge_downloads == 0 && preg_match('/(downloadable|\*)\/download\/link/', $routePath)) {
+        if ($bridge_downloads == 0 && preg_match('/(downloadable|\*)\/download\/link/', $routePath)) {
             return $this->setOriginalUrl($routePath, $routeParams);
         }
 
         // Initialize the parameters if needed
-        if(!is_array($routeParams)) {
-            $routeParams = array();
-        } 
+        if (!is_array($routeParams)) {
+            $routeParams = [];
+        }
 
         // Make sure the SID is always removed
         $routeParams['_nosid'] = true;
@@ -58,7 +58,7 @@ class Yireo_MageBridge_Model_Rewrite_Url extends Mage_Core_Model_Url
         $url = parent::getUrl($routePath, $routeParams);
 
         // Correct HTTP/HTTPS
-        if($this->isSecurePage($routePath)) {
+        if ($this->isSecurePage($routePath)) {
             $url = str_replace('http://', 'https://', $url);
         } else {
             $url = str_replace('https://', 'http://', $url);
@@ -66,9 +66,9 @@ class Yireo_MageBridge_Model_Rewrite_Url extends Mage_Core_Model_Url
 
         // Determine whether to add the Joomla! URL Suffix or not
         static $append_suffix = null;
-        if($append_suffix == null) {
+        if ($append_suffix == null) {
             $joomla_sef_suffix = Mage::getSingleton('magebridge/core')->getMetaData('joomla_sef_suffix');
-            if($joomla_sef_suffix == 1) {
+            if ($joomla_sef_suffix == 1) {
                 $append_suffix = true;
             } else {
                 $append_suffix = false;
@@ -76,9 +76,9 @@ class Yireo_MageBridge_Model_Rewrite_Url extends Mage_Core_Model_Url
         }
 
         // Add the Joomla! URL Suffix if needed
-        if($append_suffix) {
-            if(!preg_match('/\/$/', $url) && !preg_match('/\.html$/', $url) && !preg_match('/\.html\?/', $url)) {
-                if(preg_match('/\?/', $url)) {
+        if ($append_suffix) {
+            if (!preg_match('/\/$/', $url) && !preg_match('/\.html$/', $url) && !preg_match('/\.html\?/', $url)) {
+                if (preg_match('/\?/', $url)) {
                     $url = preg_replace('/([^\/]+)\?/', '$1.html?', $url);
                 } else {
                     $url .= '.html';
@@ -90,11 +90,11 @@ class Yireo_MageBridge_Model_Rewrite_Url extends Mage_Core_Model_Url
 
     /*
      * Helper method
-     * 
+     *
      * @param   string $routePath
      * @return  boolean
      */
-    protected function isSecurePage($routePath = null) 
+    protected function isSecurePage($routePath = null)
     {
         $routePath = preg_replace('/\*\//', Mage::app()->getRequest()->getRequestedRouteName().'/', $routePath);
         $routePath = preg_replace('/\/\*\//', Mage::app()->getRequest()->getRequestedControllerName().'/', $routePath);
@@ -103,28 +103,27 @@ class Yireo_MageBridge_Model_Rewrite_Url extends Mage_Core_Model_Url
         $payment_urls = Mage::getSingleton('magebridge/core')->getMetaData('payment_urls');
         $payment_urls = explode(',', $payment_urls);
 
-        $pages = array(
+        $pages = [
             'checkout/',
             'firecheckout/',
             'customer/',
             'wishlist/',
-        );
+        ];
 
-        if(!empty($payment_urls)) {
-            foreach($payment_urls as $payment_url) {
+        if (!empty($payment_urls)) {
+            foreach ($payment_urls as $payment_url) {
                 $payment_url = trim($payment_url);
-                if(!empty($payment_url)) {
+                if (!empty($payment_url)) {
                     $pages[] = $payment_url;
                 }
             }
         }
 
-        if($redirect_ssl == 1 || $redirect_ssl == 2) {
+        if ($redirect_ssl == 1 || $redirect_ssl == 2) {
             return true;
-    
-        } elseif($redirect_ssl == 3) {
-            foreach($pages as $page) {
-                if(preg_match('/^'.str_replace('/', '\/', $page).'/', $routePath) == true) {
+        } elseif ($redirect_ssl == 3) {
+            foreach ($pages as $page) {
+                if (preg_match('/^'.str_replace('/', '\/', $page).'/', $routePath) == true) {
                     return true;
                 }
             }
@@ -135,7 +134,7 @@ class Yireo_MageBridge_Model_Rewrite_Url extends Mage_Core_Model_Url
 
     /*
      * Helper method
-     * 
+     *
      * @param   string $routePath
      * @param   array $routeParams
      * @return  string
@@ -146,7 +145,7 @@ class Yireo_MageBridge_Model_Rewrite_Url extends Mage_Core_Model_Url
         $original_urls = Mage::registry('original_urls');
 
         // If this value is empty, it is not yet initialized
-        if(empty($original_urls)) {
+        if (empty($original_urls)) {
             return parent::getUrl($routePath, $routeParams);
         }
 
@@ -155,10 +154,10 @@ class Yireo_MageBridge_Model_Rewrite_Url extends Mage_Core_Model_Url
 
         // Replace the current URL with the original URL
         $store = Mage::app()->getStore();
-        if($store->getConfig('web/secure/use_in_frontend') == 1 && isset($original_urls['web/secure/base_url'])) {
-            $rt = str_replace( $store->getConfig('web/secure/base_url'), $original_urls['web/secure/base_url'], $rt);
-        } elseif(isset($original_urls['web/unsecure/base_url'])) {
-            $rt = str_replace( $store->getConfig('web/unsecure/base_url'), $original_urls['web/unsecure/base_url'], $rt);
+        if ($store->getConfig('web/secure/use_in_frontend') == 1 && isset($original_urls['web/secure/base_url'])) {
+            $rt = str_replace($store->getConfig('web/secure/base_url'), $original_urls['web/secure/base_url'], $rt);
+        } elseif (isset($original_urls['web/unsecure/base_url'])) {
+            $rt = str_replace($store->getConfig('web/unsecure/base_url'), $original_urls['web/unsecure/base_url'], $rt);
         }
 
         return $rt;

@@ -24,7 +24,7 @@ class Yireo_MageBridge_Block_Settings_Events extends Mage_Core_Block_Template
     public function _construct()
     {
         parent::_construct();
-        $this->setData('area','adminhtml'); 
+        $this->setData('area', 'adminhtml');
         $this->setTemplate('magebridge/settings/events.phtml');
     }
 
@@ -38,21 +38,20 @@ class Yireo_MageBridge_Block_Settings_Events extends Mage_Core_Block_Template
     public function getEvents()
     {
         $events = Mage::getModel('magebridge/listener')->getEvents();
-        $event_list = array();
+        $event_list = [];
 
-        foreach($events as $event) {
-
+        foreach ($events as $event) {
             $value = Mage::getStoreConfig('magebridge/settings/event_forwarding/'.$event[0]);
-            if(!is_numeric($value)) {
+            if (!is_numeric($value)) {
                 $value = $event[1];
             }
 
-            $event_list[] = array(
+            $event_list[] = [
                 'name' => $event[0],
                 'value' => (int)$value,
                 'recommended' => $event[1],
                 'group' => $event[2],
-            );
+            ];
         }
         return $event_list;
     }

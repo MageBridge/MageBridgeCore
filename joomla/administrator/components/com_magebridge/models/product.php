@@ -20,32 +20,31 @@ jimport('joomla.utilities.date');
  */
 class MagebridgeModelProduct extends YireoModel
 {
-	/**
-	 * Constructor method
-	 */
-	public function __construct()
-	{
-		$this->_orderby_title = 'label';
-		parent::__construct('product');
-	}
+    /**
+     * Constructor method
+     */
+    public function __construct()
+    {
+        $this->_orderby_title = 'label';
+        parent::__construct('product');
+    }
 
-	/**
-	 * Method to store the item
-	 *
-	 * @param array $data
-	 *
-	 * @return bool
-	 */
-	public function store($data)
-	{
-		if (empty($data['label']))
-		{
-			$data['label'] = $data['sku'];
-		}
+    /**
+     * Method to store the item
+     *
+     * @param array $data
+     *
+     * @return bool
+     */
+    public function store($data)
+    {
+        if (empty($data['label'])) {
+            $data['label'] = $data['sku'];
+        }
 
-		$data['connector']       = '';
-		$data['connector_value'] = '';
+        $data['connector']       = '';
+        $data['connector_value'] = '';
 
-		return parent::store($data);
-	}
+        return parent::store($data);
+    }
 }

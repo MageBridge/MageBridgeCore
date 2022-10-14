@@ -25,7 +25,7 @@ class Yireo_MageBridge_Model_Cms_Api extends Mage_Api_Model_Resource_Abstract
     {
         $pages = Mage::getModel('cms/page')->getCollection();
 
-        $res = array();
+        $res = [];
         foreach ($pages as $item) {
             $data['value'] = $item->getId().':'.$item->getData('identifier');
             $data['label'] = $item->getData('title');

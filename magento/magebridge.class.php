@@ -17,7 +17,7 @@ class MageBridge
     /**
      * The current request
      */
-    private $request = array();
+    private $request = [];
 
     /**
      * Constructor
@@ -130,19 +130,22 @@ class MageBridge
 
         // Mask the POST
         if (!empty($data['post'])) {
-            $_POST = array();
+            $_POST = [];
             foreach ($data['post'] as $name => $value) {
-                if ($name == 'Itemid') continue;
-                if ($name == 'option') continue;
+                if ($name == 'Itemid') {
+                    continue;
+                }
+                if ($name == 'option') {
+                    continue;
+                }
                 $_POST[$name] = $value;
             }
         } elseif (!isset($_POST['mbtest'])) {
-            $_POST = array();
+            $_POST = [];
         }
 
         // Mask the REQUEST_URI and the GET
         if (!empty($data['request_uri']) && strlen($data['request_uri']) > 0) {
-
             // Determine the REQUEST_URI
             $request_uri = explode('?', $data['request_uri']);
             $request_uri = $request_uri[0];
@@ -170,8 +173,12 @@ class MageBridge
             if ($query != $data['request_uri']) {
                 parse_str(rawurldecode($query), $parts);
                 foreach ($parts as $name => $value) {
-                    if ($name == 'Itemid') continue;
-                    if ($name == 'option') continue;
+                    if ($name == 'Itemid') {
+                        continue;
+                    }
+                    if ($name == 'option') {
+                        continue;
+                    }
                     $_GET[$name] = $value;
                 }
             }
@@ -187,7 +194,7 @@ class MageBridge
             $_SERVER['HTTP_X_ORIGINAL_URL'] = $request_uri;
 
 
-            // Set defaults otherwise
+        // Set defaults otherwise
         } else {
             $_SERVER['REQUEST_URI'] = '/';
             $_SERVER['HTTP_X_REWRITE_URL'] = '/';
@@ -201,7 +208,9 @@ class MageBridge
 
         // Mask the HTTP_REFERER
         if (!empty($data['http_referer'])) {
-            if (isset($_SERVER['HTTP_REFERER'])) $_SERVER['ORIGINAL_HTTP_REFERER'] = $_SERVER['HTTP_REFERER'];
+            if (isset($_SERVER['HTTP_REFERER'])) {
+                $_SERVER['ORIGINAL_HTTP_REFERER'] = $_SERVER['HTTP_REFERER'];
+            }
             $_SERVER['HTTP_REFERER'] = $data['http_referer'];
         }
 
@@ -216,9 +225,15 @@ class MageBridge
         }
 
         // Make sure all globals are arrays
-        if (empty($_GET)) $_GET = array();
-        if (empty($_POST)) $_POST = array();
-        if (empty($_COOKIE)) $_COOKIE = array();
+        if (empty($_GET)) {
+            $_GET = [];
+        }
+        if (empty($_POST)) {
+            $_POST = [];
+        }
+        if (empty($_COOKIE)) {
+            $_COOKIE = [];
+        }
 
         // Fix the request
         $_REQUEST = array_merge($_GET, $_POST);
@@ -236,14 +251,14 @@ class MageBridge
             setcookie('frontend', $_GET['SID']);
             $_COOKIE['frontend'] = $_GET['SID'];
 
-            // Initialize the Magento session by the session-ID tracked by MageBridge
+        // Initialize the Magento session by the session-ID tracked by MageBridge
         } elseif (!empty($data['magento_session']) && self::isValidSessionId($data['magento_session'])) {
             session_name('frontend');
             session_id($data['magento_session']);
             setcookie('frontend', $data['magento_session']);
             $_COOKIE['frontend'] = $data['magento_session'];
 
-            // Initialize Single Sign On
+        // Initialize Single Sign On
         } elseif (!empty($_GET['sso']) && !empty($_GET['app'])) {
             if ($_GET['app'] == 'admin' && isset($_COOKIE['adminhtml']) && self::isValidSessionId($_COOKIE['adminhtml'])) {
                 session_name('adminhtml');
@@ -342,7 +357,6 @@ class MageBridge
             $bridge->setMetaData('extra', 'get');
             print $bridge->output(false);
             exit;
-
         } elseif (Mage::app()->getRequest()->getPost('mbtest') == 1) {
             $bridge->setMetaData('state', 'test');
             $bridge->setMetaData('extra', 'post');
@@ -380,7 +394,6 @@ class MageBridge
             $bridge->setMetaData('extra', 'get');
             print $bridge->output(false);
             exit;
-
         } elseif (Mage::app()->getRequest()->getPost('mbauthtest') == 1) {
             $bridge->setMetaData('state', 'test');
             $bridge->setMetaData('extra', 'post');
@@ -397,14 +410,12 @@ class MageBridge
         // Fetch the actual request
         $data = $bridge->getRequestData();
         if (is_array($data) && !empty($data)) {
-
-            // Dispatch the request to the appropriate classes 
+            // Dispatch the request to the appropriate classes
             Mage::getSingleton('magebridge/debug')->notice('Dispatching the request');
             $data = $this->dispatch($data);
 
             // Set the completed request as response
             $bridge->setResponseData($data);
-
         } else {
             Mage::getSingleton('magebridge/debug')->notice('Empty request');
         }
@@ -441,7 +452,7 @@ class MageBridge
 
         if ($this->isAllowed() === false) {
             $ip = gethostbyname($_SERVER['HTTP_VIA']);
-            Mage::getSingleton('magebridge/debug')->error(sprintf("IP: %s not allowed to connect",$ip));
+            Mage::getSingleton('magebridge/debug')->error(sprintf("IP: %s not allowed to connect", $ip));
             return false;
         }
 
@@ -450,7 +461,6 @@ class MageBridge
             session_regenerate_id();
             Mage::getSingleton('magebridge/debug')->error('API authorization failed for user ' . $bridge->getMetaData('api_user') . ' / ' . $bridge->getMetaData('api_key'));
             return false;
-
         } else {
             Mage::getSingleton('magebridge/debug')->notice('API authorization succeeded');
         }
@@ -489,9 +499,7 @@ class MageBridge
         // Loop through the posted data, complete it and send it back
         $profiler = false;
         foreach ($data as $index => $segment) {
-
             switch ($segment['type']) {
-
                 case 'version':
                     $segment['data'] = Mage::getSingleton('magebridge/update')->getCurrentVersion();
                     break;

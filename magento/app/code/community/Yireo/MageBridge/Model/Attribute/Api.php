@@ -26,7 +26,7 @@ class Yireo_MageBridge_Model_Attribute_Api extends Mage_Api_Model_Resource_Abstr
         $collection = $this->_getAttributeSets();
         $defaultId = (int)Mage::getModel('catalog/product')->getResource()->getEntityType()->getDefaultAttributeSetId();
 
-        $res = array();
+        $res = [];
         foreach ($collection as $item) {
             $data['value'] = $item->getId();
             $data['label'] = $item->getAttributeSetName();
@@ -52,7 +52,9 @@ class Yireo_MageBridge_Model_Attribute_Api extends Mage_Api_Model_Resource_Abstr
 
         foreach ($collection as $item) {
             $attributeSet = $this->_getAttributeSet($item->getAttributeSetId());
-            if($attributeSet->getEntityTypeId() < 1) continue;
+            if ($attributeSet->getEntityTypeId() < 1) {
+                continue;
+            }
 
             $data['value'] = $item->getId();
             $data['label'] = $item->getAttributeGroupName();
@@ -76,23 +78,22 @@ class Yireo_MageBridge_Model_Attribute_Api extends Mage_Api_Model_Resource_Abstr
     public function getAttributes($data = null)
     {
         $attributesetId = 0;
-        if(!empty($data['attributeset_id'])) {
+        if (!empty($data['attributeset_id'])) {
             $attributesetId = (int)$data['attributeset_id'];
-        } elseif(!empty($data['default'])) {
+        } elseif (!empty($data['default'])) {
             $attributesetId = (int)Mage::getModel('catalog/product')->getResource()->getEntityType()->getDefaultAttributeSetId();
         }
 
         $attributeGroups = $this->getAttributeGroups();
         $attributes = Mage::getResourceModel('catalog/product_attribute_collection');
-        if($attributesetId > 0) {
+        if ($attributesetId > 0) {
             $attributes->setAttributeSetFilter($attributesetId);
         }
 
-        $res = array();
+        $res = [];
         foreach ($attributes as $attribute) {
-
             // Skip invisible attributes
-            if($attribute->getIsVisible() == 0) {
+            if ($attribute->getIsVisible() == 0) {
                 continue;
             }
 
@@ -109,8 +110,8 @@ class Yireo_MageBridge_Model_Attribute_Api extends Mage_Api_Model_Resource_Abstr
             $data['group_order'] = null;
 
             $groupId = $attribute->getAttributeGroupId();
-            foreach($attributeGroups as $attributeGroup) {
-                if($attributeGroup['value'] == $groupId) {
+            foreach ($attributeGroups as $attributeGroup) {
+                if ($attributeGroup['value'] == $groupId) {
                     $data['group_value'] = $attributeGroup['value'];
                     $data['group_label'] = $attributeGroup['label'];
                     $data['group_order'] = $attributeGroup['order'];
@@ -118,8 +119,8 @@ class Yireo_MageBridge_Model_Attribute_Api extends Mage_Api_Model_Resource_Abstr
                 }
             }
 
-            $data['options'] = array();
-            foreach ( $attribute->getSource()->getAllOptions(true, true) as $option){
+            $data['options'] = [];
+            foreach ($attribute->getSource()->getAllOptions(true, true) as $option) {
                 $data['options'][$option['value']] = $option['label'];
             }
 
@@ -139,7 +140,7 @@ class Yireo_MageBridge_Model_Attribute_Api extends Mage_Api_Model_Resource_Abstr
      */
     protected function _getAttributeSets()
     {
-        if(empty($this->_attributeSetCollection)) {
+        if (empty($this->_attributeSetCollection)) {
             $entityType = Mage::getModel('catalog/product')->getResource()->getTypeId();
             $this->_attributeSetCollection = Mage::getResourceModel('eav/entity_attribute_set_collection')
                 ->setEntityTypeFilter($entityType);
@@ -157,8 +158,8 @@ class Yireo_MageBridge_Model_Attribute_Api extends Mage_Api_Model_Resource_Abstr
     protected function _getAttributeSet($attributeSetId)
     {
         $collection = $this->_getAttributeSets();
-        foreach($collection as $item) {
-            if($item->getAttributeSetId() == $attributeSetId) {
+        foreach ($collection as $item) {
+            if ($item->getAttributeSetId() == $attributeSetId) {
                 return $item;
             }
         }

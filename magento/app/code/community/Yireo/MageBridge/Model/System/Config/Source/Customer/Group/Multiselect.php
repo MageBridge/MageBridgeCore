@@ -31,8 +31,8 @@ class Yireo_MageBridge_Model_System_Config_Source_Customer_Group_Multiselect
                 ->loadData()->toOptionArray();
         }
 
-        $noneOption = array('value' => 0, 'label' => Mage::helper('core')->__('None'));
-        $this->_options = array_merge(array($noneOption), $this->_options);
+        $noneOption = ['value' => 0, 'label' => Mage::helper('core')->__('None')];
+        $this->_options = array_merge([$noneOption], $this->_options);
 
         return $this->_options;
     }

@@ -21,9 +21,8 @@ $root = $params->get('root', 0);
 $levels = $params->get('levels', 2);
 $startLevel = $params->get('startlevel', 1);
 
-if ($startLevel < 1)
-{
-	$startLevel = 1;
+if ($startLevel < 1) {
+    $startLevel = 1;
 }
 
 $endLevel = $startLevel + $levels - 1;

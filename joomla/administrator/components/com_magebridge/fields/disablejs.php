@@ -23,45 +23,43 @@ use Joomla\Utilities\ArrayHelper;
  */
 class MagebridgeFormFieldDisablejs extends MagebridgeFormFieldAbstract
 {
-	/**
-	 * Form field type
-	 */
-	public $type = 'disable_js';
+    /**
+     * Form field type
+     */
+    public $type = 'disable_js';
 
-	/**
-	 * Method to get the HTML of this element
-	 *
-	 * @param null
-	 *
-	 * @return string
-	 */
-	protected function getInput()
-	{
-		$options = array(
-			array('value' => 0, 'text' => JText::_('JNO')),
-			array('value' => 1, 'text' => JText::_('JYES')),
-			array('value' => 2, 'text' => JText::_('JONLY')),
-			array('value' => 3, 'text' => JText::_('JALL_EXCEPT')),
-		);
+    /**
+     * Method to get the HTML of this element
+     *
+     * @param null
+     *
+     * @return string
+     */
+    protected function getInput()
+    {
+        $options = [
+            ['value' => 0, 'text' => JText::_('JNO')],
+            ['value' => 1, 'text' => JText::_('JYES')],
+            ['value' => 2, 'text' => JText::_('JONLY')],
+            ['value' => 3, 'text' => JText::_('JALL_EXCEPT')],
+        ];
 
-		foreach ($options as $index => $option)
-		{
-			$options[$index] = ArrayHelper::toObject($option);
-		}
+        foreach ($options as $index => $option) {
+            $options[$index] = ArrayHelper::toObject($option);
+        }
 
-		$current = $this->getConfig('disable_js_all');
-		$disabled = null;
-		
-		if ($current == 1 || $current == 0)
-		{
-			$disabled = 'disabled="disabled"';
-		}
+        $current = $this->getConfig('disable_js_all');
+        $disabled = null;
 
-		$html = '';
-		$html .= JHtml::_('select.radiolist', $options, 'disable_js_all', 'class="btn-group"', 'value', 'text', $current);
-		$html .= '<br/><br/>';
-		$html .= '<textarea type="text" id="disable_js_custom" name="disable_js_custom" ' . $disabled . 'rows="5" cols="40" maxlength="255">' . $this->getConfig('disable_js_custom') . '</textarea>';
+        if ($current == 1 || $current == 0) {
+            $disabled = 'disabled="disabled"';
+        }
 
-		return $html;
-	}
+        $html = '';
+        $html .= JHtml::_('select.radiolist', $options, 'disable_js_all', 'class="btn-group"', 'value', 'text', $current);
+        $html .= '<br/><br/>';
+        $html .= '<textarea type="text" id="disable_js_custom" name="disable_js_custom" ' . $disabled . 'rows="5" cols="40" maxlength="255">' . $this->getConfig('disable_js_custom') . '</textarea>';
+
+        return $html;
+    }
 }

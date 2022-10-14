@@ -25,7 +25,7 @@ class Yireo_MageBridge_Model_Storegroups_Api extends Mage_Api_Model_Resource_Abs
     {
         $groups = Mage::getModel('core/store_group')->getCollection();
 
-        $res = array();
+        $res = [];
         foreach ($groups as $item) {
             $data['value'] = $item->getData('group_id');
             $data['label'] = $item->getData('name');

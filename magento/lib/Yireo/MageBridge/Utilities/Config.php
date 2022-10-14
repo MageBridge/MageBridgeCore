@@ -11,7 +11,7 @@
 
 namespace Yireo\MageBridge\Utilities;
 
-use \Mage_Core_Model_Store as Store;
+use Mage_Core_Model_Store as Store;
 
 /**
  * Class interacting with Magento System Configuration
@@ -21,7 +21,7 @@ class Config
     /**
      * Configuration prefix
      */
-    const CONFIG_PREFIX = 'magebridge/joomla/';
+    public const CONFIG_PREFIX = 'magebridge/joomla/';
 
     /**
      * @var Store

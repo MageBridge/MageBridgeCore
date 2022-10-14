@@ -20,34 +20,33 @@ require_once JPATH_SITE . '/components/com_magebridge/helpers/loader.php';
  */
 class MagebridgeFormFieldTemplate extends MagebridgeFormFieldAbstract
 {
-	/**
-	 * Form field type
-	 */
-	public $type = 'Joomla! template';
+    /**
+     * Form field type
+     */
+    public $type = 'Joomla! template';
 
-	/**
-	 * Method to get the output of this element
-	 *
-	 * @param null
-	 *
-	 * @return string
-	 */
-	protected function getInput()
-	{
-		$name      = $this->name;
-		$fieldName = $this->fieldname;
-		$value     = $this->value;
+    /**
+     * Method to get the output of this element
+     *
+     * @param null
+     *
+     * @return string
+     */
+    protected function getInput()
+    {
+        $name      = $this->name;
+        $fieldName = $this->fieldname;
+        $value     = $this->value;
 
-		require_once(JPATH_ADMINISTRATOR . '/components/com_templates/helpers/templates.php');
-		$options = TemplatesHelper::getTemplateOptions(0);
+        require_once(JPATH_ADMINISTRATOR . '/components/com_templates/helpers/templates.php');
+        $options = TemplatesHelper::getTemplateOptions(0);
 
-		if (!empty($options) && is_array($options))
-		{
-			array_unshift($options, array('value' => '', 'text' => ''));
+        if (!empty($options) && is_array($options)) {
+            array_unshift($options, ['value' => '', 'text' => '']);
 
-			return JHtml::_('select.genericlist', $options, $fieldName, null, 'value', 'text', $this->getConfig($fieldName));
-		}
+            return JHtml::_('select.genericlist', $options, $fieldName, null, 'value', 'text', $this->getConfig($fieldName));
+        }
 
-		return '<input type="text" name="' . $name . '" value="' . $value . '" />';
-	}
+        return '<input type="text" name="' . $name . '" value="' . $value . '" />';
+    }
 }

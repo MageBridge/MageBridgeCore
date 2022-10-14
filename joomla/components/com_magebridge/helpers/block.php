@@ -17,85 +17,80 @@ defined('_JEXEC') or die('Restricted access');
  */
 class MageBridgeBlockHelper
 {
-	/**
-	 * @param $data
-	 *
-	 * @return mixed
-	 */
-	static public function parseBlock($data)
-	{
-		$formToken = JHtml::_('form.token');
-		$data = str_replace('</form>', $formToken . '</form>', $data);
+    /**
+     * @param $data
+     *
+     * @return mixed
+     */
+    public static function parseBlock($data)
+    {
+        $formToken = JHtml::_('form.token');
+        $data = str_replace('</form>', $formToken . '</form>', $data);
 
-		return $data;
-	}
+        return $data;
+    }
 
-	/**
-	 * @param $data
-	 *
-	 * @return mixed
-	 */
-	static public function parseJdocTags($data)
-	{
-		$replace = array();
-		$matches = array();
+    /**
+     * @param $data
+     *
+     * @return mixed
+     */
+    public static function parseJdocTags($data)
+    {
+        $replace = [];
+        $matches = [];
 
-		if (preg_match_all('#<jdoc:include\ type="([^"]+)" (.*)\/>#iU', $data, $matches))
-		{
-			$matches[0] = array_reverse($matches[0]);
-			$matches[1] = array_reverse($matches[1]);
-			$matches[2] = array_reverse($matches[2]);
-			$count = count($matches[1]);
+        if (preg_match_all('#<jdoc:include\ type="([^"]+)" (.*)\/>#iU', $data, $matches)) {
+            $matches[0] = array_reverse($matches[0]);
+            $matches[1] = array_reverse($matches[1]);
+            $matches[2] = array_reverse($matches[2]);
+            $count = count($matches[1]);
 
-			for ($i = 0; $i < $count; $i++)
-			{
-				$attributes = JUtility::parseAttributes($matches[2][$i]);
-				$type = $matches[1][$i];
+            for ($i = 0; $i < $count; $i++) {
+                $attributes = JUtility::parseAttributes($matches[2][$i]);
+                $type = $matches[1][$i];
 
-				if ($type != 'modules')
-				{
-					continue;
-				}
+                if ($type != 'modules') {
+                    continue;
+                }
 
-				$name = isset($attributes['name']) ? $attributes['name'] : null;
+                $name = $attributes['name'] ?? null;
 
-				if (empty($name))
-				{
-					continue;
-				}
+                if (empty($name)) {
+                    continue;
+                }
 
-				unset($attributes['name']);
-				$moduleHtml = self::getModuleHtml($name, $attributes);;
-				$data = str_replace($matches[0][$i], $moduleHtml, $data);
-			}
-		}
+                unset($attributes['name']);
+                $moduleHtml = self::getModuleHtml($name, $attributes);
+                ;
+                $data = str_replace($matches[0][$i], $moduleHtml, $data);
+            }
+        }
 
-		return $data;
-	}
+        return $data;
+    }
 
-	/**
-	 * @param $name
-	 * @param $attribs
-	 *
-	 * @return string
-	 */
-	static public function getModuleHtml($name, $attributes)
-	{
-		jimport('joomla.application.module.helper');
-		$modules = JModuleHelper::getModules($name);
+    /**
+     * @param $name
+     * @param $attribs
+     *
+     * @return string
+     */
+    public static function getModuleHtml($name, $attributes)
+    {
+        jimport('joomla.application.module.helper');
+        $modules = JModuleHelper::getModules($name);
 
-		if (empty($modules))
-		{
-			return null;
-		}
+        if (empty($modules)) {
+            return null;
+        }
 
-		$moduleHtml = null;
+        $moduleHtml = null;
 
-		foreach ($modules as $module)
-		{
-			$moduleHtml .= JModuleHelper::renderModule($module, $attributes);
-		}
+        foreach ($modules as $module) {
+            $moduleHtml .= JModuleHelper::renderModule($module, $attributes);
+        }
 
-		return $moduleHtml;
-	}
+        return $moduleHtml;
+    }
 }

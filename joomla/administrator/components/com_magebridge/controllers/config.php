@@ -17,309 +17,288 @@ defined('_JEXEC') or die();
  */
 class MageBridgeControllerConfig extends YireoCommonController
 {
-	/**
-	 * Handle the task 'cancel'
-	 */
-	public function cancel()
-	{
-		// Redirect back to the form-page
-		return $this->setRedirect(JRoute::_('index.php?option=com_magebridge'), $this->msg, $this->msg_type);
-	}
+    /**
+     * Handle the task 'cancel'
+     */
+    public function cancel()
+    {
+        // Redirect back to the form-page
+        return $this->setRedirect(JRoute::_('index.php?option=com_magebridge'), $this->msg, $this->msg_type);
+    }
 
-	/**
-	 * Handle the task 'save'
-	 */
-	public function save()
-	{
-		// Security check
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+    /**
+     * Handle the task 'save'
+     */
+    public function save()
+    {
+        // Security check
+        JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
 
-		// Validate whether this task is allowed
-		if ($this->_validate(true, true) == false)
-		{
-			return false;
-		}
+        // Validate whether this task is allowed
+        if ($this->_validate(true, true) == false) {
+            return false;
+        }
 
-		// Store the data
-		$this->store();
+        // Store the data
+        $this->store();
 
-		// Redirect back to the form-page
-		return $this->setRedirect('index.php?option=com_magebridge', $this->msg, $this->msg_type);
-	}
+        // Redirect back to the form-page
+        return $this->setRedirect('index.php?option=com_magebridge', $this->msg, $this->msg_type);
+    }
 
-	/**
-	 * Handle the task 'apply'
-	 */
-	public function apply()
-	{
-		// Security check
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+    /**
+     * Handle the task 'apply'
+     */
+    public function apply()
+    {
+        // Security check
+        JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
 
-		// Validate whether this task is allowed
-		if ($this->_validate(true, true) == false)
-		{
-			return false;
-		}
+        // Validate whether this task is allowed
+        if ($this->_validate(true, true) == false) {
+            return false;
+        }
 
-		// Store the data
-		$this->store();
+        // Store the data
+        $this->store();
 
-		// Redirect back to the form-page
-		return $this->setRedirect('index.php?option=com_magebridge&view=config', $this->msg, $this->msg_type);
-	}
+        // Redirect back to the form-page
+        return $this->setRedirect('index.php?option=com_magebridge&view=config', $this->msg, $this->msg_type);
+    }
 
-	/**
-	 * Extend the default store-method
-	 *
-	 * @param array $post
-	 *
-	 * @return null
-	 */
-	public function store($post = array())
-	{
-		// Security check
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+    /**
+     * Extend the default store-method
+     *
+     * @param array $post
+     *
+     * @return null
+     */
+    public function store($post = [])
+    {
+        // Security check
+        JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
 
-		// Validate whether this task is allowed
-		if ($this->_validate(true, true) == false)
-		{
-			return false;
-		}
+        // Validate whether this task is allowed
+        if ($this->_validate(true, true) == false) {
+            return false;
+        }
 
-		// Fetch the POST-data
-		$post = $this->_app->input->post->getArray();
-		$post = $this->fixPost($post);
-		
-		// Get the model
-		$model = $this->getModel('config');
+        // Fetch the POST-data
+        $post = $this->_app->input->post->getArray();
+        $post = $this->fixPost($post);
 
-		// Store these data with the model
-		if ($model->store($post))
-		{
-			$this->msg = JText::sprintf('LIB_YIREO_CONTROLLER_ITEM_SAVED', $this->_app->input->getCmd('view'));
+        // Get the model
+        $model = $this->getModel('config');
 
-			return true;
-		}
+        // Store these data with the model
+        if ($model->store($post)) {
+            $this->msg = JText::sprintf('LIB_YIREO_CONTROLLER_ITEM_SAVED', $this->_app->input->getCmd('view'));
 
-		$this->msg = JText::sprintf('LIB_YIREO_CONTROLLER_ITEM_NOT_SAVED', $this->_app->input->getCmd('view'));
-		$error = $model->getError();
-			
-		if (!empty($error))
-		{
-			$this->msg .= ': ' . $error;
-		}
-			
-		$this->msg_type = 'error';
+            return true;
+        }
 
-		return false;
-	}
+        $this->msg = JText::sprintf('LIB_YIREO_CONTROLLER_ITEM_NOT_SAVED', $this->_app->input->getCmd('view'));
+        $error = $model->getError();
 
-	/**
-	 * @param $post
-	 *
-	 * @return mixed
-	 */
-	protected function fixPost($post)
-	{
-		$post['api_key'] = $this->_app->input->post->get('api_key', '', 'raw');
-		$post['api_user'] = $this->_app->input->post->get('api_user', '', 'raw');
+        if (!empty($error)) {
+            $this->msg .= ': ' . $error;
+        }
 
-		// Override with new JForm-output (temp)
-		if (isset($post['config']))
-		{
-			foreach ($post['config'] as $name => $value)
-			{
-				$post[$name] = $value;
-			}
+        $this->msg_type = 'error';
 
-			unset($post['config']);
-		}
+        return false;
+    }
 
-		return $post;
-	}
+    /**
+     * @param $post
+     *
+     * @return mixed
+     */
+    protected function fixPost($post)
+    {
+        $post['api_key'] = $this->_app->input->post->get('api_key', '', 'raw');
+        $post['api_user'] = $this->_app->input->post->get('api_user', '', 'raw');
 
-	/**
-	 * Method to import configuration from XML
-	 */
-	public function import()
-	{
-		$this->_app->input->set('layout', 'import');
+        // Override with new JForm-output (temp)
+        if (isset($post['config'])) {
+            foreach ($post['config'] as $name => $value) {
+                $post[$name] = $value;
+            }
 
-		parent::display();
-	}
+            unset($post['config']);
+        }
 
-	/**
-	 * Method to export configuration to XML
-	 */
-	public function export()
-	{
-		// Gather the variables
-		$config = MagebridgeModelConfig::load();
+        return $post;
+    }
 
-		$date = date('Ymd');
-		$host = str_replace('.', '_', $_SERVER['HTTP_HOST']);
-		$filename = 'magebridge-joomla-' . $host . '-' . $date . '.xml';
-		$output = $this->getOutput($config);
+    /**
+     * Method to import configuration from XML
+     */
+    public function import()
+    {
+        $this->_app->input->set('layout', 'import');
 
-		header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-		header('Content-Length: ' . YireoHelper::strlen($output));
-		header('Content-type: application/xml');
-		header('Content-Disposition: attachment; filename=' . $filename);
-		print $output;
+        parent::display();
+    }
 
-		// Close the application
-		$application = $this->_app;
-		$application->close();
-	}
+    /**
+     * Method to export configuration to XML
+     */
+    public function export()
+    {
+        // Gather the variables
+        $config = MagebridgeModelConfig::load();
 
-	/**
-	 * @param $upload
-	 *
-	 * @return bool
-	 */
-	protected function isValidUpload($upload)
-	{
-		if (empty($upload))
-		{
-			return false;
-		}
+        $date = date('Ymd');
+        $host = str_replace('.', '_', $_SERVER['HTTP_HOST']);
+        $filename = 'magebridge-joomla-' . $host . '-' . $date . '.xml';
+        $output = $this->getOutput($config);
 
-		if (empty($upload['name']))
-		{
-			return false;
-		}
+        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+        header('Content-Length: ' . YireoHelper::strlen($output));
+        header('Content-type: application/xml');
+        header('Content-Disposition: attachment; filename=' . $filename);
+        print $output;
 
-		if (empty($upload['tmp_name']))
-		{
-			return false;
-		}
+        // Close the application
+        $application = $this->_app;
+        $application->close();
+    }
 
-		if (empty($upload['size']))
-		{
-			return false;
-		}
+    /**
+     * @param $upload
+     *
+     * @return bool
+     */
+    protected function isValidUpload($upload)
+    {
+        if (empty($upload)) {
+            return false;
+        }
 
-		return true;
-	}
+        if (empty($upload['name'])) {
+            return false;
+        }
 
-	/**
-	 * Method to handle the upload of a new CSV-file
-	 *
-	 * @return array
-	 */
-	public function upload()
-	{
-		// Construct the needed variables
-		$upload = $this->_app->input->get('xml', null, 'files');
+        if (empty($upload['tmp_name'])) {
+            return false;
+        }
 
-		// Check whether this is a valid download
-		if ($this->isValidUpload($upload) == false)
-		{
-			$this->setRedirect('index.php?option=com_magebridge&view=config&task=import', JText::_('File upload failed on system level'), 'error');
+        if (empty($upload['size'])) {
+            return false;
+        }
 
-			return false;
-		}
+        return true;
+    }
 
-		// Check for empty content
-		$xmlString = @file_get_contents($upload['tmp_name']);
+    /**
+     * Method to handle the upload of a new CSV-file
+     *
+     * @return array
+     */
+    public function upload()
+    {
+        // Construct the needed variables
+        $upload = $this->_app->input->get('xml', null, 'files');
 
-		if (empty($xmlString))
-		{
-			$this->setRedirect('index.php?option=com_magebridge&view=config&task=import', JText::_('Empty file upload'), 'error');
+        // Check whether this is a valid download
+        if ($this->isValidUpload($upload) == false) {
+            $this->setRedirect('index.php?option=com_magebridge&view=config&task=import', JText::_('File upload failed on system level'), 'error');
 
-			return false;
-		}
+            return false;
+        }
 
-		$xml = @simplexml_load_string($xmlString);
+        // Check for empty content
+        $xmlString = @file_get_contents($upload['tmp_name']);
 
-		if (!$xml)
-		{
-			$this->setRedirect('index.php?option=com_magebridge&view=config&task=import', JText::_('Invalid XML-configuration'), 'error');
+        if (empty($xmlString)) {
+            $this->setRedirect('index.php?option=com_magebridge&view=config&task=import', JText::_('Empty file upload'), 'error');
 
-			return false;
-		}
+            return false;
+        }
 
-		$config = array();
+        $xml = @simplexml_load_string($xmlString);
 
-		foreach ($xml->children() as $parameter)
-		{
-			$name = (string) $parameter->name;
-			$value = (string) $parameter->value;
-			if (!empty($name))
-			{
-				$config[$name] = $value;
-			}
-		}
+        if (!$xml) {
+            $this->setRedirect('index.php?option=com_magebridge&view=config&task=import', JText::_('Invalid XML-configuration'), 'error');
 
-		if (empty($config))
-		{
-			$this->setRedirect('index.php?option=com_magebridge&view=config&task=import', JText::_('Nothing to import'), 'error');
+            return false;
+        }
 
-			return false;
-		}
+        $config = [];
 
-		MagebridgeModelConfig::getSingleton()->store($config);
-		$this->setRedirect('index.php?option=com_magebridge&view=config', JText::_('Imported configuration succesfully'));
+        foreach ($xml->children() as $parameter) {
+            $name = (string) $parameter->name;
+            $value = (string) $parameter->value;
+            if (!empty($name)) {
+                $config[$name] = $value;
+            }
+        }
 
-		return true;
-	}
+        if (empty($config)) {
+            $this->setRedirect('index.php?option=com_magebridge&view=config&task=import', JText::_('Nothing to import'), 'error');
 
-	/**
-	 * Method to get all XML output
-	 */
-	private function getOutput($config)
-	{
-		$xml = null;
+            return false;
+        }
 
-		if (!empty($config))
-		{
-			$xml .= "<configuration>\n";
+        MagebridgeModelConfig::getSingleton()->store($config);
+        $this->setRedirect('index.php?option=com_magebridge&view=config', JText::_('Imported configuration succesfully'));
 
-			foreach ($config as $c)
-			{
-				$xml .= "	<parameter>\n";
-				$xml .= "		<id>" . $c['id'] . "</id>\n";
-				$xml .= "		<name>" . $c['name'] . "</name>\n";
-				$xml .= "		<value><![CDATA[" . $c['value'] . "]]></value>\n";
-				$xml .= "	</parameter>\n";
-			}
+        return true;
+    }
 
-			$xml .= "</configuration>\n";
-		}
+    /**
+     * Method to get all XML output
+     */
+    private function getOutput($config)
+    {
+        $xml = null;
 
-		return $xml;
-	}
+        if (!empty($config)) {
+            $xml .= "<configuration>\n";
 
-	/**
-	 * Method to validate a change-request
-	 *
-	 * @param boolean $check_token
-	 * @param boolean $check_demo
-	 *
-	 * @return boolean
-	 */
-	protected function _validate($check_token = true, $check_demo = true)
-	{
-		// Check the token
-		if ($check_token == true && (JSession::checkToken('post') == false && JSession::checkToken('get') == false))
-		{
-			$msg = JText::_('JINVALID_TOKEN');
-			$link = 'index.php?option=com_magebridge&view=home';
-			$this->setRedirect($link, $msg);
+            foreach ($config as $c) {
+                $xml .= "	<parameter>\n";
+                $xml .= "		<id>" . $c['id'] . "</id>\n";
+                $xml .= "		<name>" . $c['name'] . "</name>\n";
+                $xml .= "		<value><![CDATA[" . $c['value'] . "]]></value>\n";
+                $xml .= "	</parameter>\n";
+            }
 
-			return false;
-		}
+            $xml .= "</configuration>\n";
+        }
 
-		// Check demo-access
-		if ($check_demo == true && MageBridgeAclHelper::isDemo() == true)
-		{
-			$msg = JText::_('LIB_YIREO_CONTROLLER_DEMO_NO_ACTION');
-			$link = 'index.php?option=com_magebridge&view=config';
-			$this->setRedirect($link, $msg);
+        return $xml;
+    }
 
-			return false;
-		}
+    /**
+     * Method to validate a change-request
+     *
+     * @param boolean $check_token
+     * @param boolean $check_demo
+     *
+     * @return boolean
+     */
+    protected function _validate($check_token = true, $check_demo = true)
+    {
+        // Check the token
+        if ($check_token == true && (JSession::checkToken('post') == false && JSession::checkToken('get') == false)) {
+            $msg = JText::_('JINVALID_TOKEN');
+            $link = 'index.php?option=com_magebridge&view=home';
+            $this->setRedirect($link, $msg);
 
-		return true;
-	}
+            return false;
+        }
+
+        // Check demo-access
+        if ($check_demo == true && MageBridgeAclHelper::isDemo() == true) {
+            $msg = JText::_('LIB_YIREO_CONTROLLER_DEMO_NO_ACTION');
+            $link = 'index.php?option=com_magebridge&view=config';
+            $this->setRedirect($link, $msg);
+
+            return false;
+        }
+
+        return true;
+    }
 }

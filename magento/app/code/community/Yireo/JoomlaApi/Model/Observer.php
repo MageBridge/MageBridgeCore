@@ -9,7 +9,7 @@
  * @link https://www.yireo.com
  */
 /*
- * JoomlaApi observer 
+ * JoomlaApi observer
  */
 
 class Yireo_JoomlaApi_Model_Observer

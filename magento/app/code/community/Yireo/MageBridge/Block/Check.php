@@ -17,20 +17,20 @@ class Yireo_MageBridge_Block_Check extends Mage_Core_Block_Template
     /**
      * @var array
      */
-    protected $systemChecks = array();
+    protected $systemChecks = [];
 
     /**
      * @var Mage_Core_Model_Config
      */
     protected $config;
 
-    const CHECK_OK = 'ok';
+    public const CHECK_OK = 'ok';
 
-    const CHECK_WARNING = 'warning';
+    public const CHECK_WARNING = 'warning';
 
-    const CHECK_ERROR = 'error';
+    public const CHECK_ERROR = 'error';
 
-    const PHP_MEMORY_LIMIT = '256';
+    public const PHP_MEMORY_LIMIT = '256';
 
     /**
      * Constructor method
@@ -73,11 +73,11 @@ class Yireo_MageBridge_Block_Check extends Mage_Core_Block_Template
     private function addResult($group, $check, $status = 0, $description = '')
     {
         $checks = $this->systemChecks;
-        $checks[$group][] = array(
+        $checks[$group][] = [
             'check' => $this->__($check),
             'status' => $status,
             'description' => $this->__($description),
-        );
+        ];
 
         $this->systemChecks = $checks;
         return;
@@ -281,7 +281,7 @@ class Yireo_MageBridge_Block_Check extends Mage_Core_Block_Template
         $this->addResult('system', 'Magic Quotes GPC', $result, 'Magic Quotes GPC is outdated and should be disabled');
 
         $cacheBackend = (string)Mage::getConfig()->getNode('global/cache/backend');
-        $result = (in_array($cacheBackend, array('files', 'db'))) ? self::CHECK_ERROR : self::CHECK_OK;
+        $result = (in_array($cacheBackend, ['files', 'db'])) ? self::CHECK_ERROR : self::CHECK_OK;
         $this->addResult('system', 'Caching Backend', $result, 'We recommend a fast caching backend like Redis or memcache [current: ' . $cacheBackend . ']');
 
         $result = ($this->hasOpcaching()) ? self::CHECK_OK : self::CHECK_WARNING;
@@ -390,7 +390,7 @@ class Yireo_MageBridge_Block_Check extends Mage_Core_Block_Template
      */
     public function getLogUrl($type = null)
     {
-        return Mage::getModel('adminhtml/url')->getUrl('adminhtml/magebridge/log', array('type' => $type));
+        return Mage::getModel('adminhtml/url')->getUrl('adminhtml/magebridge/log', ['type' => $type]);
     }
 
     /**

@@ -23,42 +23,46 @@ require_once JPATH_COMPONENT.'/view.php';
  */
 class MageBridgeViewRoot extends MageBridgeView
 {
-	/**
-	 * Method to display the requested view
-	 */
-	public function display($tpl = null)
-	{
-		// Set which block to display
-		$this->setBlock('content');
+    /**
+     * Method to display the requested view
+     */
+    public function display($tpl = null)
+    {
+        // Set which block to display
+        $this->setBlock('content');
 
-		// Build the bridge right away, because we need data from Magento
-		$block = $this->build();
+        // Build the bridge right away, because we need data from Magento
+        $block = $this->build();
 
-		// Determine which template to display
-		if (MageBridgeTemplateHelper::isProductPage()) {
-			$tpl = 'product';
-		} else if (MageBridgeTemplateHelper::isCategoryPage()) {
-			$tpl = 'category';
-		}
+        // Determine which template to display
+        if (MageBridgeTemplateHelper::isProductPage()) {
+            $tpl = 'product';
+        } elseif (MageBridgeTemplateHelper::isCategoryPage()) {
+            $tpl = 'category';
+        }
 
-		// Output component-only pages
-		$bridge = MageBridge::getBridge();
-		if ($bridge->isAjax()) {
-			print $block;
-			JFactory::getApplication()->close();
-		}
+        // Output component-only pages
+        $bridge = MageBridge::getBridge();
+        if ($bridge->isAjax()) {
+            print $block;
+            JFactory::getApplication()->close();
+        }
 
-		// Add controller information
-		$mageConfig = $bridge->getMageConfig();
-		$this->mage_controller = (isset($mageConfig['controller'])) ? $mageConfig['controller'] : null;
-		$this->mage_action = (isset($mageConfig['action'])) ? $mageConfig['action'] : null;
+        // Add controller information
+        $mageConfig = $bridge->getMageConfig();
+        $this->mage_controller = (isset($mageConfig['controller'])) ? $mageConfig['controller'] : null;
+        $this->mage_action = (isset($mageConfig['action'])) ? $mageConfig['action'] : null;
 
-		// Assemble the page class
-		$contentClass = array('magebridge-content');
-		if(!empty($mageController)) $contentClass[] = 'magebridge-'.$mageController;
-		if(!empty($mageAction)) $contentClass[] = 'magebridge-'.$mageController.'-'.$mageAction;
+        // Assemble the page class
+        $contentClass = ['magebridge-content'];
+        if (!empty($mageController)) {
+            $contentClass[] = 'magebridge-'.$mageController;
+        }
+        if (!empty($mageAction)) {
+            $contentClass[] = 'magebridge-'.$mageController.'-'.$mageAction;
+        }
         $this->content_class = $contentClass;
 
-		parent::display($tpl);
-	}
+        parent::display($tpl);
+    }
 }

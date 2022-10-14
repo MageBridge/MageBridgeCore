@@ -20,35 +20,33 @@ require_once JPATH_SITE . '/components/com_magebridge/helpers/loader.php';
  */
 class MagebridgeFormFieldTheme extends MagebridgeFormFieldAbstract
 {
-	/**
-	 * Form field type
-	 */
-	public $type = 'Magento theme';
+    /**
+     * Form field type
+     */
+    public $type = 'Magento theme';
 
-	/**
-	 * Method to get the output of this element
-	 *
-	 * @param null
-	 *
-	 * @return string
-	 */
-	protected function getInput()
-	{
-		$name      = $this->name;
-		$fieldName = $this->fieldname;
-		$value     = $this->value;
+    /**
+     * Method to get the output of this element
+     *
+     * @param null
+     *
+     * @return string
+     */
+    protected function getInput()
+    {
+        $name      = $this->name;
+        $fieldName = $this->fieldname;
+        $value     = $this->value;
 
-		if ($this->getConfig('api_widgets') == true)
-		{
-			$options = MageBridgeWidgetHelper::getWidgetData('theme');
-			if (!empty($options) && is_array($options))
-			{
-				array_unshift($options, array('value' => '', 'label' => ''));
+        if ($this->getConfig('api_widgets') == true) {
+            $options = MageBridgeWidgetHelper::getWidgetData('theme');
+            if (!empty($options) && is_array($options)) {
+                array_unshift($options, ['value' => '', 'label' => '']);
 
-				return JHtml::_('select.genericlist', $options, $name, null, 'value', 'label', $this->getConfig($fieldName));
-			}
-		}
+                return JHtml::_('select.genericlist', $options, $name, null, 'value', 'label', $this->getConfig($fieldName));
+            }
+        }
 
-		return '<input type="text" name="' . $name . '" value="' . $value . '" />';
-	}
+        return '<input type="text" name="' . $name . '" value="' . $value . '" />';
+    }
 }

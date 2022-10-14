@@ -20,12 +20,12 @@ jimport('joomla.utilities.date');
  */
 class MagebridgeModelUsergroup extends YireoModel
 {
-	/**
-	 * Constructor method
-	 */
-	public function __construct()
-	{
-		$this->_orderby_title = 'description';
-		parent::__construct('usergroup');
-	}
+    /**
+     * Constructor method
+     */
+    public function __construct()
+    {
+        $this->_orderby_title = 'description';
+        parent::__construct('usergroup');
+    }
 }

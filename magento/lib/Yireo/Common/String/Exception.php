@@ -1,7 +1,8 @@
 <?php
+
 namespace Yireo\Common\String;
 
-use \Exception as TargetException;
+use Exception as TargetException;
 
 /**
  * Class Exception

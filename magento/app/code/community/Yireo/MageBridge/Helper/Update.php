@@ -21,15 +21,15 @@ class Yireo_MageBridge_Helper_Update extends Mage_Core_Helper_Abstract
     public function removeFiles()
     {
         // Cleanup specific files
-        $files = array(
+        $files = [
             BP.DS.'app'.DS.'etc'.DS.'modules'.DS.'Jira_MageBridge.xml',
             BP.DS.'app'.DS.'design'.DS.'frontend'.DS.'default'.DS.'default'.DS.'layout'.DS.'magebridge.xml',
             BP.DS.'app'.DS.'design'.DS.'frontend'.DS.'default'.DS.'magebridge'.DS.'layout',
             BP.DS.'app'.DS.'design'.DS.'frontend'.DS.'default'.DS.'magebridge'.DS.'template'.DS.'magebridge'.DS.'page.phtml',
             BP.DS.'app'.DS.'code'.DS.'community'.DS.'Yireo'.DS.'MageBridge'.DS.'controllers'.DS.'IndexController.php',
-        );
+        ];
 
-        foreach($files as $file) {
+        foreach ($files as $file) {
             @unlink($file);
         }
 
@@ -38,17 +38,21 @@ class Yireo_MageBridge_Helper_Update extends Mage_Core_Helper_Abstract
         $downloaderFolder = BP.DS.'downloader'.DS;
         $files = scandir($packageFolder);
         $fileMatch = false;
-        foreach($files as $file) {
-            if(preg_match('/^Yireo_MageBridge/', $file)) {
+        foreach ($files as $file) {
+            if (preg_match('/^Yireo_MageBridge/', $file)) {
                 $fileMatch = true;
                 @unlink($packageFolder.$file);
             }
         }
 
         // If a file has been removed, refresh the Magento Downloader
-        if($fileMatch == true) {
-            if(file_exists($downloaderFolder.'cache.cfg')) @unlink($downloaderFilder.'cache.cfg');
-            if(file_exists($downloaderFolder.'connect.cfg')) @unlink($downloaderFilder.'connect.cfg');
+        if ($fileMatch == true) {
+            if (file_exists($downloaderFolder.'cache.cfg')) {
+                @unlink($downloaderFilder.'cache.cfg');
+            }
+            if (file_exists($downloaderFolder.'connect.cfg')) {
+                @unlink($downloaderFilder.'connect.cfg');
+            }
         }
     }
 
@@ -59,18 +63,16 @@ class Yireo_MageBridge_Helper_Update extends Mage_Core_Helper_Abstract
      * @param string $directory
      * @return bool
      */
-    public function recursiveDelete($directory) 
+    public function recursiveDelete($directory)
     {
         $pointer = opendir($directory);
-        if($pointer) {
-            while($f = readdir($pointer)) {
+        if ($pointer) {
+            while ($f = readdir($pointer)) {
                 $file = $directory.DS.$f;
-                if($f == '.' || $f == '..') {
+                if ($f == '.' || $f == '..') {
                     continue;
-
-                } elseif(is_dir($file) && !is_link($file)) {
+                } elseif (is_dir($file) && !is_link($file)) {
                     self::recursiveDelete($file);
-
                 } else {
                     @unlink($file);
                 }
@@ -89,7 +91,7 @@ class Yireo_MageBridge_Helper_Update extends Mage_Core_Helper_Abstract
      */
     public function renameConfigPaths()
     {
-        $paths = array(
+        $paths = [
             'settings/caching' => 'cache/caching',
             'settings/caching_gzip' => 'cache/caching_gzip',
             'settings/joomla_remotesso' => 'joomla/remotesso',
@@ -104,9 +106,9 @@ class Yireo_MageBridge_Helper_Update extends Mage_Core_Helper_Abstract
             'settings/encryption' => 'joomla/encryption',
             'settings/encryption_key' => 'joomla/encryption_key',
             'settings/license_key' => 'hidden/support_key',
-        );
+        ];
 
-        foreach($paths as $originalPath => $newPath) {
+        foreach ($paths as $originalPath => $newPath) {
             $this->renameConfigPath($originalPath, $newPath);
         }
     }
@@ -119,7 +121,7 @@ class Yireo_MageBridge_Helper_Update extends Mage_Core_Helper_Abstract
      * @param string $newPath
      * @return bool
      */
-    public function renameConfigPath($originalPath, $newPath) 
+    public function renameConfigPath($originalPath, $newPath)
     {
         $originalPath = 'magebridge/'.$originalPath;
         $newPath = 'magebridge/'.$newPath;
@@ -133,11 +135,10 @@ class Yireo_MageBridge_Helper_Update extends Mage_Core_Helper_Abstract
         $query = 'SELECT * FROM `'.$table.'` WHERE `path` = "'.$newPath.'"';
         $originalPathResults = $connection->fetchAll($query);
 
-        if(empty($newPathResults) && !empty($originalPathResults)) {
+        if (empty($newPathResults) && !empty($originalPathResults)) {
             $query = 'UPDATE `'.$table.'` SET `path`="'.$newPath.'" WHERE `path` = "'.$originalPath.'"';
             $connection->query($query);
-
-        } elseif(!empty($newPathResults) && !empty($originalPathResults)) {
+        } elseif (!empty($newPathResults) && !empty($originalPathResults)) {
             $query = 'DELETE FROM `'.$table.'` WHERE `path` = "'.$originalPath.'"';
             $connection->query($query);
         }

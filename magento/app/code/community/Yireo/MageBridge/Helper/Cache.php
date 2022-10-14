@@ -20,7 +20,9 @@ class Yireo_MageBridge_Helper_Cache extends Mage_Core_Helper_Abstract
      */
     public function enabled()
     {
-        if(Mage::helper('magebridge')->isBridge() == false) return false;
+        if (Mage::helper('magebridge')->isBridge() == false) {
+            return false;
+        }
         return (bool)Mage::getStoreConfig('magebridge/cache/caching');
     }
 
@@ -34,9 +36,9 @@ class Yireo_MageBridge_Helper_Cache extends Mage_Core_Helper_Abstract
     public function getPageId()
     {
         static $id;
-        if(empty($id)) {
+        if (empty($id)) {
             $id = Mage::getSingleton('magebridge/core')->getMetaData('request_id');
-            if(empty($id)) {
+            if (empty($id)) {
                 $currentUrl = Mage::helper('core/url')->getCurrentUrl();
                 $get = serialize($_GET);
                 $id = md5($currentUrl.$get);
@@ -47,7 +49,7 @@ class Yireo_MageBridge_Helper_Cache extends Mage_Core_Helper_Abstract
 
     /**
      * Listen to the event core_block_abstract_to_html_before
-     * 
+     *
      * @access public
      * @parameter Varien_Event_Observer $observer
      * @return $this
@@ -55,33 +57,33 @@ class Yireo_MageBridge_Helper_Cache extends Mage_Core_Helper_Abstract
     public function allowCaching($block, $page)
     {
         $allowCaching = false;
-        $blocksWhitelist = array(
+        $blocksWhitelist = [
             'tags_popular',
             'catalog.product.related',
             'catalog.leftnav',
             'product_tag_list',
-            'customer_account_navigation', 
-            'right.newsletter', 
+            'customer_account_navigation',
+            'right.newsletter',
             'left.newsletter',
             'seo.searchterm',
             'top.search',
             'top.menu',
             'head',
-        );
+        ];
 
         // Fetch some extra conditions
         $customerLoggedIn = Mage::getSingleton('customer/session')->isLoggedIn();
 
         // All catalog-pages for guest-users
-        if($customerLoggedIn == false && preg_match('/^\/catalog\//', $page) && $block == 'content') {
+        if ($customerLoggedIn == false && preg_match('/^\/catalog\//', $page) && $block == 'content') {
             $allowCaching = true;
 
         // All tag-listings for guest-users
-        } elseif($customerLoggedIn == false && preg_match('/^\/tag\/product\/list\//', $page) && $block == 'content') {
+        } elseif ($customerLoggedIn == false && preg_match('/^\/tag\/product\/list\//', $page) && $block == 'content') {
             $allowCaching = true;
 
         // Any block in the whitelist
-        } elseif(in_array($block, $blocksWhitelist)) {
+        } elseif (in_array($block, $blocksWhitelist)) {
             $allowCaching = true;
         }
 

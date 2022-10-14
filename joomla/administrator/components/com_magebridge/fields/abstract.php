@@ -25,79 +25,78 @@ jimport('joomla.form.formfield');
  */
 abstract class MagebridgeFormFieldAbstract extends JFormField
 {
-	/** @var MageBridgeModelBridge */
-	protected $bridge;
-	
-	/** @var MageBridgeModelRegister */
-	protected $register;
+    /** @var MageBridgeModelBridge */
+    protected $bridge;
 
-	/** @var  MageBridgeModelDebug */
-	protected $debugger;
+    /** @var MageBridgeModelRegister */
+    protected $register;
 
-	/**
-	 * MagebridgeFormFieldAbstract constructor.
-	 *
-	 * @param null $form
-	 */
-	public function __construct($form = null)
-	{
-		$this->bridge   = MageBridgeModelBridge::getInstance();
-		$this->register = MageBridgeModelRegister::getInstance();
-		$this->debugger = MageBridgeModelDebug::getInstance();
+    /** @var  MageBridgeModelDebug */
+    protected $debugger;
 
-		return parent::__construct($form);
-	}
+    /**
+     * MagebridgeFormFieldAbstract constructor.
+     *
+     * @param null $form
+     */
+    public function __construct($form = null)
+    {
+        $this->bridge   = MageBridgeModelBridge::getInstance();
+        $this->register = MageBridgeModelRegister::getInstance();
+        $this->debugger = MageBridgeModelDebug::getInstance();
 
-	/**
-	 * Method to wrap the protected getInput() method
-	 *
-	 * @return string
-	 */
-	public function getHtmlInput()
-	{
-		return $this->getInput();
-	}
+        return parent::__construct($form);
+    }
 
-	/**
-	 * Method to set the name
-	 *
-	 * @param mixed $value
-	 */
-	public function setName($value = null)
-	{
-		$this->name = $value;
-	}
+    /**
+     * Method to wrap the protected getInput() method
+     *
+     * @return string
+     */
+    public function getHtmlInput()
+    {
+        return $this->getInput();
+    }
 
-	/**
-	 * Method to set the value
-	 *
-	 * @param mixed $value
-	 */
-	public function setValue($value = null)
-	{
-		$this->value = $value;
-	}
+    /**
+     * Method to set the name
+     *
+     * @param mixed $value
+     */
+    public function setName($value = null)
+    {
+        $this->name = $value;
+    }
 
-	/**
-	 * @param $warning
-	 */
-	protected function warning($warning, $variable = null)
-	{
-		if (!empty($variable))
-		{
-			$warning .= ': ' .  var_export($variable, true);
-		}
-		
-		$this->debugger->warning($warning);
-	}
+    /**
+     * Method to set the value
+     *
+     * @param mixed $value
+     */
+    public function setValue($value = null)
+    {
+        $this->value = $value;
+    }
 
-	/**
-	 * @param $name
-	 *
-	 * @return mixed
-	 */
-	protected function getConfig($name)
-	{
-		return MagebridgeModelConfig::load($name);
-	}
+    /**
+     * @param $warning
+     */
+    protected function warning($warning, $variable = null)
+    {
+        if (!empty($variable)) {
+            $warning .= ': ' .  var_export($variable, true);
+        }
+
+        $this->debugger->warning($warning);
+    }
+
+    /**
+     * @param $name
+     *
+     * @return mixed
+     */
+    protected function getConfig($name)
+    {
+        return MagebridgeModelConfig::load($name);
+    }
 }

@@ -65,68 +65,54 @@ $allowRoot = ($input->getCmd('allow_root') === 1) ? true : false;
         </tfoot>
         <tbody>
 		<?php
-		if (!empty($this->categories))
-		{
-			$i = 0;
-			foreach ($this->categories as $category)
-			{
-				$return = 'category_id';
+        if (!empty($this->categories)) {
+            $i = 0;
+            foreach ($this->categories as $category) {
+                $return = 'category_id';
 
-				if (!empty($category['url']))
-				{
-					$return = 'url';
-				}
+                if (!empty($category['url'])) {
+                    $return = 'url';
+                }
 
-				if ($input->getCmd('return') === 'id')
-				{
-					$return = 'category_id';
-				}
+                if ($input->getCmd('return') === 'id') {
+                    $return = 'category_id';
+                }
 
-				if ($input->getCmd('return') === 'url_key')
-				{
-					$return = 'url_key';
-				}
+                if ($input->getCmd('return') === 'url_key') {
+                    $return = 'url_key';
+                }
 
-				$css = array();
-				if (isset($category[$return]) && JFactory::getApplication()->input->getCmd('current') == $category[$return])
-				{
-					$css[] = 'current';
-				}
+                $css = [];
+                if (isset($category[$return]) && JFactory::getApplication()->input->getCmd('current') == $category[$return]) {
+                    $css[] = 'current';
+                }
 
-				if (isset($category['status']) && $category['status'] == 0)
-				{
-					$css[] = 'inactive';
-				}
-				else
-				{
-					$css[] = 'active';
-				}
+                if (isset($category['status']) && $category['status'] == 0) {
+                    $css[] = 'inactive';
+                } else {
+                    $css[] = 'active';
+                }
 
-				$category_name = htmlspecialchars(str_replace("'", '', $category['name']));
-				$jsDefault     = "window.parent.jSelectCategory('" . $category[$return] . "', '$category_name', '" . JFactory::getApplication()->input->get('object') . "');";
-				$jsUrl         = "window.parent.jSelectCategory('" . $category['url'] . "', '$category_name', '" . JFactory::getApplication()->input->get('object') . "');";
-				$jsId          = "window.parent.jSelectCategory('" . $category['category_id'] . "', '$category_name', '" . JFactory::getApplication()->input->get('object') . "');";
-				?>
+                $category_name = htmlspecialchars(str_replace("'", '', $category['name']));
+                $jsDefault     = "window.parent.jSelectCategory('" . $category[$return] . "', '$category_name', '" . JFactory::getApplication()->input->get('object') . "');";
+                $jsUrl         = "window.parent.jSelectCategory('" . $category['url'] . "', '$category_name', '" . JFactory::getApplication()->input->get('object') . "');";
+                $jsId          = "window.parent.jSelectCategory('" . $category['category_id'] . "', '$category_name', '" . JFactory::getApplication()->input->get('object') . "');";
+                ?>
                 <tr class="<?php echo implode(' ', $css); ?>">
                     <td>
 						<?php echo $this->pagination->getRowOffset($i); ?>
                     </td>
                     <td>
-						<?php if (!empty($category['indent']))
-						{ ?><?php echo $category['indent']; ?> &nbsp; &nbsp;<?php } ?>
-						<?php if ($allowRoot || $category['level'] > 1)
-						{ ?>
+						<?php if (!empty($category['indent'])) { ?><?php echo $category['indent']; ?> &nbsp; &nbsp;<?php } ?>
+						<?php if ($allowRoot || $category['level'] > 1) { ?>
                             <a style="cursor: pointer;"
                                onclick="<?php echo $jsDefault; ?>"><?php echo $category['name']; ?></a>
-						<?php }
-						else
-						{ ?>
+						<?php } else { ?>
 							<?php echo ($category['name']) ? $category['name'] : JText::_('COM_MAGEBRIDGE_VIEW_ELEMENT_ROOT_CATEGORY'); ?>
 						<?php } ?>
                     </td>
                     <td>
-						<?php if (!empty($category['url']))
-						{ ?>
+						<?php if (!empty($category['url'])) { ?>
                             <a style="cursor: pointer;" onclick="<?php echo $jsUrl; ?>">
 								<?php echo $category['url']; ?>
                             </a>
@@ -136,8 +122,7 @@ $allowRoot = ($input->getCmd('allow_root') === 1) ? true : false;
 						<?php echo($category['is_active'] ? JText::_('JYES') : JText::_('JNO')); ?>
                     </td>
                     <td>
-						<?php if (!empty($category['category_id']))
-						{ ?>
+						<?php if (!empty($category['category_id'])) { ?>
                             <a style="cursor: pointer;" onclick="<?php echo $jsId; ?>">
 								<?php echo $category['category_id']; ?>
                             </a>
@@ -145,18 +130,16 @@ $allowRoot = ($input->getCmd('allow_root') === 1) ? true : false;
                     </td>
                 </tr>
 				<?php
-				$i++;
-			}
-		}
-		else
-		{
-			?>
+                $i++;
+            }
+        } else {
+            ?>
             <tr>
                 <td colspan="5"><?php echo JText::_('LIB_YIREO_VIEW_LIST_NO_ITEMS'); ?></td>
             </tr>
 			<?php
-		}
-		?>
+        }
+?>
         </tbody>
     </table>
     <input type="hidden" name="option" value="com_magebridge"/>

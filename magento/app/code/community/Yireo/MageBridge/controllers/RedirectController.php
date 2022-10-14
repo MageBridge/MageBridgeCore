@@ -25,8 +25,12 @@ class Yireo_MageBridge_RedirectController extends Mage_Core_Controller_Front_Act
     {
         // Get the redirect URL
         $redirectUrl = $this->getRequest()->getParam('url');
-        if(!empty($redirectUrl)) $redirectUrl = base64_decode($redirectUrl);
-        if(empty($redirectUrl)) $redirectUrl = $this->_getRefererUrl();
+        if (!empty($redirectUrl)) {
+            $redirectUrl = base64_decode($redirectUrl);
+        }
+        if (empty($redirectUrl)) {
+            $redirectUrl = $this->_getRefererUrl();
+        }
 
         // Set the redirect URL
         $bridge = Mage::getSingleton('magebridge/core');

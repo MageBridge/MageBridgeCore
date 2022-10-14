@@ -23,35 +23,35 @@ jimport('joomla.filter.output');
  */
 class MageBridgeViewUrl extends YireoViewItem
 {
-	/**
-	 * Method to prepare the content for display
-	 *
-	 * @param string $tpl
-	 * @return null
-	 */
-	public function display($tpl = null)
-	{
-		// Fetch this item
-		$this->fetchItem();
-	
-		// Build the fields
-		$this->lists['source_type'] = $this->getFieldSourceType($this->item->source_type);
+    /**
+     * Method to prepare the content for display
+     *
+     * @param string $tpl
+     * @return null
+     */
+    public function display($tpl = null)
+    {
+        // Fetch this item
+        $this->fetchItem();
 
-		parent::display($tpl);
-	}
+        // Build the fields
+        $this->lists['source_type'] = $this->getFieldSourceType($this->item->source_type);
 
-	/**
-	 * Get the HTML-field for the source type setting
-	 *
-	 * @param null
-	 * @return string
-	 */
-	public function getFieldSourceType($current = null)
-	{
-		$options = array(
-			array( 'value' => 0, 'text' => JText::_('COM_MAGEBRIDGE_VIEW_URLS_MAGENTO_URL')),
-			array( 'value' => 1, 'text' => JText::_('COM_MAGEBRIDGE_VIEW_URLS_PARTIAL_MATCH')),
-		);
-		return JHtml::_('select.genericlist', $options, 'source_type', null, 'value', 'text', $current);
-	}
+        parent::display($tpl);
+    }
+
+    /**
+     * Get the HTML-field for the source type setting
+     *
+     * @param null
+     * @return string
+     */
+    public function getFieldSourceType($current = null)
+    {
+        $options = [
+            [ 'value' => 0, 'text' => JText::_('COM_MAGEBRIDGE_VIEW_URLS_MAGENTO_URL')],
+            [ 'value' => 1, 'text' => JText::_('COM_MAGEBRIDGE_VIEW_URLS_PARTIAL_MATCH')],
+        ];
+        return JHtml::_('select.genericlist', $options, 'source_type', null, 'value', 'text', $current);
+    }
 }

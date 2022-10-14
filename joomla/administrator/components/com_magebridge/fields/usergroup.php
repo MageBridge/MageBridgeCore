@@ -20,40 +20,38 @@ require_once JPATH_SITE . '/components/com_magebridge/helpers/loader.php';
  */
 class MagebridgeFormFieldUsergroup extends MagebridgeFormFieldAbstract
 {
-	/**
-	 * Form field type
-	 */
-	public $type = 'Joomla! usergroup';
+    /**
+     * Form field type
+     */
+    public $type = 'Joomla! usergroup';
 
-	/**
-	 * Method to get the HTML of this element
-	 *
-	 * @return string
-	 */
-	protected function getInput()
-	{
-		$name      = $this->name;
-		$fieldName = $name;
-		$value     = $this->value;
+    /**
+     * Method to get the HTML of this element
+     *
+     * @return string
+     */
+    protected function getInput()
+    {
+        $name      = $this->name;
+        $fieldName = $name;
+        $value     = $this->value;
 
-		$usergroups = MageBridgeFormHelper::getUsergroupOptions();
+        $usergroups = MageBridgeFormHelper::getUsergroupOptions();
 
-		$html     = null;
-		$multiple = (string) $this->element['multiple'];
-		
-		if (!empty($multiple))
-		{
-			$size = count($usergroups);
-			$html = 'multiple="multiple" size="' . $size . '"';
-		}
+        $html     = null;
+        $multiple = (string) $this->element['multiple'];
 
-		$allownone = (bool) $this->element['allownone'];
-		
-		if ($allownone)
-		{
-			array_unshift($usergroups, array('value' => '', 'text' => ''));
-		}
+        if (!empty($multiple)) {
+            $size = count($usergroups);
+            $html = 'multiple="multiple" size="' . $size . '"';
+        }
 
-		return JHtml::_('select.genericlist', $usergroups, $fieldName, $html, 'value', 'text', $value);
-	}
+        $allownone = (bool) $this->element['allownone'];
+
+        if ($allownone) {
+            array_unshift($usergroups, ['value' => '', 'text' => '']);
+        }
+
+        return JHtml::_('select.genericlist', $usergroups, $fieldName, $html, 'value', 'text', $value);
+    }
 }

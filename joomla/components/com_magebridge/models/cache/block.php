@@ -17,62 +17,62 @@ defined('_JEXEC') or die('Restricted access');
  */
 class MageBridgeModelCacheBlock extends MageBridgeModelCache
 {
-	/**
-	 * Name of the block to be cached
-	 */
-	private $block = null;
+    /**
+     * Name of the block to be cached
+     */
+    private $block = null;
 
-	/**
-	 * Name of the block to be cached
-	 */
-	private $allowed_blocks = array(
-		'content',
-	);
+    /**
+     * Name of the block to be cached
+     */
+    private $allowed_blocks = [
+        'content',
+    ];
 
-	/**
-	 * Constructor
-	 *
-	 * @access public
-	 * @param $block string
-	 * @param $request string
-	 * @param @cache_time int
-	 * @return null
-	 */
-	public function __construct($block = '', $request = null, $cache_time = null)
-	{
-		$this->block = $block;
-		parent::__construct('block_'.$block, $request, $cache_time);
-	}
+    /**
+     * Constructor
+     *
+     * @access public
+     * @param $block string
+     * @param $request string
+     * @param @cache_time int
+     * @return null
+     */
+    public function __construct($block = '', $request = null, $cache_time = null)
+    {
+        $this->block = $block;
+        parent::__construct('block_'.$block, $request, $cache_time);
+    }
 
-	/**
-	 * Method to validate whether the cache is allowed
-	 * 
-	 * @param null
-	 * @return bool
-	 */
-	public function validate() 
-	{
-		if (parent::validate() == false) {
-			return false;
-		}
+    /**
+     * Method to validate whether the cache is allowed
+     *
+     * @param null
+     * @return bool
+     */
+    public function validate()
+    {
+        if (parent::validate() == false) {
+            return false;
+        }
 
-		if (!in_array($this->block, $this->allowed_blocks)) {
-			return false;
-		}
+        if (!in_array($this->block, $this->allowed_blocks)) {
+            return false;
+        }
 
-		return true;
-	}
+        return true;
+    }
 
-	/**
-	 * Method to store the data to cache
-	 * 
-	 * @param mixed $data
-	 * @return bool
-	 */
-	public function store($data)
-	{
-		$data = MageBridgeModelBridgeBlock::getInstance()->decode($data);
-		$data = MageBridgeModelBridgeBlock::getInstance()->filterHtml($data);
-		return parent::store($data);
-	}
+    /**
+     * Method to store the data to cache
+     *
+     * @param mixed $data
+     * @return bool
+     */
+    public function store($data)
+    {
+        $data = MageBridgeModelBridgeBlock::getInstance()->decode($data);
+        $data = MageBridgeModelBridgeBlock::getInstance()->filterHtml($data);
+        return parent::store($data);
+    }
 }

@@ -17,31 +17,29 @@ defined('_JEXEC') or die('Restricted access');
  */
 class MagebridgeTableUrl extends YireoTable
 {
-	/**
-	 * Constructor
-	 *
-	 * @param JDatabase $db
-	 */
-	public function __construct(& $db)
-	{
-		parent::__construct('#__magebridge_urls', 'id', $db);
-	}
+    /**
+     * Constructor
+     *
+     * @param JDatabase $db
+     */
+    public function __construct(& $db)
+    {
+        parent::__construct('#__magebridge_urls', 'id', $db);
+    }
 
-	/**
-	 * Override of check-method
-	 *
-	 * @return bool
-	 */
-	public function check()
-	{
-		if (empty($this->source) || empty($this->destination))
-		{
-			$this->setError(JText::_('Source and destination must be filled in.'));
+    /**
+     * Override of check-method
+     *
+     * @return bool
+     */
+    public function check()
+    {
+        if (empty($this->source) || empty($this->destination)) {
+            $this->setError(JText::_('Source and destination must be filled in.'));
 
-			return false;
-		}
+            return false;
+        }
 
-		return true;
-	}
+        return true;
+    }
 }
-

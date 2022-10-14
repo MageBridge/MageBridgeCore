@@ -19,7 +19,7 @@ defined('_JEXEC') or die('Restricted access');
 	<input type="hidden" name="option" value="com_magebridge" />
 	<input type="hidden" name="task" value="switch" />
 	<input type="hidden" name="redirect" value="<?php echo $redirect_url ?>" />
-	<?php echo JHtml::_( 'form.token' ); ?>
+	<?php echo JHtml::_('form.token'); ?>
 	</form>
 	<?php endif; ?>
 </div>
