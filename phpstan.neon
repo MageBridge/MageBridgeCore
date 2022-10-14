@@ -1,0 +1,36 @@
+includes:
+  - phpstan-baseline.neon
+
+parameters:
+  level: 0
+  paths:
+    - joomla
+    - magento
+  excludePaths:
+    - joomla/administrator/language/**
+    - joomla/components/com_magebridge/sef_ext/com_magebridge.php
+    - joomla/language/**
+    - joomla/libraries/yireo/view/list/default.php
+    - joomla/libraries/yireo/Yireo/Test
+    - joomla/plugins/community/magebridge/magebridge.php
+    - joomla/plugins/system/magebridge/overrides
+    - joomla/plugins/system/magebridget3
+    - magento/app/etc
+  scanFiles:
+    - vendor/hamidionline/joomla-stubs/stubs.php
+    - vendor/openmage/magento-lts/app/Mage.php
+  scanDirectories:
+    - joomla/libraries
+    - vendor/joomla/joomla-cms/administrator
+    - vendor/joomla/joomla-cms/components
+    - vendor/joomla/joomla-cms/includes
+    - vendor/joomla/joomla-cms/libraries
+    - vendor/joomla/joomla-cms/modules
+    - vendor/joomla/joomla-cms/plugins
+    - vendor/openmage/magento-lts/lib
+    - vendor/openmage/magento-lts/app/code
+  ignoreErrors:
+    # joomla stubs
+    - '#Class j[a-zA-Z]+ referenced with incorrect case\: J[a-zA-Z]+#'
+    - '#Instantiated class J[a-zA-Z]+ not found#'
+  tmpDir: tmp

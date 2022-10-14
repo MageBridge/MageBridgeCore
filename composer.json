@@ -1,8 +1,7 @@
 {
     "name": "akunzai/magebridgecore",
-    "type": "project",
     "description": "MageBridge for Joomla!",
-    "homepage": "https://github.com/akunzai/MageBridgeCore",
+    "type": "project",
     "license": "GPL-2.0-or-later",
     "authors": [
         {
@@ -14,12 +13,58 @@
             "email": "jisse@yireo.com"
         }
     ],
+    "config": {
+        "allow-plugins": {
+            "magento-hackathon/magento-composer-installer": true
+        },
+        "preferred-install": "dist",
+        "sort-packages": true
+    },
+    "repositories": [
+        {
+            "type": "package",
+            "package": {
+                "name": "joomla/joomla-cms",
+                "version": "3.10.11",
+                "dist": {
+                    "url": "https://github.com/joomla/joomla-cms/releases/download/3.10.11/Joomla_3.10.11-Stable-Full_Package.zip",
+                    "type": "zip"
+                },
+                "source": {
+                    "url": "https://github.com/joomla/joomla-cms.git",
+                    "type": "git",
+                    "reference": "tags/3.10.11"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "hamidionline/joomla-stubs",
+                "version": "1.0.0",
+                "source": {
+                    "url": "https://github.com/hamidionline/joomla-stubs",
+                    "type": "git",
+                    "reference": "master"
+                }
+            }
+        }
+    ],
     "require": {
-        "php": ">=7.4.0"
+        "php": ">=7.4.0",
+        "magento-hackathon/magento-composer-installer": "^4.0"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^3.12"
+        "friendsofphp/php-cs-fixer": "^3.12",
+        "hamidionline/joomla-stubs": "*",
+        "joomla/joomla-cms": "3.10.11",
+        "openmage/magento-lts": "^19.4",
+        "phpstan/phpstan": "^1.8"
     },
+    "extra": {
+        "magento-root-dir": "vendor/openmage/magento-lts"
+    },
+    "prefer-stable": true,
     "scripts": {
         "lint": [
             "php -v",
@@ -27,8 +72,5 @@
             "! find ./magento -type f -name '*.php' -exec php -d display_errors=1 -d error_reporting=-1 -l {} \\; 2>&1 | grep -v ^'No syntax errors'",
             "php-cs-fixer fix --diff --dry-run"
         ]
-    },
-    "config": {
-        "sort-packages": true
     }
 }

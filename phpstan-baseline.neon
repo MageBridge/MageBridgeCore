@@ -1,0 +1,501 @@
+parameters:
+  ignoreErrors:
+    -
+      message: "#^Access to an undefined property MagebridgeModelCheck\\:\\:\\$_checks\\.$#"
+      count: 2
+      path: joomla/administrator/components/com_magebridge/models/check.php
+
+    -
+      message: "#^Access to an undefined property MagebridgeModelUrl\\:\\:\\$_orderby_title\\.$#"
+      count: 1
+      path: joomla/administrator/components/com_magebridge/models/url.php
+
+    -
+      message: "#^Access to an undefined property MagebridgeTableUsergroup\\:\\:\\$required\\.$#"
+      count: 1
+      path: joomla/administrator/components/com_magebridge/tables/usergroup.php
+
+    -
+      message: "#^Access to an undefined property MageBridgeViewCheck\\:\\:\\$form\\.$#"
+      count: 1
+      path: joomla/administrator/components/com_magebridge/views/check/view.html.php
+
+    -
+      message: "#^Access to an undefined property MageBridgeViewCheck\\:\\:\\$host\\.$#"
+      count: 1
+      path: joomla/administrator/components/com_magebridge/views/check/view.html.php
+
+    -
+      message: "#^Access to an undefined property MageBridgeViewCheck\\:\\:\\$url\\.$#"
+      count: 1
+      path: joomla/administrator/components/com_magebridge/views/check/view.html.php
+
+    -
+      message: "#^Access to an undefined property MageBridgeViewConfig\\:\\:\\$configData\\.$#"
+      count: 1
+      path: joomla/administrator/components/com_magebridge/views/config/view.html.php
+
+    -
+      message: "#^Access to an undefined property MageBridgeViewConfig\\:\\:\\$form\\.$#"
+      count: 1
+      path: joomla/administrator/components/com_magebridge/views/config/view.html.php
+
+    -
+      message: "#^Access to an undefined property object\\:\\:\\$pagination\\.$#"
+      count: 1
+      path: joomla/administrator/components/com_magebridge/views/element/tmpl/category.php
+
+    -
+      message: "#^Access to an undefined property object\\:\\:\\$pagination\\.$#"
+      count: 1
+      path: joomla/administrator/components/com_magebridge/views/element/tmpl/customer.php
+
+    -
+      message: "#^Access to an undefined property object\\:\\:\\$pagination\\.$#"
+      count: 1
+      path: joomla/administrator/components/com_magebridge/views/element/tmpl/product.php
+
+    -
+      message: "#^Access to an undefined property object\\:\\:\\$pagination\\.$#"
+      count: 1
+      path: joomla/administrator/components/com_magebridge/views/element/tmpl/widget.php
+
+    -
+      message: "#^Access to an undefined property MageBridgeViewCommon\\:\\:\\$categories\\.$#"
+      count: 1
+      path: joomla/administrator/components/com_magebridge/views/element/view.common.php
+
+    -
+      message: "#^Access to an undefined property MageBridgeViewCommon\\:\\:\\$current\\.$#"
+      count: 1
+      path: joomla/administrator/components/com_magebridge/views/element/view.common.php
+
+    -
+      message: "#^Access to an undefined property MageBridgeViewCommon\\:\\:\\$customers\\.$#"
+      count: 1
+      path: joomla/administrator/components/com_magebridge/views/element/view.common.php
+
+    -
+      message: "#^Access to an undefined property MageBridgeViewCommon\\:\\:\\$lists\\.$#"
+      count: 4
+      path: joomla/administrator/components/com_magebridge/views/element/view.common.php
+
+    -
+      message: "#^Access to an undefined property MageBridgeViewCommon\\:\\:\\$object\\.$#"
+      count: 1
+      path: joomla/administrator/components/com_magebridge/views/element/view.common.php
+
+    -
+      message: "#^Access to an undefined property MageBridgeViewCommon\\:\\:\\$pagination\\.$#"
+      count: 1
+      path: joomla/administrator/components/com_magebridge/views/element/view.common.php
+
+    -
+      message: "#^Access to an undefined property MageBridgeViewCommon\\:\\:\\$products\\.$#"
+      count: 1
+      path: joomla/administrator/components/com_magebridge/views/element/view.common.php
+
+    -
+      message: "#^Access to an undefined property MageBridgeViewCommon\\:\\:\\$widgets\\.$#"
+      count: 1
+      path: joomla/administrator/components/com_magebridge/views/element/view.common.php
+
+    -
+      message: "#^Access to an undefined property MageBridgeViewHome\\:\\:\\$icons\\.$#"
+      count: 1
+      path: joomla/administrator/components/com_magebridge/views/home/view.html.php
+
+    -
+      message: "#^Access to an undefined property MageBridgeViewHome\\:\\:\\$urls\\.$#"
+      count: 1
+      path: joomla/administrator/components/com_magebridge/views/home/view.html.php
+
+    -
+      message: "#^Access to an undefined property MageBridgeViewProduct\\:\\:\\$actions_form\\.$#"
+      count: 1
+      path: joomla/administrator/components/com_magebridge/views/product/view.html.php
+
+    -
+      message: "#^Access to an undefined property MageBridgeViewProduct\\:\\:\\$params_form\\.$#"
+      count: 1
+      path: joomla/administrator/components/com_magebridge/views/product/view.html.php
+
+    -
+      message: "#^Call to an undefined method MageBridgeViewRoot\\:\\:build\\(\\)\\.$#"
+      count: 1
+      path: joomla/administrator/components/com_magebridge/views/root/view.raw.php
+
+    -
+      message: "#^Call to an undefined method MageBridgeViewRoot\\:\\:setBlock\\(\\)\\.$#"
+      count: 1
+      path: joomla/administrator/components/com_magebridge/views/root/view.raw.php
+
+    -
+      message: "#^Access to an undefined property MageBridgeViewStore\\:\\:\\$actions_form\\.$#"
+      count: 1
+      path: joomla/administrator/components/com_magebridge/views/store/view.html.php
+
+    -
+      message: "#^Access to an undefined property MageBridgeViewStore\\:\\:\\$params_form\\.$#"
+      count: 1
+      path: joomla/administrator/components/com_magebridge/views/store/view.html.php
+
+    -
+      message: "#^Access to an undefined property MageBridgeViewUpdate\\:\\:\\$data\\.$#"
+      count: 1
+      path: joomla/administrator/components/com_magebridge/views/update/view.html.php
+
+    -
+      message: "#^Access to an undefined property MageBridgeViewUpdate\\:\\:\\$search\\.$#"
+      count: 1
+      path: joomla/administrator/components/com_magebridge/views/update/view.html.php
+
+    -
+      message: "#^Access to an undefined property MageBridgeViewUpdate\\:\\:\\$update\\.$#"
+      count: 1
+      path: joomla/administrator/components/com_magebridge/views/update/view.html.php
+
+    -
+      message: "#^Access to an undefined property MageBridgeViewUsergroup\\:\\:\\$fields\\.$#"
+      count: 1
+      path: joomla/administrator/components/com_magebridge/views/usergroup/view.html.php
+
+    -
+      message: "#^Access to an undefined property MageBridgeViewUsergroup\\:\\:\\$params_form\\.$#"
+      count: 1
+      path: joomla/administrator/components/com_magebridge/views/usergroup/view.html.php
+
+    -
+      message: "#^Access to an undefined property MageBridgeViewUsers\\:\\:\\$items\\.$#"
+      count: 1
+      path: joomla/administrator/components/com_magebridge/views/users/view.html.php
+
+    -
+      message: "#^Access to an undefined property MageBridgeViewUsers\\:\\:\\$lists\\.$#"
+      count: 1
+      path: joomla/administrator/components/com_magebridge/views/users/view.html.php
+
+    -
+      message: "#^Access to an undefined property MageBridgeViewUsers\\:\\:\\$pagination\\.$#"
+      count: 1
+      path: joomla/administrator/components/com_magebridge/views/users/view.html.php
+
+    -
+      message: "#^Access to an undefined property MageBridgeControllerJsonrpc\\:\\:\\$app\\.$#"
+      count: 2
+      path: joomla/components/com_magebridge/controllers/default.jsonrpc.php
+
+    -
+      message: "#^Access to an undefined property MageBridgeControllerJsonrpc\\:\\:\\$debug\\.$#"
+      count: 5
+      path: joomla/components/com_magebridge/controllers/default.jsonrpc.php
+
+    -
+      message: "#^Access to an undefined property MageBridgeDebugHelper\\:\\:\\$app\\.$#"
+      count: 2
+      path: joomla/components/com_magebridge/helpers/debug.php
+
+    -
+      message: "#^Access to an undefined property MageBridgeDebugHelper\\:\\:\\$bridge\\.$#"
+      count: 10
+      path: joomla/components/com_magebridge/helpers/debug.php
+
+    -
+      message: "#^Access to an undefined property MageBridgeDebugHelper\\:\\:\\$register\\.$#"
+      count: 2
+      path: joomla/components/com_magebridge/helpers/debug.php
+
+    -
+      message: "#^Access to an undefined property MageBridgeDebugHelper\\:\\:\\$request\\.$#"
+      count: 2
+      path: joomla/components/com_magebridge/helpers/debug.php
+
+    -
+      message: "#^Access to an undefined property MageBridgeStoreHelper\\:\\:\\$app_type\\.$#"
+      count: 12
+      path: joomla/components/com_magebridge/helpers/store.php
+
+    -
+      message: "#^Access to an undefined property MageBridgeStoreHelper\\:\\:\\$app_value\\.$#"
+      count: 12
+      path: joomla/components/com_magebridge/helpers/store.php
+
+    -
+      message: "#^Function shAddSefURLToCache not found\\.$#"
+      count: 1
+      path: joomla/components/com_magebridge/helpers/url.php
+
+    -
+      message: "#^Function shGetNonSefURLFromCache not found\\.$#"
+      count: 1
+      path: joomla/components/com_magebridge/helpers/url.php
+
+    -
+      message: "#^Access to an undefined property Zend_Json_Decoder\\:\\:\\$_tokenValue\\.$#"
+      count: 3
+      path: joomla/components/com_magebridge/libraries/Zend/Json/Decoder.php
+
+    -
+      message: "#^Access to an undefined property Zend_Json_Server_Response\\:\\:\\$_args\\.$#"
+      count: 2
+      path: joomla/components/com_magebridge/libraries/Zend/Json/Server/Response.php
+
+    -
+      message: "#^Access to an undefined property Zend_Server_Reflection_Prototype\\:\\:\\$_params\\.$#"
+      count: 2
+      path: joomla/components/com_magebridge/libraries/Zend/Server/Reflection/Prototype.php
+
+    -
+      message: "#^Access to an undefined property Zend_Server_Reflection_Prototype\\:\\:\\$_return\\.$#"
+      count: 3
+      path: joomla/components/com_magebridge/libraries/Zend/Server/Reflection/Prototype.php
+
+    -
+      message: "#^Access to an undefined property MageBridgeApi\\:\\:\\$app\\.$#"
+      count: 2
+      path: joomla/components/com_magebridge/libraries/api.php
+
+    -
+      message: "#^Access to an undefined property MageBridgeApi\\:\\:\\$debug\\.$#"
+      count: 5
+      path: joomla/components/com_magebridge/libraries/api.php
+
+    -
+      message: "#^Access to an undefined property MageBridgePluginProfile\\:\\:\\$db\\.$#"
+      count: 1
+      path: joomla/components/com_magebridge/libraries/plugin/profile.php
+
+    -
+      message: "#^Access to an undefined property MageBridgePluginStore\\:\\:\\$db\\.$#"
+      count: 1
+      path: joomla/components/com_magebridge/libraries/plugin/store.php
+
+    -
+      message: "#^Access to an undefined property MageBridgeModelBridgeMeta\\:\\:\\$_meta_data\\.$#"
+      count: 2
+      path: joomla/components/com_magebridge/models/bridge/meta.php
+
+    -
+      message: "#^Access to an undefined property MageBridgeModelCache\\:\\:\\$request\\.$#"
+      count: 2
+      path: joomla/components/com_magebridge/models/cache.php
+
+    -
+      message: "#^Access to an undefined property MagebridgeModelConfigValue\\:\\:\\$app\\.$#"
+      count: 2
+      path: joomla/components/com_magebridge/models/config/value.php
+
+    -
+      message: "#^Access to an undefined property MageBridgeModelProxy\\:\\:\\$redirectUrl\\.$#"
+      count: 1
+      path: joomla/components/com_magebridge/models/proxy.php
+
+    -
+      message: "#^Access to private property \\$app of parent class YireoCommonView\\.$#"
+      count: 1
+      path: joomla/components/com_magebridge/view.php
+
+    -
+      message: "#^Access to private property \\$db of parent class YireoCommonView\\.$#"
+      count: 1
+      path: joomla/components/com_magebridge/view.php
+
+    -
+      message: "#^Access to private property \\$doc of parent class YireoCommonView\\.$#"
+      count: 1
+      path: joomla/components/com_magebridge/view.php
+
+    -
+      message: "#^Access to private property \\$input of parent class YireoCommonView\\.$#"
+      count: 1
+      path: joomla/components/com_magebridge/view.php
+
+    -
+      message: "#^Access to private property \\$user of parent class YireoCommonView\\.$#"
+      count: 1
+      path: joomla/components/com_magebridge/view.php
+
+    -
+      message: "#^Call to an undefined method MageBridgeViewCatalog\\:\\:setBlock\\(\\)\\.$#"
+      count: 1
+      path: joomla/components/com_magebridge/views/catalog/view.html.php
+
+    -
+      message: "#^Call to an undefined method MageBridgeViewCatalog\\:\\:setRequest\\(\\)\\.$#"
+      count: 1
+      path: joomla/components/com_magebridge/views/catalog/view.html.php
+
+    -
+      message: "#^Call to an undefined method MageBridgeViewCms\\:\\:setBlock\\(\\)\\.$#"
+      count: 1
+      path: joomla/components/com_magebridge/views/cms/view.html.php
+
+    -
+      message: "#^Call to an undefined method MageBridgeViewCms\\:\\:setRequest\\(\\)\\.$#"
+      count: 1
+      path: joomla/components/com_magebridge/views/cms/view.html.php
+
+    -
+      message: "#^Access to an undefined property MageBridgeViewContent\\:\\:\\$logout_url\\.$#"
+      count: 1
+      path: joomla/components/com_magebridge/views/content/view.html.php
+
+    -
+      message: "#^Access to an undefined property MageBridgeViewContent\\:\\:\\$params\\.$#"
+      count: 1
+      path: joomla/components/com_magebridge/views/content/view.html.php
+
+    -
+      message: "#^Call to an undefined method MageBridgeViewContent\\:\\:setBlock\\(\\)\\.$#"
+      count: 1
+      path: joomla/components/com_magebridge/views/content/view.html.php
+
+    -
+      message: "#^Call to an undefined method MageBridgeViewContent\\:\\:setRequest\\(\\)\\.$#"
+      count: 2
+      path: joomla/components/com_magebridge/views/content/view.html.php
+
+    -
+      message: "#^Call to an undefined method MageBridgeViewCustom\\:\\:setBlock\\(\\)\\.$#"
+      count: 1
+      path: joomla/components/com_magebridge/views/custom/view.html.php
+
+    -
+      message: "#^Call to an undefined method MageBridgeViewCustom\\:\\:setRequest\\(\\)\\.$#"
+      count: 1
+      path: joomla/components/com_magebridge/views/custom/view.html.php
+
+    -
+      message: "#^Access to an undefined property MageBridgeViewOffline\\:\\:\\$offline_message\\.$#"
+      count: 1
+      path: joomla/components/com_magebridge/views/offline/view.html.php
+
+    -
+      message: "#^Call to an undefined method MageBridgeViewOffline\\:\\:getOfflineMessage\\(\\)\\.$#"
+      count: 1
+      path: joomla/components/com_magebridge/views/offline/view.html.php
+
+    -
+      message: "#^Access to an undefined property object\\:\\:\\$content_class\\.$#"
+      count: 1
+      path: joomla/components/com_magebridge/views/root/tmpl/default.php
+
+    -
+      message: "#^Access to an undefined property MageBridgeViewRoot\\:\\:\\$content_class\\.$#"
+      count: 1
+      path: joomla/components/com_magebridge/views/root/view.html.php
+
+    -
+      message: "#^Call to an undefined method MageBridgeViewRoot\\:\\:build\\(\\)\\.$#"
+      count: 1
+      path: joomla/components/com_magebridge/views/root/view.html.php
+
+    -
+      message: "#^Call to an undefined method MageBridgeViewRoot\\:\\:setBlock\\(\\)\\.$#"
+      count: 1
+      path: joomla/components/com_magebridge/views/root/view.html.php
+
+    -
+      message: "#^Access to an undefined property YireoModel\\:\\:\\$_table\\.$#"
+      count: 1
+      path: joomla/libraries/yireo/model.php
+
+    -
+      message: "#^Access to an undefined property YireoCommonModel\\:\\:\\$_user\\.$#"
+      count: 1
+      path: joomla/libraries/yireo/model/common.php
+
+    -
+      message: "#^Access to an undefined property YireoCommonModel\\:\\:\\$params\\.$#"
+      count: 2
+      path: joomla/libraries/yireo/model/common.php
+
+    -
+      message: "#^Access to an undefined property YireoModelDataQuery\\:\\:\\$data\\.$#"
+      count: 1
+      path: joomla/libraries/yireo/model/data/query.php
+
+    -
+      message: "#^Access to an undefined property YireoModelDataQuerytext\\:\\:\\$data\\.$#"
+      count: 1
+      path: joomla/libraries/yireo/model/data/querytext.php
+
+    -
+      message: "#^Access to an undefined property YireoModelItems\\:\\:\\$_orderby\\.$#"
+      count: 1
+      path: joomla/libraries/yireo/model/items.php
+
+    -
+      message: "#^Access to an undefined property YireoModelItems\\:\\:\\$where\\.$#"
+      count: 1
+      path: joomla/libraries/yireo/model/items.php
+
+    -
+      message: "#^Access to an undefined property YireoTable\\:\\:\\$_error\\.$#"
+      count: 3
+      path: joomla/libraries/yireo/table.php
+
+    -
+      message: "#^Access to an undefined property YireoView\\:\\:\\$form\\.$#"
+      count: 1
+      path: joomla/libraries/yireo/view.php
+
+    -
+      message: "#^Access to an undefined property YireoView\\:\\:\\$items\\.$#"
+      count: 2
+      path: joomla/libraries/yireo/view.php
+
+    -
+      message: "#^Access to an undefined property YireoView\\:\\:\\$pagination\\.$#"
+      count: 3
+      path: joomla/libraries/yireo/view.php
+
+    -
+      message: "#^Access to an undefined property YireoView\\:\\:\\$total\\.$#"
+      count: 1
+      path: joomla/libraries/yireo/view.php
+
+    -
+      message: "#^Access to an undefined property YireoCommonView\\:\\:\\$uri\\.$#"
+      count: 1
+      path: joomla/libraries/yireo/view/common.php
+
+    -
+      message: "#^Access to an undefined property YireoViewHome\\:\\:\\$current_version\\.$#"
+      count: 1
+      path: joomla/libraries/yireo/view/home.php
+
+    -
+      message: "#^Access to an undefined property YireoViewHomeAjax\\:\\:\\$feeds\\.$#"
+      count: 1
+      path: joomla/libraries/yireo/view/home/ajax.php
+
+    -
+      message: "#^Access to an undefined property YireoViewList\\:\\:\\$fields\\.$#"
+      count: 1
+      path: joomla/libraries/yireo/view/list.php
+
+    -
+      message: "#^Call to static method getInstance\\(\\) on an unknown class FalangManager\\.$#"
+      count: 1
+      path: joomla/plugins/magebridgestore/falang/falang.php
+
+    -
+      message: "#^Call to static method getInstance\\(\\) on an unknown class JoomfishManager\\.$#"
+      count: 1
+      path: joomla/plugins/magebridgestore/joomfish/joomfish.php
+
+    -
+      message: "#^Access to an undefined property Yireo_MageBridge_Model_Attribute_Api\\:\\:\\$_attributeSetCollection\\.$#"
+      count: 1
+      path: magento/app/code/community/Yireo/MageBridge/Model/Attribute/Api.php
+
+    -
+      message: "#^Access to an undefined property Yireo_MageBridge_Model_Client\\:\\:\\$coreModel\\.$#"
+      count: 2
+      path: magento/app/code/community/Yireo/MageBridge/Model/Client.php
+
+    -
+      message: "#^Access to an undefined property Yireo\\\\MageBridge\\\\Utilities\\\\StringValue\\:\\:\\$string\\.$#"
+      count: 2
+      path: magento/lib/Yireo/MageBridge/Utilities/StringValue.php
