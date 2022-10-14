@@ -1,10 +1,14 @@
 {
-    "name": "yireo/magebridgecore",
-    "license": "OSL-3.0",
-    "type": "magento-module",
-    "homepage": "https://www.yireo.com/software/magebridge",
-    "description": "Core Magento module to bridge Joomla with Magento",
+    "name": "akunzai/magebridgecore",
+    "type": "project",
+    "description": "MageBridge for Joomla!",
+    "homepage": "https://github.com/akunzai/MageBridgeCore",
+    "license": "GPL-2.0-or-later",
     "authors": [
+        {
+            "name": "Charley Wu",
+            "email": "akunzai@gmail.com"
+        },
         {
             "name": "Jisse Reitsma (Yireo)",
             "email": "jisse@yireo.com"
@@ -13,17 +17,18 @@
     "require": {
         "php": ">=7.4.0"
     },
-    "require-dev":{
-        "phpunit/phpunit":"*",
-        "composer/composer":"*@dev"
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.12"
     },
-    "repositories": [
-        {
-            "type": "composer",
-            "url": "http://packages.firegento.com"
-        }
-    ],
-    "extra":{
-        "magento-root-dir": "source/"
+    "scripts": {
+        "lint": [
+            "php -v",
+            "! find ./joomla -type f -name '*.php' -exec php -d display_errors=1 -d error_reporting=-1 -l {} \\; 2>&1 | grep -v ^'No syntax errors'",
+            "! find ./magento -type f -name '*.php' -exec php -d display_errors=1 -d error_reporting=-1 -l {} \\; 2>&1 | grep -v ^'No syntax errors'",
+            "php-cs-fixer fix --diff --dry-run"
+        ]
+    },
+    "config": {
+        "sort-packages": true
     }
 }
