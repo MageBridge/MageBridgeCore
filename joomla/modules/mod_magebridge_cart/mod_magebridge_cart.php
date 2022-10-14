@@ -18,23 +18,20 @@ require_once JPATH_SITE . '/components/com_magebridge/helpers/loader.php';
 // Read the parameters
 $layout = $params->get('layout', 'default');
 $layout = preg_replace('/^([^\:]+):/', '', $layout);
-if ($layout == 'block')
-{
-	$layout = 'default';
+if ($layout == 'block') {
+    $layout = 'default';
 }
 
 // Call the helper
 require_once(dirname(__FILE__) . '/helper.php');
 
 // Build the block
-if ($layout != 'ajax')
-{
-	$data = ModMageBridgeCartHelper::build($params);
+if ($layout != 'ajax') {
+    $data = ModMageBridgeCartHelper::build($params);
 
-	if ($layout != 'native' && empty($data))
-	{
-		return false;
-	}
+    if ($layout != 'native' && empty($data)) {
+        return false;
+    }
 }
 
 // Include the layout-file

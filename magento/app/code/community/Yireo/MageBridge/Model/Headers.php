@@ -29,7 +29,6 @@ class Yireo_MageBridge_Model_Headers extends Yireo_MageBridge_Model_Block
         try {
             $controller = Mage::getSingleton('magebridge/core')->getController();
             $controller->getAction()->renderLayout();
-
         } catch (Exception $e) {
             Mage::getSingleton('magebridge/debug')->error('Failed to load controller: ' . $e->getMessage());
             return false;
@@ -48,7 +47,6 @@ class Yireo_MageBridge_Model_Headers extends Yireo_MageBridge_Model_Block
 
             // Get the data from this block-object
             if (!empty($head)) {
-
                 // Fetch meta-data from the MageBridge request
                 $disable_css = Mage::getSingleton('magebridge/core')->getMetaData('disable_css');
                 $disable_js = Mage::getSingleton('magebridge/core')->getMetaData('disable_js');
@@ -69,10 +67,8 @@ class Yireo_MageBridge_Model_Headers extends Yireo_MageBridge_Model_Block
 
                 // Parse the headers before sending it to Joomla!
                 foreach ($headers['items'] as $index => $item) {
-
                     $item['path'] = null;
                     switch ($item['type']) {
-
                         case 'js':
                         case 'js_css':
                             $item['path'] = Mage::getBaseUrl('js') . $item['name'];
@@ -82,7 +78,7 @@ class Yireo_MageBridge_Model_Headers extends Yireo_MageBridge_Model_Block
                         case 'skin_js':
                         case 'skin_css':
                             $item['path'] = Mage::getDesign()->getSkinUrl($item['name']);
-                            $item['file'] = Mage::getDesign()->getFilename($item['name'], array('_type' => 'skin'));
+                            $item['file'] = Mage::getDesign()->getFilename($item['name'], ['_type' => 'skin']);
                             break;
 
                         default:
@@ -95,7 +91,7 @@ class Yireo_MageBridge_Model_Headers extends Yireo_MageBridge_Model_Block
 
                 // Add merge scripts
                 if (Mage::getStoreConfigFlag('dev/js/merge_files') == 1) {
-                    $js = array();
+                    $js = [];
                     foreach ($headers['items'] as $item) {
                         if (isset($item['file']) && is_readable($item['file'])) {
                             if (preg_match('/js$/', $item['type'])) {
@@ -112,7 +108,7 @@ class Yireo_MageBridge_Model_Headers extends Yireo_MageBridge_Model_Block
 
                 // Add merge CSS
                 if (Mage::getStoreConfigFlag('dev/css/merge_css_files') == 1) {
-                    $css = array();
+                    $css = [];
                     foreach ($headers['items'] as $item) {
                         if (isset($item['file']) && is_readable($item['file'])) {
                             if (preg_match('/css$/', $item['type'])) {
@@ -128,7 +124,7 @@ class Yireo_MageBridge_Model_Headers extends Yireo_MageBridge_Model_Block
                 }
 
                 // Add custom scripts
-                $headers['custom'] = array();
+                $headers['custom'] = [];
 
                 // Get the childhtml script
                 $childhtmlScript = $head->getChildHtml();
@@ -141,7 +137,6 @@ class Yireo_MageBridge_Model_Headers extends Yireo_MageBridge_Model_Block
                 return $headers;
             }
             return false;
-
         } catch (Exception $e) {
             Mage::getSingleton('magebridge/debug')->error('Failed to get headers: ' . $e->getMessage());
             return false;

@@ -17,22 +17,22 @@ defined('_JEXEC') or die('Restricted access');
  */
 class MageBridgeModelBridgeApi extends MageBridgeModelBridgeSegment
 {
-	/**
-	 * Singleton 
-	 *
-	 * @param string $name
-	 * @return object
-	 */
-	public static function getInstance($name = null)
-	{
-		return parent::getInstance('MageBridgeModelBridgeApi');
-	}
+    /**
+     * Singleton
+     *
+     * @param string $name
+     * @return object
+     */
+    public static function getInstance($name = null)
+    {
+        return parent::getInstance('MageBridgeModelBridgeApi');
+    }
 
-	/**
-	 * Load the data from the bridge
-	 */
-	public function getResponseData($resource = null, $arguments = null, $id = null)
-	{
-		return MageBridgeModelRegister::getInstance()->getData('api', $resource, $arguments, $id);
-	}
+    /**
+     * Load the data from the bridge
+     */
+    public function getResponseData($resource = null, $arguments = null, $id = null)
+    {
+        return MageBridgeModelRegister::getInstance()->getData('api', $resource, $arguments, $id);
+    }
 }

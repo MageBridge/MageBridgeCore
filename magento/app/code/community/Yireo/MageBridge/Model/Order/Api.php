@@ -15,7 +15,7 @@
 class Yireo_MageBridge_Model_Order_Api extends Mage_Api_Model_Resource_Abstract
 {
     /**
-     * Retrieve list of orders with basic info 
+     * Retrieve list of orders with basic info
      *
      * @access public
      * @param array $filters
@@ -45,7 +45,7 @@ class Yireo_MageBridge_Model_Order_Api extends Mage_Api_Model_Resource_Abstract
             }
         }
 
-        $result = array();
+        $result = [];
         foreach ($collection as $order) {
             $order->base_grand_total_formatted = $order->formatPrice($order->getBaseGrandTotal());
             $result[] = $order->debug();
@@ -64,7 +64,7 @@ class Yireo_MageBridge_Model_Order_Api extends Mage_Api_Model_Resource_Abstract
     public function getOrderItems($filters = null, $store = null)
     {
         // Parse the customer-filter if needed
-        if(isset($filters['customer_email']) && isset($filters['website_id'])) {
+        if (isset($filters['customer_email']) && isset($filters['website_id'])) {
             $customer = Mage::getModel('customer/customer');
             $customer->setWebsiteId($filters['website_id']);
             $customer->loadByEmail($filters['customer_email']);
@@ -72,14 +72,14 @@ class Yireo_MageBridge_Model_Order_Api extends Mage_Api_Model_Resource_Abstract
         }
 
         // Apply the customer-filter
-        if(isset($filters['customer_id'])) {
-            if($filters['customer_id'] > 0 == false) {
-                return array();
+        if (isset($filters['customer_id'])) {
+            if ($filters['customer_id'] > 0 == false) {
+                return [];
             }
 
             $orders = $this->fetchOrders($filters);
             $orderIds = array_keys($orders);
-            $orderItems = Mage::getResourceModel('sales/order_item_collection')->addFieldToFilter('order_id', array('IN', $orderIds));
+            $orderItems = Mage::getResourceModel('sales/order_item_collection')->addFieldToFilter('order_id', ['IN', $orderIds]);
 
         // Initialize all without customer-filter
         } else {
@@ -89,19 +89,18 @@ class Yireo_MageBridge_Model_Order_Api extends Mage_Api_Model_Resource_Abstract
         }
 
         // Loop through all order-items to construct the return-array
-        $result = array();
+        $result = [];
         foreach ($orderItems as $orderItem) {
-
             // Construct the return-array
             $row = $orderItem->debug();
 
             // Add customer-data
-            if(isset($orders) && isset($customers)) {
+            if (isset($orders) && isset($customers)) {
                 $orderId = $orderItem->getOrderId();
-                if(isset($orders[$orderId])) {
+                if (isset($orders[$orderId])) {
                     $customerId = $orders[$orderId]['customer_id'];
                     $customerEmail = $orders[$orderId]['customer_email'];
-                    if(isset($customers[$customerId])) {
+                    if (isset($customers[$customerId])) {
                         $customerEmail = $customers[$customerId]['email'];
                     }
 
@@ -128,17 +127,17 @@ class Yireo_MageBridge_Model_Order_Api extends Mage_Api_Model_Resource_Abstract
         $collection = Mage::getResourceModel('sales/order_collection');
         $collection->addFieldToFilter('state', 'complete');
 
-        if(isset($filters['customer_id'])) {
+        if (isset($filters['customer_id'])) {
             $collection->addFieldToFilter('customer_id', $filters['customer_id']);
         }
 
-        $orders = array();
-        foreach($collection as $item) {
-            $orders[$item->getId()] = array(
+        $orders = [];
+        foreach ($collection as $item) {
+            $orders[$item->getId()] = [
                 'id' => $item->getId(),
                 'customer_id' => $item->getData('customer_id'),
                 'customer_email' => $item->getData('customer_email'),
-            );
+            ];
         }
         return $orders;
     }
@@ -154,12 +153,12 @@ class Yireo_MageBridge_Model_Order_Api extends Mage_Api_Model_Resource_Abstract
         // @todo: Automatically set the website_id filter
         $collection = Mage::getResourceModel('customer/customer_collection');
 
-        $customers = array();
-        foreach($collection as $item) {
-            $customers[$item->getId()] = array(
+        $customers = [];
+        foreach ($collection as $item) {
+            $customers[$item->getId()] = [
                 'id' => $item->getId(),
                 'email' => $item->getData('email'),
-            );
+            ];
         }
         return $customers;
     }

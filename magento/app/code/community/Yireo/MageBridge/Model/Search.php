@@ -15,14 +15,14 @@
 class Yireo_MageBridge_Model_Search extends Mage_Core_Model_Abstract
 {
     /**
-     * Search for products 
+     * Search for products
      *
      * @access public
      * @param string $text
      * @param array $searchFields
      * @return array
      */
-    public function getResult($text, $searchFields = array())
+    public function getResult($text, $searchFields = [])
     {
         try {
             // Definitions
@@ -30,11 +30,10 @@ class Yireo_MageBridge_Model_Search extends Mage_Core_Model_Abstract
             $storeId = Mage::app()->getStore()->getId();
 
             // Preliminary checks
-            if(empty($text)) {
+            if (empty($text)) {
                 Mage::getSingleton('magebridge/debug')->error('Empty search-query');
                 return false;
-
-            } elseif(Mage::helper('core/string')->strlen($text) < $helper->getMinQueryLength()) {
+            } elseif (Mage::helper('core/string')->strlen($text) < $helper->getMinQueryLength()) {
                 Mage::getSingleton('magebridge/debug')->error('Search-query shorted than minimum length');
                 return false;
             }
@@ -44,7 +43,7 @@ class Yireo_MageBridge_Model_Search extends Mage_Core_Model_Abstract
             $query->setStoreId($storeId);
 
             // Initialize the query and increase its counter
-            if(!$query->getId()) {
+            if (!$query->getId()) {
                 $query->setQueryText($text);
                 $query->setPopularity(1);
             } else {
@@ -56,7 +55,7 @@ class Yireo_MageBridge_Model_Search extends Mage_Core_Model_Abstract
             $query->save();
 
             // Force preoutput
-            if($query->getRedirect()) {
+            if ($query->getRedirect()) {
                 Mage::app()->getResponse()->setRedirect($query->getRedirect());
                 Mage::getSingleton('magebridge/core')->setForcedPreoutput(true);
                 return;
@@ -64,12 +63,11 @@ class Yireo_MageBridge_Model_Search extends Mage_Core_Model_Abstract
 
             // Get the collection the good way (but this only works if Flat Catalog is disabled)
             // otherwise error "Call to undefined method Mage_Catalog_Model_Resource_Product_Flat::getEntityTablePrefix()"
-            if(Mage::getStoreConfig('catalog/frontend/flat_catalog_product') == 0) {
-
-                $visibility = array(
+            if (Mage::getStoreConfig('catalog/frontend/flat_catalog_product') == 0) {
+                $visibility = [
                     Mage_Catalog_Model_Product_Visibility::VISIBILITY_IN_SEARCH,
                     Mage_Catalog_Model_Product_Visibility::VISIBILITY_BOTH,
-                );
+                ];
 
                 $collection = Mage::getResourceModel('catalogsearch/search_collection')
                     ->addSearchFilter($text)
@@ -81,10 +79,11 @@ class Yireo_MageBridge_Model_Search extends Mage_Core_Model_Abstract
 
             // Instead of using the original classes, grab the collection using SQL-statements
             } else {
-                $catalogsearchTable = Mage::getSingleton('core/resource')->getTableName('catalogsearch/fulltext');;
+                $catalogsearchTable = Mage::getSingleton('core/resource')->getTableName('catalogsearch/fulltext');
+                ;
                 $collection = Mage::getResourceModel('catalogsearch/search_collection');
                 $collection->getSelect()
-                    ->join(array('search' => $catalogsearchTable), 'e.entity_id=search.product_id', array())
+                    ->join(['search' => $catalogsearchTable], 'e.entity_id=search.product_id', [])
                     ->where('search.data_index LIKE "%'.$text.'%"')
                     ->where('search.store_id='.(int)$storeId)
                 ;
@@ -92,14 +91,13 @@ class Yireo_MageBridge_Model_Search extends Mage_Core_Model_Abstract
 
             // Log the collection size with this query-result
             $collectionSize = $collection->getSize();
-            if($query->getNumResults() != $collectionSize) {
+            if ($query->getNumResults() != $collectionSize) {
                 $query->setNumResults($collectionSize);
                 $query->save();
             }
-                
+
             // Return the collection
             return $collection;
-
         } catch(Exception $e) {
             Mage::getSingleton('magebridge/debug')->error($e->getMessage());
             return false;

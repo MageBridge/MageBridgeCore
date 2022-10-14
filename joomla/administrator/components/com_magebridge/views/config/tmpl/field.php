@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * Joomla! component MageBridge
  *
@@ -13,11 +13,11 @@
 <h4 class="fieldgroup"><?php echo JText::_('COM_MAGEBRIDGE_MODEL_CONFIG_FIELDGROUP_'.$field->fieldname); ?></h4>
 <?php else: ?>
 <?php
-$fieldDescription = JText::_('COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_'.$field->fieldname.'_DESC');
-$fieldTooltip = '['.$field->fieldname.'] '.$fieldDescription;
-$oldFieldLabel = $field->label;
-$fieldLabel = JText::_('COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_'.$field->fieldname);
-?>
+    $fieldDescription = JText::_('COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_'.$field->fieldname.'_DESC');
+    $fieldTooltip = '['.$field->fieldname.'] '.$fieldDescription;
+    $oldFieldLabel = $field->label;
+    $fieldLabel = JText::_('COM_MAGEBRIDGE_MODEL_CONFIG_FIELD_'.$field->fieldname);
+    ?>
 <div class="control-group">
 	<div class="control-label">
 		<label id="<?php echo $field->id; ?>-lbl" for="<?php echo $field->id; ?>" class="hasTooltip" title="<?php echo $fieldTooltip; ?>"><?php echo $fieldLabel; ?></label>

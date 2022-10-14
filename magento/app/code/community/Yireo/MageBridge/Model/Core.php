@@ -17,27 +17,27 @@ class Yireo_MageBridge_Model_Core
     /**
      * Bridge-request
      */
-    protected $_request = array();
+    protected $_request = [];
 
     /**
      * Bridge-request
      */
-    protected $_response = array();
+    protected $_response = [];
 
     /**
      * Meta-data
      */
-    protected $_meta = array();
+    protected $_meta = [];
 
     /**
      * Magento configuration
      */
-    protected $_mage_config = array();
+    protected $_mage_config = [];
 
     /**
      * System events
      */
-    protected $_events = array();
+    protected $_events = [];
 
     /**
      * Flag to enable event forwarding
@@ -113,7 +113,7 @@ class Yireo_MageBridge_Model_Core
     protected function reinitializeSession()
     {
         try {
-            $session = Mage::getSingleton('core/session', array('name' => 'frontend'));
+            $session = Mage::getSingleton('core/session', ['name' => 'frontend']);
             $session->start();
             Mage::getSingleton('magebridge/debug')->notice('Core session started: ' . $session->getSessionId());
         } catch (Exception $e) {
@@ -164,11 +164,11 @@ class Yireo_MageBridge_Model_Core
             return false;
         }
 
-        $data = array(
+        $data = [
             'email' => $joomlaUserEmail,
             'application' => 'site',
             'disable_events' => true,
-        );
+        ];
 
         Mage::getModel('magebridge/user_api')->login($data);
     }
@@ -343,7 +343,6 @@ class Yireo_MageBridge_Model_Core
         $redirectToCart = (bool)Mage::getStoreConfig('checkout/cart/redirect_to_cart');
 
         if ($redirectToCart == false && $continueShoppingToPrevious && strstr($this->getRequestUrl(), 'checkout/cart/add')) {
-
             $location = null;
             if (preg_match('/(uenc|referer)\/([^\/]+)/', $this->getRequestUrl(), $match)) {
                 $location = Mage::helper('magebridge/encryption')->base64_decode($match[2]);
@@ -365,13 +364,12 @@ class Yireo_MageBridge_Model_Core
         // To start with, save the meta data
         $this->saveMetaData();
 
-        // Fetch a list of all stores 
+        // Fetch a list of all stores
         $stores = Mage::app()->getStores();
         $websiteId = $this->getMetaData('website');
 
         // Loop through the stores to modify data
         foreach ($stores as $store) {
-
             /** @var Mage_Core_Model_Store $store */
 
             // Do not override stores outside this website
@@ -395,16 +393,15 @@ class Yireo_MageBridge_Model_Core
     protected function setConfigPerStore(Mage_Core_Model_Store $store)
     {
         //Mage::getSingleton('magebridge/debug')->notice('Override store configuration "'.$store->getCode().'"');
-        $config_values = array();
+        $config_values = [];
 
         // If URL-modification is disabled, exit
         if ($this->getMetaData('modify_url') == 1) {
-
             // Get the current store
             //Mage::getSingleton('magebridge/debug')->notice('Set URLs of store "'.$store->getName().'" to '.$this->getMageBridgeSefUrl());
 
             // Collect the unmodified original URLs from the Configuration
-            $urls = array();
+            $urls = [];
             $urls['web/unsecure/base_url'] = $store->getConfig('web/unsecure/base_url');
             $urls['web/unsecure/base_link_url'] = $store->getConfig('web/unsecure/base_link_url');
             $urls['web/unsecure/base_media_url'] = $store->getConfig('web/unsecure/base_media_url');
@@ -523,12 +520,12 @@ class Yireo_MageBridge_Model_Core
     public function setSefUrl()
     {
         // Modify the configuration values
-        $config_values = array(
+        $config_values = [
             'web/unsecure/base_url' => $this->getMageBridgeSefUrl(),
             'web/unsecure/base_link_url' => $this->getMageBridgeSefUrl(),
             'web/secure/base_url' => $this->getMageBridgeSefUrl(),
             'web/secure/base_link_url' => $this->getMageBridgeSefUrl(),
-        );
+        ];
 
         // Rewrite the configuration
         $store = $this->getStoreObject();
@@ -553,16 +550,15 @@ class Yireo_MageBridge_Model_Core
     public function saveMetaData()
     {
         // List of keys (meta => conf)
-        $keys = array(
+        $keys = [
             'api_url' => 'api_url',
             'api_user' => 'api_user',
             'api_key' => 'api_key',
-        );
+        ];
 
         // Check the Joomla! settings
         $refreshCache = false;
         foreach ($keys as $meta_key => $key) {
-
             $rt = $this->saveConfig($key, $this->getMetaData($meta_key), 'default', 0);
             if ($rt === true) {
                 $refreshCache = true;
@@ -653,7 +649,6 @@ class Yireo_MageBridge_Model_Core
         $save = false;
         if (empty($current_value)) {
             $save = true;
-
         } elseif (Mage::helper('magebridge')->useApiDetect() == true && $scope != 'default') {
             if ($key == 'api_url' && preg_replace('/^(http|https)\:/', '', $current_value) != preg_replace('/^(http|https)\:/', '', $value)) {
                 $magebridgeDebug->notice('New API-value for "' . $key . '": "' . $current_value . '"; previously "' . $value . '"');
@@ -712,8 +707,12 @@ class Yireo_MageBridge_Model_Core
     {
         // Fetch the variables from the meta-data
         $api_session = $this->getMetaData('api_session');
-        if (empty($api_user)) $api_user = $this->getMetaData('api_user');
-        if (empty($api_key)) $api_key = $this->getMetaData('api_key');
+        if (empty($api_user)) {
+            $api_user = $this->getMetaData('api_user');
+        }
+        if (empty($api_key)) {
+            $api_key = $this->getMetaData('api_key');
+        }
 
         // If the API-session matches, we don't need authenticate any more
         if ($api_session == md5(session_id() . $api_user . $api_key)) {
@@ -727,7 +726,6 @@ class Yireo_MageBridge_Model_Core
                 $this->setMetaData('api_session', md5(session_id() . $api_user . $api_key));
                 return true;
             }
-
         } catch (Exception $e) {
             Mage::getSingleton('magebridge/debug')->error('Exception while authorizing: ' . $e->getMessage());
         }
@@ -887,22 +885,22 @@ class Yireo_MageBridge_Model_Core
         if ($complete) {
             $this->closeBridge();
         } else {
-            $this->addResponseData('meta', array(
+            $this->addResponseData('meta', [
                 'type' => 'meta',
-                'data' => array(
+                'data' => [
                     'state' => $this->getMetaData('state'),
                     'extra' => $this->getMetaData('extra'),
-                )
-            ));
+                ],
+            ]);
         }
 
         if ($this->getMetaData('debug')) {
             $debug = Mage::getSingleton('magebridge/debug')->getData();
             if (!empty($debug)) {
-                $this->addResponseData('debug', array(
+                $this->addResponseData('debug', [
                     'type' => 'debug',
                     'data' => $debug,
-                ));
+                ]);
             }
         }
 
@@ -929,12 +927,12 @@ class Yireo_MageBridge_Model_Core
         // Append customer-data
         $customerId = Mage::getSingleton('customer/session')->getCustomerId();
         $customer = Mage::getModel('customer/customer')->load($customerId);
-        $this->setMetaData('magento_customer', array(
+        $this->setMetaData('magento_customer', [
             'fullname' => $customer->getName(),
             'username' => $customer->getEmail(),
             'email' => $customer->getEmail(),
             'hash' => $customer->getPasswordHash(),
-        ));
+        ]);
 
         // Append Magento-data
         $this->setMetaData('magento_config', $this->getMageConfig());
@@ -942,19 +940,19 @@ class Yireo_MageBridge_Model_Core
         // Add events to the response
         $events = $this->getEvents();
         if (!empty($events)) {
-            $this->addResponseData('events', array(
+            $this->addResponseData('events', [
                 'type' => 'events',
                 'data' => $events,
-            ));
+            ]);
         }
 
         // Add metadata to the response
         $metadata = $this->getMetaData();
         if (!empty($metadata)) {
-            $this->addResponseData('meta', array(
+            $this->addResponseData('meta', [
                 'type' => 'meta',
                 'data' => $metadata,
-            ));
+            ]);
         }
     }
 
@@ -992,7 +990,7 @@ class Yireo_MageBridge_Model_Core
 
         // Construct extra data
         $store = $this->getStoreObject();
-        $data = array(
+        $data = [
             'session_id' => Mage::getModel('core/session')->getSessionId(),
             'catalog/seo/product_url_suffix' => $store->getConfig('catalog/seo/product_url_suffix'),
             'catalog/seo/category_url_suffix' => $store->getConfig('catalog/seo/category_url_suffix'),
@@ -1018,9 +1016,9 @@ class Yireo_MageBridge_Model_Core
             'controller' => Mage::app()->getRequest()->getControllerName(),
             'action' => Mage::app()->getRequest()->getActionName(),
             'request' => $this->getRequestUrl(),
-            'store_urls' => array(),
-            'handles' => array(),
-        );
+            'store_urls' => [],
+            'handles' => [],
+        ];
 
         // Add store URLs for current page
         $stores = Mage::app()->getStores();
@@ -1032,7 +1030,7 @@ class Yireo_MageBridge_Model_Core
                 $url = Mage::getModel('catalog/product')->setStoreId($store->getId())->load($currentProductId)->getUrlPath();
                 $data['store_urls'][$code] = $url;
 
-                // Category URL
+            // Category URL
             } elseif ($currentCategoryId > 0) {
                 $url = Mage::getModel('catalog/category')->setStoreId($store->getId())->load($currentCategoryId)->getUrlPath();
                 $data['store_urls'][$code] = $url;
@@ -1138,12 +1136,13 @@ class Yireo_MageBridge_Model_Core
 
         // Workaround for AJAX Cart Pro
         $awacp = (isset($_REQUEST['awacp']) && $_REQUEST['awacp'] == 1) ? true : false;
-        if ($awacp) $fullDispatch = false;
+        if ($awacp) {
+            $fullDispatch = false;
+        }
 
         // Singleton to initialize the front-controller
         static $controller;
         if (empty($controller)) {
-
             // Initialize the front-controller
             yireo_benchmark('MB_Core::getFrontController() - start');
             $controller = Mage::app()->getFrontController();
@@ -1151,14 +1150,12 @@ class Yireo_MageBridge_Model_Core
 
 
             // Run the controller_front_init_before event
-            Mage::dispatchEvent('controller_front_init_before', array('front' => $controller));
+            Mage::dispatchEvent('controller_front_init_before', ['front' => $controller]);
 
             if ($fullDispatch == true) {
                 $controller->dispatch();
                 yireo_benchmark('MB_Core::getFrontController() - fully dispatched');
-
             } else {
-
                 // Replicate the dispatch() method of the front-controller, without sending a response
                 $request = $controller->getRequest();
                 $request->setPathInfo()->setDispatched(false);
@@ -1177,7 +1174,9 @@ class Yireo_MageBridge_Model_Core
                     }
                 }
                 Varien_Profiler::stop('mage::dispatch::routers_match');
-                if ($i > 100) Mage::throwException('Front controller reached 100 router match iterations');
+                if ($i > 100) {
+                    Mage::throwException('Front controller reached 100 router match iterations');
+                }
 
                 // Call upon events that need to do something before the layout renders
                 if (Mage::registry('mb_controller_action_layout_render_before') == false) {
@@ -1187,11 +1186,13 @@ class Yireo_MageBridge_Model_Core
                 }
 
                 // Simulate sending a response (but without outputBody())
-                Mage::dispatchEvent('controller_front_send_response_before', array('front' => $controller));
+                Mage::dispatchEvent('controller_front_send_response_before', ['front' => $controller]);
                 $response = $controller->getResponse();
-                if ($httpResponseSendBefore) Mage::dispatchEvent('http_response_send_before', array('response' => $response));
+                if ($httpResponseSendBefore) {
+                    Mage::dispatchEvent('http_response_send_before', ['response' => $response]);
+                }
                 $response->sendHeaders();
-                Mage::dispatchEvent('controller_front_send_response_after', array('front' => $controller));
+                Mage::dispatchEvent('controller_front_send_response_after', ['front' => $controller]);
             }
 
             // Preset some HTTP-headers
@@ -1338,7 +1339,8 @@ class Yireo_MageBridge_Model_Core
      */
     public function getEvents()
     {
-        $events = Mage::getSingleton('magebridge/session')->getEvents();;
+        $events = Mage::getSingleton('magebridge/session')->getEvents();
+        ;
         Mage::getSingleton('magebridge/session')->cleanEvents();
         return $events;
     }

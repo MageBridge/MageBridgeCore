@@ -1,4 +1,5 @@
 <?php
+
 namespace Yireo\Common\String;
 
 class VariableName

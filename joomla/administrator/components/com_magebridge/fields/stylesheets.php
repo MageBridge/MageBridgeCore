@@ -23,140 +23,130 @@ use Joomla\Utilities\ArrayHelper;
  */
 class MagebridgeFormFieldStylesheets extends MagebridgeFormFieldAbstract
 {
-	/**
-	 * Form field type
-	 */
-	public $type = 'Magento stylesheets';
+    /**
+     * Form field type
+     */
+    public $type = 'Magento stylesheets';
 
-	/**
-	 * Method to get the output of this element
-	 *
-	 * @return string
-	 */
-	protected function getInput()
-	{
-		$name      = $this->name;
-		$options   = null;
+    /**
+     * Method to get the output of this element
+     *
+     * @return string
+     */
+    protected function getInput()
+    {
+        $name      = $this->name;
+        $options   = null;
 
-		if ($this->getConfig('api_widgets') == true)
-		{
+        if ($this->getConfig('api_widgets') == true) {
+            $cache   = JFactory::getCache('com_magebridge.admin');
+            $options = $cache->call(['MagebridgeFormFieldStylesheets', 'getResult']);
 
-			$cache   = JFactory::getCache('com_magebridge.admin');
-			$options = $cache->call(array('MagebridgeFormFieldStylesheets', 'getResult'));
+            if (empty($options) && !is_array($options)) {
+                $this->debugger->warning('Unable to obtain MageBridge API Widget "stylesheets"', $options);
+            }
+        }
 
-			if (empty($options) && !is_array($options))
-			{
-				$this->debugger->warning('Unable to obtain MageBridge API Widget "stylesheets"', $options);
-			}
-		}
+        MageBridgeTemplateHelper::load('jquery');
+        JHtml::script('media/com_magebridge/js/backend-customoptions.js');
 
-		MageBridgeTemplateHelper::load('jquery');
-		JHtml::script('media/com_magebridge/js/backend-customoptions.js');
+        $html = '';
+        $html .= $this->getRadioHTML();
+        $html .= '<br/><br/>';
+        $html .= $this->getSelectHTML($options);
 
-		$html = '';
-		$html .= $this->getRadioHTML();
-		$html .= '<br/><br/>';
-		$html .= $this->getSelectHTML($options);
+        return $html;
+    }
 
-		return $html;
-	}
+    /**
+     * Method to get the HTML of the disable_css_mage element
+     *
+     * @return string
+     */
+    public function getRadioHTML()
+    {
+        $name  = 'disable_css_all';
+        $value = $this->getConfig('disable_css_all');
 
-	/**
-	 * Method to get the HTML of the disable_css_mage element
-	 *
-	 * @return string
-	 */
-	public function getRadioHTML()
-	{
-		$name  = 'disable_css_all';
-		$value = $this->getConfig('disable_css_all');
+        $options = [
+            ['value' => '0', 'label' => 'JNO'],
+            ['value' => '1', 'label' => 'JYES'],
+            ['value' => '2', 'label' => 'JONLY'],
+            ['value' => '3', 'label' => 'JALL_EXCEPT'],
+        ];
 
-		$options = array(
-			array('value' => '0', 'label' => 'JNO'),
-			array('value' => '1', 'label' => 'JYES'),
-			array('value' => '2', 'label' => 'JONLY'),
-			array('value' => '3', 'label' => 'JALL_EXCEPT'),
-		);
+        foreach ($options as $index => $option) {
+            $option['label'] = JText::_($option['label']);
+            $options[$index] = ArrayHelper::toObject($option);
+        }
 
-		foreach ($options as $index => $option)
-		{
-			$option['label'] = JText::_($option['label']);
-			$options[$index] = ArrayHelper::toObject($option);
-		}
+        $attributes = null;
 
-		$attributes = null;
+        return JHtml::_('select.radiolist', $options, $name, $attributes, 'value', 'label', $value);
+    }
 
-		return JHtml::_('select.radiolist', $options, $name, $attributes, 'value', 'label', $value);
-	}
+    /**
+     * Method to get the HTML of the disable_css_all element
+     *
+     * @param array  $options
+     *
+     * @return string
+     */
+    public function getSelectHTML($options)
+    {
+        $name  = 'disable_css_mage';
+        $value = MageBridgeHelper::getDisableCss();
 
-	/**
-	 * Method to get the HTML of the disable_css_all element
-	 *
-	 * @param array  $options
-	 *
-	 * @return string
-	 */
-	public function getSelectHTML($options)
-	{
-		$name  = 'disable_css_mage';
-		$value = MageBridgeHelper::getDisableCss();
+        $current = $this->getConfig('disable_css_all');
+        $disabled = null;
 
-		$current = $this->getConfig('disable_css_all');
-		$disabled = null;
-		
-		if ($current == 1 || $current == 0)
-		{
-			$disabled = 'disabled="disabled"';
-		}
+        if ($current == 1 || $current == 0) {
+            $disabled = 'disabled="disabled"';
+        }
 
-		if (!empty($options) && is_array($options))
-		{
-			$size = (count($options) > 10) ? 10 : count($options);
-			array_unshift($options, array('value' => '', 'label' => '- ' . JText::_('JNONE') . ' -'));
+        if (!empty($options) && is_array($options)) {
+            $size = (count($options) > 10) ? 10 : count($options);
+            array_unshift($options, ['value' => '', 'label' => '- ' . JText::_('JNONE') . ' -']);
 
-			return JHtml::_('select.genericlist', $options, $name . '[]', 'multiple="multiple" size="' . $size . '" ' . $disabled, 'value', 'label', $value);
-		}
+            return JHtml::_('select.genericlist', $options, $name . '[]', 'multiple="multiple" size="' . $size . '" ' . $disabled, 'value', 'label', $value);
+        }
 
-		return '<input type="text" name="' . $name . '" value="' . implode(',', $value) . '" />';
-	}
+        return '<input type="text" name="' . $name . '" value="' . implode(',', $value) . '" />';
+    }
 
-	/**
-	 * Method to get a list of scripts from the API
-	 *
-	 * @return array
-	 */
-	static public function getResult()
-	{
-		$bridge  = MageBridgeModelBridge::getInstance();
-		$headers = $bridge->getHeaders();
-		
-		if (empty($headers))
-		{
-			// Send the request to the bridge
-			$register = MageBridgeModelRegister::getInstance();
-			$register->add('headers');
+    /**
+     * Method to get a list of scripts from the API
+     *
+     * @return array
+     */
+    public static function getResult()
+    {
+        $bridge  = MageBridgeModelBridge::getInstance();
+        $headers = $bridge->getHeaders();
 
-			$bridge->build();
+        if (empty($headers)) {
+            // Send the request to the bridge
+            $register = MageBridgeModelRegister::getInstance();
+            $register->add('headers');
 
-			$headers = $bridge->getHeaders();
-		}
+            $bridge->build();
 
-		$stylesheets = array();
-		
-		if (!empty($headers['items']))
-		{
-			foreach ($headers['items'] as $item)
-			{
-				if (strstr($item['type'], 'css'))
-				{
-					$stylesheets[] = array(
-						'value' => $item['name'],
-						'label' => $item['name'],
-					);
-				}
-			}
-		}
+            $headers = $bridge->getHeaders();
+        }
 
-		return $stylesheets;
-	}
+        $stylesheets = [];
+
+        if (!empty($headers['items'])) {
+            foreach ($headers['items'] as $item) {
+                if (strstr($item['type'], 'css')) {
+                    $stylesheets[] = [
+                        'value' => $item['name'],
+                        'label' => $item['name'],
+                    ];
+                }
+            }
+        }
+
+        return $stylesheets;
+    }
 }

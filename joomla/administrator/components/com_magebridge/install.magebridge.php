@@ -15,14 +15,14 @@ defined('_JEXEC') or die();
 /**
  * Method run when installing MageBridge
  */
-function com_install() 
+function com_install()
 {
-	require_once(dirname(__FILE__).'/helpers/install.php');
+    require_once(dirname(__FILE__).'/helpers/install.php');
 
-	$helper = new MageBridgeInstallHelper();
-	$helper->updateQueries();
-	$helper->removeObsoleteFiles();
+    $helper = new MageBridgeInstallHelper();
+    $helper->updateQueries();
+    $helper->removeObsoleteFiles();
 
-	// Done
-	return true;
+    // Done
+    return true;
 }

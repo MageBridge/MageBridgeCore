@@ -15,7 +15,7 @@
 class Yireo_MageBridge_Model_Customer_Api extends Mage_Api_Model_Resource_Abstract
 {
     /**
-     * Retrieve list of customers with basic info 
+     * Retrieve list of customers with basic info
      *
      * @access public
      * @param array $arguments
@@ -29,12 +29,12 @@ class Yireo_MageBridge_Model_Customer_Api extends Mage_Api_Model_Resource_Abstra
         ;
 
         // Handle a simple email-filter
-        if(isset($arguments['emails']) && is_array($arguments['emails']) && !empty($arguments['emails'])) {
+        if (isset($arguments['emails']) && is_array($arguments['emails']) && !empty($arguments['emails'])) {
             $collection->addFieldToFilter('email', $arguments['emails']);
         }
 
         // Apply filters
-        if(isset($arguments['filters']) && is_array($arguments['filters']) && !empty($arguments['filters'])) {
+        if (isset($arguments['filters']) && is_array($arguments['filters']) && !empty($arguments['filters'])) {
             try {
                 foreach ($arguments['filters'] as $field => $value) {
                     $collection->addFieldToFilter($field, $value);
@@ -45,17 +45,17 @@ class Yireo_MageBridge_Model_Customer_Api extends Mage_Api_Model_Resource_Abstra
         }
 
         // Add a list limit
-        if(isset($arguments['count'])) {
+        if (isset($arguments['count'])) {
             $collection->setPageSize($arguments['count']);
         }
 
         // Add a page number
-        if(isset($arguments['page']) && $arguments['page'] > 0) {
+        if (isset($arguments['page']) && $arguments['page'] > 0) {
             $collection->setCurPage($arguments['page']);
         }
 
         // Set ordering
-        if(isset($arguments['ordering'])) {
+        if (isset($arguments['ordering'])) {
             switch($arguments['ordering']) {
                 case 'newest':
                     $collection->setOrder('created_at', 'desc');
@@ -70,7 +70,7 @@ class Yireo_MageBridge_Model_Customer_Api extends Mage_Api_Model_Resource_Abstra
         $collection->load();
 
         // Parse the result
-        $result = array();
+        $result = [];
         foreach ($collection as $customer) {
             $customer->setName($customer->getName());
             $result[] = $customer->debug();

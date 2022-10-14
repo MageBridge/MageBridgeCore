@@ -84,11 +84,11 @@ class Yireo_MageBridgeTheme_Helper_Theme extends Mage_Core_Helper_Abstract
         $subcategoryIds = (!empty($category) && $category->getId() > 0) ? $category->getData('children') : false;
         $subcategoryIds = explode(',', $subcategoryIds);
 
-        $subcategories = array();
-        if(!empty($subcategoryIds)) {
+        $subcategories = [];
+        if (!empty($subcategoryIds)) {
             foreach ($subcategoryIds as $subcategoryId) {
                 $subcategory = Mage::getModel('catalog/category')->load($subcategoryId);
-                if($subcategory->getId() > 0 && $subcategory->getData('is_active') == 1) {
+                if ($subcategory->getId() > 0 && $subcategory->getData('is_active') == 1) {
                     $subcategories[] = $subcategory;
                 }
             }

@@ -28,7 +28,7 @@ class Yireo_MageBridge_Block_Updates extends Mage_Core_Block_Template
      * @var Mage_Adminhtml_Model_Url
      */
     protected $urlModel;
-    
+
     /**
      * Constructor method
      */
@@ -52,10 +52,10 @@ class Yireo_MageBridge_Block_Updates extends Mage_Core_Block_Template
     {
         static $data;
         if (empty($data)) {
-            $data = array(
+            $data = [
                 'license_key' => $this->helper->getLicenseKey(),
                 'enabled' => $this->helper->enabled(),
-            );
+            ];
         }
 
         if (isset($data[$key])) {

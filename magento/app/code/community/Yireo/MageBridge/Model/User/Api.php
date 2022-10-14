@@ -21,15 +21,15 @@ class Yireo_MageBridge_Model_User_Api extends Mage_Api_Model_Resource_Abstract
      * @param array $options
      * @return array
      */
-    public function save($data = array())
+    public function save($data = [])
     {
         // Disable all event forwarding
-        if(isset($data['disable_events'])) {
+        if (isset($data['disable_events'])) {
             Mage::getSingleton('magebridge/core')->disableEvents();
         }
 
         // Make sure the data is there, and contains at least an email
-        if(empty($data) || !isset($data['email'])) {
+        if (empty($data) || !isset($data['email'])) {
             Mage::getSingleton('magebridge/debug')->warning('No email in data');
             return false;
         }
@@ -39,8 +39,8 @@ class Yireo_MageBridge_Model_User_Api extends Mage_Api_Model_Resource_Abstract
         // Save the customer
         $rt = $this->saveCustomer($data);
 
-        // Save the backend-user 
-        if(isset($data['admin']) && (bool)$data['admin'] == true) {
+        // Save the backend-user
+        if (isset($data['admin']) && (bool)$data['admin'] == true) {
             $this->saveAdminUser($data);
         }
 
@@ -54,37 +54,38 @@ class Yireo_MageBridge_Model_User_Api extends Mage_Api_Model_Resource_Abstract
      * @param array $data
      * @return array
      */
-    public function saveCustomer($data = array())
+    public function saveCustomer($data = [])
     {
         try {
             // Initialize the session
-            Mage::getSingleton('core/session', array('name'=>'frontend'));
+            Mage::getSingleton('core/session', ['name'=>'frontend']);
             $session = Mage::getSingleton('customer/session');
 
-            // Load the customer 
+            // Load the customer
             $customer = Mage::getModel('magebridge/user')->load($data);
-            if(empty($customer)) {
+            if (empty($customer)) {
                 return false;
             }
 
             // Set new values
-            if($customer->getId() > 0 == false) {
+            if ($customer->getId() > 0 == false) {
                 $customer->setCreatedAt(strftime('%Y-%m-%d %H:%M:%S', time()));
-                if(isset($data['website_id'])) $customer->setWebsiteId((int)$data['website_id']);
+                if (isset($data['website_id'])) {
+                    $customer->setWebsiteId((int)$data['website_id']);
+                }
             }
 
             // Load the new data
-            foreach($data as $name => $value) {
-                if(!empty($name)) {
-
+            foreach ($data as $name => $value) {
+                if (!empty($name)) {
                     // Skip fields that look like address-fields
-                    if(preg_match('/^address_/', $name)) {
+                    if (preg_match('/^address_/', $name)) {
                         continue;
                     }
 
                     // Build the new method-name
                     $method = Mage::helper('magebridge')->stringToSetMethod($name);
-                    if(empty($method)) {
+                    if (empty($method)) {
                         continue;
                     }
 
@@ -94,34 +95,38 @@ class Yireo_MageBridge_Model_User_Api extends Mage_Api_Model_Resource_Abstract
             }
 
             // Support for MageBridge First Last plugin
-            if(!empty($data['magebridgefirstlast']['firstname'])) {
+            if (!empty($data['magebridgefirstlast']['firstname'])) {
                 $customer->setFirstname($data['magebridgefirstlast']['firstname']);
             }
-            if(!empty($data['magebridgefirstlast']['lastname'])) {
+            if (!empty($data['magebridgefirstlast']['lastname'])) {
                 $customer->setLastname($data['magebridgefirstlast']['lastname']);
             }
 
             // Set required entries
-            if($customer->getFirstname() == '') $customer->setFirstname('-');
-            if($customer->getLastname() == '') $customer->setLastname('-');
+            if ($customer->getFirstname() == '') {
+                $customer->setFirstname('-');
+            }
+            if ($customer->getLastname() == '') {
+                $customer->setLastname('-');
+            }
 
             // Set the customer group if it is not set yet
-            if(!$customer->getGroupId() > 0 && !empty($data['default_customer_group'])) {
+            if (!$customer->getGroupId() > 0 && !empty($data['default_customer_group'])) {
                 $customer->setGroupId($data['default_customer_group']);
             }
 
             // Override the value of customer group
-            if(!empty($data['customer_group'])) {
+            if (!empty($data['customer_group'])) {
                 $customer->setGroupId($data['customer_group']);
             }
 
             // Try to save the customer
-            if($customer->save() == false) {
+            if ($customer->save() == false) {
                 Mage::getSingleton('magebridge/debug')->error('Failed to save customer '.$customer->getEmail());
             }
 
             // Set the confirmation
-            if(empty($data['activation']) || (isset($data['block']) && $data['block'] == 0)) {
+            if (empty($data['activation']) || (isset($data['block']) && $data['block'] == 0)) {
                 $customer->setConfirmation(null);
                 $customer->save();
             }
@@ -129,25 +134,24 @@ class Yireo_MageBridge_Model_User_Api extends Mage_Api_Model_Resource_Abstract
             // Try to save the new mapping
             $this->saveMapping($customer, $data);
 
-            // Decrypt and set the password 
-            if(isset($data['password_clear'])) {
+            // Decrypt and set the password
+            if (isset($data['password_clear'])) {
                 $data['password_clear'] = trim($data['password_clear']);
-                if(!empty($data['password_clear'])) {
+                if (!empty($data['password_clear'])) {
                     $data['password_clear'] = Mage::helper('magebridge/encryption')->decrypt($data['password_clear']);
-                    $customer->load($customer->getId()); 
+                    $customer->load($customer->getId());
                     $customer->changePassword($data['password_clear']);
                 }
             }
-                    
+
             // Get the current password-hash
             $data['hash'] = $customer->getPasswordHash();
-
         } catch(Exception $e) {
             Mage::getSingleton('magebridge/debug')->error('Failed to load customer: '.$e->getMessage());
         }
 
         // Try to save the address
-        if(!empty($customer)) {
+        if (!empty($customer)) {
             try {
                 $this->saveAddress($customer, $data);
             } catch(Exception $e) {
@@ -165,59 +169,62 @@ class Yireo_MageBridge_Model_User_Api extends Mage_Api_Model_Resource_Abstract
      * @param array $data
      * @return array
      */
-    public function saveAdminUser($data = array())
+    public function saveAdminUser($data = [])
     {
         try {
-
-            // Load the customer 
+            // Load the customer
             $user = Mage::getModel('magebridge/user')->loadAdminUser($data);
 
             // Set new values for new users
-            if($user->getId() > 0 == false) {
+            if ($user->getId() > 0 == false) {
                 $user->setCreatedAt(strftime('%Y-%m-%d %H:%M:%S', time()));
             }
-    
+
             // Workaround to prevent the password from being reset
             $user->setNewPassword(false);
             $user->setOrigData('password', $user->getPassword());
 
             // Load the new data
-            foreach($data as $name => $value) {
-                if(!empty($name)) {
-                    if($name == 'password') continue;
+            foreach ($data as $name => $value) {
+                if (!empty($name)) {
+                    if ($name == 'password') {
+                        continue;
+                    }
                     $user->setData($name, $value);
                 }
             }
 
             // Support for MageBridge First Last plugin
-            if(!empty($data['magebridgefirstlast']['firstname'])) {
+            if (!empty($data['magebridgefirstlast']['firstname'])) {
                 $user->setFirstname($data['magebridgefirstlast']['firstname']);
             }
-            if(!empty($data['magebridgefirstlast']['lastname'])) {
+            if (!empty($data['magebridgefirstlast']['lastname'])) {
                 $user->setLastname($data['magebridgefirstlast']['lastname']);
             }
 
             // Set required entries
-            if($user->getFirstname() == '') $user->setFirstname('-');
-            if($user->getLastname() == '') $user->setLastname('-');
+            if ($user->getFirstname() == '') {
+                $user->setFirstname('-');
+            }
+            if ($user->getLastname() == '') {
+                $user->setLastname('-');
+            }
 
-            // Decrypt and set the password 
-            if(isset($data['password_clear'])) {
+            // Decrypt and set the password
+            if (isset($data['password_clear'])) {
                 $data['password_clear'] = trim($data['password_clear']);
-                if(!empty($data['password_clear'])) {
+                if (!empty($data['password_clear'])) {
                     $data['password_clear'] = Mage::helper('magebridge/encryption')->decrypt($data['password_clear']);
-                    if(!empty($data['password_clear'])) {
+                    if (!empty($data['password_clear'])) {
                         $user->setPassword($data['password_clear']);
                     }
                 }
             }
 
             // Try to save the user
-            if($user->save() == false) {
+            if ($user->save() == false) {
                 Mage::getSingleton('magebridge/debug')->error('Failed to save admin-user '.$user->getEmail());
             }
-
-                    
         } catch(Exception $e) {
             Mage::getSingleton('magebridge/debug')->error('Failed to load admin-user: '.$e->getMessage());
         }
@@ -234,19 +241,17 @@ class Yireo_MageBridge_Model_User_Api extends Mage_Api_Model_Resource_Abstract
      */
     private function saveMapping($customer, $data)
     {
-        if(isset($data['joomla_id'])) {
-
+        if (isset($data['joomla_id'])) {
             $customer->load($customer->getId());
-            $map = array(
+            $map = [
                 'customer_id' => $customer->getId(),
                 'joomla_id' => $data['joomla_id'],
                 'website_id' => $customer->getWebsiteId(),
-            );
+            ];
 
-            if(Mage::helper('magebridge/user')->saveUserMap($map) == false) {
+            if (Mage::helper('magebridge/user')->saveUserMap($map) == false) {
                 Mage::getSingleton('magebridge/debug')->error('Failed to save customer mapping '.$customer->getEmail());
             }
-
         } else {
             Mage::getSingleton('magebridge/debug')->notice('No mapping possible');
         }
@@ -262,28 +267,27 @@ class Yireo_MageBridge_Model_User_Api extends Mage_Api_Model_Resource_Abstract
      */
     private function saveAddress($customer, $data)
     {
-        if(empty($customer) || !is_object($customer)) {
+        if (empty($customer) || !is_object($customer)) {
             return false;
         }
 
         $address = $customer->getPrimaryBillingAddress();
-        if(empty($address) || !is_object($address)) {
+        if (empty($address) || !is_object($address)) {
             $address = Mage::getModel('customer/address');
         }
 
         // Load the new data
         $fields = false;
-        foreach($data as $name => $value) {
-
+        foreach ($data as $name => $value) {
             // Skip fields that do not look like address-fields
-            if(!preg_match('/^address_/', $name)) {
+            if (!preg_match('/^address_/', $name)) {
                 continue;
             }
 
             // Build the new method-name
             $name = preg_replace('/^address_/', '', $name);
             $method = Mage::helper('magebridge')->stringToSetMethod($name);
-            if(empty($method)) {
+            if (empty($method)) {
                 continue;
             }
 
@@ -293,7 +297,9 @@ class Yireo_MageBridge_Model_User_Api extends Mage_Api_Model_Resource_Abstract
         }
 
         // If no fields are set by now, it makes sense to try and save the address
-        if($fields == false) return false;
+        if ($fields == false) {
+            return false;
+        }
 
         // Set specific fields for the address
         $address
@@ -302,7 +308,7 @@ class Yireo_MageBridge_Model_User_Api extends Mage_Api_Model_Resource_Abstract
         ;
 
         // Save the address
-        if($address->save() == false) {
+        if ($address->save() == false) {
             Mage::getSingleton('magebridge/debug')->error('Failed to save address '.$customer->getEmail());
             return false;
         }
@@ -311,13 +317,13 @@ class Yireo_MageBridge_Model_User_Api extends Mage_Api_Model_Resource_Abstract
     }
 
     /*
-     * API-method to delete a customer 
+     * API-method to delete a customer
      *
      * @access public
      * @param array $data
      * @return bool
      */
-    public function delete($data = array())
+    public function delete($data = [])
     {
         // Use this, to make sure Magento thinks it's dealing with the right app.
         // Otherwise _protectFromNonAdmin() will make this fail.
@@ -327,11 +333,11 @@ class Yireo_MageBridge_Model_User_Api extends Mage_Api_Model_Resource_Abstract
         $customer = Mage::getModel('magebridge/user')->load($data);
 
         // Delete the customer
-        if($customer->getId() && $customer->isDeleteable()) {
+        if ($customer->getId() && $customer->isDeleteable()) {
             Mage::getSingleton('magebridge/debug')->notice('Customer delete');
             $customer->delete();
             return true;
-        } elseif($customer->isDeleteable() == false) {
+        } elseif ($customer->isDeleteable() == false) {
             Mage::getSingleton('magebridge/debug')->error('Customer is not deleteable');
         } else {
             Mage::getSingleton('magebridge/debug')->error('Customer did not exist');
@@ -347,10 +353,10 @@ class Yireo_MageBridge_Model_User_Api extends Mage_Api_Model_Resource_Abstract
      * @param array $data
      * @return array
      */
-    public function login($data = array())
+    public function login($data = [])
     {
         // Disable all event forwarding
-        if(isset($data['disable_events'])) {
+        if (isset($data['disable_events'])) {
             Mage::getSingleton('magebridge/core')->disableEvents();
         }
 
@@ -360,7 +366,6 @@ class Yireo_MageBridge_Model_User_Api extends Mage_Api_Model_Resource_Abstract
 
         // Determine whether to do a backend or a frontend login
         switch($data['application']) {
-
             case 'admin':
                 // SSI in the backend is not needed (yet)
                 break;
@@ -373,6 +378,6 @@ class Yireo_MageBridge_Model_User_Api extends Mage_Api_Model_Resource_Abstract
                 break;
         }
 
-        return array();
+        return [];
     }
 }

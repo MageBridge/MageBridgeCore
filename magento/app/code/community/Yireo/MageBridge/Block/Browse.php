@@ -28,7 +28,7 @@ class Yireo_MageBridge_Block_Browse extends Mage_Core_Block_Template
      * @var Mage_Core_Model_App
      */
     protected $app;
-    
+
     /**
      * Constructor method
      */
@@ -95,14 +95,14 @@ class Yireo_MageBridge_Block_Browse extends Mage_Core_Block_Template
         $apiUrl = Mage::getStoreConfig('magebridge/joomla/api_url', $store);
         $apiHost = $this->filterApiHost($apiUrl);
 
-        $data = array(
+        $data = [
             'scope_name' => $scopeName,
             'api_host' => $apiHost,
             'api_url' => $apiUrl,
             'api_user' => Mage::getStoreConfig('magebridge/joomla/api_user', $store),
             'api_key' => Mage::getStoreConfig('magebridge/joomla/api_key', $store),
             'api_result' => $this->getApiResult($store),
-        );
+        ];
 
         return $data;
     }
@@ -131,10 +131,10 @@ class Yireo_MageBridge_Block_Browse extends Mage_Core_Block_Template
                 break;
         }
 
-        return array(
+        return [
             'name' => $scopeName,
             'store' => $store,
-        );
+        ];
     }
 
     /**

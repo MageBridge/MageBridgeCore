@@ -25,9 +25,9 @@ class Yireo_MageBridge_Model_Storeviews_Api extends Mage_Api_Model_Resource_Abst
     {
         $views = Mage::getModel('core/store')->getCollection();
 
-        $res = array();
+        $res = [];
         foreach ($views as $item) {
-            $data = array();
+            $data = [];
             $data['website_id'] = $item->getData('website_id');
             $data['group_id'] = $item->getData('group_id');
             $data['store_id'] = $item->getData('store_id');
@@ -50,21 +50,21 @@ class Yireo_MageBridge_Model_Storeviews_Api extends Mage_Api_Model_Resource_Abst
         $groups = Mage::getModel('core/store_group')->getCollection();
         $views = Mage::getModel('core/store')->getCollection();
 
-        $res = array();
+        $res = [];
         foreach ($groups as $group) {
             $data['value'] = $group->getData('group_id');
             $data['website'] = $group->getData('website_id');
             $data['label'] = $group->getData('name');
-            $data['childs'] = array();
+            $data['childs'] = [];
 
-            foreach($views as $view) {
-                if($view->getGroupId() == $group->getGroupId()) {
+            foreach ($views as $view) {
+                if ($view->getGroupId() == $group->getGroupId()) {
                     $locale = Mage::getStoreConfig('general/locale/code', $view);
-                    $child = array(
+                    $child = [
                         'value' => $view->getData('code'),
                         'label' => $view->getData('name'),
                         'locale' => $locale,
-                    );
+                    ];
                     $data['childs'][] = $child;
                 }
             }

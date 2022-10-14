@@ -8,6 +8,7 @@
  */
 
 // Namespace
+
 namespace Yireo\Common\System;
 
 /**
@@ -34,15 +35,15 @@ class Autoloader
     /**
      * @var array
      */
-    static public $paths = [];
+    public static $paths = [];
 
     /**
      * Initialize the autoloader
      */
-    static public function init($debug = false)
+    public static function init($debug = false)
     {
         $self = new self($debug);
-        spl_autoload_register(array($self, 'load'));
+        spl_autoload_register([$self, 'load']);
     }
 
     /**
@@ -50,7 +51,7 @@ class Autoloader
      *
      * @param $path
      */
-    static public function addPath($path)
+    public static function addPath($path)
     {
         self::$paths[] = $path;
     }
@@ -99,7 +100,9 @@ class Autoloader
         $filename = str_replace('\\', '/', $relativeClass) . '.php';
 
         foreach (self::$paths as $path) {
-            if ($this->debug) echo "Yireo path: $path/$filename\n";
+            if ($this->debug) {
+                echo "Yireo path: $path/$filename\n";
+            }
 
             if (file_exists($path . '/' . $filename)) {
                 include_once $path . '/' . $filename;

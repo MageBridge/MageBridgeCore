@@ -60,7 +60,7 @@ class Yireo_MageBridge_Block_Position extends Mage_Core_Block_Template
             return parent::_toHtml();
         }
 
-        $result = Mage::getSingleton('magebridge/client')->call('magebridge.position', array($this->getPosition(), $this->getStyle()));
+        $result = Mage::getSingleton('magebridge/client')->call('magebridge.position', [$this->getPosition(), $this->getStyle()]);
         return $result;
     }
 }

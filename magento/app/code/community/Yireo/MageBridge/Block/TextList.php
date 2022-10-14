@@ -17,7 +17,7 @@ class Yireo_MageBridge_Block_TextList extends Mage_Core_Block_Text_List
     /**
      * @var array
      */
-    protected $cachableBlocks = array('content');
+    protected $cachableBlocks = ['content'];
 
     /**
      * @return mixed|string
@@ -79,7 +79,7 @@ class Yireo_MageBridge_Block_TextList extends Mage_Core_Block_Text_List
             if (!empty($html)) {
                 $uncompressed = @gzuncompress($html);
                 $uncompressed = @base64_decode($uncompressed);
-                if ($uncompressed != FALSE && !empty($uncompressed)) {
+                if ($uncompressed != false && !empty($uncompressed)) {
                     return $uncompressed;
                 }
             }

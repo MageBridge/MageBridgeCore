@@ -23,13 +23,13 @@ class Yireo_MageBridge_Helper_Product extends Mage_Core_Helper_Abstract
      */
     public function export($product, $arguments)
     {
-        // Debugging 
+        // Debugging
         Mage::getSingleton('magebridge/debug')->notice('Exporting product-data: ' . $product->getId());
 
         // Correct the price for Grouped Products, by grabbing the first price (credits to Luke Collymore)
         if ($product->getTypeId() == Mage_Catalog_Model_Product_Type::TYPE_GROUPED) {
             $childProductIds = $product->getTypeInstance()->getChildrenIds($product->getId());
-            $prices = array();
+            $prices = [];
             foreach ($childProductIds as $ids) {
                 foreach ($ids as $id) {
                     $childProduct = Mage::getModel('catalog/product')->load($id);
@@ -62,14 +62,13 @@ class Yireo_MageBridge_Helper_Product extends Mage_Core_Helper_Abstract
             $p['thumbnail_data'] = $this->getImageData($product, 'thumbnail', $product->getCustomImageSize());
             $p['full_image_data'] = $this->getImageData($product, 'image', $product->getCustomImageSize());
             $p['custom_image_size'] = $product->getCustomImageSize();
-
         } else {
             $p['image'] = $product->getImageUrl();
-            $p['image_data'] = $this->getImageData($product, 'image', array(265, 265));
+            $p['image_data'] = $this->getImageData($product, 'image', [265, 265]);
             $p['small_image'] = $product->getSmallImageUrl();
-            $p['small_image_data'] = $this->getImageData($product, 'small_image', array(88, 77));
+            $p['small_image_data'] = $this->getImageData($product, 'small_image', [88, 77]);
             $p['thumbnail'] = $product->getThumbnailUrl();
-            $p['thumbnail_data'] = $this->getImageData($product, 'thumbnail', array(75, 75));
+            $p['thumbnail_data'] = $this->getImageData($product, 'thumbnail', [75, 75]);
             $p['full_image_data'] = $this->getImageData($product, 'image');
             $p['custom_image_size'] = 0;
         }
@@ -91,7 +90,9 @@ class Yireo_MageBridge_Helper_Product extends Mage_Core_Helper_Abstract
         // Get other prices
         try {
             $final_price = $product->getFinalPrice();
-            if ($final_price == $price) $final_price = false;
+            if ($final_price == $price) {
+                $final_price = false;
+            }
         } catch (Exception $e) {
             $final_price = false;
         }
@@ -159,7 +160,7 @@ class Yireo_MageBridge_Helper_Product extends Mage_Core_Helper_Abstract
      */
     protected function addSearchOptions(&$productData, Mage_Catalog_Model_Product $product)
     {
-        $search = array();
+        $search = [];
         if (empty($arguments['search'])) {
             return $search;
         }
@@ -201,7 +202,7 @@ class Yireo_MageBridge_Helper_Product extends Mage_Core_Helper_Abstract
      *
      * @return mixed
      */
-    public function getImageUrl(Mage_Catalog_Model_Product $product, $attributeName, $size = array())
+    public function getImageUrl(Mage_Catalog_Model_Product $product, $attributeName, $size = [])
     {
         $imageData = $this->getImageData($product, $attributeName, $size);
         return $imageData['url'];
@@ -214,7 +215,7 @@ class Yireo_MageBridge_Helper_Product extends Mage_Core_Helper_Abstract
      *
      * @return array
      */
-    public function getImageData(Mage_Catalog_Model_Product $product, $attributeName, $size = array())
+    public function getImageData(Mage_Catalog_Model_Product $product, $attributeName, $size = [])
     {
         $imageHelper = Mage::helper('catalog/image');
         $imageHelper->init($product, $attributeName);
@@ -243,10 +244,10 @@ class Yireo_MageBridge_Helper_Product extends Mage_Core_Helper_Abstract
 
         $imageUrl = (string)$imageHelper->resize($imageWidth, $imageHeight);
 
-        return array(
+        return [
             'url' => $imageUrl,
             'width' => $imageWidth,
             'height' => $imageHeight,
-        );
+        ];
     }
 }

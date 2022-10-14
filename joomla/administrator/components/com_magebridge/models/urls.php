@@ -9,7 +9,7 @@
  * @link      https://www.yireo.com
  */
 
-// Check to ensure this file is included in Joomla!  
+// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
 /**
@@ -17,12 +17,12 @@ defined('_JEXEC') or die();
  */
 class MagebridgeModelUrls extends YireoModel
 {
-	/**
-	 * Constructor method
-	 */
-	public function __construct()
-	{
-		$this->_search = array('source', 'destination');
-		parent::__construct('url');
-	}
+    /**
+     * Constructor method
+     */
+    public function __construct()
+    {
+        $this->_search = ['source', 'destination'];
+        parent::__construct('url');
+    }
 }

@@ -9,11 +9,11 @@
  * @link https://www.yireo.com
  */
 
-// Check to ensure this file is included in Joomla!  
+// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
 /**
- * HTML View class 
+ * HTML View class
  *
  * @static
  * @package MageBridge

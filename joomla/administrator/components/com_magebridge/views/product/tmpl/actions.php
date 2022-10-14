@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * Joomla! component MageBridge
  *
@@ -17,7 +17,9 @@ $fieldsetCount = count($form->getFieldsets('actions'));
 <?php if($fieldsetCount > 0) : ?>
 <?php foreach($form->getFieldsets('actions') as $fieldset): ?>
 <?php $fieldCount = count($form->getFieldset($fieldset->name)); ?>
-<?php if($fieldCount == 0) continue; ?>
+<?php if($fieldCount == 0) {
+    continue;
+} ?>
 <fieldset class="adminform">
 <legend>
 	<?php echo JText::_('COM_MAGEBRIDGE_VIEW_PRODUCT_FIELDSET_ACTIONS'); ?>: 

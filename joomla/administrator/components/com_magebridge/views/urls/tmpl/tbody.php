@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * Joomla! component MageBridge
  *
@@ -12,7 +12,7 @@
 defined('_JEXEC') or die('Restricted access');
 ?>
 <td>
-	<a href="<?php echo $item->edit_link; ?>" title="<?php echo JText::_( 'Edit URL replacement' ); ?>"><?php echo $item->source; ?></a>
+	<a href="<?php echo $item->edit_link; ?>" title="<?php echo JText::_('Edit URL replacement'); ?>"><?php echo $item->source; ?></a>
 </td>
 <td>
 	<?php echo $item->destination; ?>

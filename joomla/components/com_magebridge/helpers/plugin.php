@@ -17,120 +17,114 @@ defined('_JEXEC') or die('Restricted access');
  */
 class MageBridgePluginHelper
 {
-	/**
-	 * @var MageBridgePluginHelper
-	 */
-	private static $_instance;
+    /**
+     * @var MageBridgePluginHelper
+     */
+    private static $_instance;
 
-	/**
-	 * @var MageBridgeModelBridge
-	 */
-	private $bridge;
+    /**
+     * @var MageBridgeModelBridge
+     */
+    private $bridge;
 
-	/**
-	 * @var MagebridgeModelDebug
-	 */
-	private $debug;
+    /**
+     * @var MagebridgeModelDebug
+     */
+    private $debug;
 
-	/**
-	 * @var array
-	 */
-	private $deniedEvents = [];
+    /**
+     * @var array
+     */
+    private $deniedEvents = [];
 
-	/**
-	 * Singleton method
-	 *
-	 * @return MageBridgePluginHelper
-	 */
-	static public function getInstance()
-	{
-		static $instance;
+    /**
+     * Singleton method
+     *
+     * @return MageBridgePluginHelper
+     */
+    public static function getInstance()
+    {
+        static $instance;
 
-		if (null === self::$_instance)
-		{
-			self::$_instance = new self();
-		}
+        if (null === self::$_instance) {
+            self::$_instance = new self();
+        }
 
-		return self::$_instance;
-	}
+        return self::$_instance;
+    }
 
-	/**
-	 * Helper-method to determine if it's possible to run this event
-	 *
-	 * @param string $event
-	 * @param array  $options
-	 *
-	 * @return bool
-	 * @deprecated Use MageBridgePluginHelper::getInstance()->isEventAllowed() instead
-	 */
-	static public function allowEvent($event, $options = array())
-	{
+    /**
+     * Helper-method to determine if it's possible to run this event
+     *
+     * @param string $event
+     * @param array  $options
+     *
+     * @return bool
+     * @deprecated Use MageBridgePluginHelper::getInstance()->isEventAllowed() instead
+     */
+    public static function allowEvent($event, $options = [])
+    {
         $instance = self::getInstance();
-		return $instance->isEventAllowed($event, $options);
-	}
+        return $instance->isEventAllowed($event, $options);
+    }
 
-	/**
-	 * MageBridgePluginHelper constructor.
-	 */
-	public function __construct()
-	{
-		$this->bridge = MageBridge::getBridge();
-		$this->debug  = MagebridgeModelDebug::getInstance();
-	}
+    /**
+     * MageBridgePluginHelper constructor.
+     */
+    public function __construct()
+    {
+        $this->bridge = MageBridge::getBridge();
+        $this->debug  = MagebridgeModelDebug::getInstance();
+    }
 
-	/**
-	 * Helper-method to determine if it's possible to run this event
-	 *
-	 * @param string $event
-	 * @param array  $options
-	 *
-	 * @return bool
-	 */
-	public function isEventAllowed($event, $options = array())
-	{
-		// Do not run this event if the bridge itself is offline
-		if ($this->bridge->isOffline())
-		{
-			$this->debug->notice("Plugin helper detects bridge is offline");
+    /**
+     * Helper-method to determine if it's possible to run this event
+     *
+     * @param string $event
+     * @param array  $options
+     *
+     * @return bool
+     */
+    public function isEventAllowed($event, $options = [])
+    {
+        // Do not run this event if the bridge itself is offline
+        if ($this->bridge->isOffline()) {
+            $this->debug->notice("Plugin helper detects bridge is offline");
 
-			return false;
-		}
+            return false;
+        }
 
-		// Do not run this event if the option "disable_bridge" is set to true
-		if (isset($options['disable_bridge']) && $options['disable_bridge'] === true)
-		{
-			$this->debug->notice("Plugin helper detects event '$event' is currently disabled");
+        // Do not run this event if the option "disable_bridge" is set to true
+        if (isset($options['disable_bridge']) && $options['disable_bridge'] === true) {
+            $this->debug->notice("Plugin helper detects event '$event' is currently disabled");
 
-			return false;
-		}
+            return false;
+        }
 
-		// Do not execute additional plugin-events on the success-page (to prevent refreshing)
-		$request = MageBridgeUrlHelper::getRequest();
+        // Do not execute additional plugin-events on the success-page (to prevent refreshing)
+        $request = MageBridgeUrlHelper::getRequest();
 
-		if (preg_match('/checkout\/onepage\/success/', $request))
-		{
-			$this->debug->notice("Plugin helper detects checkout/onepage/success page");
+        if (preg_match('/checkout\/onepage\/success/', $request)) {
+            $this->debug->notice("Plugin helper detects checkout/onepage/success page");
 
-			return false;
-		}
+            return false;
+        }
 
-		// Do not execute this event if we are in XML-RPC or JSON-RPC
-		if (MageBridge::isApiPage() === true)
-		{
-			return false;
-		}
+        // Do not execute this event if we are in XML-RPC or JSON-RPC
+        if (MageBridge::isApiPage() === true) {
+            return false;
+        }
 
-		// Check if this event is the list of events already thrown
-		if (in_array($event, $this->deniedEvents))
-		{
-			$this->debug->notice("Plugin helper detects event '$event' is already run");
+        // Check if this event is the list of events already thrown
+        if (in_array($event, $this->deniedEvents)) {
+            $this->debug->notice("Plugin helper detects event '$event' is already run");
 
-			return false;
-		}
+            return false;
+        }
 
-		$this->debug->notice("Plugin helper allows event '$event'");
-		$this->deniedEvents[] = $event;
+        $this->debug->notice("Plugin helper allows event '$event'");
+        $this->deniedEvents[] = $event;
 
-		return true;
-	}
+        return true;
+    }
 }

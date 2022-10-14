@@ -29,6 +29,5 @@ class Yireo_MageBridge_Helper_Test extends Mage_Core_Helper_Abstract
             }
         }
         return false;
-
     }
 }

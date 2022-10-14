@@ -29,32 +29,32 @@ class Yireo_MageBridge_Model_Observer extends Mage_Core_Model_Abstract
         $sales = Mage::helper('core')->__('Sales Connectors');
         $newsletter = Mage::helper('core')->__('Newsletter Connectors');
 
-        return array(
-            array('address_save_after', 0, $customer),
-            array('admin_session_user_login_success', 0, $auth),
-            array('adminhtml_customer_save_after', 1, $customer),
-            array('adminhtml_customer_delete_after', 1, $customer),
-            array('catalog_product_save_after', 0, $catalog),
-            array('catalog_product_delete_after', 0, $catalog),
-            array('catalog_category_save_after', 0, $catalog),
-            array('catalog_category_delete_after', 0, $catalog),
-            array('catalog_product_status_update', 0, $catalog),
-            array('catalog_product_is_salable_before', 0, $catalog),
-            array('checkout_cart_add_product_complete', 0, $sales),
-            array('checkout_controller_onepage_save_shipping_method', 0, $sales),
-            array('checkout_onepage_controller_success_action', 1, $sales),
-            array('checkout_type_onepage_save_order_after', 0, $sales),
-            array('customer_delete_after', 1, $customer),
-            array('customer_save_after', 1, $customer),
-            array('customer_login', 1, $auth),
-            array('customer_logout', 1, $auth),
-            array('sales_convert_order_to_quote', 0, $sales),
-            array('sales_order_complete_after', 1, $sales),
-            array('sales_order_cancel_after', 1, $sales),
-            array('sales_order_save_after', 0, $sales),
-            array('sales_order_place_after', 0, $sales),
-            array('newsletter_subscriber_save_after', 1, $newsletter),
-        );
+        return [
+            ['address_save_after', 0, $customer],
+            ['admin_session_user_login_success', 0, $auth],
+            ['adminhtml_customer_save_after', 1, $customer],
+            ['adminhtml_customer_delete_after', 1, $customer],
+            ['catalog_product_save_after', 0, $catalog],
+            ['catalog_product_delete_after', 0, $catalog],
+            ['catalog_category_save_after', 0, $catalog],
+            ['catalog_category_delete_after', 0, $catalog],
+            ['catalog_product_status_update', 0, $catalog],
+            ['catalog_product_is_salable_before', 0, $catalog],
+            ['checkout_cart_add_product_complete', 0, $sales],
+            ['checkout_controller_onepage_save_shipping_method', 0, $sales],
+            ['checkout_onepage_controller_success_action', 1, $sales],
+            ['checkout_type_onepage_save_order_after', 0, $sales],
+            ['customer_delete_after', 1, $customer],
+            ['customer_save_after', 1, $customer],
+            ['customer_login', 1, $auth],
+            ['customer_logout', 1, $auth],
+            ['sales_convert_order_to_quote', 0, $sales],
+            ['sales_order_complete_after', 1, $sales],
+            ['sales_order_cancel_after', 1, $sales],
+            ['sales_order_save_after', 0, $sales],
+            ['sales_order_place_after', 0, $sales],
+            ['newsletter_subscriber_save_after', 1, $newsletter],
+        ];
     }
 
     /**
@@ -67,14 +67,14 @@ class Yireo_MageBridge_Model_Observer extends Mage_Core_Model_Abstract
     public function addressSaveAfter($observer)
     {
         // Check if this event is enabled
-        if($this->isEnabled($observer) == false) {
+        if ($this->isEnabled($observer) == false) {
             return $this;
         }
 
         $address = $observer->getEvent()->getCustomerAddress();
-        $arguments = array(
+        $arguments = [
             'address' => Mage::helper('magebridge/event')->getAddressArray($address),
-        );
+        ];
 
         $this->fireEvent('address_save_after', $arguments);
         return $this;
@@ -90,30 +90,30 @@ class Yireo_MageBridge_Model_Observer extends Mage_Core_Model_Abstract
     public function adminSessionUserLoginSuccess($observer)
     {
         // Check if this event is enabled
-        if($this->isEnabled($observer) == false) {
+        if ($this->isEnabled($observer) == false) {
             return $this;
         }
 
         $user = $observer->getEvent()->getUser();
-        $arguments = array(
+        $arguments = [
             'user' => Mage::helper('magebridge/event')->getUserArray($user),
-        );
+        ];
 
         $this->fireEvent('admin_session_user_login_success', $arguments);
         return $this;
     }
 
-	/**
+    /**
      * Method fired on the event <adminhtml_customer_save_before>
      *
      * @access public
      * @param Varien_Event_Observer $observer
      * @return Yireo_MageBridge_Model_Observer
      */
-	public function adminhtmlCustomerSaveBefore($observer)
-	{
-		return $this;
-	}
+    public function adminhtmlCustomerSaveBefore($observer)
+    {
+        return $this;
+    }
 
     /**
      * Method fired on the event <adminhtml_customer_save_after>
@@ -125,34 +125,34 @@ class Yireo_MageBridge_Model_Observer extends Mage_Core_Model_Abstract
     public function adminhtmlCustomerSaveAfter($observer)
     {
         // Check if this event is enabled
-        if($this->isEnabled($observer) == false) {
+        if ($this->isEnabled($observer) == false) {
             return $this;
         }
 
         $customer = $observer->getEvent()->getCustomer();
-        $arguments = array(
+        $arguments = [
             'customer' => Mage::helper('magebridge/event')->getCustomerArray($customer),
-        );
+        ];
 
-		// Check for syncing customer groups
-		if(Mage::helper('magebridge/user')->allowSyncCustomerGroup($customer->getGroupId()) == false) {
-			Mage::getSingleton('magebridge/debug')->trace('Customer group not allowed syncing', $customer->getGroupId());
-			return $this;
-		}
+        // Check for syncing customer groups
+        if (Mage::helper('magebridge/user')->allowSyncCustomerGroup($customer->getGroupId()) == false) {
+            Mage::getSingleton('magebridge/debug')->trace('Customer group not allowed syncing', $customer->getGroupId());
+            return $this;
+        }
 
         // Set the current scope
         Mage::helper('magebridge')->setStore($customer->getStoreId());
 
         // Perform the API-call and fetch the result
         $rt = $this->fireEvent('customer_save_after', $arguments);
-    
-        // If this looks like a Joomla! ID, store it 
-        if($rt > 0) {
-            Mage::helper('magebridge/user')->saveUserMap(array(
+
+        // If this looks like a Joomla! ID, store it
+        if ($rt > 0) {
+            Mage::helper('magebridge/user')->saveUserMap([
                 'customer_id' => $customer->getId(),
                 'joomla_id' => $rt,
                 'website_id' => $customer->getWebsiteId(),
-            ));
+            ]);
         }
 
         return $this;
@@ -168,17 +168,17 @@ class Yireo_MageBridge_Model_Observer extends Mage_Core_Model_Abstract
     public function adminhtmlCustomerDeleteAfter($observer)
     {
         // Check if this event is enabled
-        if($this->isEnabled($observer) == false) {
+        if ($this->isEnabled($observer) == false) {
             return $this;
         }
 
         $customer = $observer->getEvent()->getCustomer();
 
-		// Check for syncing customer groups
-		if(Mage::helper('magebridge/user')->allowSyncCustomerGroup($customer->getGroupId()) == false) {
-			Mage::getSingleton('magebridge/debug')->trace('Customer group not allowed syncing', $customer->getGroupId());
-			return $this;
-		}
+        // Check for syncing customer groups
+        if (Mage::helper('magebridge/user')->allowSyncCustomerGroup($customer->getGroupId()) == false) {
+            Mage::getSingleton('magebridge/debug')->trace('Customer group not allowed syncing', $customer->getGroupId());
+            return $this;
+        }
 
         // Check for duplicate records and stop if there are any
         $duplicateCustomers = Mage::helper('magebridge/user')->getCustomersByEmail($customer->getEmail());
@@ -187,9 +187,9 @@ class Yireo_MageBridge_Model_Observer extends Mage_Core_Model_Abstract
             return $this;
         }
 
-        $arguments = array(
+        $arguments = [
             'customer' => Mage::helper('magebridge/event')->getCustomerArray($customer),
-        );
+        ];
 
         // Set the current scope
         Mage::helper('magebridge')->setStore($customer->getStoreId());
@@ -208,14 +208,14 @@ class Yireo_MageBridge_Model_Observer extends Mage_Core_Model_Abstract
     public function catalogProductIsSalableBefore($observer)
     {
         // Check if this event is enabled
-        if($this->isEnabled($observer) == false) {
+        if ($this->isEnabled($observer) == false) {
             return $this;
         }
 
         $product = $observer->getEvent()->getProduct();
-        $arguments = array(
+        $arguments = [
             'product' => Mage::helper('magebridge/event')->getProductArray($product),
-        );
+        ];
 
         $this->fireEvent('catalog_product_is_salable_before', $arguments);
         return $this;
@@ -231,14 +231,14 @@ class Yireo_MageBridge_Model_Observer extends Mage_Core_Model_Abstract
     public function catalogProductSaveAfter($observer)
     {
         // Check if this event is enabled
-        if($this->isEnabled($observer) == false) {
+        if ($this->isEnabled($observer) == false) {
             return $this;
         }
 
         $product = $observer->getEvent()->getProduct();
-        $arguments = array(
+        $arguments = [
             'product' => Mage::helper('magebridge/event')->getProductArray($product),
-        );
+        ];
 
         $this->fireEvent('catalog_product_save_after', $arguments);
         return $this;
@@ -254,14 +254,14 @@ class Yireo_MageBridge_Model_Observer extends Mage_Core_Model_Abstract
     public function catalogProductDeleteAfter($observer)
     {
         // Check if this event is enabled
-        if($this->isEnabled($observer) == false) {
+        if ($this->isEnabled($observer) == false) {
             return $this;
         }
 
         $product = $observer->getEvent()->getProduct();
-        $arguments = array(
+        $arguments = [
             'product' => Mage::helper('magebridge/event')->getProductArray($product),
-        );
+        ];
 
         $this->fireEvent('catalog_product_delete_after', $arguments);
         return $this;
@@ -277,14 +277,14 @@ class Yireo_MageBridge_Model_Observer extends Mage_Core_Model_Abstract
     public function catalogCategorySaveAfter($observer)
     {
         // Check if this event is enabled
-        if($this->isEnabled($observer) == false) {
+        if ($this->isEnabled($observer) == false) {
             return $this;
         }
 
         $category = $observer->getEvent()->getObject();
-        $arguments = array(
+        $arguments = [
             'category' => Mage::helper('magebridge/event')->getCategoryArray($category),
-        );
+        ];
 
         $this->fireEvent('catalog_category_save_after', $arguments);
         return $this;
@@ -300,14 +300,14 @@ class Yireo_MageBridge_Model_Observer extends Mage_Core_Model_Abstract
     public function catalogCategoryDeleteAfter($observer)
     {
         // Check if this event is enabled
-        if($this->isEnabled($observer) == false) {
+        if ($this->isEnabled($observer) == false) {
             return $this;
         }
 
         $category = $observer->getEvent()->getObject();
-        $arguments = array(
+        $arguments = [
             'category' => Mage::helper('magebridge/event')->getCategoryArray($category),
-        );
+        ];
 
         $this->fireEvent('catalog_category_delete_after', $arguments);
         return $this;
@@ -323,16 +323,16 @@ class Yireo_MageBridge_Model_Observer extends Mage_Core_Model_Abstract
     public function catalogProductStatusUpdate($observer)
     {
         // Check if this event is enabled
-        if($this->isEnabled($observer) == false) {
+        if ($this->isEnabled($observer) == false) {
             return $this;
         }
 
         $product_id = $observer->getEvent()->getProductId();
         $store_id = $observer->getEvent()->getStoreId();
-        $arguments = array(
+        $arguments = [
             'product' => $product_id,
             'store_id' => $store_id,
-        );
+        ];
 
         $this->fireEvent('catalog_product_status_update', $arguments);
         return $this;
@@ -348,17 +348,17 @@ class Yireo_MageBridge_Model_Observer extends Mage_Core_Model_Abstract
     public function checkoutCartAddProductComplete($observer)
     {
         // Check if this event is enabled
-        if($this->isEnabled($observer) == false) {
+        if ($this->isEnabled($observer) == false) {
             return $this;
         }
 
         $product = $observer->getEvent()->getProduct();
         $request = $observer->getEvent()->getRequest();
 
-        $arguments = array(
+        $arguments = [
             'product' => Mage::helper('magebridge/event')->getProductArray($product),
             'request' => $request->getParams(),
-        );
+        ];
 
         $this->fireEvent('checkout_cart_add_product_complete', $arguments);
         return $this;
@@ -374,17 +374,17 @@ class Yireo_MageBridge_Model_Observer extends Mage_Core_Model_Abstract
     public function checkoutControllerOnepageSaveShippingMethod($observer)
     {
         // Check if this event is enabled
-        if($this->isEnabled($observer) == false) {
+        if ($this->isEnabled($observer) == false) {
             return $this;
         }
 
         $quote = $observer->getEvent()->getQuote();
         $request = $observer->getEvent()->getRequest();
 
-        $arguments = array(
+        $arguments = [
             'quote' => Mage::helper('magebridge/event')->getQuoteArray($quote),
             'request' => $request->getParams(),
-        );
+        ];
 
         $this->fireEvent('checkout_controller_onepage_save_shipping_method', $arguments);
         return $this;
@@ -400,15 +400,15 @@ class Yireo_MageBridge_Model_Observer extends Mage_Core_Model_Abstract
     public function checkoutOnepageControllerSuccessAction($observer)
     {
         // Check if this event is enabled
-        if($this->isEnabled($observer) == false) {
+        if ($this->isEnabled($observer) == false) {
             return $this;
         }
 
-        $orderId = Mage::getSingleton('checkout/session')->getLastOrderId(); 
+        $orderId = Mage::getSingleton('checkout/session')->getLastOrderId();
         $order = Mage::getModel('sales/order')->load($orderId);
-        $arguments = array(
+        $arguments = [
             'order' => Mage::helper('magebridge/event')->getOrderArray($order),
-        );
+        ];
 
         Mage::helper('magebridge')->setStore($order->getStoreId());
         $this->fireEvent('checkout_onepage_controller_success_action', $arguments);
@@ -425,17 +425,17 @@ class Yireo_MageBridge_Model_Observer extends Mage_Core_Model_Abstract
     public function checkoutTypeOnepageSaveOrderAfter($observer)
     {
         // Check if this event is enabled
-        if($this->isEnabled($observer) == false) {
+        if ($this->isEnabled($observer) == false) {
             return $this;
         }
 
         $order = $observer->getEvent()->getOrder();
         $quote = Mage::getSingleton('checkout/session')->getQuote();
 
-        $arguments = array(
+        $arguments = [
             'order' => Mage::helper('magebridge/event')->getOrderArray($order),
             'quote' => Mage::helper('magebridge/event')->getQuoteArray($quote),
-        );
+        ];
 
         Mage::helper('magebridge')->setStore($order->getStoreId());
         $this->fireEvent('checkout_type_onepage_save_order_after', $arguments);
@@ -460,18 +460,16 @@ class Yireo_MageBridge_Model_Observer extends Mage_Core_Model_Abstract
 
         // Remote SSO login within native Magento frontend
         $mb_postlogin = Mage::getModel('core/cookie')->get('mb_postlogin');
-        if(!empty($mb_postlogin) && Mage::helper('magebridge')->isBridge() == false) {
-
+        if (!empty($mb_postlogin) && Mage::helper('magebridge')->isBridge() == false) {
             // Remove the cookie
             Mage::getModel('core/cookie')->delete('mb_postlogin', '/');
 
             // Check if remote SSO is enabled
-            if(Mage::getStoreConfig('magebridge/joomla/remotesso') == 1) {
-
+            if (Mage::getStoreConfig('magebridge/joomla/remotesso') == 1) {
                 // Redirect to the Joomla! SSO URL
-                $arguments = array('controller' => 'sso', 'task' => 'login', 'token' => $mb_postlogin, 'redirect' => base64_encode($currentUrl));
+                $arguments = ['controller' => 'sso', 'task' => 'login', 'token' => $mb_postlogin, 'redirect' => base64_encode($currentUrl)];
                 $url = Mage::helper('magebridge')->getApiUrl($arguments);
-                if(!empty($url)) {
+                if (!empty($url)) {
                     Mage::app()->getResponse()->setRedirect($url);
                 }
             }
@@ -479,28 +477,26 @@ class Yireo_MageBridge_Model_Observer extends Mage_Core_Model_Abstract
 
         // Remote SSO logout
         if (preg_match('/customer\/account\/logoutSuccess/i', $currentUrl) == true) {
-
             // No action
-            if(empty($_COOKIE) || Mage::getModel('core/cookie')->get('mb_remotelogout') == 1) {
+            if (empty($_COOKIE) || Mage::getModel('core/cookie')->get('mb_remotelogout') == 1) {
                 Mage::getModel('core/cookie')->delete('mb_remotelogout', '/');
                 Mage::getModel('core/cookie')->delete('mb_postlogin', '/');
                 return $this;
             }
 
             // Check if bridge is NOT loaded
-            if(Mage::helper('magebridge')->isBridge() == true) {
+            if (Mage::helper('magebridge')->isBridge() == true) {
                 return $this;
             }
 
             // Check if remote SSO is enabled
-            if(Mage::getStoreConfig('magebridge/joomla/remotesso') == 1) {
-
+            if (Mage::getStoreConfig('magebridge/joomla/remotesso') == 1) {
                 // Set a cookie
                 Mage::getModel('core/cookie')->set('mb_remotelogout', 1, null, '/');
 
                 // Redirect to the Joomla! SSO URL
-                $url = Mage::helper('magebridge')->getApiUrl(array('controller' => 'sso', 'task' => 'logout', 'redirect' => base64_encode($currentUrl)));
-                if(!empty($url)) {
+                $url = Mage::helper('magebridge')->getApiUrl(['controller' => 'sso', 'task' => 'logout', 'redirect' => base64_encode($currentUrl)]);
+                if (!empty($url)) {
                     Mage::app()->getResponse()->setRedirect($url);
                 }
             }
@@ -545,7 +541,7 @@ class Yireo_MageBridge_Model_Observer extends Mage_Core_Model_Abstract
     public function customerDeleteAfter($observer)
     {
         // Check if this event is enabled
-        if($this->isEnabled($observer) == false) {
+        if ($this->isEnabled($observer) == false) {
             return $this;
         }
 
@@ -554,15 +550,15 @@ class Yireo_MageBridge_Model_Observer extends Mage_Core_Model_Abstract
 
         // Delete the mapping
         $map = Mage::getModel('magebridge/customer_joomla')->load($customer->getId());
-        if($map->getId() > 0) {
+        if ($map->getId() > 0) {
             $map->delete();
         }
 
-		// Check for syncing customer groups
-		if(Mage::helper('magebridge/user')->allowSyncCustomerGroup($customer->getGroupId()) == false) {
-			Mage::getSingleton('magebridge/debug')->trace('Customer group not allowed syncing', $customer->getGroupId());
-			return $this;
-		}
+        // Check for syncing customer groups
+        if (Mage::helper('magebridge/user')->allowSyncCustomerGroup($customer->getGroupId()) == false) {
+            Mage::getSingleton('magebridge/debug')->trace('Customer group not allowed syncing', $customer->getGroupId());
+            return $this;
+        }
 
         // Check for duplicate records and stop if there are any
         $duplicateCustomers = Mage::helper('magebridge/user')->getCustomersByEmail($customer->getEmail());
@@ -572,9 +568,9 @@ class Yireo_MageBridge_Model_Observer extends Mage_Core_Model_Abstract
         }
 
         // Build the API arguments
-        $arguments = array(
+        $arguments = [
             'customer' => Mage::helper('magebridge/event')->getCustomerArray($customer),
-        );
+        ];
 
         // Set the current scope
         Mage::helper('magebridge')->setStore($customer->getStoreId());
@@ -598,26 +594,26 @@ class Yireo_MageBridge_Model_Observer extends Mage_Core_Model_Abstract
         Mage::getModel('core/cookie')->set('mb_postlogin', $encrypted, null, '/');
 
         // Check if this event is enabled
-        if($this->isEnabled($observer) == false) {
+        if ($this->isEnabled($observer) == false) {
             return $this;
         }
 
         // Fire only when in the bridge
-        if(Mage::helper('magebridge')->isBridge() == false) {
+        if (Mage::helper('magebridge')->isBridge() == false) {
             return $this;
         }
 
-		$customer = $observer->getEvent()->getCustomer();
+        $customer = $observer->getEvent()->getCustomer();
 
-		// Check for syncing customer groups
-		if(Mage::helper('magebridge/user')->allowSyncCustomerGroup($customer->getGroupId()) == false) {
-			Mage::getSingleton('magebridge/debug')->trace('Customer group not allowed syncing', $customer->getGroupId());
-			return $this;
-		}
+        // Check for syncing customer groups
+        if (Mage::helper('magebridge/user')->allowSyncCustomerGroup($customer->getGroupId()) == false) {
+            Mage::getSingleton('magebridge/debug')->trace('Customer group not allowed syncing', $customer->getGroupId());
+            return $this;
+        }
 
-        $arguments = array(
+        $arguments = [
             'customer' => Mage::helper('magebridge/event')->getCustomerArray($customer),
-        );
+        ];
 
         // Set the current scope
         Mage::helper('magebridge')->setStore($customer->getStoreId());
@@ -640,19 +636,19 @@ class Yireo_MageBridge_Model_Observer extends Mage_Core_Model_Abstract
         Mage::getModel('core/cookie')->delete('mb_postlogin', '/');
 
         // Check if this event is enabled
-        if($this->isEnabled($observer) == false) {
+        if ($this->isEnabled($observer) == false) {
             return $this;
         }
 
         // Fire only when in the bridge
-        if(Mage::helper('magebridge')->isBridge() == false) {
+        if (Mage::helper('magebridge')->isBridge() == false) {
             return $this;
         }
 
         $customer = $observer->getEvent()->getCustomer();
-        $arguments = array(
+        $arguments = [
             'customer' => Mage::helper('magebridge/event')->getCustomerArray($customer),
-        );
+        ];
 
         // Set the current scope
         Mage::helper('magebridge')->setStore($customer->getStoreId());
@@ -672,22 +668,22 @@ class Yireo_MageBridge_Model_Observer extends Mage_Core_Model_Abstract
     public function customerSaveAfter($observer)
     {
         // Check if this event is enabled
-        if($this->isEnabled($observer) == false) {
+        if ($this->isEnabled($observer) == false) {
             return $this;
         }
 
         // Build the API arguments
         $customer = $observer->getEvent()->getCustomer();
 
-		// Check for syncing customer groups
-		if(Mage::helper('magebridge/user')->allowSyncCustomerGroup($customer->getGroupId()) == false) {
-			Mage::getSingleton('magebridge/debug')->trace('Customer group not allowed syncing', $customer->getGroupId());
-			return $this;
-		}
+        // Check for syncing customer groups
+        if (Mage::helper('magebridge/user')->allowSyncCustomerGroup($customer->getGroupId()) == false) {
+            Mage::getSingleton('magebridge/debug')->trace('Customer group not allowed syncing', $customer->getGroupId());
+            return $this;
+        }
 
-        $arguments = array(
+        $arguments = [
             'customer' => Mage::helper('magebridge/event')->getCustomerArray($customer),
-        );
+        ];
 
         // Set the current scope
         Mage::helper('magebridge')->setStore($customer->getStoreId());
@@ -696,28 +692,28 @@ class Yireo_MageBridge_Model_Observer extends Mage_Core_Model_Abstract
         $rt = $this->fireEvent('customer_save_after', $arguments);
 
         // Save the user-mapping if it's there
-        if($rt > 0) {
-            Mage::helper('magebridge/user')->saveUserMap(array(
+        if ($rt > 0) {
+            Mage::helper('magebridge/user')->saveUserMap([
                 'customer_id' => $customer->getId(),
                 'joomla_id' => $rt,
                 'website_id' => $customer->getWebsiteId(),
-            ));
+            ]);
         }
 
         return $this;
     }
 
-	/**
-	 * Method fired on the event <customer_save_before>
-	 *
-	 * @access public
-	 * @param Varien_Event_Observer $observer
-	 * @return Yireo_MageBridge_Model_Observer
-	 */
-	public function customerSaveBefore($observer)
-	{
-		return $this;
-	}
+    /**
+     * Method fired on the event <customer_save_before>
+     *
+     * @access public
+     * @param Varien_Event_Observer $observer
+     * @return Yireo_MageBridge_Model_Observer
+     */
+    public function customerSaveBefore($observer)
+    {
+        return $this;
+    }
 
     /**
      * Method fired on the event <joomla_on_after_delete_user>
@@ -740,27 +736,27 @@ class Yireo_MageBridge_Model_Observer extends Mage_Core_Model_Abstract
      */
     public function newsletterSubscriberSaveAfter($observer)
     {
-        if($this->isEnabled($observer) == false) {
+        if ($this->isEnabled($observer) == false) {
             return $this;
         }
 
         $subscriber = $observer->getEvent()->getSubscriber();
-        if($subscriber->getIsStatusChanged() == false) {
+        if ($subscriber->getIsStatusChanged() == false) {
             return false;
         }
 
-        if($subscriber->getSubscriberStatus() == Mage_Newsletter_Model_Subscriber::STATUS_SUBSCRIBED) {
+        if ($subscriber->getSubscriberStatus() == Mage_Newsletter_Model_Subscriber::STATUS_SUBSCRIBED) {
             $state = 1;
         } else {
             $state = 0;
         }
 
-        $arguments = array(
-            'subscriber' => array(
+        $arguments = [
+            'subscriber' => [
                 'email' => $subscriber->getSubscriberEmail(),
                 'state' => $state,
-            ),
-        );
+            ],
+        ];
 
         $this->fireEvent('newsletter_subscriber_change_after', $arguments);
         return $this;
@@ -776,17 +772,17 @@ class Yireo_MageBridge_Model_Observer extends Mage_Core_Model_Abstract
     public function salesConvertOrderToQuote($observer)
     {
         // Check if this event is enabled
-        if($this->isEnabled($observer) == false) {
+        if ($this->isEnabled($observer) == false) {
             return $this;
         }
 
         $order = $observer->getEvent()->getOrder();
         $quote = $observer->getEvent()->getQuote();
-        
-        $arguments = array(
+
+        $arguments = [
             'order' => Mage::helper('magebridge/event')->getOrderArray($order),
             'quote' => Mage::helper('magebridge/event')->getQuoteArray($quote),
-        );
+        ];
 
         Mage::helper('magebridge')->setStore($order->getStoreId());
         $this->fireEvent('sales_convert_order_to_quote', $arguments);
@@ -803,7 +799,7 @@ class Yireo_MageBridge_Model_Observer extends Mage_Core_Model_Abstract
     public function salesOrderPlaceAfter($observer)
     {
         // Check if this event is enabled
-        if($this->isEnabled($observer) == false) {
+        if ($this->isEnabled($observer) == false) {
             return $this;
         }
 
@@ -814,9 +810,9 @@ class Yireo_MageBridge_Model_Observer extends Mage_Core_Model_Abstract
         Mage::helper('magebridge')->setStore($order->getStoreId());
 
         // Construct the arguments
-        $arguments = array(
+        $arguments = [
             'order' => Mage::helper('magebridge/event')->getOrderArray($order),
-        );
+        ];
 
         // Fire the event
         $this->fireEvent('sales_order_place_after', $arguments);
@@ -834,33 +830,33 @@ class Yireo_MageBridge_Model_Observer extends Mage_Core_Model_Abstract
     {
         // Get the order from this event and convert it to an array
         $order = $observer->getEvent()->getOrder();
-        $arguments = array(
+        $arguments = [
             'order' => Mage::helper('magebridge/event')->getOrderArray($order),
-        );
+        ];
 
         // Set the current scope
         Mage::helper('magebridge')->setStore($order->getStoreId());
 
         // Event that is fired every time when the order is saved
-        if($this->isEnabled('sales_order_save_after')) {
+        if ($this->isEnabled('sales_order_save_after')) {
             $this->fireEvent('sales_order_save_after', $arguments);
             $this->addEvent('magento', 'sales_order_save_after', $arguments);
         }
 
         // Event that is fired once the order is completed
-        if($this->isEnabled('sales_order_complete_after') && $order->getData('state') == 'complete' && $order->getData('state') != $order->getOrigData('state')) {
+        if ($this->isEnabled('sales_order_complete_after') && $order->getData('state') == 'complete' && $order->getData('state') != $order->getOrigData('state')) {
             $this->fireEvent('sales_order_complete_after', $arguments);
             $this->addEvent('magento', 'sales_order_complete_after', $arguments);
         }
 
         // Event that is fired once the order is cancelled
-        if($this->isEnabled('sales_order_cancel_after') && $order->getData('state') == 'cancel' && $order->getData('state') != $order->getOrigData('state')) {
+        if ($this->isEnabled('sales_order_cancel_after') && $order->getData('state') == 'cancel' && $order->getData('state') != $order->getOrigData('state')) {
             $this->fireEvent('sales_order_cancel_after', $arguments);
             $this->addEvent('magento', 'sales_order_cancel_after', $arguments);
         }
 
         // Event that is fired once the order is closed
-        if($this->isEnabled('sales_order_closed_after') && $order->getData('state') == 'closed' && $order->getData('state') != $order->getOrigData('state')) {
+        if ($this->isEnabled('sales_order_closed_after') && $order->getData('state') == 'closed' && $order->getData('state') != $order->getOrigData('state')) {
             $this->fireEvent('sales_order_closed_after', $arguments);
             $this->addEvent('magento', 'sales_order_closed_after', $arguments);
         }
@@ -880,9 +876,9 @@ class Yireo_MageBridge_Model_Observer extends Mage_Core_Model_Abstract
     public function addEvent($group = null, $event = null, $arguments = null)
     {
         // Exit if the event-name is empty
-        if(empty($event)) {
+        if (empty($event)) {
             Mage::getSingleton('magebridge/debug')->notice('Listener: Empty event');
-            return false; 
+            return false;
         }
 
         // Convert the lower-case event-name to camelCase
@@ -896,7 +892,7 @@ class Yireo_MageBridge_Model_Observer extends Mage_Core_Model_Abstract
 
     /**
      * Method that forwards the event to Joomla! straight-away through RPC
-     * 
+     *
      * @access public
      * @param string $event
      * @param mixed $arguments
@@ -905,13 +901,13 @@ class Yireo_MageBridge_Model_Observer extends Mage_Core_Model_Abstract
     public function fireEvent($event = null, $arguments = null)
     {
         // Exit if the event-name is empty
-        if(empty($event)) {
-            return false; 
+        if (empty($event)) {
+            return false;
         }
 
         // Force the argument as struct
-        if(!is_array($arguments)) {
-            $arguments = array('null' => 'null');
+        if (!is_array($arguments)) {
+            $arguments = ['null' => 'null'];
         }
 
         $api_url = Mage::helper('magebridge')->getApiUrl();
@@ -921,7 +917,7 @@ class Yireo_MageBridge_Model_Observer extends Mage_Core_Model_Abstract
         $event = Mage::helper('magebridge/event')->convertEventName($event);
 
         // Gather the pending logs
-        $logs = array();
+        $logs = [];
         /*
         foreach(Mage::getSingleton('magebridge/debug')->getData() as $log) {
             foreach(array('type', 'message', 'section', 'time') as $index) {
@@ -935,26 +931,26 @@ class Yireo_MageBridge_Model_Observer extends Mage_Core_Model_Abstract
         //Mage::getSingleton('magebridge/debug')->clean();
 
         // Initialize the API call
-        $rt = Mage::getSingleton('magebridge/client')->call('magebridge.event', array($event, $arguments, $logs));
+        $rt = Mage::getSingleton('magebridge/client')->call('magebridge.event', [$event, $arguments, $logs]);
 
         return $rt;
     }
 
     /**
      * Method to check if an event is enabled or not
-     * 
+     *
      * @access public
      * @param string $event
      * @return bool
      */
     public function isEnabled($event)
     {
-        if(is_object($event)) {
+        if (is_object($event)) {
             $event = $event->getEvent()->getName();
         }
 
         // Check if event forwarding is disabled globally
-        if(Mage::getSingleton('magebridge/core')->isEnabledEvents() == false) {
+        if (Mage::getSingleton('magebridge/core')->isEnabledEvents() == false) {
             Mage::getSingleton('magebridge/debug')->notice('Listener: All events are disabled');
             return false;
         }
@@ -963,9 +959,9 @@ class Yireo_MageBridge_Model_Observer extends Mage_Core_Model_Abstract
         $enabled = Mage::getStoreConfig('magebridge/settings/event_forwarding/'.$event);
 
         // If nothing is set in the System Configuration, take the default
-        if(!is_numeric($enabled)) {
-            foreach($this->getEvents() as $eventDefault) {
-                if($eventDefault[0] == $event) {
+        if (!is_numeric($enabled)) {
+            foreach ($this->getEvents() as $eventDefault) {
+                if ($eventDefault[0] == $event) {
                     $enabled = $eventDefault[1];
                     break;
                 }
@@ -973,8 +969,8 @@ class Yireo_MageBridge_Model_Observer extends Mage_Core_Model_Abstract
         }
 
         // Convert the integer to a boolean
-        if(is_numeric($enabled)) {
-            return (boolean)$enabled;
+        if (is_numeric($enabled)) {
+            return (bool)$enabled;
         }
 
         return false;

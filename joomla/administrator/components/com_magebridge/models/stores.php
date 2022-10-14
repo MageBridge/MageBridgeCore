@@ -9,7 +9,7 @@
  * @link https://www.yireo.com
  */
 
-// Check to ensure this file is included in Joomla!  
+// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
 /**
@@ -17,14 +17,14 @@ defined('_JEXEC') or die();
  */
 class MagebridgeModelStores extends YireoModel
 {
-	/**
-	 * Constructor method
-	 *
-	 */
-	public function __construct()
-	{
-		$this->_search = array('description');
+    /**
+     * Constructor method
+     *
+     */
+    public function __construct()
+    {
+        $this->_search = ['description'];
 
-		parent::__construct('store');
-	}
+        parent::__construct('store');
+    }
 }

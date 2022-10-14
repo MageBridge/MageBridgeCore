@@ -41,7 +41,7 @@ class Yireo_MageBridge_Model_Client_Jsonrpc
      * @param array $params
      * @return mixed
      */
-    public function makeCall($url, $method, $auth, $params = array(), $store = null)
+    public function makeCall($url, $method, $auth, $params = [], $store = null)
     {
         // Get the authentication data
         $method = preg_replace('/^magebridge\./', '', $method);
@@ -55,11 +55,11 @@ class Yireo_MageBridge_Model_Client_Jsonrpc
         $params['api_auth'] = $auth;
 
         // Construct the POST-data
-        $post = array(
+        $post = [
             'method' => $method,
             'params' => $params,
             'id' => md5($method),
-        );
+        ];
 
         $post = $this->mergeUrlParamsIntoPost($url, $post);
         $encodedPost = Zend_Json_Encoder::encode($post);
@@ -88,7 +88,6 @@ class Yireo_MageBridge_Model_Client_Jsonrpc
         if (isset($data['error']) && !empty($data['error']['message'])) {
             $this->debug->trace('JSON-RPC: JSON-error', $data['error']['message']);
             return $data['error']['message'];
-
         }
 
         if (!isset($data['result'])) {
@@ -112,7 +111,7 @@ class Yireo_MageBridge_Model_Client_Jsonrpc
         parse_str($urlQuery, $urlParams);
 
         foreach ($urlParams as $urlParamName => $urlParamValue) {
-            $post = array_merge(array($urlParamName => $urlParamValue), $post);
+            $post = array_merge([$urlParamName => $urlParamValue], $post);
         }
 
         return $post;
@@ -146,7 +145,7 @@ class Yireo_MageBridge_Model_Client_Jsonrpc
 
         // Build the CURL connection and receive feedback
         $data = curl_exec($this->resource);
-        
+
         return $data;
     }
-} 
+}

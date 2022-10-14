@@ -10,7 +10,7 @@
  */
 
 // Imports
-use \Mage_Core_Model_Store as Store;
+use Mage_Core_Model_Store as Store;
 
 /**
  * Model for configuration value "allowed_ips", determining which IPs are allowed to connect to MageBridge

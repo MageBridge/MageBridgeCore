@@ -24,7 +24,7 @@ class Yireo_MageBridge_Model_Feed extends Mage_AdminNotification_Model_Feed
      *
      * @return string
      */
-    public function getFeedUrl() 
+    public function getFeedUrl()
     {
         return Mage::getStoreConfigFlag(self::XML_USE_HTTPS_PATH) ? 'https://' : 'http://'.$this->customFeedUrl;
     }
@@ -48,7 +48,7 @@ class Yireo_MageBridge_Model_Feed extends Mage_AdminNotification_Model_Feed
         }
 
         // Is the feed disabled?
-        if((bool)Mage::getStoreConfig('yireo/common/disabled')) {
+        if ((bool)Mage::getStoreConfig('yireo/common/disabled')) {
             return false;
         }
 
@@ -68,7 +68,6 @@ class Yireo_MageBridge_Model_Feed extends Mage_AdminNotification_Model_Feed
 
         if ($feedXml && $feedXml->channel && $feedXml->channel->item) {
             foreach ($feedXml->channel->item as $item) {
-
                 // Add the severity to each item
                 $feedXml->channel->item->severity = Mage_AdminNotification_Model_Inbox::SEVERITY_NOTICE;
             }

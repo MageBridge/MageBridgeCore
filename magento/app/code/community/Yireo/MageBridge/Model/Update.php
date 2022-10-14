@@ -41,12 +41,12 @@ class Yireo_MageBridge_Model_Update extends Mage_Core_Model_Abstract
      * @param array $arguments
      * @return string
      */
-    public function getApiLink($arguments = array())
+    public function getApiLink($arguments = [])
     {
         $arguments = array_merge($this->getApiArguments(), $arguments);
 
-        foreach($arguments as $name => $value) {
-            if($name == 'request') {
+        foreach ($arguments as $name => $value) {
+            if ($name == 'request') {
                 $arguments[$name] = "$value";
             } else {
                 $arguments[$name] = "$name,$value";
@@ -65,11 +65,11 @@ class Yireo_MageBridge_Model_Update extends Mage_Core_Model_Abstract
      */
     public function getApiArguments()
     {
-        $domain = preg_replace( '/\:(.*)/', '', $_SERVER['HTTP_HOST'] );
-        return array(
+        $domain = preg_replace('/\:(.*)/', '', $_SERVER['HTTP_HOST']);
+        return [
             'license' => $this->getLicenseKey(),
             'domain' => $domain,
-        );
+        ];
     }
 
     /*
@@ -81,7 +81,7 @@ class Yireo_MageBridge_Model_Update extends Mage_Core_Model_Abstract
      */
     public function upgradeNeeded()
     {
-        if(version_compare($this->getNewVersion(), $this->getCurrentVersion(), '>')) {
+        if (version_compare($this->getNewVersion(), $this->getCurrentVersion(), '>')) {
             return true;
         }
         return true;
@@ -101,63 +101,70 @@ class Yireo_MageBridge_Model_Update extends Mage_Core_Model_Abstract
 
         // Set the umask
         $this->setFilesUmask();
-        
+
         // Simple check for ZIP-support
-        if($format == 'zip' && !class_exists('ZipArchive') && !class_exists('PharData')) {
+        if ($format == 'zip' && !class_exists('ZipArchive') && !class_exists('PharData')) {
             $msg = 'WARNING: PHP-classes ZipArchive and PharData are missing. Updates might fail.';
             Mage::getSingleton('adminhtml/session')->addError($msg);
         }
 
         // Simple check for TAR-support
-        if($format == 'tgz' && !class_exists('PharData')) {
+        if ($format == 'tgz' && !class_exists('PharData')) {
             $msg = 'WARNING: PHP-class PharData is missing.';
             Mage::getSingleton('adminhtml/session')->addError($msg);
         }
 
         // Check for the file
         $tmpdir = Mage::getConfig()->getOptions()->getTmpDir();
-        if($format == 'tgz') $tmpfile = $tmpdir.DS.'Yireo_MageBridge_patch.tgz';
-        if($format == 'zip') $tmpfile = $tmpdir.DS.'Yireo_MageBridge_patch.zip';
+        if ($format == 'tgz') {
+            $tmpfile = $tmpdir.DS.'Yireo_MageBridge_patch.tgz';
+        }
+        if ($format == 'zip') {
+            $tmpfile = $tmpdir.DS.'Yireo_MageBridge_patch.zip';
+        }
 
         // Make sure it does not contain just an error
-        if(is_readable($tmpfile)) {
+        if (is_readable($tmpfile)) {
             $tmpcontents = file_get_contents($tmpfile);
-            if(strstr($tmpcontents, 'Download denied')) {
+            if (strstr($tmpcontents, 'Download denied')) {
                 @unlink($tmpfile);
             }
         }
-        
-        // If the file is not there, download it
-        if(is_readable($tmpfile) == false) {
 
+        // If the file is not there, download it
+        if (is_readable($tmpfile) == false) {
             // Check whether the tmpdir is writable
-            if(!is_writable($tmpdir)) {
+            if (!is_writable($tmpdir)) {
                 $msg = 'ERROR: '.$tmpdir.' is not writable';
                 Mage::getSingleton('adminhtml/session')->addError($msg);
                 return $msg;
             }
 
             // Construct the download-URL
-            if($format == 'tgz') $download_file = 'Yireo_MageBridge_patch.tgz';
-            if($format == 'zip') $download_file = 'Yireo_MageBridge_patch.zip';
-            $download_url = $this->getApiLink(array('resource' => 'download', 'request' => $download_file));
+            if ($format == 'tgz') {
+                $download_file = 'Yireo_MageBridge_patch.tgz';
+            }
+            if ($format == 'zip') {
+                $download_file = 'Yireo_MageBridge_patch.zip';
+            }
+            $download_url = $this->getApiLink(['resource' => 'download', 'request' => $download_file]);
 
             // Get the remote data
             $data = $this->_getRemote($download_url);
-            if(empty($data)) {
+            if (empty($data)) {
                 $msg = 'ERROR: Downloaded update-file is empty';
                 Mage::getSingleton('adminhtml/session')->addError($msg);
                 return $msg;
             }
 
-            // Fill the local ZIP-file with the remote data 
+            // Fill the local ZIP-file with the remote data
             file_put_contents($tmpfile, $data);
-            chmod($tmpfile, 0644);
+            chmod($tmpfile, 0o644);
         }
 
         // Check the filesize of the patch
         $contents = file_get_contents($tmpfile);
-        if(empty($contents)) {
+        if (empty($contents)) {
             Mage::getSingleton('adminhtml/session')->addError('ERROR: Downloaded archive is empty');
         }
 
@@ -168,23 +175,21 @@ class Yireo_MageBridge_Model_Update extends Mage_Core_Model_Abstract
         $rootDir = Mage::getBaseDir();
 
         // ZIP-format
-        if($format == 'zip') {
-
+        if ($format == 'zip') {
             // Try to extract ZIP-archive using ZipArchive
-            if(class_exists('ZipArchive')) {
+            if (class_exists('ZipArchive')) {
                 $zip = new ZipArchive();
-                if($zip->open($tmpfile) === true) {
+                if ($zip->open($tmpfile) === true) {
                     $rt = $zip->extractTo($rootDir);
                     $zip->close();
 
-                    if($rt == false) {
+                    if ($rt == false) {
                         $msg = 'ERROR: Failed to extract ZIP in '.$rootDir;
                         Mage::getSingleton('adminhtml/session')->addError($msg);
                         return $msg;
                     }
 
                     @unlink($tmpfile);
-
                 } else {
                     $msg = 'ERROR: Unable to open ZIP '.$tmpfile;
                     Mage::getSingleton('adminhtml/session')->addError($msg);
@@ -192,11 +197,11 @@ class Yireo_MageBridge_Model_Update extends Mage_Core_Model_Abstract
                 }
 
             // Try to extract ZIP-archive using PharData
-            } elseif(class_exists('PharData')) {
+            } elseif (class_exists('PharData')) {
                 $zip = new PharData($tmpfile);
                 $rt = $zip->extractTo($rootDir);
 
-                if($rt == false) {
+                if ($rt == false) {
                     $msg = 'ERROR: Failed to extract ZIP in '.$rootDir;
                     Mage::getSingleton('adminhtml/session')->addError($msg);
                     return $msg;
@@ -205,7 +210,7 @@ class Yireo_MageBridge_Model_Update extends Mage_Core_Model_Abstract
                 @unlink($tmpfile);
 
             // Try to extra ZIP-archive using exec-function (assuming unzip is installed)
-            } elseif(function_exists('exec')) {
+            } elseif (function_exists('exec')) {
                 @exec('unzip -o '.$tmpfile.' -d '.$rootDir);
                 @unlink($tmpfile);
 
@@ -217,17 +222,16 @@ class Yireo_MageBridge_Model_Update extends Mage_Core_Model_Abstract
             }
 
         // TGZ-format
-        } elseif($format == 'tgz') {
-
+        } elseif ($format == 'tgz') {
             // Try to extract TAR-archive using TGZ-class
-            if(class_exists('PharData')) {
+            if (class_exists('PharData')) {
                 $tgz = new PharData($tmpfile);
-                $tgz->decompress(); 
+                $tgz->decompress();
 
                 $tar = new PharData(preg_replace('/\.(tar.gz|tgz)$/', '.tar', $tmpfile));
                 $rt = $tar->extractTo($rootDir);
 
-                if($rt == false) {
+                if ($rt == false) {
                     $msg = 'ERROR: Failed to extract TGZ in '.$rootDir;
                     Mage::getSingleton('adminhtml/session')->addError($msg);
                     return $msg;
@@ -236,7 +240,7 @@ class Yireo_MageBridge_Model_Update extends Mage_Core_Model_Abstract
                 @unlink($tmpfile);
 
             // Try to extra TGZ-archive using exec-function (assuming tar is installed)
-            } elseif(function_exists('exec')) {
+            } elseif (function_exists('exec')) {
                 @exec('tar -xzf '.$tmpfile.' -C '.$rootDir);
                 @unlink($tmpfile);
 
@@ -291,7 +295,7 @@ class Yireo_MageBridge_Model_Update extends Mage_Core_Model_Abstract
      */
     public function getCurrentVersion()
     {
-        if(empty($this->_current_version)) {
+        if (empty($this->_current_version)) {
             $config = Mage::app()->getConfig()->getModuleConfig('Yireo_MageBridge');
             $this->_current_version = (string)$config->version;
         }
@@ -307,23 +311,22 @@ class Yireo_MageBridge_Model_Update extends Mage_Core_Model_Abstract
      */
     public function getNewVersion()
     {
-        if(empty($this->_new_version)) {
-
-            if(gethostbyname($this->_remote_domain) == $this->_remote_domain) {
+        if (empty($this->_new_version)) {
+            if (gethostbyname($this->_remote_domain) == $this->_remote_domain) {
                 return 'ERROR: DNS lookup of '.$this->_remote_domain.' failed. External DNS lookups seem to be disabled.';
             }
 
-            if(@fsockopen($this->_remote_domain, 80, $errno, $errmsg, 5) == false) {
+            if (@fsockopen($this->_remote_domain, 80, $errno, $errmsg, 5) == false) {
                 return 'ERROR: Failed to open a connection to host "'.$this->_remote_domain.'" on port 80. Perhaps a firewall is in the way?';
             }
 
-            $arguments = array('resource' => 'versions', 'request' => 'downloads/magebridge');
+            $arguments = ['resource' => 'versions', 'request' => 'downloads/magebridge'];
             $url = $this->getApiLink($arguments);
             $this->_data = $this->_getRemote($url);
 
-            if(preg_match('/^Restricted access/', $this->_data)) {
+            if (preg_match('/^Restricted access/', $this->_data)) {
                 return 'ERROR: Restricted access. Is your licensing correct?';
-            } elseif(empty($this->_data)) { 
+            } elseif (empty($this->_data)) {
                 return 'ERROR: Empty reply. Is CURL enabled?';
             }
 

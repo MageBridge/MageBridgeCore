@@ -17,325 +17,293 @@ defined('_JEXEC') or die('Restricted access');
  */
 class ModMageBridgeSwitcherHelper
 {
-	/**
-	 * Method to be called once the MageBridge is loaded
-	 *
-	 * @access public
-	 *
-	 * @param JRegistry $params
-	 *
-	 * @return array
-	 */
-	static public function register($params = null)
-	{
-		// Initialize the register
-		$register = array();
-		$register[] = array('api', 'magebridge_storeviews.hierarchy');
+    /**
+     * Method to be called once the MageBridge is loaded
+     *
+     * @access public
+     *
+     * @param JRegistry $params
+     *
+     * @return array
+     */
+    public static function register($params = null)
+    {
+        // Initialize the register
+        $register = [];
+        $register[] = ['api', 'magebridge_storeviews.hierarchy'];
 
-		return $register;
-	}
+        return $register;
+    }
 
-	/**
-	 * Fetch the content from the bridge
-	 *
-	 * @access public
-	 *
-	 * @param JRegistry $params
-	 *
-	 * @return array
-	 */
-	static public function build($params = null)
-	{
-		$bridge = MageBridgeModelBridge::getInstance();
-		$stores = $bridge->getAPI('magebridge_storeviews.hierarchy');
+    /**
+     * Fetch the content from the bridge
+     *
+     * @access public
+     *
+     * @param JRegistry $params
+     *
+     * @return array
+     */
+    public static function build($params = null)
+    {
+        $bridge = MageBridgeModelBridge::getInstance();
+        $stores = $bridge->getAPI('magebridge_storeviews.hierarchy');
 
-		if (empty($stores) || !is_array($stores))
-		{
-			return null;
-		}
+        if (empty($stores) || !is_array($stores)) {
+            return null;
+        }
 
-		$storeId = $params->get('store_id');
-		foreach ($stores as $store)
-		{
+        $storeId = $params->get('store_id');
+        foreach ($stores as $store) {
+            if ($store['value'] == $storeId) {
+                return [$store];
+                break;
+            }
+        }
 
-			if ($store['value'] == $storeId)
-			{
-				return array($store);
-				break;
-			}
-		}
+        return $stores;
+    }
 
-		return $stores;
-	}
+    /**
+     * Generate a HTML selectbox
+     *
+     * @access public
+     *
+     * @param array	 $stores
+     * @param JRegistry $params
+     *
+     * @return string
+     */
+    public static function getFullSelect($stores, $params = null)
+    {
+        $options = [];
+        $currentType = self::getCurrentStoreType();
+        $currentName = self::getCurrentStoreName();
+        $currentValue = ($currentType == 'store') ? 'v:' . $currentName : 'g:' . $currentName;
+        $showGroups = (count($stores) > 1) ? true : false;
 
-	/**
-	 * Generate a HTML selectbox
-	 *
-	 * @access public
-	 *
-	 * @param array	 $stores
-	 * @param JRegistry $params
-	 *
-	 * @return string
-	 */
-	static public function getFullSelect($stores, $params = null)
-	{
-		$options = array();
-		$currentType = self::getCurrentStoreType();
-		$currentName = self::getCurrentStoreName();
-		$currentValue = ($currentType == 'store') ? 'v:' . $currentName : 'g:' . $currentName;
-		$showGroups = (count($stores) > 1) ? true : false;
+        if (!empty($stores) && is_array($stores)) {
+            foreach ($stores as $group) {
+                if ($group['website'] != MageBridgeModelConfig::load('website')) {
+                    continue;
+                }
 
-		if (!empty($stores) && is_array($stores))
-		{
-			foreach ($stores as $group)
-			{
+                if ($showGroups) {
+                    $options[] = [
+                        'value' => 'g:' . $group['value'],
+                        'label' => $group['label'],];
+                }
 
-				if ($group['website'] != MageBridgeModelConfig::load('website'))
-				{
-					continue;
-				}
+                if (!empty($group['childs'])) {
+                    foreach ($group['childs'] as $child) {
+                        $labelPrefix = ($showGroups) ? '-- ' : null;
+                        $options[] = [
+                            'value' => 'v:' . $child['value'],
+                            'label' => $labelPrefix . $child['label'],];
+                    }
+                }
+            }
+        }
 
-				if ($showGroups)
-				{
-					$options[] = array(
-						'value' => 'g:' . $group['value'],
-						'label' => $group['label'],);
-				}
+        array_unshift($options, ['value' => '', 'label' => '-- Select --']);
+        $attribs = 'onChange="document.forms[\'mbswitcher\'].submit();"';
 
-				if (!empty($group['childs']))
-				{
-					foreach ($group['childs'] as $child)
-					{
-						$labelPrefix = ($showGroups) ? '-- ' : null;
-						$options[] = array(
-							'value' => 'v:' . $child['value'],
-							'label' => $labelPrefix . $child['label'],);
-					}
-				}
-			}
-		}
+        return JHtml::_('select.genericlist', $options, 'magebridge_store', $attribs, 'value', 'label', $currentValue);
+    }
 
-		array_unshift($options, array('value' => '', 'label' => '-- Select --'));
-		$attribs = 'onChange="document.forms[\'mbswitcher\'].submit();"';
+    /**
+     * Return a list of Root Menu Items associated with the current Root Menu Item
+     *
+     * @access public
+     *
+     * @param null
+     *
+     * @return array
+     */
+    public static function getRootItemAssociations()
+    {
+        $assoc = JLanguageAssociations::isEnabled();
 
-		return JHtml::_('select.genericlist', $options, 'magebridge_store', $attribs, 'value', 'label', $currentValue);
-	}
+        if ($assoc == false) {
+            return false;
+        }
 
-	/**
-	 * Return a list of Root Menu Items associated with the current Root Menu Item
-	 *
-	 * @access public
-	 *
-	 * @param null
-	 *
-	 * @return array
-	 */
-	static public function getRootItemAssociations()
-	{
-		$assoc = JLanguageAssociations::isEnabled();
+        $root_item = MageBridgeUrlHelper::getRootItem();
 
-		if ($assoc == false)
-		{
-			return false;
-		}
+        if ($root_item == false) {
+            return false;
+        }
 
-		$root_item = MageBridgeUrlHelper::getRootItem();
+        $associations = MenusHelper::getAssociations($root_item->id);
 
-		if ($root_item == false)
-		{
-			return false;
-		}
+        return $associations;
+    }
 
-		$associations = MenusHelper::getAssociations($root_item->id);
+    /**
+     * Return the Root Menu Item ID per language
+     *
+     * @access public
+     *
+     * @param string $language
+     *
+     * @return int
+     */
+    public static function getRootItemIdByLanguage($language)
+    {
+        $app = JFactory::getApplication();
+        $currentItemId = $app->input->getInt('Itemid');
 
-		return $associations;
-	}
+        $rootItemAssociations = self::getRootItemAssociations();
 
-	/**
-	 * Return the Root Menu Item ID per language
-	 *
-	 * @access public
-	 *
-	 * @param string $language
-	 *
-	 * @return int
-	 */
-	static public function getRootItemIdByLanguage($language)
-	{
-		$app = JFactory::getApplication();
-		$currentItemId = $app->input->getInt('Itemid');
+        if (empty($rootItemAssociations)) {
+            return $currentItemId;
+        }
 
-		$rootItemAssociations = self::getRootItemAssociations();
+        foreach ($rootItemAssociations as $rootItemLanguage => $rootItemId) {
+            if ($language == $rootItemLanguage) {
+                return $rootItemId;
+            }
 
-		if (empty($rootItemAssociations))
-		{
-			return $currentItemId;
-		}
+            if ($language == str_replace('-', '_', $rootItemLanguage)) {
+                return $rootItemId;
+            }
+        }
 
-		foreach ($rootItemAssociations as $rootItemLanguage => $rootItemId)
-		{
-			if ($language == $rootItemLanguage)
-			{
-				return $rootItemId;
-			}
+        return $currentItemId;
+    }
 
-			if ($language == str_replace('-', '_', $rootItemLanguage))
-			{
-				return $rootItemId;
-			}
-		}
+    /**
+     * Return a list of store languages
+     *
+     * @access public
+     *
+     * @param array	 $stores
+     * @param JRegistry $params
+     *
+     * @return string
+     */
+    public static function getLanguages($stores, $params = null)
+    {
+        // Base variables
+        $languages = [];
+        $currentName = (MageBridgeStoreHelper::getInstance()->getAppType() == 'store') ? MageBridgeStoreHelper::getInstance()->getAppValue() : null;
+        $storeUrls = MageBridgeModelBridge::getInstance()->getMageConfig('store_urls');
 
-		return $currentItemId;
-	}
+        // Generic Joomla! variables
+        $app = JFactory::getApplication();
 
-	/**
-	 * Return a list of store languages
-	 *
-	 * @access public
-	 *
-	 * @param array	 $stores
-	 * @param JRegistry $params
-	 *
-	 * @return string
-	 */
-	static public function getLanguages($stores, $params = null)
-	{
-		// Base variables
-		$languages = array();
-		$currentName = (MageBridgeStoreHelper::getInstance()->getAppType() == 'store') ? MageBridgeStoreHelper::getInstance()->getAppValue() : null;
-		$storeUrls = MageBridgeModelBridge::getInstance()->getMageConfig('store_urls');
+        // Loop through the stores
+        if (!empty($stores) && is_array($stores)) {
+            foreach ($stores as $group) {
+                // Skip everything that does not belong to the current Website
+                if ($group['website'] != MageBridgeModelConfig::load('website')) {
+                    continue;
+                }
 
-		// Generic Joomla! variables
-		$app = JFactory::getApplication();
+                // Loop through the Store Views
+                if (!empty($group['childs'])) {
+                    foreach ($group['childs'] as $child) {
+                        // Determine the Magento request per Store View
+                        $storeCode = $child['value'];
 
-		// Loop through the stores
-		if (!empty($stores) && is_array($stores))
-		{
-			foreach ($stores as $group)
-			{
+                        if (isset($storeUrls[$storeCode])) {
+                            $request = $storeUrls[$storeCode];
 
-				// Skip everything that does not belong to the current Website
-				if ($group['website'] != MageBridgeModelConfig::load('website'))
-				{
-					continue;
-				}
+                        // Use the original request
+                        } else {
+                            $request = JFactory::getApplication()->input->getString('request');
+                        }
 
-				// Loop through the Store Views
-				if (!empty($group['childs']))
-				{
-					foreach ($group['childs'] as $child)
-					{
-						// Determine the Magento request per Store View
-						$storeCode = $child['value'];
+                        // Construct the Store View URL
+                        $itemId = self::getRootItemIdByLanguage($child['locale']);
+                        $url = 'index.php?option=com_magebridge&view=root&lang=' . $child['value'] . '&Itemid=' . $itemId . '&request=' . $request;
+                        $url = JRoute::_($url);
 
-						if (isset($storeUrls[$storeCode]))
-						{
-							$request = $storeUrls[$storeCode];
+                        // Add this entry to the list
+                        $languages[] = [
+                            'url' => $url,
+                            'code' => $child['value'],
+                            'label' => $child['label'],];
+                    }
+                }
+            }
+        }
 
-							// Use the original request
-						}
-						else
-						{
-							$request = JFactory::getApplication()->input->getString('request');
-						}
+        return $languages;
+    }
 
-						// Construct the Store View URL
-						$itemId = self::getRootItemIdByLanguage($child['locale']);
-						$url = 'index.php?option=com_magebridge&view=root&lang=' . $child['value'] . '&Itemid=' . $itemId . '&request=' . $request;
-						$url = JRoute::_($url);
+    /**
+     * Generate a simple list of store languages
+     *
+     * @param array	 $stores
+     * @param JRegistry $params
+     *
+     * @return string
+     */
+    public static function getStoreSelect($stores, $params = null)
+    {
+        $options = [];
+        $currentName = (MageBridgeStoreHelper::getInstance()->getAppType() == 'store') ? MageBridgeStoreHelper::getInstance()->getAppValue() : null;
+        $currentValue = null;
 
-						// Add this entry to the list
-						$languages[] = array(
-							'url' => $url,
-							'code' => $child['value'],
-							'label' => $child['label'],);
-					}
-				}
-			}
-		}
+        if (!empty($stores) && is_array($stores)) {
+            foreach ($stores as $group) {
+                if ($group['website'] != MageBridgeModelConfig::load('website')) {
+                    continue;
+                }
 
-		return $languages;
-	}
+                if (!empty($group['childs'])) {
+                    foreach ($group['childs'] as $child) {
+                        $url = JUri::current() . '?__store=' . $child['value'];
 
-	/**
-	 * Generate a simple list of store languages
-	 *
-	 * @param array	 $stores
-	 * @param JRegistry $params
-	 *
-	 * @return string
-	 */
-	static public function getStoreSelect($stores, $params = null)
-	{
-		$options = array();
-		$currentName = (MageBridgeStoreHelper::getInstance()->getAppType() == 'store') ? MageBridgeStoreHelper::getInstance()->getAppValue() : null;
-		$currentValue = null;
+                        if ($child['value'] == $currentName) {
+                            $currentValue = $url;
+                        }
 
-		if (!empty($stores) && is_array($stores))
-		{
-			foreach ($stores as $group)
-			{
-				if ($group['website'] != MageBridgeModelConfig::load('website'))
-				{
-					continue;
-				}
+                        $options[] = [
+                            'value' => $url,
+                            'label' => $child['label'],];
+                    }
+                }
+            }
+        }
 
-				if (!empty($group['childs']))
-				{
-					foreach ($group['childs'] as $child)
-					{
-						$url = JUri::current() . '?__store=' . $child['value'];
+        array_unshift($options, ['value' => '', 'label' => '-- Select --']);
 
-						if ($child['value'] == $currentName)
-						{
-							$currentValue = $url;
-						}
+        return JHtml::_('select.genericlist', $options, 'magebridge_store', 'onChange="window.location.href=this.value"', 'value', 'label', $currentValue);
+    }
 
-						$options[] = array(
-							'value' => $url,
-							'label' => $child['label'],);
-					}
-				}
-			}
-		}
+    /**
+     * Helper method to get the current store name
+     *
+     * @access public
+     *
+     * @param null
+     *
+     * @return string
+     */
+    public static function getCurrentStoreName()
+    {
+        $application = JFactory::getApplication();
+        $name = $application->getUserState('magebridge.store.name');
 
-		array_unshift($options, array('value' => '', 'label' => '-- Select --'));
+        return $name;
+    }
 
-		return JHtml::_('select.genericlist', $options, 'magebridge_store', 'onChange="window.location.href=this.value"', 'value', 'label', $currentValue);
-	}
+    /**
+     * Helper method to get the current store type
+     *
+     * @access public
+     *
+     * @param null
+     *
+     * @return string
+     */
+    public static function getCurrentStoreType()
+    {
+        $application = JFactory::getApplication();
+        $type = $application->getUserState('magebridge.store.type');
 
-	/**
-	 * Helper method to get the current store name
-	 *
-	 * @access public
-	 *
-	 * @param null
-	 *
-	 * @return string
-	 */
-	static public function getCurrentStoreName()
-	{
-		$application = JFactory::getApplication();
-		$name = $application->getUserState('magebridge.store.name');
-
-		return $name;
-	}
-
-	/**
-	 * Helper method to get the current store type
-	 *
-	 * @access public
-	 *
-	 * @param null
-	 *
-	 * @return string
-	 */
-	static public function getCurrentStoreType()
-	{
-		$application = JFactory::getApplication();
-		$type = $application->getUserState('magebridge.store.type');
-
-		return $type;
-	}
+        return $type;
+    }
 }

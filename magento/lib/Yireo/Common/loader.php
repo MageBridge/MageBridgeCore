@@ -1,4 +1,5 @@
 <?php
+
 // Include the loader
 require_once __DIR__ . '/Yireo/Common/System/Autoloader.php';
 

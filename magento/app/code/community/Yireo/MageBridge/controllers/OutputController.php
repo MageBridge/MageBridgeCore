@@ -48,7 +48,7 @@ class Yireo_MageBridge_OutputController extends Mage_Core_Controller_Front_Actio
      */
     public function test3Action()
     {
-        $result = array('test3' => 'yes');
+        $result = ['test3' => 'yes'];
         $this->getResponse()->setBody(Zend_Json::encode($result));
     }
 
@@ -89,7 +89,7 @@ class Yireo_MageBridge_OutputController extends Mage_Core_Controller_Front_Actio
      */
     public function test6Action()
     {
-        if($this->getRequest()->isXmlHttpRequest()) {
+        if ($this->getRequest()->isXmlHttpRequest()) {
             echo 'test6 is xml';
         } else {
             echo 'test6 is not xml';
@@ -146,7 +146,7 @@ class Yireo_MageBridge_OutputController extends Mage_Core_Controller_Front_Actio
     public function test10Action()
     {
         if (isset($_GET['test'])) {
-            echo 'test=' . (int)$_GET['test']; 
+            echo 'test=' . (int)$_GET['test'];
         } else {
             echo 'No GET variable "test" given';
         }

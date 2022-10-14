@@ -22,11 +22,13 @@ class Yireo_MageBridge_Helper_Core extends Mage_Core_Helper_Abstract
     {
         $category = Mage::registry('current_category');
         $product = Mage::registry('current_product');
-        if(!empty($category)) {
+        if (!empty($category)) {
             return $category->getId();
-        } elseif(!empty($product)) {
+        } elseif (!empty($product)) {
             $category_ids = $product->getCategoryIds();
-            if(!empty($category_ids)) return (int)$category_ids[0];
+            if (!empty($category_ids)) {
+                return (int)$category_ids[0];
+            }
         }
         return 0;
     }
@@ -41,7 +43,7 @@ class Yireo_MageBridge_Helper_Core extends Mage_Core_Helper_Abstract
     public function getCurrentCategoryPath()
     {
         $category = Mage::registry('current_category');
-        if(!empty($category)) {
+        if (!empty($category)) {
             return $category->getPath();
         }
         return null;
@@ -57,7 +59,7 @@ class Yireo_MageBridge_Helper_Core extends Mage_Core_Helper_Abstract
     public function getCurrentProductId()
     {
         $product = Mage::registry('current_product');
-        if(!empty($product)) {
+        if (!empty($product)) {
             return $product->getId();
         }
         return 0;
@@ -73,7 +75,7 @@ class Yireo_MageBridge_Helper_Core extends Mage_Core_Helper_Abstract
     public function getCurrentProductSku()
     {
         $product = Mage::registry('current_product');
-        if(!empty($product)) {
+        if (!empty($product)) {
             return $product->getSku();
         }
         return '';

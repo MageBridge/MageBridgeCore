@@ -23,17 +23,13 @@ $widgetName = $params->get('widget');
 require_once(dirname(__FILE__) . '/helper.php');
 
 // Build the block
-if ($layout == 'ajax')
-{
-	ModMageBridgeWidgetHelper::ajaxbuild($params);
-}
-else
-{
-	$widget = ModMageBridgeWidgetHelper::build($params);
-	if (empty($widget))
-	{
-		return false;
-	}
+if ($layout == 'ajax') {
+    ModMageBridgeWidgetHelper::ajaxbuild($params);
+} else {
+    $widget = ModMageBridgeWidgetHelper::build($params);
+    if (empty($widget)) {
+        return false;
+    }
 }
 
 // Include the layout-file

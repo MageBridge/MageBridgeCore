@@ -13,56 +13,56 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Include the parent controller
-jimport( 'joomla.application.component.controller' );
+jimport('joomla.application.component.controller');
 
 /**
- * MageBridge SSO Controller 
+ * MageBridge SSO Controller
  *
  * @package MageBridge
  */
 class MageBridgeControllerSso extends YireoAbstractController
 {
-	/**
-	 * Method to make login an user
-	 */
-	public function login()
-	{
-		// Fetch the user-email
-		$user_email = MageBridgeEncryptionHelper::decrypt(JFactory::getApplication()->input->getString('token'));
-		$application = JFactory::getApplication();
+    /**
+     * Method to make login an user
+     */
+    public function login()
+    {
+        // Fetch the user-email
+        $user_email = MageBridgeEncryptionHelper::decrypt(JFactory::getApplication()->input->getString('token'));
+        $application = JFactory::getApplication();
 
-		// Perform a post-login
-		$rt = MageBridge::getUser()->postlogin($user_email, null, true);
+        // Perform a post-login
+        $rt = MageBridge::getUser()->postlogin($user_email, null, true);
 
-		// Determine the redirect URL
-		$redirectUrl = base64_decode(JFactory::getApplication()->input->getString('redirect'));
-		if(empty($redirectUrl)) {
-			$redirectUrl = MageBridgeModelBridge::getMagentoUrl();
-		}
-	
-		// Redirect
-		$application->redirect($redirectUrl);
-		$application->close();
-	}
+        // Determine the redirect URL
+        $redirectUrl = base64_decode(JFactory::getApplication()->input->getString('redirect'));
+        if (empty($redirectUrl)) {
+            $redirectUrl = MageBridgeModelBridge::getMagentoUrl();
+        }
 
-	/**
-	 * Method to make logout the current user
-	 */
-	public function logout()
-	{
-		// Perform a logout
-		$user = JFactory::getUser();
-		$application = JFactory::getApplication();
-		$application->logout($user->get('id'));
+        // Redirect
+        $application->redirect($redirectUrl);
+        $application->close();
+    }
 
-		// Determine the redirect URL
-		$redirectUrl = base64_decode(JFactory::getApplication()->input->getString('redirect'));
-		if(empty($redirectUrl)) {
-			$redirectUrl = MageBridgeModelBridge::getMagentoUrl();
-		}
+    /**
+     * Method to make logout the current user
+     */
+    public function logout()
+    {
+        // Perform a logout
+        $user = JFactory::getUser();
+        $application = JFactory::getApplication();
+        $application->logout($user->get('id'));
 
-		// Redirect
-		$application->redirect($redirectUrl);
-		$application->close();
-	}
+        // Determine the redirect URL
+        $redirectUrl = base64_decode(JFactory::getApplication()->input->getString('redirect'));
+        if (empty($redirectUrl)) {
+            $redirectUrl = MageBridgeModelBridge::getMagentoUrl();
+        }
+
+        // Redirect
+        $application->redirect($redirectUrl);
+        $application->close();
+    }
 }

@@ -21,9 +21,8 @@ $blockName = $params->get('block');
 $block = ModMageBridgeCMSHelper::build($params);
 
 // Return false if empty
-if (empty($block))
-{
-	return false;
+if (empty($block)) {
+    return false;
 }
 
 // Include the layout-file

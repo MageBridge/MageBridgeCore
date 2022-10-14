@@ -20,39 +20,38 @@ class Yireo_MageBridge_Model_Product_Api extends Mage_Catalog_Model_Api_Resource
     protected $arguments = [];
 
     /**
-     * Search for products 
+     * Search for products
      *
      * @param array $options
      * @return array
      */
-    public function search($options = array())
+    public function search($options = [])
     {
         // Extra the attributes to search for
-        if(!empty($options['search_fields'])) {
+        if (!empty($options['search_fields'])) {
             $searchFields = $options['search_fields'];
         } else {
-            $searchFields = array('title', 'description');
+            $searchFields = ['title', 'description'];
         }
 
         // Fetch the search collection
         $collection = Mage::getModel('magebridge/search')->getResult($options['text'], $searchFields);
 
-        $result = array();
-        if(empty($collection)) {
+        $result = [];
+        if (empty($collection)) {
             return $result;
         }
 
         $i = 0;
-        foreach($collection as $item) {
-
-            if($i == $options['search_limit']) {
+        foreach ($collection as $item) {
+            if ($i == $options['search_limit']) {
                 break;
             }
 
             $product = Mage::getModel('catalog/product')->load($item->getId());
             $store = Mage::app()->getStore();
 
-            $result[] = array( // Basic product data
+            $result[] = [ // Basic product data
                 'product_id'        => $product->getId(),
                 'sku'               => $product->getSku(),
                 'name'              => $product->getName(),
@@ -83,7 +82,7 @@ class Yireo_MageBridge_Model_Product_Api extends Mage_Catalog_Model_Api_Resource
                 'special_to_date'   => $product->getSpecialToDate(),
                 'created_at'        => $product->getCreatedAt(),
                 'is_active'         => 1,
-            );
+            ];
 
             $i++;
         }
@@ -100,7 +99,7 @@ class Yireo_MageBridge_Model_Product_Api extends Mage_Catalog_Model_Api_Resource
     public function info($arguments = null)
     {
         $product = Mage::getModel('catalog/product')->load($arguments['product_id']);
-        if(!$product->getId() > 0) {
+        if (!$product->getId() > 0) {
             return null;
         }
 
@@ -123,10 +122,10 @@ class Yireo_MageBridge_Model_Product_Api extends Mage_Catalog_Model_Api_Resource
         $caching = $this->allowCollectionCaching();
 
         // Initializing caching
-        if($caching) {
-            if($cache = Mage::app()->loadCache($this->getCacheId())) {
+        if ($caching) {
+            if ($cache = Mage::app()->loadCache($this->getCacheId())) {
                 $results = unserialize($cache);
-                if(!empty($results)) {
+                if (!empty($results)) {
                     return $results;
                 }
             }
@@ -136,14 +135,14 @@ class Yireo_MageBridge_Model_Product_Api extends Mage_Catalog_Model_Api_Resource
         $collection = $this->getCollection();
 
         // Loop through the collection
-        $result = array();
+        $result = [];
         foreach ($collection as $product) {
             $result[] = Mage::helper('magebridge/product')->export($product, $this->arguments);
         }
 
         // Save to cache
-        if($caching) {
-            Mage::app()->saveCache(serialize($result), $this->getCacheId(), array('collections'), 86400);
+        if ($caching) {
+            Mage::app()->saveCache(serialize($result), $this->getCacheId(), ['collections'], 86400);
         }
 
         return $result;
@@ -168,20 +167,20 @@ class Yireo_MageBridge_Model_Product_Api extends Mage_Catalog_Model_Api_Resource
     protected function autocompleteScopes()
     {
         // Handle store codes
-        if(isset($this->arguments['store']) && is_string($this->arguments['store'])) {
+        if (isset($this->arguments['store']) && is_string($this->arguments['store'])) {
             $this->arguments['store'] = Mage::app()->getStore($this->arguments['store'])->getId();
         }
 
-        if(!empty($this->arguments['store'])) {
+        if (!empty($this->arguments['store'])) {
             $this->arguments['website'] = Mage::app()->getStore($this->arguments['store'])->getWebsite()->getId();
         }
 
         // Initialize arguments with default values
-        if(empty($this->arguments['website'])) {
+        if (empty($this->arguments['website'])) {
             $this->arguments['website'] = Mage::app()->getStore()->getWebsiteId();
         }
 
-        if(empty($this->arguments['store'])) {
+        if (empty($this->arguments['store'])) {
             $this->arguments['store'] = Mage::app()->getStore()->getStoreId();
         }
     }
@@ -191,7 +190,7 @@ class Yireo_MageBridge_Model_Product_Api extends Mage_Catalog_Model_Api_Resource
      */
     protected function allowCollectionCaching()
     {
-        if(isset($this->arguments['ordering']) && $this->arguments['ordering'] == 'random') {
+        if (isset($this->arguments['ordering']) && $this->arguments['ordering'] == 'random') {
             return false;
         }
 
@@ -229,7 +228,7 @@ class Yireo_MageBridge_Model_Product_Api extends Mage_Catalog_Model_Api_Resource
      */
     protected function getBareCollection()
     {
-        Mage::app()->setCurrentStore($this->arguments['store']); 
+        Mage::app()->setCurrentStore($this->arguments['store']);
 
         /** @var Mage_Catalog_Model_Resource_Product_Collection $collection */
         $collection = Mage::getModel('catalog/product')->getCollection()
@@ -238,11 +237,11 @@ class Yireo_MageBridge_Model_Product_Api extends Mage_Catalog_Model_Api_Resource
             ->addFieldToFilter('status', 1)
         ;
 
-        if(!empty($this->arguments['website'])) {
+        if (!empty($this->arguments['website'])) {
             $collection->addWebsiteFilter($this->arguments['website']);
         }
-            
-        if(!empty($this->arguments['store'])) {
+
+        if (!empty($this->arguments['store'])) {
             $collection->addStoreFilter($this->arguments['store']);
             $collection->setStoreId($this->arguments['store']);
         }
@@ -255,15 +254,15 @@ class Yireo_MageBridge_Model_Product_Api extends Mage_Catalog_Model_Api_Resource
      */
     protected function getVisibilityFilter()
     {
-        if(isset($this->arguments['visibility'])) {
+        if (isset($this->arguments['visibility'])) {
             return $this->arguments['visibility'];
         }
 
-        return array(
+        return [
             Mage_Catalog_Model_Product_Visibility::VISIBILITY_IN_SEARCH,
             Mage_Catalog_Model_Product_Visibility::VISIBILITY_IN_CATALOG,
             Mage_Catalog_Model_Product_Visibility::VISIBILITY_BOTH,
-        );
+        ];
     }
 
     /**
@@ -272,10 +271,10 @@ class Yireo_MageBridge_Model_Product_Api extends Mage_Catalog_Model_Api_Resource
     protected function applyCategoryFilters(&$collection)
     {
         // Add the category by its URL Key
-        if(isset($this->arguments['category_url_key']) && !isset($this->arguments['category_id'])) {
+        if (isset($this->arguments['category_url_key']) && !isset($this->arguments['category_id'])) {
             $categories = Mage::getModel('catalog/category')->getCollection()->addAttributeToFilter('url_key', $this->arguments['category_url_key']);
-            if(!empty($categories)) {
-                foreach($categories as $category) {
+            if (!empty($categories)) {
+                foreach ($categories as $category) {
                     $this->arguments['category_id'] = $category->entity_id;
                     break;
                 }
@@ -283,7 +282,7 @@ class Yireo_MageBridge_Model_Product_Api extends Mage_Catalog_Model_Api_Resource
         }
 
         // Add the category by its ID
-        if(!empty($this->arguments['category_id'])) {
+        if (!empty($this->arguments['category_id'])) {
             /** @var Mage_Catalog_Model_Category $category */
             $category = Mage::getModel('catalog/category');
 
@@ -322,7 +321,7 @@ class Yireo_MageBridge_Model_Product_Api extends Mage_Catalog_Model_Api_Resource
      */
     protected function applyOrdering(&$collection)
     {
-        if(!isset($this->arguments['ordering'])) {
+        if (!isset($this->arguments['ordering'])) {
             $this->arguments['ordering'] = 'newest';
         }
 
@@ -376,12 +375,12 @@ class Yireo_MageBridge_Model_Product_Api extends Mage_Catalog_Model_Api_Resource
     protected function applyPaging(&$collection)
     {
         // Add a list limit
-        if(!empty($this->arguments['count'])) {
+        if (!empty($this->arguments['count'])) {
             $collection->setPageSize($this->arguments['count']);
         }
 
         // Add a page number
-        if(isset($this->arguments['page']) && $this->arguments['page'] > 0) {
+        if (isset($this->arguments['page']) && $this->arguments['page'] > 0) {
             $collection->setCurPage($this->arguments['page']);
         }
     }
@@ -392,7 +391,7 @@ class Yireo_MageBridge_Model_Product_Api extends Mage_Catalog_Model_Api_Resource
     protected function applyMinimalPricing(&$collection)
     {
         // Add the minimal price
-        if(!isset($this->arguments['minimal_price']) || $this->arguments['minimal_price'] == 1) {
+        if (!isset($this->arguments['minimal_price']) || $this->arguments['minimal_price'] == 1) {
             $collection->addMinimalPrice();
         }
     }

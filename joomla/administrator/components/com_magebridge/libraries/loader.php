@@ -13,8 +13,7 @@
 defined('_JEXEC') or die();
 
 // Automatically install the library if not available
-if (!is_dir(JPATH_SITE . '/libraries/yireo'))
-{
+if (!is_dir(JPATH_SITE . '/libraries/yireo')) {
     $url = 'https://www.yireo.com/documents/lib_yireo_j3x.zip';
 
     $app = JFactory::getApplication();
@@ -26,4 +25,3 @@ if (!is_dir(JPATH_SITE . '/libraries/yireo'))
     $installer = new InstallerModelInstall();
     $installer->install();
 }
-

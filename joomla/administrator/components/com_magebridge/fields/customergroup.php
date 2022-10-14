@@ -20,69 +20,64 @@ require_once JPATH_SITE . '/components/com_magebridge/helpers/loader.php';
  */
 class MagebridgeFormFieldCustomerGroup extends MagebridgeFormFieldAbstract
 {
-	/**
-	 * Form field type
-	 */
-	public $type = 'Magento customer-group';
+    /**
+     * Form field type
+     */
+    public $type = 'Magento customer-group';
 
-	/**
-	 * Method to get the HTML of this element
-	 *
-	 * @return string
-	 */
-	protected function getInput()
-	{
-		$name  = $this->name;
-		$value = $this->value;
+    /**
+     * Method to get the HTML of this element
+     *
+     * @return string
+     */
+    protected function getInput()
+    {
+        $name  = $this->name;
+        $value = $this->value;
 
-		// Only build a dropdown when the API-widgets are enabled
-		if ($this->getConfig('api_widgets') == true)
-		{
-			// Fetch the widget data from the API
-			$options = MageBridgeWidgetHelper::getWidgetData('customergroup');
+        // Only build a dropdown when the API-widgets are enabled
+        if ($this->getConfig('api_widgets') == true) {
+            // Fetch the widget data from the API
+            $options = MageBridgeWidgetHelper::getWidgetData('customergroup');
 
-			// Parse the result into an HTML form-field
-			if (!empty($options) && is_array($options))
-			{
-				foreach ($options as $index => $option)
-				{
-					// Set default return-value
-					$option['value'] = $option['customer_group_id'];
+            // Parse the result into an HTML form-field
+            if (!empty($options) && is_array($options)) {
+                foreach ($options as $index => $option) {
+                    // Set default return-value
+                    $option['value'] = $option['customer_group_id'];
 
-					// Customize the return-value when the attribute "output" is defined
-					$output = (string) $this->element['output'];
+                    // Customize the return-value when the attribute "output" is defined
+                    $output = (string) $this->element['output'];
 
-					if (!empty($output) && array_key_exists($output, $option))
-					{
-						$option['value'] = $option[$output];
-					}
+                    if (!empty($output) && array_key_exists($output, $option)) {
+                        $option['value'] = $option[$output];
+                    }
 
-					// Strip empty options (like the "NOT LOGGED IN" group)
-					if (empty($option['value']) || $option['value'] == 0)
-					{
-						unset($options[$index]);
-						continue;
-					}
+                    // Strip empty options (like the "NOT LOGGED IN" group)
+                    if (empty($option['value']) || $option['value'] == 0) {
+                        unset($options[$index]);
+                        continue;
+                    }
 
-					// Customize the label
-					$option['label'] = $option['customer_group_code'];
+                    // Customize the label
+                    $option['label'] = $option['customer_group_code'];
 
-					// Add the option back to the list of options
-					$options[$index] = $option;
-				}
+                    // Add the option back to the list of options
+                    $options[$index] = $option;
+                }
 
-				// Return a dropdown list
-				array_unshift($options, array('value' => '', 'label' => ''));
+                // Return a dropdown list
+                array_unshift($options, ['value' => '', 'label' => '']);
 
-				return JHtml::_('select.genericlist', $options, $name, null, 'value', 'label', $value);
+                return JHtml::_('select.genericlist', $options, $name, null, 'value', 'label', $value);
 
-				// Fetching data from the bridge failed, so report a warning
-			}
+                // Fetching data from the bridge failed, so report a warning
+            }
 
-			$this->debugger->warning('Unable to obtain MageBridge API Widget "customer group"', $options);
-		}
+            $this->debugger->warning('Unable to obtain MageBridge API Widget "customer group"', $options);
+        }
 
-		// Return a simple input-field by default
-		return '<input type="text" name="' . $name . '" value="' . $value . '" />';
-	}
+        // Return a simple input-field by default
+        return '<input type="text" name="' . $name . '" value="' . $value . '" />';
+    }
 }

@@ -20,15 +20,13 @@ $app   = JFactory::getApplication();
 $input = $app->input;
 
 // Handle the SSO redirect
-if ($input->getInt('sso') == 1)
-{
-	$input->set('task', 'ssoCheck');
+if ($input->getInt('sso') == 1) {
+    $input->set('task', 'ssoCheck');
 }
 
 // Handle direct proxy requests
-if ($input->get('url'))
-{
-	$input->set('task', 'proxy');
+if ($input->get('url')) {
+    $input->set('task', 'proxy');
 }
 
 // Initialize debugging
@@ -40,22 +38,15 @@ $input->set('task', $input->getCmd('task'));
 // Require the controller
 $requestedController = $input->getCmd('controller');
 
-if ($requestedController == 'jsonrpc')
-{
-	require_once JPATH_COMPONENT . '/controllers/default.jsonrpc.php';
-	$controller = new MageBridgeControllerJsonrpc();
-
-}
-elseif ($requestedController == 'sso')
-{
-	require_once JPATH_COMPONENT . '/controllers/default.sso.php';
-	$controller = new MageBridgeControllerSso();
-
-}
-else
-{
-	require_once JPATH_COMPONENT . '/controller.php';
-	$controller = new MageBridgeController();
+if ($requestedController == 'jsonrpc') {
+    require_once JPATH_COMPONENT . '/controllers/default.jsonrpc.php';
+    $controller = new MageBridgeControllerJsonrpc();
+} elseif ($requestedController == 'sso') {
+    require_once JPATH_COMPONENT . '/controllers/default.sso.php';
+    $controller = new MageBridgeControllerSso();
+} else {
+    require_once JPATH_COMPONENT . '/controller.php';
+    $controller = new MageBridgeController();
 }
 
 // Perform the Request task

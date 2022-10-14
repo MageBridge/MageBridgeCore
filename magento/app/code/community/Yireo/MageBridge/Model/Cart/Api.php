@@ -21,11 +21,11 @@ class Yireo_MageBridge_Model_Cart_Api extends Mage_Catalog_Model_Api_Resource
      * @param array $options
      * @return array
      */
-    public function items($options = array())
+    public function items($options = [])
     {
         $cart = Mage::getSingleton('checkout/cart');
-        $items = array();
-        foreach($cart->getItems() as $item) {
+        $items = [];
+        foreach ($cart->getItems() as $item) {
             $items[] = $item->debug();
         }
         return $items;

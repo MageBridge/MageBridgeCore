@@ -13,7 +13,7 @@ class Yireo_MageBridge_Model_Rewrite_Store extends Mage_Core_Model_Store
 {
     /*
      * Add a new method to overwrite an existing cached-value
-     * 
+     *
      * @param string $path
      * @param mixed $value
      * @return null

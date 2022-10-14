@@ -18,55 +18,52 @@ defined('_JEXEC') or die('Restricted access');
 
 class ModMageBridgeProgressHelper
 {
-	/**
-	 * Method to be called once the MageBridge is loaded
-	 *
-	 * @access public
-	 *
-	 * @param JRegistry $params
-	 *
-	 * @return array
-	 */
-	static public function register($params = null)
-	{
-		// Initialize the register
-		$register = array();
-		$register[] = array('block', 'checkout.progress');
+    /**
+     * Method to be called once the MageBridge is loaded
+     *
+     * @access public
+     *
+     * @param JRegistry $params
+     *
+     * @return array
+     */
+    public static function register($params = null)
+    {
+        // Initialize the register
+        $register = [];
+        $register[] = ['block', 'checkout.progress'];
 
-		if ($params->get('load_css', 1) == 1 || $params->get('load_js', 1) == 1)
-		{
-			$register[] = array('headers');
-		}
+        if ($params->get('load_css', 1) == 1 || $params->get('load_js', 1) == 1) {
+            $register[] = ['headers'];
+        }
 
-		return $register;
-	}
+        return $register;
+    }
 
-	/**
-	 * Fetch the content from the bridge
-	 *
-	 * @access public
-	 *
-	 * @param JRegistry $params
-	 *
-	 * @return string
-	 */
-	static public function build($params = null)
-	{
-		// Include the MageBridge bridge
-		$bridge = MageBridgeModelBridge::getInstance();
+    /**
+     * Fetch the content from the bridge
+     *
+     * @access public
+     *
+     * @param JRegistry $params
+     *
+     * @return string
+     */
+    public static function build($params = null)
+    {
+        // Include the MageBridge bridge
+        $bridge = MageBridgeModelBridge::getInstance();
 
-		// Load CSS if needed
-		if ($params->get('load_css', 1) == 1)
-		{
-			$bridge->setHeaders('css');
-		}
+        // Load CSS if needed
+        if ($params->get('load_css', 1) == 1) {
+            $bridge->setHeaders('css');
+        }
 
-		// Load JavaScript if needed
-		if ($params->get('load_js', 1) == 1)
-		{
-			$bridge->setHeaders('js');
-		}
+        // Load JavaScript if needed
+        if ($params->get('load_js', 1) == 1) {
+            $bridge->setHeaders('js');
+        }
 
-		return $bridge->getBlock('checkout.progress');
-	}
+        return $bridge->getBlock('checkout.progress');
+    }
 }

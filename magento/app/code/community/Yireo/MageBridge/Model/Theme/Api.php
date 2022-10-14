@@ -25,23 +25,33 @@ class Yireo_MageBridge_Model_Theme_Api extends Mage_Api_Model_Resource_Abstract
     {
         $root = BP.DS.'app'.DS.'design'.DS.'frontend';
         $folders = scandir($root);
-        foreach($folders as $folder) {
-
-            if(is_dir($root.DS.$folder) == false) continue;
-            if($folder == '.' || $folder == '..') continue;
+        foreach ($folders as $folder) {
+            if (is_dir($root.DS.$folder) == false) {
+                continue;
+            }
+            if ($folder == '.' || $folder == '..') {
+                continue;
+            }
 
             $subfolders = scandir($root.DS.$folder);
-            foreach($subfolders as $subfolder) {
+            foreach ($subfolders as $subfolder) {
+                if (is_dir($root.DS.$folder.DS.$subfolder) == false) {
+                    continue;
+                }
+                if ($subfolder == '.' || $subfolder == '..') {
+                    continue;
+                }
+                if ($folder == 'base' && $subfolder == 'default') {
+                    continue;
+                }
+                if ($folder == 'default' && $subfolder == 'default') {
+                    continue;
+                }
 
-                if(is_dir($root.DS.$folder.DS.$subfolder) == false) continue;
-                if($subfolder == '.' || $subfolder == '..') continue;
-                if($folder == 'base' && $subfolder == 'default') continue;
-                if($folder == 'default' && $subfolder == 'default') continue;
-
-                $options[] = array(
+                $options[] = [
                     'value' => $folder.'/'.$subfolder,
                     'label' => $folder.'/'.$subfolder,
-                );
+                ];
             }
         }
 

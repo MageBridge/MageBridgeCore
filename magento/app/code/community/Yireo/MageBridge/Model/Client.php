@@ -54,7 +54,7 @@ class Yireo_MageBridge_Model_Client
      * @param array $params
      * @return mixed
      */
-    public function call($method, $params = array(), $store = null)
+    public function call($method, $params = [], $store = null)
     {
         // Get the remote API-link from the configuration
         $url = Mage::helper('magebridge')->getApiUrl(null, $store);
@@ -64,7 +64,7 @@ class Yireo_MageBridge_Model_Client
 
         // Make sure we are working with an array
         if (!is_array($params)) {
-            $params = array();
+            $params = [];
         }
 
         // Initialize the API-client
@@ -93,11 +93,11 @@ class Yireo_MageBridge_Model_Client
             return false;
         }
 
-        $auth = array(
+        $auth = [
             'api_user' => $this->encryptionHelper->encrypt($apiUser),
             'api_key' => $this->encryptionHelper->encrypt($apiKey),
-        );
+        ];
 
         return $auth;
     }
-} 
+}

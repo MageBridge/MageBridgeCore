@@ -26,13 +26,13 @@ class Yireo_MageBridge_BlockController extends Mage_Core_Controller_Front_Action
         // Example URL: magebridge/block/view/name/cart_sidebar
         $name = $this->getRequest()->getParam('name');
 
-        Mage::getSingleton('core/session', array('name' => 'frontend'));
+        Mage::getSingleton('core/session', ['name' => 'frontend']);
         $layout = Mage::app()->getLayout();
         $layout->getUpdate()->addHandle('default')->load();
         $layout->generateXml()->generateBlocks();
-        
+
         $block = $layout->getBlock($name);
-        if(empty($block)) {
+        if (empty($block)) {
             echo '<!-- empty block "'.$name.'" -->';
         } else {
             echo $block->toHtml();

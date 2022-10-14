@@ -13,7 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $message = $item->message;
 if (strlen($message) > 100) {
-	$message = substr($message, 0, 97).'...';
+    $message = substr($message, 0, 97).'...';
 }
 ?>
 <td>

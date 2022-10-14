@@ -28,18 +28,26 @@ class Yireo_MageBridge_Model_Category_Api extends Mage_Catalog_Model_Api_Resourc
         $storeGroupId = (isset($arguments['storeGroupId'])) ? $arguments['storeGroupId'] : null;
 
         // Select the storeId based on this store-group
-        if($storeGroupId > 0) $storeId = Mage::getModel('core/store_group')->load($storeGroupId)->getDefaultStoreId();
+        if ($storeGroupId > 0) {
+            $storeId = Mage::getModel('core/store_group')->load($storeGroupId)->getDefaultStoreId();
+        }
 
         // If the arguments do not include a store-flag, include it so not to mess up caching
-        if(!is_array($arguments)) $arguments = array();
-        if(!isset($arguments['storeId'])) $arguments['storeId'] = $storeId;
+        if (!is_array($arguments)) {
+            $arguments = [];
+        }
+        if (!isset($arguments['storeId'])) {
+            $arguments['storeId'] = $storeId;
+        }
 
         // Initializing caching
-        if(Mage::app()->useCache('collections')) {
+        if (Mage::app()->useCache('collections')) {
             $cacheId = 'magebridge_category_api__items'.md5(serialize($arguments));
-            if($cache = Mage::app()->loadCache($cacheId)) {
+            if ($cache = Mage::app()->loadCache($cacheId)) {
                 $result = unserialize($cache);
-                if(!empty($result)) return $result;
+                if (!empty($result)) {
+                    return $result;
+                }
             }
         }
 
@@ -47,9 +55,8 @@ class Yireo_MageBridge_Model_Category_Api extends Mage_Catalog_Model_Api_Resourc
         $collection = $this->_getCollection($arguments, $storeId);
 
         // Parse the collection into an array
-        $result = array();
-        foreach($collection as $category) {
-
+        $result = [];
+        foreach ($collection as $category) {
             // Get the debug-array of this object
             $category = $this->_nodeToArray($category);
 
@@ -57,8 +64,8 @@ class Yireo_MageBridge_Model_Category_Api extends Mage_Catalog_Model_Api_Resourc
         }
 
         // Save to cache
-        if(Mage::app()->useCache('collections')) {
-            Mage::app()->saveCache(serialize($result), $cacheId, array('collections'), 86400);
+        if (Mage::app()->useCache('collections')) {
+            Mage::app()->saveCache(serialize($result), $cacheId, ['collections'], 86400);
         }
 
         return $result;
@@ -80,18 +87,26 @@ class Yireo_MageBridge_Model_Category_Api extends Mage_Catalog_Model_Api_Resourc
         $parentUrlKey = (isset($arguments['parentUrlKey'])) ? $arguments['parentUrlKey'] : null;
 
         // Select the storeId based on this store-group
-        if($storeGroupId > 0) $storeId = Mage::getModel('core/store_group')->load($storeGroupId)->getDefaultStoreId();
+        if ($storeGroupId > 0) {
+            $storeId = Mage::getModel('core/store_group')->load($storeGroupId)->getDefaultStoreId();
+        }
 
         // If the arguments do not include a store-flag, include it so not to mess up caching
-        if(!is_array($arguments)) $arguments = array();
-        if(!isset($arguments['storeId'])) $arguments['storeId'] = $storeId;
+        if (!is_array($arguments)) {
+            $arguments = [];
+        }
+        if (!isset($arguments['storeId'])) {
+            $arguments['storeId'] = $storeId;
+        }
 
         // Initializing caching
-        if(Mage::app()->useCache('collections')) {
+        if (Mage::app()->useCache('collections')) {
             $cacheId = 'magebridge_category_api__tree'.md5(serialize($arguments));
-            if($cache = Mage::app()->loadCache($cacheId)) {
+            if ($cache = Mage::app()->loadCache($cacheId)) {
                 $result = unserialize($cache);
-                if(!empty($result)) return $result;
+                if (!empty($result)) {
+                    return $result;
+                }
             }
         }
 
@@ -99,9 +114,9 @@ class Yireo_MageBridge_Model_Category_Api extends Mage_Catalog_Model_Api_Resourc
         Mage::app()->setCurrentStore(Mage::app()->getStore($storeId));
 
         // Try to determine the parentId if the parentUrlKey is set
-        if(!empty($parentUrlKey)) {
+        if (!empty($parentUrlKey)) {
             $parent = Mage::getModel('catalog/category')->load($parentUrlKey, 'url_key');
-            if(!empty($parent) && $parent->getId() > 0) {
+            if (!empty($parent) && $parent->getId() > 0) {
                 $parentId = $parent->getId();
             }
         }
@@ -116,7 +131,7 @@ class Yireo_MageBridge_Model_Category_Api extends Mage_Catalog_Model_Api_Resourc
         // Get the root of this tree
         $tree = Mage::getResourceSingleton('catalog/category_tree')->load();
         $root = $tree->getNodeById($parentId);
-        if($root && $root->getId() == 1) {
+        if ($root && $root->getId() == 1) {
             $root->setName(Mage::helper('catalog')->__('Root'));
         }
 
@@ -128,8 +143,8 @@ class Yireo_MageBridge_Model_Category_Api extends Mage_Catalog_Model_Api_Resourc
         $result = $this->_nodeToArray($root, true);
 
         // Save to cache
-        if(Mage::app()->useCache('collections')) {
-            Mage::app()->saveCache(serialize($result), $cacheId, array('collections'), 86400);
+        if (Mage::app()->useCache('collections')) {
+            Mage::app()->saveCache(serialize($result), $cacheId, ['collections'], 86400);
         }
 
         return $result;
@@ -151,11 +166,11 @@ class Yireo_MageBridge_Model_Category_Api extends Mage_Catalog_Model_Api_Resourc
         $collection->addAttributeToSort('position', 'ASC');
 
         // Set the store
-        if(!empty($storeId)) {
+        if (!empty($storeId)) {
             $collection->setStoreId($storeId);
-        } elseif(!empty($arguments['storeId'])) {
+        } elseif (!empty($arguments['storeId'])) {
             $collection->setStoreId($arguments['storeId']);
-        } elseif(!empty($arguments['store'])) {
+        } elseif (!empty($arguments['store'])) {
             $collection->setStoreId($arguments['store']);
         }
 
@@ -170,12 +185,12 @@ class Yireo_MageBridge_Model_Category_Api extends Mage_Catalog_Model_Api_Resourc
         ;
 
         // Sanity check
-        if(!empty($root)) {
-            $collection->addAttributeToFilter('path', array('like' => $root->getData('path').'/%'));
+        if (!empty($root)) {
+            $collection->addAttributeToFilter('path', ['like' => $root->getData('path').'/%']);
         }
 
         // Filter only active categories
-        if(isset($arguments['active'])) {
+        if (isset($arguments['active'])) {
             $collection->addAttributeToFilter('is_active', 1);
         }
 
@@ -192,28 +207,28 @@ class Yireo_MageBridge_Model_Category_Api extends Mage_Catalog_Model_Api_Resourc
         }
 
         // Add the level query
-        if(isset($arguments['levels']) && isset($arguments['startlevel'])) {
+        if (isset($arguments['levels']) && isset($arguments['startlevel'])) {
             $rootLevel = ($root) ? $root->getLevel() : 0;
             $startLevel = $rootLevel + $arguments['startlevel'];
             $endLevel = $startLevel + $arguments['levels'];
-            $collection->addFieldToFilter('level', array('gteq' => $startLevel));
-            $collection->addFieldToFilter('level', array('lt' => $endLevel));
+            $collection->addFieldToFilter('level', ['gteq' => $startLevel]);
+            $collection->addFieldToFilter('level', ['lt' => $endLevel]);
         }
 
         // Add a list limit
-        if(isset($arguments['count'])) {
+        if (isset($arguments['count'])) {
             $collection->setCurPage(1);
             $collection->setPageSize((int)$arguments['count']);
         }
 
         // Fetch the products of this category
-        if(isset($arguments['include_products'])) {
-            foreach($collection as $category) {
+        if (isset($arguments['include_products'])) {
+            foreach ($collection as $category) {
                 $products = $this->_getAllProducts($storeId);
-                $productsInCategory = array();
-                if(!empty($products)) {
-                    foreach($products as $product) {
-                        if(is_array($product['category_ids']) && in_array($category->getId(), $product['category_ids'])) {
+                $productsInCategory = [];
+                if (!empty($products)) {
+                    foreach ($products as $product) {
+                        if (is_array($product['category_ids']) && in_array($category->getId(), $product['category_ids'])) {
                             $productsInCategory[] = $product;
                         }
                     }
@@ -223,8 +238,8 @@ class Yireo_MageBridge_Model_Category_Api extends Mage_Catalog_Model_Api_Resourc
         }
 
         // Fetch the product count
-        if(isset($arguments['include_product_count'])) {
-            foreach($collection as $category) {
+        if (isset($arguments['include_product_count'])) {
+            foreach ($collection as $category) {
                 $product_count = $category->getProductCount();
                 $category->setData('product_count', $product_count);
             }
@@ -243,14 +258,16 @@ class Yireo_MageBridge_Model_Category_Api extends Mage_Catalog_Model_Api_Resourc
     protected function _getAllProducts($storeId = null)
     {
         static $products = null;
-        if(empty($products)) {
-            $arguments = array(
-                'visibility' => array(
+        if (empty($products)) {
+            $arguments = [
+                'visibility' => [
                     Mage_Catalog_Model_Product_Visibility::VISIBILITY_IN_CATALOG,
                     Mage_Catalog_Model_Product_Visibility::VISIBILITY_BOTH,
-                ),
-            );
-            if(!empty($storeId)) $arguments['store'] = $storeId;
+                ],
+            ];
+            if (!empty($storeId)) {
+                $arguments['store'] = $storeId;
+            }
             $products = Mage::getModel('magebridge/product_api')->items($arguments);
         }
         return $products;
@@ -279,8 +296,8 @@ class Yireo_MageBridge_Model_Category_Api extends Mage_Catalog_Model_Api_Resourc
      */
     protected function _nodeToArray($node, $include_children = false)
     {
-        if(empty($node)) {
-            return array();
+        if (empty($node)) {
+            return [];
         }
 
         $result = $node->debug();
@@ -295,8 +312,8 @@ class Yireo_MageBridge_Model_Category_Api extends Mage_Catalog_Model_Api_Resourc
         $result['level']       = $node->getLevel();
         $result['products']    = $node->getProducts();
 
-        $result['children']    = array();
-        if($include_children == true) {
+        $result['children']    = [];
+        if ($include_children == true) {
             foreach ($node->getChildren() as $child) {
                 $result['children'][] = $this->_nodeToArray($child, $include_children);
             }

@@ -22,8 +22,9 @@ if (file_exists($maintenanceFile)) {
 
 // Use this for profiling
 define('yireo_starttime', microtime(true));
-if(function_exists('yireo_benchmark') == false) {
-    function yireo_benchmark($title) {
+if (function_exists('yireo_benchmark') == false) {
+    function yireo_benchmark($title)
+    {
         $yireo_totaltime = round(microtime(true) - yireo_starttime, 4);
         Mage::getSingleton('magebridge/debug')->profiler($title.': '.$yireo_totaltime.' seconds');
     }
@@ -35,7 +36,7 @@ $magebridge = new MageBridge();
 
 // Mask this request
 $magebridge->premask();
-        
+
 
 // Support for Magento Compiler
 $compilerConfig = 'includes/config.php';
@@ -46,26 +47,29 @@ if (file_exists($compilerConfig)) {
 // Initialize the Magento application
 require_once 'app/Mage.php';
 try {
-
     // Determine the Mage::app() arguments from the bridge
     $app_value = $magebridge->getMeta('app_value');
     $app_type = $magebridge->getMeta('app_type');
-    if (is_array($app_type)){
+    if (is_array($app_type)) {
         $app_type = empty($app_type) ? null : array_shift($app_type);
     }
-    if (is_array($app_value)){
+    if (is_array($app_value)) {
         $app_value = empty($app_value) ? null : array_shift($app_value);
     }
 
     // Doublecheck certain values
-    if($app_type == 'website' && $app_value != 'admin') $app_value = (int)$app_value;
-    if($app_value == 'admin') $app_type = null;
+    if ($app_type == 'website' && $app_value != 'admin') {
+        $app_value = (int)$app_value;
+    }
+    if ($app_value == 'admin') {
+        $app_type = null;
+    }
 
     // Initialize app_time for benchmarking
     $app_time = time();
 
     // Switch debugging
-    if($magebridge->getMeta('debug')) {
+    if ($magebridge->getMeta('debug')) {
         ini_set('display_errors', 1);
         ini_set('log_errors', 1);
         Varien_Profiler::enable();
@@ -73,7 +77,7 @@ try {
     }
 
     // Switch debugging
-    if($magebridge->getMeta('debug_display_errors')) {
+    if ($magebridge->getMeta('debug_display_errors')) {
         ini_set('display_errors', 1);
         ini_set('log_errors', 1);
         Varien_Profiler::enable();
@@ -88,16 +92,18 @@ try {
     $task = 'app';
 
     // Start the Magento application
-    if(!empty($app_value) && !empty($app_type)) {
+    if (!empty($app_value) && !empty($app_type)) {
         Mage::$task($app_value, $app_type);
-    } elseif(!empty($app_value)) {
+    } elseif (!empty($app_value)) {
         Mage::$task($app_value);
     } else {
         Mage::$task();
     }
 
     // End the task if running the normal Magento procedure
-    if($task == 'run') exit;
+    if ($task == 'run') {
+        exit;
+    }
 
     // @todo: Set custom-logging
     //if($magebridge->getMeta('debug_custom_log')) {
@@ -107,18 +113,16 @@ try {
 
     // Debugging
     $debug = Mage::getSingleton('magebridge/debug');
-    if(!empty($debug)) {
+    if (!empty($debug)) {
         $debug->notice("Mage::app($app_value,$app_type)", $app_time);
     }
 
     // Benchmarking
     yireo_benchmark('Mage::app()');
-
 } catch(Exception $e) {
-
     // Debugging
     $debug = Mage::getSingleton('magebridge/debug');
-    if(!empty($debug)) {
+    if (!empty($debug)) {
         $debug->notice("Mage::app($app_value,$app_type) failed to start", $app_time);
         $debug->notice("Fallback to Mage::app()", $app_time);
     }

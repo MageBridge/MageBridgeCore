@@ -17,39 +17,41 @@ defined('_JEXEC') or die();
  */
 class JElementT3Layout extends JElement
 {
-	/**
-	 * Name for this element
-	 */
-	public $_name = 'T3 layout';
+    /**
+     * Name for this element
+     */
+    public $_name = 'T3 layout';
 
-	/**
-	 * Method to get the HTML of this element
-	 *
-	 * @param string $name
-	 * @param string $value
-	 * @param object $node
-	 * @param string $control_name
-	 * @return string
-	 */
-	public function fetchElement($name, $value, &$node, $control_name)
-	{
-		// Check for the T3 framework
-		if(!function_exists('t3_import')) {
-			return '- No configuration needed -';
-		}
+    /**
+     * Method to get the HTML of this element
+     *
+     * @param string $name
+     * @param string $value
+     * @param object $node
+     * @param string $control_name
+     * @return string
+     */
+    public function fetchElement($name, $value, &$node, $control_name)
+    {
+        // Check for the T3 framework
+        if (!function_exists('t3_import')) {
+            return '- No configuration needed -';
+        }
 
-		// Add the control name
-		if(!empty($control_name)) $name = $control_name.'['.$name.']';
-				
-		t3_import('core/admin/util');
+        // Add the control name
+        if (!empty($control_name)) {
+            $name = $control_name.'['.$name.']';
+        }
 
-		$adminutil = new JAT3_AdminUtil();
-		$template  = $adminutil->get_active_template();
-		$layouts = $adminutil->getLayouts();
-		foreach($layouts as $layoutIndex => $layoutObject) {
-			$options[] = array( 'value' => $layoutIndex, 'label' => $layoutIndex);
-		}
+        t3_import('core/admin/util');
 
-		return JHtml::_('select.genericlist', $options, $name, null, 'value', 'label', $value);
-	}
+        $adminutil = new JAT3_AdminUtil();
+        $template  = $adminutil->get_active_template();
+        $layouts = $adminutil->getLayouts();
+        foreach ($layouts as $layoutIndex => $layoutObject) {
+            $options[] = [ 'value' => $layoutIndex, 'label' => $layoutIndex];
+        }
+
+        return JHtml::_('select.genericlist', $options, $name, null, 'value', 'label', $value);
+    }
 }

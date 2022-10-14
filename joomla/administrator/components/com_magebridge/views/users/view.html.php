@@ -20,142 +20,131 @@ require_once JPATH_COMPONENT . '/view.php';
  */
 class MageBridgeViewUsers extends MageBridgeView
 {
-	/**
-	 * Display method
-	 *
-	 * @param string $tpl
-	 *
-	 * @return null
-	 */
-	public function display($tpl = null)
-	{
-		// Set toolbar items for the page
-		JToolbarHelper::custom('export', 'export.png', null, 'Export', false);
-		JToolbarHelper::custom('import', 'import.png', null, 'Import', false);
+    /**
+     * Display method
+     *
+     * @param string $tpl
+     *
+     * @return null
+     */
+    public function display($tpl = null)
+    {
+        // Set toolbar items for the page
+        JToolbarHelper::custom('export', 'export.png', null, 'Export', false);
+        JToolbarHelper::custom('import', 'import.png', null, 'Import', false);
 
-		$this->setMenu();
+        $this->setMenu();
 
-		// Initialize common variables
-		$app    = JFactory::getApplication();
-		$option = $app->input->getCmd('option') . '-users';
+        // Initialize common variables
+        $app    = JFactory::getApplication();
+        $option = $app->input->getCmd('option') . '-users';
 
-		// Handle the filters
-		$filter_order     = $app->getUserStateFromRequest($option . 'filter_order', 'filter_order', 'p.ordering', 'cmd');
-		$filter_order_Dir = $app->getUserStateFromRequest($option . 'filter_order_Dir', 'filter_order_Dir', '', 'word');
+        // Handle the filters
+        $filter_order     = $app->getUserStateFromRequest($option . 'filter_order', 'filter_order', 'p.ordering', 'cmd');
+        $filter_order_Dir = $app->getUserStateFromRequest($option . 'filter_order_Dir', 'filter_order_Dir', '', 'word');
 
-		$this->setTitle('MageBridge: Users');
+        $this->setTitle('MageBridge: Users');
 
-		// Get data from the model
-		//$this->fetchItems();
-		$items      = $this->get('Data');
-		$pagination = $this->get('Pagination');
+        // Get data from the model
+        //$this->fetchItems();
+        $items      = $this->get('Data');
+        $pagination = $this->get('Pagination');
 
-		// Table ordering
-		$lists['order_Dir'] = $filter_order_Dir;
-		$lists['order']     = $filter_order;
+        // Table ordering
+        $lists['order_Dir'] = $filter_order_Dir;
+        $lists['order']     = $filter_order;
 
-		// Prepare the items for display
-		if (!empty($items))
-		{
-			// Get a matching user list from the API
-			$musers = $this->getMagentoUsers($items);
+        // Prepare the items for display
+        if (!empty($items)) {
+            // Get a matching user list from the API
+            $musers = $this->getMagentoUsers($items);
 
-			foreach ($items as $index => $item)
-			{
+            foreach ($items as $index => $item) {
+                $item->magento_name = null;
+                $item->magento_id   = null;
 
-				$item->magento_name = null;
-				$item->magento_id   = null;
+                if (!empty($musers)) {
+                    foreach ($musers as $muser) {
+                        if ($muser['email'] == $item->email) {
+                            $item->magento_name = $muser['name'];
+                            $item->magento_id   = $muser['entity_id'];
+                            break;
+                        }
+                    }
+                }
 
-				if (!empty($musers))
-				{
-					foreach ($musers as $muser)
-					{
-						if ($muser['email'] == $item->email)
-						{
-							$item->magento_name = $muser['name'];
-							$item->magento_id   = $muser['entity_id'];
-							break;
-						}
-					}
-				}
+                // Make sure demo-users are not seeing any sensitive data
+                if (MageBridgeAclHelper::isDemo() == true) {
+                    $censored_values = ['name', 'username', 'email', 'magento_name'];
 
-				// Make sure demo-users are not seeing any sensitive data
-				if (MageBridgeAclHelper::isDemo() == true)
-				{
-					$censored_values = array('name', 'username', 'email', 'magento_name');
+                    foreach ($censored_values as $censored_value) {
+                        $item->$censored_value = str_repeat('*', YireoHelper::strlen($item->$censored_value));
+                    }
+                }
 
-					foreach ($censored_values as $censored_value)
-					{
-						$item->$censored_value = str_repeat('*', YireoHelper::strlen($item->$censored_value));
-					}
-				}
+                $item->migrate_link = 'index.php?option=com_magebridge&view=user&task=migrate&cid[]=' . $item->id;
+                $items[$index]      = $item;
+            }
+        }
 
-				$item->migrate_link = 'index.php?option=com_magebridge&view=user&task=migrate&cid[]=' . $item->id;
-				$items[$index]      = $item;
-			}
-		}
+        $this->user       = JFactory::getUser();
+        $this->lists      = $lists;
+        $this->items      = $items;
+        $this->pagination = $pagination;
 
-		$this->user       = JFactory::getUser();
-		$this->lists      = $lists;
-		$this->items      = $items;
-		$this->pagination = $pagination;
+        $layout = $app->input->getCmd('layout');
 
-		$layout = $app->input->getCmd('layout');
+        if ($layout == 'import') {
+            $tpl = 'import';
+        }
 
-		if ($layout == 'import')
-		{
-			$tpl = 'import';
-		}
+        parent::display($tpl);
+    }
 
-		parent::display($tpl);
-	}
+    /**
+     * Method to return the checkbox to do something
+     *
+     * @param object $item
+     * @param int    $i
+     *
+     * @return string
+     */
+    public function checkbox($item, $i)
+    {
+        $checkbox = JHtml::_('grid.id', $i, $item->id);
 
-	/**
-	 * Method to return the checkbox to do something
-	 *
-	 * @param object $item
-	 * @param int    $i
-	 *
-	 * @return string
-	 */
-	public function checkbox($item, $i)
-	{
-		$checkbox = JHtml::_('grid.id', $i, $item->id);
+        return $checkbox;
+    }
 
-		return $checkbox;
-	}
+    /**
+     * Method to get a list of matching Magento users
+     *
+     * @param array $jusers
+     *
+     * @return null
+     */
+    private function getMagentoUsers($jusers = null)
+    {
+        $musers = [];
 
-	/**
-	 * Method to get a list of matching Magento users
-	 *
-	 * @param array $jusers
-	 *
-	 * @return null
-	 */
-	private function getMagentoUsers($jusers = null)
-	{
-		$musers = array();
+        if (!empty($jusers)) {
+            $emails = [];
 
-		if (!empty($jusers))
-		{
-			$emails = array();
+            foreach ($jusers as $juser) {
+                $emails[] = $juser->email;
+            }
 
-			foreach ($jusers as $juser)
-			{
-				$emails[] = $juser->email;
-			}
+            // Register this request
+            $arguments = ['emails' => $emails];
+            $register  = MageBridgeModelRegister::getInstance();
+            $id        = $register->add('api', 'magebridge_customer.list', $arguments);
 
-			// Register this request
-			$arguments = array('emails' => $emails);
-			$register  = MageBridgeModelRegister::getInstance();
-			$id        = $register->add('api', 'magebridge_customer.list', $arguments);
+            // Send the request to the bridge
+            $bridge = MageBridgeModelBridge::getInstance();
+            $bridge->build();
+            $musers = $bridge->getAPI('magebridge_customer.list', $arguments);
+        }
 
-			// Send the request to the bridge
-			$bridge = MageBridgeModelBridge::getInstance();
-			$bridge->build();
-			$musers = $bridge->getAPI('magebridge_customer.list', $arguments);
-		}
-
-		return $musers;
-	}
+        return $musers;
+    }
 }

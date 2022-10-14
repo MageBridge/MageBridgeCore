@@ -22,11 +22,11 @@ class Yireo_MageBridge_Block_Rewrite_Checkout_Onepage_Success extends Mage_Check
      * @param array $params
      * @return string
      */
-    public function getUrl($route = '', $params = array())
+    public function getUrl($route = '', $params = [])
     {
-        if(empty($route) && empty($params)) {
+        if (empty($route) && empty($params)) {
             $next_url = Mage::getSingleton('customer/session')->getNextUrl();
-            if(!empty($next_url)) {
+            if (!empty($next_url)) {
                 return $next_url;
             }
         }

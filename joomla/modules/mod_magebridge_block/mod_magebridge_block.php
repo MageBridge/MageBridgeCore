@@ -23,18 +23,14 @@ require_once(dirname(__FILE__) . '/helper.php');
 $blockName = modMageBridgeBlockHelper::getBlockName($params);
 
 // Build the block
-if ($layout == 'ajax')
-{
-	modMageBridgeBlockHelper::ajaxbuild($params);
-}
-else
-{
-	$block = modMageBridgeBlockHelper::build($params);
+if ($layout == 'ajax') {
+    modMageBridgeBlockHelper::ajaxbuild($params);
+} else {
+    $block = modMageBridgeBlockHelper::build($params);
 
-	if (empty($block))
-	{
-		return false;
-	}
+    if (empty($block)) {
+        return false;
+    }
 }
 
 // Include the layout-file

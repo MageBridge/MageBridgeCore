@@ -24,7 +24,7 @@ class Yireo_MageBridge_Block_Settings_Joomla extends Mage_Core_Block_Template
     public function _construct()
     {
         parent::_construct();
-        $this->setData('area','adminhtml');
+        $this->setData('area', 'adminhtml');
         $this->setTemplate('magebridge/settings/joomla.phtml');
     }
 
@@ -42,12 +42,11 @@ class Yireo_MageBridge_Block_Settings_Joomla extends Mage_Core_Block_Template
         $query = 'SELECT * FROM `'.$table.'` WHERE path LIKE "magebridge/joomla/api%";';
         $rows = $connection->fetchAll($query);
 
-        $details = array();
-        if(!empty($rows)) { 
-            foreach($rows as $row) {
+        $details = [];
+        if (!empty($rows)) {
+            foreach ($rows as $row) {
                 $key = $row['scope'].'-'.$row['scope_id'];
-                if(!isset($details[$key])) {
-
+                if (!isset($details[$key])) {
                     switch($row['scope']) {
                         case 'websites':
                             $scope_name = Mage::app()->getWebsite($row['scope_id'])->getName().' ['.$row['scope'].']';
@@ -60,19 +59,19 @@ class Yireo_MageBridge_Block_Settings_Joomla extends Mage_Core_Block_Template
                             break;
                     }
 
-                    $details[$key] = array(
+                    $details[$key] = [
                         'scope' => $row['scope'],
                         'scope_id' => $row['scope_id'],
                         'scope_name' => $scope_name,
-                    );
+                    ];
                 }
 
                 $path = preg_replace('/^magebridge\/joomla\/(.*)$/', '$1', $row['path']);
                 $details[$key][$path] = $row['value'];
 
-                if(!empty($details[$key]['api_url'])) {
+                if (!empty($details[$key]['api_url'])) {
                     $url = $details[$key]['api_url'];
-                    if(strstr($url, '/xmlrpc/')) {
+                    if (strstr($url, '/xmlrpc/')) {
                         $api_host = preg_replace('/xmlrpc\/$/', '', $url);
                         $api_type = 'XML-RPC (obsolete)';
                     } else {
@@ -84,7 +83,9 @@ class Yireo_MageBridge_Block_Settings_Joomla extends Mage_Core_Block_Template
                         $api_type = 'JSON-RPC';
                     }
 
-                    if(empty($details[$key]['api_user'])) $details[$key]['api_user'] = '[use parent]';
+                    if (empty($details[$key]['api_user'])) {
+                        $details[$key]['api_user'] = '[use parent]';
+                    }
                     $details[$key]['api_host'] = $api_host;
                     $details[$key]['api_type'] = $api_type;
                 }
@@ -138,6 +139,6 @@ class Yireo_MageBridge_Block_Settings_Joomla extends Mage_Core_Block_Template
      */
     public function getBrowseUrl($scope, $id)
     {
-        return Mage::getModel('adminhtml/url')->getUrl('adminhtml/magebridge/browse', array('scope' => $scope, 'id' => $id));
+        return Mage::getModel('adminhtml/url')->getUrl('adminhtml/magebridge/browse', ['scope' => $scope, 'id' => $id]);
     }
 }

@@ -25,7 +25,7 @@ class Yireo_MageBridge_Model_Websites_Api extends Mage_Api_Model_Resource_Abstra
     {
         $websites = Mage::getModel('core/website')->getCollection();
 
-        $res = array();
+        $res = [];
         foreach ($websites as $item) {
             $data['value'] = $item->getData('website_id');
             $data['label'] = $item->getData('name');

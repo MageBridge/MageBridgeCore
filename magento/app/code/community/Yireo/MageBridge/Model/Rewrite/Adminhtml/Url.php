@@ -13,7 +13,7 @@ class Yireo_MageBridge_Model_Rewrite_Adminhtml_Url extends Mage_Adminhtml_Model_
 {
     /*
      * Rewrite of original method
-     * 
+     *
      * @param   string $routePath
      * @param   array $routeParams
      * @return  string
@@ -24,7 +24,7 @@ class Yireo_MageBridge_Model_Rewrite_Adminhtml_Url extends Mage_Adminhtml_Model_
         $original_urls = Mage::registry('original_urls');
 
         // If this value is empty, it is not yet initialized
-        if(empty($original_urls)) {
+        if (empty($original_urls)) {
             return parent::getUrl($routePath, $routeParams);
         }
 
@@ -33,10 +33,10 @@ class Yireo_MageBridge_Model_Rewrite_Adminhtml_Url extends Mage_Adminhtml_Model_
 
         // Replace the current URL with the original URL
         $store = Mage::app()->getStore();
-        if($store->getConfig('web/secure/use_in_adminhtml') == 1 && isset($original_urls['web/secure/base_url'])) {
-            $rt = str_replace( $store->getConfig('web/secure/base_url'), $original_urls['web/secure/base_url'], $rt);
-        } elseif(isset($original_urls['web/unsecure/base_url'])) {
-            $rt = str_replace( $store->getConfig('web/unsecure/base_url'), $original_urls['web/unsecure/base_url'], $rt);
+        if ($store->getConfig('web/secure/use_in_adminhtml') == 1 && isset($original_urls['web/secure/base_url'])) {
+            $rt = str_replace($store->getConfig('web/secure/base_url'), $original_urls['web/secure/base_url'], $rt);
+        } elseif (isset($original_urls['web/unsecure/base_url'])) {
+            $rt = str_replace($store->getConfig('web/unsecure/base_url'), $original_urls['web/unsecure/base_url'], $rt);
         }
 
         return $rt;

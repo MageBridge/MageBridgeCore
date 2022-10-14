@@ -51,22 +51,18 @@ defined('_JEXEC') or die('Restricted access');
 		</tfoot>
 		<tbody>
 		<?php
-		if (!empty($this->widgets))
-		{
-			$i = 0;
-			foreach ($this->widgets as $widget)
-			{
+        if (!empty($this->widgets)) {
+            $i = 0;
+            foreach ($this->widgets as $widget) {
+                $css = [];
+                $return = $widget['id'];
 
-				$css = array();
-				$return = $widget['id'];
+                if (JFactory::getApplication()->input->getCmd('current') == $return) {
+                    $css[] = 'current';
+                }
 
-				if (JFactory::getApplication()->input->getCmd('current') == $return)
-				{
-					$css[] = 'current';
-				}
-
-				$js = "window.parent.jSelectWidget('$return', '$return', '" . JFactory::getApplication()->input->get('object') . "');";
-				?>
+                $js = "window.parent.jSelectWidget('$return', '$return', '" . JFactory::getApplication()->input->get('object') . "');";
+                ?>
 				<tr class="<?php echo implode(' ', $css); ?>">
 					<td>
 						<?php echo $this->pagination->getRowOffset($i); ?>
@@ -84,18 +80,16 @@ defined('_JEXEC') or die('Restricted access');
 					</td>
 				</tr>
 				<?php
-				$i++;
-			}
-		}
-		else
-		{
-			?>
+                $i++;
+            }
+        } else {
+            ?>
 			<tr>
 				<td colspan="5"><?php echo JText::_('LIB_YIREO_VIEW_LIST_NO_ITEMS'); ?></td>
 			</tr>
 			<?php
-		}
-		?>
+        }
+?>
 		</tbody>
 	</table>
 	<input type="hidden" name="option" value="com_magebridge"/>

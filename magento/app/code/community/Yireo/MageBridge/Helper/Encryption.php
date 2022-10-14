@@ -34,7 +34,7 @@ class Yireo_MageBridge_Helper_Encryption extends Mage_Core_Helper_Abstract
      * Get some kind of string that is specific for this host
      *
      * @param string $string
-     * @return string 
+     * @return string
      */
     public function getSaltedKey($string)
     {
@@ -47,7 +47,7 @@ class Yireo_MageBridge_Helper_Encryption extends Mage_Core_Helper_Abstract
      * Encrypt data for security
      *
      * @param mixed $data
-     * @return string 
+     * @return string
      */
     public function encrypt($data)
     {
@@ -117,7 +117,7 @@ class Yireo_MageBridge_Helper_Encryption extends Mage_Core_Helper_Abstract
     }
 
     /*
-     * Simple Base64 encoding 
+     * Simple Base64 encoding
      *
      * @param mixed $string
      * @return string
@@ -128,7 +128,7 @@ class Yireo_MageBridge_Helper_Encryption extends Mage_Core_Helper_Abstract
     }
 
     /*
-     * Simple Base64 decoding 
+     * Simple Base64 decoding
      *
      * @param mixed $string
      * @return string
