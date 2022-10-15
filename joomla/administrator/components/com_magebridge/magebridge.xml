@@ -36,7 +36,6 @@
         <folder>connectors</folder>
         <folder>controllers</folder>
         <folder>helpers</folder>
-        <folder>libraries</folder>
         <folder>models</folder>
         <folder>sef_ext</folder>
         <folder>views</folder>
@@ -76,7 +75,6 @@
             <filename>magebridge.php</filename>
             <filename>script.magebridge.php</filename>
             <filename>view.php</filename>
-            <filename>libraries/loader.php</filename>
             <folder>controllers</folder>
             <folder>fields</folder>
             <folder>helpers</folder>

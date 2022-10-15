@@ -1,0 +1,75 @@
+div.pagetitle.icon-48-logo {
+    width: auto;
+    height: 50px;
+    background-position: 5px 2px;
+}
+
+div#toolbar-box div.toolbar-list span {
+    background-position: 2px 2px;
+}
+
+dd pre {
+    background: none;
+    border: 0;
+    font-size: 100%;
+    font-weight: normal;
+}
+
+.nav-tabs > li > a {
+    font-size: 14px;
+}
+
+.nav {
+    margin-bottom: 0;
+}
+
+div.tab-content {
+    background-color: #fff;
+}
+
+div.control-group label.radio {
+    margin-left: 20px;
+}
+
+div.controls fieldset.btn-group.radio {
+    margin-left: 30px;
+    font-size: 90%;
+}
+
+div.controls fieldset.btn-group.radio label {
+    width: auto;
+    padding-right: 30px;
+}
+
+div.control-group label.radio input[type="radio"] {
+    margin-right: 10px;
+}
+
+div.well {
+    background-color: #fefefe;
+}
+
+div#cpanel {
+    padding-bottom: 120px;
+}
+
+div#toolbar li.button a.modal {
+    position: relative;
+    width: auto;
+    background: none;
+    border: none;
+    box-shadow: none;
+    float: right;
+    top: auto;
+    margin-right: 10px;
+}
+
+ul#menu li.node a {
+    width: auto !important;
+    height: auto;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+    background-image: none;
+}
+

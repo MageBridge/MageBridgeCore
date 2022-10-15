@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="library" version="3.3" method="upgrade">
+    <name>Library - Yireo</name>
+	<libraryname>yireo</libraryname>
+    <author>Yireo</author>
+    <authoremail>support@yireo.com</authoremail>
+    <authorurl>http://www.yireo.com</authorurl>
+    <creationDate>September 2017</creationDate>
+    <copyright>Copyright 2016 Yireo.com. All rights reserved.</copyright>
+    <license>http://www.gnu.org/licenses/gpl-3.0.html GNU/GPL</license>
+    <version>0.2.17</version>
+
+	<languages folder="admin/language">
+		<language tag="en-GB">en-GB.lib_yireo.ini</language>
+		<language tag="en-GB">en-GB.lib_yireo.sys.ini</language>
+	</languages>
+
+    <administrator>
+	    <languages folder="site/language">
+    		<language tag="en-GB">en-GB.lib_yireo.ini</language>
+		    <language tag="en-GB">en-GB.lib_yireo.sys.ini</language>
+	    </languages>
+    </administrator>
+
+    <files>
+        <filename>controller.php</filename>
+        <filename>dispatcher.php</filename>
+        <filename>helper.php</filename>
+        <filename>loader.php</filename>
+        <filename>model.php</filename>
+        <filename>table.php</filename>
+        <filename>view.php</filename>
+        <filename>yireo.xml</filename>
+        <folder>controller</folder>
+        <folder>form</folder>
+        <folder>helper</folder>
+        <folder>model</folder>
+        <folder>route</folder>
+        <folder>view</folder>
+        <folder>Yireo</folder>
+    </files>
+
+	<updateservers>
+		<server type="extension" priority="1" name="lib_yireo">https://www.yireo.com/updates/lib_yireo.xml</server>
+	</updateservers>
+</extension>
