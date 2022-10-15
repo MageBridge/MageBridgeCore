@@ -15,27 +15,23 @@ defined('_JEXEC') or die('Restricted access');
 /** @var JForm $form */
 $form = $this->form;
 
-if (empty($form))
-{
-	throw new Exception('Not a form object');
+if (empty($form)) {
+    throw new Exception('Not a form object');
 }
 
 $fieldsetObject = (object) null;
 
-foreach ($form->getFieldsets() as $fieldsetCode => $fieldsetObject)
-{
-	if ($fieldset == $fieldsetCode)
-	{
-		break;
-	}
+foreach ($form->getFieldsets() as $fieldsetCode => $fieldsetObject) {
+    if ($fieldset == $fieldsetCode) {
+        break;
+    }
 }
 
 ?>
 <?php if (!empty($form)): ?>
 	<?php if (!empty($fieldset)): ?>
-		<?php if (empty($legend))
-		{
-			$legend = JText::_('LIB_YIREO_VIEW_FORM_FIELDSET_' . $fieldset);
+		<?php if (empty($legend)) {
+		    $legend = JText::_('LIB_YIREO_VIEW_FORM_FIELDSET_' . $fieldset);
 		} ?>
         <fieldset class="adminform">
             <legend><?php echo $legend; ?></legend>
@@ -46,7 +42,7 @@ foreach ($form->getFieldsets() as $fieldsetCode => $fieldsetObject)
 
 			<?php foreach ($form->getFieldset($fieldset) as $field): ?>
 				<?php $fieldType = strtolower((string) $field->type); ?>
-				<?php if ($fieldset == 'editor' || in_array($fieldType, array('textarea', 'editor'))): ?>
+				<?php if ($fieldset == 'editor' || in_array($fieldType, ['textarea', 'editor'])): ?>
                     <div class="row-fluid form-group">
                         <div class="span12 col-md-12">
 							<?php echo $field->label; ?>

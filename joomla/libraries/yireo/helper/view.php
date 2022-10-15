@@ -13,7 +13,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
-/** 
+/**
  * Yireo View Helper
  */
 class YireoHelperView
@@ -23,28 +23,34 @@ class YireoHelperView
      *
      * @access public
      * @subpackage Yireo
-     * @param 
+     * @param
      * @return array
      */
-    static public function getSelectList($name, $options, $value = null, $js = false, $selectNone = true, $multipleSelect = false)
+    public static function getSelectList($name, $options, $value = null, $js = false, $selectNone = true, $multipleSelect = false)
     {
-        // Add a select-none option 
+        // Add a select-none option
         if ($selectNone) {
             if (is_bool($selectNone) || is_numeric($selectNone)) {
                 $selectNone = '';
             } else {
                 $selectNone = '- '.$selectNone.' -';
             }
-            array_unshift($options, array('value' => '', 'title' => $selectNone));
+            array_unshift($options, ['value' => '', 'title' => $selectNone]);
         }
 
         // Construct the attributes
-        $attributes = array();
-        if ($js == true) $attributes[] = 'onchange="document.adminForm.submit();"';
+        $attributes = [];
+        if ($js == true) {
+            $attributes[] = 'onchange="document.adminForm.submit();"';
+        }
         if ($multipleSelect == true) {
             $multipleSelect = (int)$multipleSelect;
-            if ($multipleSelect == 1) $multipleSelect = 4;
-            if ($multipleSelect < count($options) && count($options) < 20) $multipleSelect = count($options);
+            if ($multipleSelect == 1) {
+                $multipleSelect = 4;
+            }
+            if ($multipleSelect < count($options) && count($options) < 20) {
+                $multipleSelect = count($options);
+            }
             $attributes[] = 'multiple="multiple" size="'.$multipleSelect.'"';
         }
 
@@ -57,25 +63,25 @@ class YireoHelperView
      *
      * @access public
      * @subpackage Yireo
-     * @param 
+     * @param
      * @return array
      */
-    static public function getSelectOptions($items, $value = 'id', $title = 'title', $alt_title = 'name')
+    public static function getSelectOptions($items, $value = 'id', $title = 'title', $alt_title = 'name')
     {
-        $options = array();
+        $options = [];
         if (!empty($items)) {
             foreach ($items as $item) {
                 if (!empty($title) && isset($item->$value) && !empty($item->$title)) {
-                    $option = array('value' => $item->$value, 'title' => $item->$title);
-
-                } else if (!empty($alt_title) && isset($item->$value) && !empty($item->$alt_title)) {
-                    $option = array('value' => $item->$value, 'title' => $item->$alt_title);
-
-                } else if (empty($title) || (isset($item->$value) && !isset($item->$title))) {
-                    $option = array('value' => $item->$value, 'title' => $item->$value);
+                    $option = ['value' => $item->$value, 'title' => $item->$title];
+                } elseif (!empty($alt_title) && isset($item->$value) && !empty($item->$alt_title)) {
+                    $option = ['value' => $item->$value, 'title' => $item->$alt_title];
+                } elseif (empty($title) || (isset($item->$value) && !isset($item->$title))) {
+                    $option = ['value' => $item->$value, 'title' => $item->$value];
                 }
 
-                if (isset($item->published) && $item->published == 0) $option['disable'] = 1;
+                if (isset($item->published) && $item->published == 0) {
+                    $option['disable'] = 1;
+                }
                 $options[] = $option;
             }
         }
@@ -87,14 +93,14 @@ class YireoHelperView
      *
      * @access public
      * @subpackage Yireo
-     * @param 
+     * @param
      * @return array
      */
-    static public function trim($text)
+    public static function trim($text)
     {
         $text = trim($text);
-        $text = preg_replace('/^\<p\>\&nbsp\;\<\/p\>/','', $text);
-        $text = preg_replace('/\<p\>\&nbsp\;\<\/p\>$/','', $text);
+        $text = preg_replace('/^\<p\>\&nbsp\;\<\/p\>/', '', $text);
+        $text = preg_replace('/\<p\>\&nbsp\;\<\/p\>$/', '', $text);
         return $text;
     }
 
@@ -107,10 +113,10 @@ class YireoHelperView
      * @param string $div
      * @return null
      */
-    static public function ajax($url = null, $div = null)
+    public static function ajax($url = null, $div = null)
     {
         $document = JFactory::getDocument();
-        if(stristr(get_class($document), 'html') == false) {
+        if (stristr(get_class($document), 'html') == false) {
             return false;
         }
 
@@ -131,6 +137,6 @@ class YireoHelperView
             . "});\n"
             . "</script>";
 
-        $document->addCustomTag( $script );
+        $document->addCustomTag($script);
     }
 }

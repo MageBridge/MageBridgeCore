@@ -2,6 +2,7 @@
 /**
  *
  */
+
 namespace Yireo\Common\Router;
 
 /**
@@ -140,7 +141,7 @@ class Base
      *
      * @throws \Yireo\Common\Exception\PageNotFound
      */
-    public function displayPage($page = 'main.php', $dataFile)
+    public function displayPage($page, $dataFile)
     {
         $pagePath = $this->rootFolder . '/content/pages/' . $page;
 

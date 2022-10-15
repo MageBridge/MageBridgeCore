@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * Joomla! Yireo Lib
  *
@@ -20,16 +20,16 @@ jimport('joomla.utilities.utility');
 <form method="post" name="adminForm" id="adminForm" enctype="multipart/form-data">
 <div class="row-fluid">
     <div class="span6">
-        <?php echo $this->loadTemplate('fieldset', array('fieldset' => 'basic')); ?>
+        <?php echo $this->loadTemplate('fieldset', ['fieldset' => 'basic']); ?>
     </div>
     <div class="span6">
-        <?php echo $this->loadTemplate('fieldset', array('fieldset' => 'other')); ?>
-        <?php echo $this->loadTemplate('fieldset', array('fieldset' => 'params')); ?>
+        <?php echo $this->loadTemplate('fieldset', ['fieldset' => 'other']); ?>
+        <?php echo $this->loadTemplate('fieldset', ['fieldset' => 'params']); ?>
     </div>
 </div>
 <div class="row-fluid">
     <div class="span12">
-        <?php echo $this->loadTemplate('fieldset', array('fieldset' => 'editor')); ?>
+        <?php echo $this->loadTemplate('fieldset', ['fieldset' => 'editor']); ?>
     </div>
 </div>
 <?php echo $this->loadTemplate('formend'); ?>

@@ -20,44 +20,43 @@ defined('_JEXEC') or die();
  */
 trait YireoModelTraitIdentifiable
 {
-	/**
-	 * Unique id
-	 *
-	 * @var int
-	 */
-	protected $id = 0;
-	
-	/**
-	 * Unique id
-	 *
-	 * @var int
-	 * @deprecated Use $this->id instead
-	 */
-	protected $_id = 0;
+    /**
+     * Unique id
+     *
+     * @var int
+     */
+    protected $id = 0;
 
-	/**
-	 * @return int
-	 */
-	public function getId()
-	{
-		return (int) $this->id;
-	}
+    /**
+     * Unique id
+     *
+     * @var int
+     * @deprecated Use $this->id instead
+     */
+    protected $_id = 0;
 
-	/**
-	 * @param int $id
-	 * @param bool $reInitialize
-	 *
-	 * @return $this
-	 */
-	public function setId($id, $reInitialize = true)
-	{
-		$this->id = $id;
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return (int) $this->id;
+    }
 
-		if ($reInitialize)
-		{
-			$this->data = null;
-		}
+    /**
+     * @param int $id
+     * @param bool $reInitialize
+     *
+     * @return $this
+     */
+    public function setId($id, $reInitialize = true)
+    {
+        $this->id = $id;
 
-		return $this;
-	}
+        if ($reInitialize) {
+            $this->data = null;
+        }
+
+        return $this;
+    }
 }

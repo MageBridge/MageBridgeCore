@@ -1,5 +1,7 @@
 <?php
+
 // Namespace
+
 namespace Yireo\Common\System;
 
 /**
@@ -14,14 +16,14 @@ class Autoloader
         self::$paths[] = dirname(__DIR__) . '/';
     }
 
-    static public $paths = [];
+    public static $paths = [];
 
-    static public function init()
+    public static function init()
     {
-        spl_autoload_register(array(new self, 'load'));
+        spl_autoload_register([new self(), 'load']);
     }
 
-    static public function addPath($path)
+    public static function addPath($path)
     {
         self::$paths[] = $path;
     }

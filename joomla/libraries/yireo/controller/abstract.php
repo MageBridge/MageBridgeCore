@@ -21,18 +21,18 @@ require_once dirname(__FILE__) . '/../loader.php';
  */
 class YireoAbstractController extends JControllerLegacy
 {
-	/**
-	 * Constructor
-	 */
-	public function __construct()
-	{
-		$this->handleLegacy();
-		
-		// Call the parent constructor
-		parent::__construct();
-	}
-	
-	protected function handleLegacy()
-	{
-	}
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->handleLegacy();
+
+        // Call the parent constructor
+        parent::__construct();
+    }
+
+    protected function handleLegacy()
+    {
+    }
 }

@@ -21,152 +21,147 @@ require_once dirname(__FILE__) . '/../loader.php';
  */
 class YireoCommonController extends YireoAbstractController
 {
-	/**
-	 * @var JApplicationWeb
-	 */
-	protected $app;
+    /**
+     * @var JApplicationWeb
+     */
+    protected $app;
 
-	/**
-	 * @var JApplicationWeb
-	 * @deprecated
-	 */
-	protected $_app;
+    /**
+     * @var JApplicationWeb
+     * @deprecated
+     */
+    protected $_app;
 
-	/**
-	 * @var JApplicationWeb
-	 * @deprecated
-	 */
-	protected $_application;
+    /**
+     * @var JApplicationWeb
+     * @deprecated
+     */
+    protected $_application;
 
-	/**
-	 * @var JInput
-	 */
-	protected $input;
+    /**
+     * @var JInput
+     */
+    protected $input;
 
-	/**
-	 * @var JInput
-	 * @deprecated
-	 */
-	protected $_jinput;
+    /**
+     * @var JInput
+     * @deprecated
+     */
+    protected $_jinput;
 
-	/**
-	 * Value of the last message
-	 *
-	 * @var string
-	 */
-	protected $msg = '';
+    /**
+     * Value of the last message
+     *
+     * @var string
+     */
+    protected $msg = '';
 
-	/**
-	 * Type of the last message
-	 *
-	 * @var string
-	 * @values    error|notice|message
-	 */
-	protected $msg_type = '';
+    /**
+     * Type of the last message
+     *
+     * @var string
+     * @values    error|notice|message
+     */
+    protected $msg_type = '';
 
-	/**
-	 * Constructor
-	 */
-	public function __construct()
-	{
-		// Define variables
-		$this->app = JFactory::getApplication();
-		$this->input = $this->app->input;
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        // Define variables
+        $this->app = JFactory::getApplication();
+        $this->input = $this->app->input;
 
-		// Add model paths
-		$this->addModelPaths();
+        // Add model paths
+        $this->addModelPaths();
 
-		// Load additional language-files
-		YireoHelper::loadLanguageFile();
+        // Load additional language-files
+        YireoHelper::loadLanguageFile();
 
-		// Call the parent constructor
-		parent::__construct();
-	}
+        // Call the parent constructor
+        parent::__construct();
+    }
 
-	/**
-	 * Handle legacy calls
-	 */
-	protected function handleLegacy()
-	{
-		$this->_app = $this->app;
-		$this->_application = $this->app;
-		$this->_jinput = $this->input;
+    /**
+     * Handle legacy calls
+     */
+    protected function handleLegacy()
+    {
+        $this->_app = $this->app;
+        $this->_application = $this->app;
+        $this->_jinput = $this->input;
 
-		parent::handleLegacy();
-	}
+        parent::handleLegacy();
+    }
 
-	/**
-	 * Add model paths for either backend or frontend
-	 */
-	protected function addModelPaths()
-	{
-		// Add extra model-paths
-		$option = $this->input->getCmd('option');
+    /**
+     * Add model paths for either backend or frontend
+     */
+    protected function addModelPaths()
+    {
+        // Add extra model-paths
+        $option = $this->input->getCmd('option');
 
-		if ($this->app->isSite())
-		{
-			$this->addModelPath(JPATH_ADMINISTRATOR . '/components/' . $option . '/models');
-			$this->addModelPath(JPATH_SITE . '/components/' . $option . '/models');
-			
-			return null;
-		}
+        if ($this->app->isSite()) {
+            $this->addModelPath(JPATH_ADMINISTRATOR . '/components/' . $option . '/models');
+            $this->addModelPath(JPATH_SITE . '/components/' . $option . '/models');
 
-		$this->addModelPath(JPATH_ADMINISTRATOR . '/components/' . $option . '/models');
-		
-		return null;
-	}
+            return null;
+        }
 
-	/**
-	 * @param $option
-	 * @param $name
-	 *
-	 * @return mixed
-	 * @throws \Yireo\Exception\Controller\NotFound
-	 */
-	static public function getControllerInstance($option, $name)
-	{
-		// Check for a child controller
-		if (is_file(JPATH_COMPONENT . '/controllers/' . $name . '.php'))
-		{
-			require_once JPATH_COMPONENT . '/controllers/' . $name . '.php';
+        $this->addModelPath(JPATH_ADMINISTRATOR . '/components/' . $option . '/models');
 
-			$controllerClass = ucfirst($option) . 'Controller' . ucfirst($name);
+        return null;
+    }
 
-			if (class_exists($controllerClass))
-			{
-				$controller = new $controllerClass;
+    /**
+     * @param $option
+     * @param $name
+     *
+     * @return mixed
+     * @throws \Yireo\Exception\Controller\NotFound
+     */
+    public static function getControllerInstance($option, $name)
+    {
+        // Check for a child controller
+        if (is_file(JPATH_COMPONENT . '/controllers/' . $name . '.php')) {
+            require_once JPATH_COMPONENT . '/controllers/' . $name . '.php';
 
-				return $controller;
-			}
-		}
+            $controllerClass = ucfirst($option) . 'Controller' . ucfirst($name);
 
-		return self::getDefaultControllerInstance($option, $name);
-	}
+            if (class_exists($controllerClass)) {
+                $controller = new $controllerClass();
 
-	/**
-	 * @param $option
-	 * @param $name
-	 *
-	 * @return mixed
-	 * @throws \Yireo\Exception\Controller\NotFound
-	 */
-	static public function getDefaultControllerInstance($option, $name)
-	{
-		// Require the base controller
-		if (is_file(JPATH_COMPONENT . '/controller.php'))
-		{
-			require_once JPATH_COMPONENT . '/controller.php';
-		}
+                return $controller;
+            }
+        }
 
-		$controllerClass = ucfirst($option) . 'Controller';
+        return self::getDefaultControllerInstance($option, $name);
+    }
 
-		if (class_exists($controllerClass))
-		{
-			$controller = new $controllerClass;
+    /**
+     * @param $option
+     * @param $name
+     *
+     * @return mixed
+     * @throws \Yireo\Exception\Controller\NotFound
+     */
+    public static function getDefaultControllerInstance($option, $name)
+    {
+        // Require the base controller
+        if (is_file(JPATH_COMPONENT . '/controller.php')) {
+            require_once JPATH_COMPONENT . '/controller.php';
+        }
 
-			return $controller;
-		}
+        $controllerClass = ucfirst($option) . 'Controller';
 
-		throw new \Yireo\Exception\Controller\NotFound(JText::_('LIB_YIREO_NO_CONTROLLER_FOUND'));
-	}
+        if (class_exists($controllerClass)) {
+            $controller = new $controllerClass();
+
+            return $controller;
+        }
+
+        throw new \Yireo\Exception\Controller\NotFound(JText::_('LIB_YIREO_NO_CONTROLLER_FOUND'));
+    }
 }

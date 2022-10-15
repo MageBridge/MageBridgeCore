@@ -11,44 +11,44 @@
 namespace Yireo\Test;
 
 use PHPUnit\Framework\TestCase as ParentTestCase;
-use JEventDispatcher, JPlugin;
+use JEventDispatcher;
+use JPlugin;
 
 /**
  * Class PluginCase
  */
 class PluginCase extends JoomlaCase
 {
-	/**
-	 * @var string
-	 */
-	protected $pluginName;
+    /**
+     * @var string
+     */
+    protected $pluginName;
 
-	/**
-	 * @var string
-	 */
-	protected $pluginGroup;
+    /**
+     * @var string
+     */
+    protected $pluginGroup;
 
-	/**
-	 * @var
-	 */
-	protected $pluginParams = [];
+    /**
+     * @var
+     */
+    protected $pluginParams = [];
 
-	/**
-	 * @return JPlugin
-	 */
-	protected function getPluginInstance()
-	{
-		$pluginPath = JPATH_BASE . '/plugins/' . $this->pluginGroup . '/' . $this->pluginName . '/' . $this->pluginName . '.php';
-		require_once $pluginPath;
+    /**
+     * @return JPlugin
+     */
+    protected function getPluginInstance()
+    {
+        $pluginPath = JPATH_BASE . '/plugins/' . $this->pluginGroup . '/' . $this->pluginName . '/' . $this->pluginName . '.php';
+        require_once $pluginPath;
 
-		$dispatcher = JEventDispatcher::getInstance();
-		$className = '\\' . $this->getTargetClassName();
-		$pluginParams = new \Joomla\Registry\Registry;
-		$pluginParams->loadArray($this->pluginParams);
+        $dispatcher = JEventDispatcher::getInstance();
+        $className = '\\' . $this->getTargetClassName();
+        $pluginParams = new \Joomla\Registry\Registry();
+        $pluginParams->loadArray($this->pluginParams);
 
-		$plugin     = new $className($dispatcher, array('params' => $pluginParams));
+        $plugin     = new $className($dispatcher, ['params' => $pluginParams]);
 
-		return $plugin;
-	}
+        return $plugin;
+    }
 }
-

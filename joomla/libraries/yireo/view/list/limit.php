@@ -14,13 +14,12 @@
 defined('_JEXEC') or die();
 
 // Construct the options
-$limits       = array(0, 3, 4, 5, 10, 20, 30, 40, 50, 100, 200, 300, 400, 500);
+$limits       = [0, 3, 4, 5, 10, 20, 30, 40, 50, 100, 200, 300, 400, 500];
 $currentLimit = $this->getModel()->getState('limit');
-$options      = array();
+$options      = [];
 
-foreach ($limits as $limit)
-{
-	$options[] = array('value' => $limit, 'title' => $limit);
+foreach ($limits as $limit) {
+    $options[] = ['value' => $limit, 'title' => $limit];
 }
 
 $javascript = 'onchange="document.adminForm.submit();"';

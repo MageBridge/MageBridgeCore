@@ -16,7 +16,7 @@ defined('_JEXEC') or die();
 // Include libraries
 require_once dirname(dirname(__FILE__)).'/loader.php';
 
-/** 
+/**
  * Yireo Table Helper
  */
 class YireoHelperTable

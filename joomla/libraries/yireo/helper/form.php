@@ -16,47 +16,45 @@ defined('_JEXEC') or die();
 // Include libraries
 require_once dirname(dirname(__FILE__)).'/loader.php';
 
-/** 
+/**
  * Yireo Form Helper
  */
 class YireoHelperForm
 {
-	/**
-	 * @var array
-	 */
-	protected static $items = array();
+    /**
+     * @var array
+     */
+    protected static $items = [];
 
-	/**
-	 * @param $table
-	 * @param $valueField
-	 * @param $textField
-	 *
-	 * @return mixed
-	 */
-	public static function options($table, $valueField, $textField)
-	{
-		$hash = md5($table);
+    /**
+     * @param $table
+     * @param $valueField
+     * @param $textField
+     *
+     * @return mixed
+     */
+    public static function options($table, $valueField, $textField)
+    {
+        $hash = md5($table);
 
-		if (!isset(static::$items[$hash]))
-		{
-			$db = JFactory::getDbo();
-			$query = $db->getQuery(true)
-				->select($db->quoteName(array($valueField, $textField)))
-				->from($db->quoteName($table))
+        if (!isset(static::$items[$hash])) {
+            $db = JFactory::getDbo();
+            $query = $db->getQuery(true)
+                ->select($db->quoteName([$valueField, $textField]))
+                ->from($db->quoteName($table))
             ;
 
-			$db->setQuery($query);
-			$items = $db->loadObjectList();
+            $db->setQuery($query);
+            $items = $db->loadObjectList();
 
-			// Assemble the list options.
-			static::$items[$hash] = array();
+            // Assemble the list options.
+            static::$items[$hash] = [];
 
-			foreach ($items as &$item)
-			{
-				static::$items[$hash][] = JHtml::_('select.option', $item->$valueField, $item->$textField);
-			}
-		}
+            foreach ($items as &$item) {
+                static::$items[$hash][] = JHtml::_('select.option', $item->$valueField, $item->$textField);
+            }
+        }
 
-		return static::$items[$hash];
-	}
+        return static::$items[$hash];
+    }
 }

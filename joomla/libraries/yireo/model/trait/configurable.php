@@ -20,54 +20,50 @@ defined('_JEXEC') or die();
  */
 trait YireoModelTraitConfigurable
 {
-	/**
-	 * @var array
-	 */
-	protected $config = array();
-	
-	/**
-	 * @param mixed $name
-	 * @param mixed $value
-	 * 
-	 * @return $this
-	 */
-	public function setConfig($name, $value = null)
-	{
-		if (!is_array($this->config))
-		{
-			$this->config = array();
-		}
-		
-		if (is_array($name) && empty($value))
-		{
-			$this->config = $name;
+    /**
+     * @var array
+     */
+    protected $config = [];
 
-			return $this;
-		}
+    /**
+     * @param mixed $name
+     * @param mixed $value
+     *
+     * @return $this
+     */
+    public function setConfig($name, $value = null)
+    {
+        if (!is_array($this->config)) {
+            $this->config = [];
+        }
 
-		$this->config[$name] = $value;
-		
-		return $this;
-	}
+        if (is_array($name) && empty($value)) {
+            $this->config = $name;
 
-	/**
-	 * @param $name
-	 * @param $default
-	 *
-	 * @return bool|mixed
-	 */
-	public function getConfig($name = null, $default = false)
-	{
-		if (empty($name))
-		{
-			return $this->config;
-		}
+            return $this;
+        }
 
-		if (empty($this->config[$name]))
-		{
-			return $default;
-		}
+        $this->config[$name] = $value;
 
-		return $this->config[$name];
-	}
+        return $this;
+    }
+
+    /**
+     * @param $name
+     * @param $default
+     *
+     * @return bool|mixed
+     */
+    public function getConfig($name = null, $default = false)
+    {
+        if (empty($name)) {
+            return $this->config;
+        }
+
+        if (empty($this->config[$name])) {
+            return $default;
+        }
+
+        return $this->config[$name];
+    }
 }

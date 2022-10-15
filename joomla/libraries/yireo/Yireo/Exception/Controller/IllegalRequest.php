@@ -9,6 +9,7 @@
  */
 
 // Namespace
+
 namespace Yireo\Exception\Controller;
 
 // Check to ensure this file is included in Joomla!

@@ -26,5 +26,5 @@ defined('_JEXEC') or die('Restricted access');
 
 <input type="hidden" name="option" value="<?php echo $this->getConfig('option'); ?>" />
 <input type="hidden" name="task" value="" />
-<?php echo JHTML::_( 'form.token' ); ?>
+<?php echo JHTML::_('form.token'); ?>
 </form>

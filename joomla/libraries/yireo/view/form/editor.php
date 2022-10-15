@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * Joomla! Yireo Lib
  *
@@ -13,8 +13,8 @@
 defined('_JEXEC') or die('Restricted access');
 
 $field = $this->getEditorField();
-if(!empty($field)) {
-?>
+if (!empty($field)) {
+    ?>
 <fieldset class="adminform">
     <legend><?php echo JText::_('LIB_YIREO_TABLE_FIELDNAME_'.strtoupper($field)); ?></legend>
     <table class="admintable" width="100%">
@@ -22,10 +22,10 @@ if(!empty($field)) {
     <tr>
         <td class="value">
             <?php
-            $editor = JFactory::getEditor();
-            $value = $this->item->$field;
-            echo @$editor->display($field, $value, '100%', '300', '44', '9', array('pagebreak', 'readmore' )) ;
-            ?>
+                $editor = JFactory::getEditor();
+    $value = $this->item->$field;
+    echo @$editor->display($field, $value, '100%', '300', '44', '9', ['pagebreak', 'readmore' ]) ;
+    ?>
         </td>
     </tr>
     </tbody>

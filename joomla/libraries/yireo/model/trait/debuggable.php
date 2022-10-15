@@ -20,42 +20,40 @@ defined('_JEXEC') or die();
  */
 trait YireoModelTraitDebuggable
 {
-	/**
-	 * Boolean to allow for debugging
-	 *
-	 * @var bool
-	 * @deprecated Use $this->getConfig('debug') instead
-	 */
-	protected $_debug = false;
+    /**
+     * Boolean to allow for debugging
+     *
+     * @var bool
+     * @deprecated Use $this->getConfig('debug') instead
+     */
+    protected $_debug = false;
 
-	/**
-	 * @return bool
-	 */
-	protected function allowDebug()
-	{
-		// Enable debugging
-		if ($this->params->get('debug', 0) == 1)
-		{
-			return true;
-		}
+    /**
+     * @return bool
+     */
+    protected function allowDebug()
+    {
+        // Enable debugging
+        if ($this->params->get('debug', 0) == 1) {
+            return true;
+        }
 
-		if ($this->getConfig('debug'))
-		{
-			return true;
-		}
-		
-		return false;
-	}
+        if ($this->getConfig('debug')) {
+            return true;
+        }
 
-	/**
-	 * Method to get a debug-message of the latest query
-	 *
-	 * @return string
-	 */
-	public function getDbDebug()
-	{
-		$db = JFactory::getDbo();
-		
-		return '<pre>' . str_replace('#__', $db->getPrefix(), $db->getQuery()) . '</pre>';
-	}
+        return false;
+    }
+
+    /**
+     * Method to get a debug-message of the latest query
+     *
+     * @return string
+     */
+    public function getDbDebug()
+    {
+        $db = JFactory::getDbo();
+
+        return '<pre>' . str_replace('#__', $db->getPrefix(), $db->getQuery()) . '</pre>';
+    }
 }

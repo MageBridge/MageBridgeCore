@@ -21,27 +21,27 @@ include_once JPATH_LIBRARIES . '/joomla/form/fields/radio.php';
 
 class YireoFormFieldPublished extends JFormFieldRadio
 {
-	/*
-	 * Form field type
-	 */
-	public $type = 'Published';
+    /*
+     * Form field type
+     */
+    public $type = 'Published';
 
-	/**
-	 * @param SimpleXMLElement $element
-	 * @param mixed            $value
-	 * @param null             $group
-	 *
-	 * @return bool
-	 */
-	public function setup(SimpleXMLElement $element, $value, $group = null)
-	{
-		$rt = parent::setup($element, $value, $group);
+    /**
+     * @param SimpleXMLElement $element
+     * @param mixed            $value
+     * @param null             $group
+     *
+     * @return bool
+     */
+    public function setup(SimpleXMLElement $element, $value, $group = null)
+    {
+        $rt = parent::setup($element, $value, $group);
         $this->specificSetup();
 
-		return $rt;
-	}
+        return $rt;
+    }
 
-    static public function getFieldInput($value)
+    public static function getFieldInput($value)
     {
         $field = new self();
         $field->setValue($value);
@@ -55,9 +55,9 @@ class YireoFormFieldPublished extends JFormFieldRadio
 
     protected function specificSetup()
     {
-		$this->element['label'] = 'JPUBLISHED';
-		$this->element['required'] = 1;
-		$this->required = 1;
+        $this->element['label'] = 'JPUBLISHED';
+        $this->element['required'] = 1;
+        $this->required = 1;
     }
 
     public function toString()
@@ -69,37 +69,36 @@ class YireoFormFieldPublished extends JFormFieldRadio
         return $this->getInput();
     }
 
-	/*
-	 * Method to construct the HTML of this element
-	 *
-	 * @return string
-	 */
-	protected function getInput()
-	{
-		$classes = array(
-			'radio',
-			'btn-group',
-			'btn-group-yesno');
+    /*
+     * Method to construct the HTML of this element
+     *
+     * @return string
+     */
+    protected function getInput()
+    {
+        $classes = [
+            'radio',
+            'btn-group',
+            'btn-group-yesno', ];
 
-		if (in_array($this->fieldname, array('published', 'enabled', 'state')))
-		{
-			$classes[] = 'jpublished';
-		}
+        if (in_array($this->fieldname, ['published', 'enabled', 'state'])) {
+            $classes[] = 'jpublished';
+        }
 
-		$this->class = implode(' ', $classes);
+        $this->class = implode(' ', $classes);
 
-		return parent::getInput();
-	}
+        return parent::getInput();
+    }
 
-	/**
-	 * @return array
-	 */
-	protected function getOptions()
-	{
-		$options = array(
-			JHtml::_('select.option', '0', JText::_('JUNPUBLISHED')),
-			JHtml::_('select.option', '1', JText::_('JPUBLISHED')),);
+    /**
+     * @return array
+     */
+    protected function getOptions()
+    {
+        $options = [
+            JHtml::_('select.option', '0', JText::_('JUNPUBLISHED')),
+            JHtml::_('select.option', '1', JText::_('JPUBLISHED')),];
 
-		return $options;
-	}
+        return $options;
+    }
 }
