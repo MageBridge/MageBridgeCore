@@ -42,12 +42,7 @@ class MageBridge_Autoloader
      */
     public function loadYireoAutoloader()
     {
-        // Also include the Yireo loader
-        if (file_exists(JPATH_LIBRARIES . '/yireo/loader.php')) {
-            return require_once(JPATH_LIBRARIES . '/yireo/loader.php');
-        }
-
-        require_once JPATH_ADMINISTRATOR . '/components/com_magebridge/libraries/loader.php';
+        return require_once(JPATH_LIBRARIES . '/yireo/loader.php');
     }
 
     /**
