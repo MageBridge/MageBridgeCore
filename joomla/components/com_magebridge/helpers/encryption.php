@@ -55,10 +55,10 @@ class MageBridgeEncryptionHelper
      */
     public static function getEncryptionKey()
     {
-        $key = MagebridgeModelConfig::load('encryption_key');
+        $key = MageBridgeModelConfig::load('encryption_key');
 
         if (empty($key)) {
-            $key = MagebridgeModelConfig::load('supportkey');
+            $key = MageBridgeModelConfig::load('supportkey');
         }
 
         return $key;
@@ -98,12 +98,12 @@ class MageBridgeEncryptionHelper
         }
 
         // Check if encryption was turned off
-        if (MagebridgeModelConfig::load('encryption') == 0) {
+        if (MageBridgeModelConfig::load('encryption') == 0) {
             return $data;
         }
 
         // Check if SSL is already in use, so encryption is not needed
-        if (MagebridgeModelConfig::load('protocol') == 'https') {
+        if (MageBridgeModelConfig::load('protocol') == 'https') {
             return $data;
         }
 

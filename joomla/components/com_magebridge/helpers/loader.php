@@ -136,6 +136,7 @@ class MageBridge_Autoloader
             'MageBridgeWidgetHelper'           => JPATH_ADMINISTRATOR . '/components/com_magebridge/helpers/widget.php',
             'MageBridgeInstallHelper'          => JPATH_ADMINISTRATOR . '/components/com_magebridge/helpers/install.php',
             'MagebridgeFormFieldAbstract'      => JPATH_ADMINISTRATOR . '/components/com_magebridge/fields/abstract.php',
+            'MageBridgeFormFieldAbstract'      => JPATH_ADMINISTRATOR . '/components/com_magebridge/fields/abstract.php',
         ];
 
         $classes['MageBridgeController'] = self::getComponentPath() . 'controller.php';
@@ -157,6 +158,8 @@ class MageBridge_Autoloader
         if ($application->isSite()) {
             return JPATH_SITE . '/components/com_magebridge/';
         }
+
+        return '';
     }
 }
 

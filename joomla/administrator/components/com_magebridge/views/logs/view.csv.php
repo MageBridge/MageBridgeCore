@@ -31,7 +31,7 @@ class MageBridgeViewLogs extends MageBridgeView
      */
     public function display($tpl = null)
     {
-        $filename = 'magebridge-debug-'.MagebridgeModelConfig::load('supportkey').'.csv';
+        $filename = 'magebridge-debug-'.MageBridgeModelConfig::load('supportkey').'.csv';
 
         header('Expires: 0');
         header('Cache-control: private');
@@ -95,5 +95,6 @@ class MageBridgeViewLogs extends MageBridgeView
                 return JText::_($name);
             }
         }
+        return '';
     }
 }

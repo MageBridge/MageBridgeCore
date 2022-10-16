@@ -382,6 +382,11 @@ class YireoHelper
         $language->load($extension, $folder, $tag, $reload);
     }
 
+    /**
+     * @deprecated use built-in strlen() function
+     * @param mixed $string
+     * @return int
+     */
     public static function strlen($string)
     {
         return strlen($string);

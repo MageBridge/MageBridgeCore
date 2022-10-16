@@ -20,7 +20,7 @@ $layout = $params->get('layout', 'default');
 
 // Call the helper
 require_once(dirname(__FILE__) . '/helper.php');
-$block = modMageBridgeNewsletterHelper::build($params);
+$block = ModMageBridgeNewsletterHelper::build($params);
 
 // Get the current user
 $user = JFactory::getUser();

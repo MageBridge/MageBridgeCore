@@ -199,7 +199,7 @@ class MageBridge
      */
     public static function loadPrototype()
     {
-        return MageBridgeModelBridgeHeaders::loadPrototype();
+        return MageBridgeModelBridgeHeaders::getInstance()->loadPrototype();
     }
 
     /**
@@ -207,7 +207,7 @@ class MageBridge
      */
     public static function loadJquery()
     {
-        return MageBridgeTemplateHelper::load('jquery');
+        MageBridgeTemplateHelper::load('jquery');
     }
 
     /**

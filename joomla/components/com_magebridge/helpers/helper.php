@@ -132,7 +132,7 @@ class MageBridgeHelper
      */
     public static function help($text = null)
     {
-        if (MagebridgeModelConfig::load('show_help') == 1) {
+        if (MageBridgeModelConfig::load('show_help') == 1) {
             if (preg_match('/\{([^\}]+)\}/', $text, $match)) {
                 $array = explode(':', $match[1]);
                 $text = str_replace($match[0], MageBridgeHelper::getHelpText($array[0], $array[1]), $text);
@@ -144,6 +144,8 @@ class MageBridgeHelper
 
             return $html;
         }
+
+        return '';
     }
 
     /**
@@ -156,7 +158,7 @@ class MageBridgeHelper
     public static function filterContent($content)
     {
         // Allow to disable this filtering
-        if (MagebridgeModelConfig::load('filter_content') == 0) {
+        if (MageBridgeModelConfig::load('filter_content') == 0) {
             return $content;
         }
 
@@ -250,7 +252,7 @@ class MageBridgeHelper
         $content = str_replace('?&amp;', '?', $content);
 
         // Remove all __store information
-        if (MagebridgeModelConfig::load('filter_store_from_url') == 1) {
+        if (MageBridgeModelConfig::load('filter_store_from_url') == 1) {
             $content = preg_replace('/\?___store=([a-zA-Z0-9]+)/', '', $content);
         }
 
@@ -344,7 +346,7 @@ class MageBridgeHelper
      */
     public static function getDisableCss()
     {
-        $disable_css = MagebridgeModelConfig::load('disable_css_mage');
+        $disable_css = MageBridgeModelConfig::load('disable_css_mage');
 
         if (empty($disable_css)) {
             return [];
@@ -371,7 +373,7 @@ class MageBridgeHelper
      */
     public static function cssIsDisabled($css)
     {
-        $allow = MagebridgeModelConfig::load('disable_css_all');
+        $allow = MageBridgeModelConfig::load('disable_css_all');
         $disable_css = self::getDisableCss();
 
         if (!empty($disable_css)) {
@@ -396,7 +398,7 @@ class MageBridgeHelper
      */
     public static function getDisableJs()
     {
-        $disable_js = MagebridgeModelConfig::load('disable_js_mage');
+        $disable_js = MageBridgeModelConfig::load('disable_js_mage');
 
         if (empty($disable_js)) {
             return [];

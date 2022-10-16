@@ -49,7 +49,7 @@ class PlgUserMageBridge extends MageBridgePlugin
     protected function initialize()
     {
         $this->userModel    = MageBridge::getUser();
-        $this->debug        = MagebridgeModelDebug::getInstance();
+        $this->debug        = MageBridgeModelDebug::getInstance();
         $this->pluginHelper = MageBridgePluginHelper::getInstance();
     }
 

@@ -152,7 +152,7 @@ class MageBridgeModelBridge
         $url = MageBridgeModelBridge::getMagentoUrl();
         if (!empty($url)) {
             $path = preg_replace('/^\//', '', $path);
-            $url = $url . 'index.php/' . MagebridgeModelConfig::load('backend') . '/' . $path;
+            $url = $url . 'index.php/' . MageBridgeModelConfig::load('backend') . '/' . $path;
 
             return $url;
         } else {
@@ -167,9 +167,9 @@ class MageBridgeModelBridge
      */
     public function getMagentoUrl()
     {
-        $url = MagebridgeModelConfig::load('url');
+        $url = MageBridgeModelConfig::load('url');
         if (!empty($url)) {
-            return preg_replace('/\/\/$/', '/', MagebridgeModelConfig::load('url'));
+            return preg_replace('/\/\/$/', '/', MageBridgeModelConfig::load('url'));
         } else {
             return null;
         }
@@ -189,7 +189,7 @@ class MageBridgeModelBridge
     }
 
     /**
-     * Methot to set the breadcrumbs
+     * Method to set the breadcrumbs
      *
      * @return mixed
      */
@@ -369,7 +369,7 @@ class MageBridgeModelBridge
         }
 
         // Exit immediately if the api_user and api_key are not configured yet
-        if (strlen(MagebridgeModelConfig::load('api_user')) == 0 && strlen(MagebridgeModelConfig::load('api_key')) == 0) {
+        if (strlen(MageBridgeModelConfig::load('api_user')) == 0 && strlen(MageBridgeModelConfig::load('api_key')) == 0) {
             MageBridgeModelDebug::getInstance()
                 ->error('No API user or no API key');
 
@@ -595,7 +595,7 @@ class MageBridgeModelBridge
      * @param string $httpReferer
      * @param string $type
      *
-     * @return string
+     * @return void
      */
     public function setHttpReferer($httpReferer = null, $type = 'magento')
     {
@@ -621,7 +621,7 @@ class MageBridgeModelBridge
      *
      * @param string $api_state
      *
-     * @return string
+     * @return void
      */
     public function setApiState($api_state = null)
     {
@@ -643,7 +643,7 @@ class MageBridgeModelBridge
      *
      * @param string $api_extra
      *
-     * @return string
+     * @return void
      */
     public function setApiExtra($api_extra = null)
     {
@@ -938,7 +938,7 @@ class MageBridgeModelBridge
      */
     public function enableSSL()
     {
-        $enforce_ssl = MagebridgeModelConfig::load('enforce_ssl');
+        $enforce_ssl = MageBridgeModelConfig::load('enforce_ssl');
 
         if (JFactory::getApplication()->input->getCmd('option') == 'com_magebridge' && $enforce_ssl > 0) {
             return true;
@@ -979,8 +979,8 @@ class MageBridgeModelBridge
         }
 
         // Set the bridge offline when configured, except for specific IPs
-        if (MagebridgeModelConfig::load('offline') == 1) {
-            $ips = MagebridgeModelConfig::load('offline_exclude_ip');
+        if (MageBridgeModelConfig::load('offline') == 1) {
+            $ips = MageBridgeModelConfig::load('offline_exclude_ip');
 
             if (!empty($ips)) {
                 $ips = explode(',', trim($ips));

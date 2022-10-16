@@ -30,7 +30,7 @@ if ($input->get('url')) {
 }
 
 // Initialize debugging
-MagebridgeModelDebug::init();
+MageBridgeModelDebug::init();
 
 // Simple security measure
 $input->set('task', $input->getCmd('task'));

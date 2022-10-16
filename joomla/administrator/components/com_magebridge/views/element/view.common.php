@@ -28,7 +28,7 @@ class MageBridgeViewCommon extends MageBridgeView
      *
      * @param string $tpl
      *
-     * @return string
+     * @return void
      */
     public function display($tpl = null)
     {

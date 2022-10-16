@@ -29,12 +29,12 @@ $endLevel = $startLevel + $levels - 1;
 $layout = $params->get('layout', 'default');
 
 // Call the helper
-$catalog_tree = modMageBridgeMenuHelper::build($params);
+$catalog_tree = ModMageBridgeMenuHelper::build($params);
 
 // Load the catalog-tree
 $rootLevel = (!empty($catalog_tree['level'])) ? $catalog_tree['level'] : 0;
-$catalog_tree = modMageBridgeMenuHelper::setRoot($catalog_tree, $root);
-$catalog_tree = modMageBridgeMenuHelper::parseTree($catalog_tree, $rootLevel + $startLevel, $rootLevel + $endLevel);
+$catalog_tree = ModMageBridgeMenuHelper::setRoot($catalog_tree, $root);
+$catalog_tree = ModMageBridgeMenuHelper::parseTree($catalog_tree, $rootLevel + $startLevel, $rootLevel + $endLevel);
 
 // Show the template
 require(JModuleHelper::getLayoutPath('mod_magebridge_menu', $layout));

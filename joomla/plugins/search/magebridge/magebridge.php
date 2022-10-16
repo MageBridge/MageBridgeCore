@@ -107,7 +107,7 @@ class PlgSearchMageBridge extends JPlugin
         // Build the search array
         $search_options = [
             'store' => MageBridgeConnectorStore::getInstance()->getStore(),
-            'website' => MagebridgeModelConfig::load('website'),
+            'website' => MageBridgeModelConfig::load('website'),
             'text' => $text,
             'search_limit' => $search_limit,
             'search_fields' => $search_fields,];

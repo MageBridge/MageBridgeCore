@@ -35,7 +35,7 @@ class MageBridgeViewCustom extends MageBridgeView
         $this->setRequest($request);
 
         // Reuse this request to set the Canonical URL
-        if (MagebridgeModelConfig::load('enable_canonical') == 1) {
+        if (MageBridgeModelConfig::load('enable_canonical') == 1) {
             $uri = MageBridgeUrlHelper::route($request);
             $document = JFactory::getDocument();
             $document->setMetaData('canonical', $uri);

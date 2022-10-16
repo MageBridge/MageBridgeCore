@@ -22,8 +22,8 @@ class MageBridgeApi
      */
     public function __construct()
     {
-        MagebridgeModelDebug::getDebugOrigin(MagebridgeModelDebug::MAGEBRIDGE_DEBUG_ORIGIN_JOOMLA_JSONRPC);
-        $this->debug = MagebridgeModelDebug::getInstance();
+        MageBridgeModelDebug::getDebugOrigin(MageBridgeModelDebug::MAGEBRIDGE_DEBUG_ORIGIN_JOOMLA_JSONRPC);
+        $this->debug = MageBridgeModelDebug::getInstance();
         $this->app = JFactory::getApplication();
     }
 

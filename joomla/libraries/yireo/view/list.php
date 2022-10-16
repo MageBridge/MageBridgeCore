@@ -60,7 +60,7 @@ class YireoViewList extends YireoView
     /**
      * Main constructor method
      *
-     * @return mixed
+     * @return void
      */
     public function __construct($config = [])
     {
@@ -68,7 +68,7 @@ class YireoViewList extends YireoView
         $this->loadToolbar = false;
 
         // Call the parent constructor
-        return parent::__construct($config);
+        parent::__construct($config);
     }
 
     /**
@@ -127,7 +127,7 @@ class YireoViewList extends YireoView
      * @param boolean $ajax
      * @param int     $id
      *
-     * @return null
+     * @return string
      */
     public function toggle($name, $value, $ajax = false, $id = 0)
     {

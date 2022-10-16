@@ -746,7 +746,7 @@ class PlgSystemMageBridge extends MageBridgePlugin
             }
 
             // Log to the JavaScript Console
-            if (MagebridgeModelDebug::isDebug() == true && $this->loadConfig('debug_console') == 1) {
+            if (MageBridgeModelDebug::isDebug() == true && $this->loadConfig('debug_console') == 1) {
                 $console = '';
                 foreach ($this->console as $c) {
                     $console .= 'console.warn("' . $c . '");';
@@ -1091,7 +1091,7 @@ class PlgSystemMageBridge extends MageBridgePlugin
      */
     private function loadConfig($name)
     {
-        return MagebridgeModelConfig::load($name);
+        return MageBridgeModelConfig::load($name);
     }
 
     /**

@@ -492,28 +492,6 @@ class YireoView extends YireoCommonView
     }
 
     /**
-     * Helper method to determine whether this is a new entry or not
-     *
-     * @return bool
-     */
-    public function isEdit()
-    {
-        $cid = $this->input->get('cid', [0], '', 'array');
-
-        if (!empty($cid) && $cid > 0) {
-            return true;
-        }
-
-        $id = $this->input->getInt('id');
-
-        if (!empty($id) && $id > 0) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
      * Overload the original method
      *
      * @param string $name
@@ -632,6 +610,7 @@ class YireoView extends YireoCommonView
                 return '<img src="' . $path . '" alt="' . $name . '" />';
             }
         }
+        return '';
     }
 
     /**
@@ -663,7 +642,7 @@ class YireoView extends YireoCommonView
      * @param string $name
      * @param array $variables
      *
-     * @return string
+     * @return void
      */
     public function loadLayout($name = null, $variables = [])
     {

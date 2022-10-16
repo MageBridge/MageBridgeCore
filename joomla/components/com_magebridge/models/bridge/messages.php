@@ -41,7 +41,7 @@ class MageBridgeModelBridgeMessages extends MageBridgeModelBridgeSegment
      */
     public function setMessages()
     {
-        if (MagebridgeModelConfig::load('enable_messages') == 0) {
+        if (MageBridgeModelConfig::load('enable_messages') == 0) {
             return false;
         }
 

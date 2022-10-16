@@ -24,7 +24,7 @@ jimport('joomla.plugin.plugin');
 class MageBridgePlugin extends JPlugin
 {
     /**
-     * @var MagebridgeModelDebug
+     * @var MageBridgeModelDebug
      */
     protected $debug;
 
@@ -36,10 +36,8 @@ class MageBridgePlugin extends JPlugin
      */
     public function __construct(&$subject, $config = [])
     {
-        $rt = parent::__construct($subject, $config);
+        parent::__construct($subject, $config);
         $this->initialize();
-
-        return $rt;
     }
 
     /**
@@ -47,7 +45,7 @@ class MageBridgePlugin extends JPlugin
      */
     protected function initialize()
     {
-        $this->debug = MagebridgeModelDebug::getInstance();
+        $this->debug = MageBridgeModelDebug::getInstance();
     }
 
     /**
@@ -59,7 +57,7 @@ class MageBridgePlugin extends JPlugin
      */
     protected function getConfigValue($name = null)
     {
-        return MagebridgeModelConfig::load($name);
+        return MageBridgeModelConfig::load($name);
     }
 
     /**

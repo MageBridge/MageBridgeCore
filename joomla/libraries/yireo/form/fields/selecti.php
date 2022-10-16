@@ -63,7 +63,7 @@ class YireoFormFieldSelecti extends YireoFormFieldAbstract
 
         // Construct the HTML-arguments
         $htmlArguments = [
-            'rel' => $type,
+            'type' => $type,
             'name' => $fieldName,
             'id' => $fieldId,
             'value' => $value,

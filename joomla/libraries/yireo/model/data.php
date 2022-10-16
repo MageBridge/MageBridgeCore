@@ -53,12 +53,12 @@ class YireoDataModel extends YireoCommonModel
      *
      * @param array $config
      *
-     * @return mixed
+     * @return void
      */
     public function __construct($config = [])
     {
         // Call the parent constructor
-        $rt = parent::__construct($config);
+        parent::__construct($config);
 
         $this->setConfig('skip_table', false);
         $this->setConfig('table_prefix_auto', true);
@@ -66,8 +66,6 @@ class YireoDataModel extends YireoCommonModel
         $this->setTablePrefix();
         $this->table = $this->getTable($this->getConfig('table_alias'));
         $this->initQuery();
-
-        return $rt;
     }
 
     /**

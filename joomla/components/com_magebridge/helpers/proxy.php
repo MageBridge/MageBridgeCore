@@ -76,7 +76,7 @@ class MageBridgeProxyHelper
                     // Upload the specific file
                     jimport('joomla.filesystem.file');
                     $tmpFile = $this->getUploadPath() . '/' . $file['name'];
-                    JFile::upload($file['tmp_name'], $tmpFile);
+                    Joomla\Filesystem\File::upload($file['tmp_name'], $tmpFile);
 
                     // Check if the file is there
                     if (!is_file($tmpFile) || !is_readable($tmpFile)) {

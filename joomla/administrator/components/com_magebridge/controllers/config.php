@@ -147,7 +147,7 @@ class MageBridgeControllerConfig extends YireoCommonController
     public function export()
     {
         // Gather the variables
-        $config = MagebridgeModelConfig::load();
+        $config = MageBridgeModelConfig::load();
 
         $date = date('Ymd');
         $host = str_replace('.', '_', $_SERVER['HTTP_HOST']);
@@ -155,7 +155,7 @@ class MageBridgeControllerConfig extends YireoCommonController
         $output = $this->getOutput($config);
 
         header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-        header('Content-Length: ' . YireoHelper::strlen($output));
+        header('Content-Length: ' . strlen($output));
         header('Content-type: application/xml');
         header('Content-Disposition: attachment; filename=' . $filename);
         print $output;
@@ -241,7 +241,7 @@ class MageBridgeControllerConfig extends YireoCommonController
             return false;
         }
 
-        MagebridgeModelConfig::getSingleton()->store($config);
+        MageBridgeModelConfig::getSingleton()->store($config);
         $this->setRedirect('index.php?option=com_magebridge&view=config', JText::_('Imported configuration succesfully'));
 
         return true;

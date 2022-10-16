@@ -50,7 +50,7 @@ class PlgMagebridgeMagebridge extends MageBridgePlugin
      */
     private function getParam($name = null)
     {
-        return MagebridgeModelConfig::load($name);
+        return MageBridgeModelConfig::load($name);
     }
 
     /**

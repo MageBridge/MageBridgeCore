@@ -64,7 +64,7 @@ class MageBridgeUpdateHelper
         $url = 'https://api.yireo.com/';
         $domain = preg_replace('/\:(.*)/', '', $_SERVER['HTTP_HOST']);
         $arguments = [
-            'key' => MagebridgeModelConfig::load('supportkey'),
+            'key' => MageBridgeModelConfig::load('supportkey'),
             'domain' => $domain,
             'resource' => 'packages',
             'request' => 'magebridge',
@@ -181,7 +181,7 @@ class MageBridgeUpdateHelper
         $proxy = MageBridgeModelProxy::getInstance();
         $data = $proxy->getRemote($url, null, 'get', false);
         if (empty($data)) {
-            JError::raiseWarning(42, JText::_('REMOTE_DOWNLOAD_FAILED').', '.$error);
+            JError::raiseWarning(42, JText::_('REMOTE_DOWNLOAD_FAILED'));
             return false;
         }
 

@@ -18,13 +18,14 @@ class YireoFormFieldAbstract extends JFormField
      * Method to instantiate the form field object.
      *
      * @param JForm $form
+     * @return void
      */
     public function __construct($form = null)
     {
         $this->app = JFactory::getApplication();
         $this->doc = JFactory::getDocument();
 
-        return parent::__construct($form);
+        parent::__construct($form);
     }
 
     /*
@@ -98,13 +99,6 @@ class YireoFormFieldAbstract extends JFormField
     protected function addScript($script)
     {
         $this->doc->addScript($script);
-    }
-
-    /*
-     * Method to get the HTML of this element
-     */
-    protected function getInput()
-    {
     }
 
     /*

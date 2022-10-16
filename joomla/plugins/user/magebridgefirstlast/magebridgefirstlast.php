@@ -1,4 +1,5 @@
 <?php
+
 /**
  * User Plugin for Joomla! - MageBridge First Last name
  *
@@ -21,7 +22,8 @@ class PlgUserMagebridgefirstlast extends JPlugin
         'com_users.profile',
         'com_users.user',
         'com_users.registration',
-        'com_admin.profile',];
+        'com_admin.profile',
+    ];
 
     /**
      * Constructor
@@ -29,7 +31,7 @@ class PlgUserMagebridgefirstlast extends JPlugin
      * @param object $subject
      * @param array  $config
      */
-    public function __construct(& $subject, $config)
+    public function __construct(&$subject, $config)
     {
         parent::__construct($subject, $config);
 
@@ -214,6 +216,8 @@ class PlgUserMagebridgefirstlast extends JPlugin
             $fieldValue = $field[1];
             $user->set($fieldName, $fieldValue);
         }
+
+        return true;
     }
 
     /**

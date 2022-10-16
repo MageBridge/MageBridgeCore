@@ -83,12 +83,12 @@ class YireoCommonModel extends YireoAbstractModel
      *
      * @param array $config
      *
-     * @return mixed
+     * @return void
      */
     public function __construct($config = [])
     {
         // Call the parent constructor
-        $rt = parent::__construct($config);
+        parent::__construct($config);
 
         $this->initCommon();
 
@@ -110,8 +110,6 @@ class YireoCommonModel extends YireoAbstractModel
         $this->setConfig('skip_table', true);
 
         $this->handleCommonDeprecated();
-
-        return $rt;
     }
 
     /**

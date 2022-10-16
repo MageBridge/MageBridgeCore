@@ -35,7 +35,7 @@ class MageBridgeView extends YireoCommonView
 
         // If we detect the API is down, report it
         $bridge = MageBridgeModelBridge::getInstance();
-        $debug  = MagebridgeModelDebug::getInstance();
+        $debug  = MageBridgeModelDebug::getInstance();
 
         if ($bridge->getApiState() != null) {
             $message = null;
@@ -72,7 +72,7 @@ class MageBridgeView extends YireoCommonView
         // If debugging is enabled report it
         $input = $this->app->input;
 
-        if (MagebridgeModelConfig::load('debug') == 1 && $input->getCmd('tmpl') != 'component' && in_array($input->getCmd('view'), [
+        if (MageBridgeModelConfig::load('debug') == 1 && $input->getCmd('tmpl') != 'component' && in_array($input->getCmd('view'), [
                 'config',
                 'home',
             ])

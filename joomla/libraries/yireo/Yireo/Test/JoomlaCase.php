@@ -43,7 +43,7 @@ class JoomlaCase extends ParentTestCase
      *
      * @return void
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         // Hack to skip PHP notices
         $_SERVER['HTTP_HOST']      = 'localhost';

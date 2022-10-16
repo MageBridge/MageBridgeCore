@@ -190,7 +190,7 @@ class MageBridgeModelBridgeHeaders extends MageBridgeModelBridgeSegment
         }
 
         // Add canonical tag
-        if (MagebridgeModelConfig::load('enable_canonical') == 1 && !empty($headers['items'])) {
+        if (MageBridgeModelConfig::load('enable_canonical') == 1 && !empty($headers['items'])) {
             $this->setCanonicalLinks($headers['items']);
         }
 
@@ -243,7 +243,7 @@ class MageBridgeModelBridgeHeaders extends MageBridgeModelBridgeSegment
      */
     protected function loadMergeCss()
     {
-        if (MagebridgeModelConfig::load('merge_css') == 0) {
+        if (MageBridgeModelConfig::load('merge_css') == 0) {
             return false;
         }
 
@@ -282,7 +282,7 @@ class MageBridgeModelBridgeHeaders extends MageBridgeModelBridgeSegment
         // * 1 = Disable all Magento CSS (so we just skip this step
         // * 2 = Disable only the CSS listed under "disable_css_custom"
         // * 3 = Disable all CSS except for the CSS listed under "disable_css_custom"
-        $disable_css_all = MagebridgeModelConfig::load('disable_css_all');
+        $disable_css_all = MageBridgeModelConfig::load('disable_css_all');
 
         if ($disable_css_all == 1) {
             return false;
@@ -342,7 +342,7 @@ class MageBridgeModelBridgeHeaders extends MageBridgeModelBridgeSegment
         }
 
         // Determine whether to load the default CSS or not
-        if (MagebridgeModelConfig::load('disable_default_css') !== 0) {
+        if (MageBridgeModelConfig::load('disable_default_css') !== 0) {
             return true;
         }
 
@@ -401,7 +401,7 @@ class MageBridgeModelBridgeHeaders extends MageBridgeModelBridgeSegment
         }
 
         // Check whether all scripts are disabled
-        $disable_js = MagebridgeModelConfig::load('disable_js_mage');
+        $disable_js = MageBridgeModelConfig::load('disable_js_mage');
         if (strtolower($disable_js) == 'all') {
             return false;
         }
@@ -466,7 +466,7 @@ class MageBridgeModelBridgeHeaders extends MageBridgeModelBridgeSegment
                         $this->has_prototype = true;
 
                         // Load an optimized Prototype/script.acul.us version
-                        if (MagebridgeModelConfig::load('use_protoaculous') == 1 || MagebridgeModelConfig::load('use_protoculous') == 1) {
+                        if (MageBridgeModelConfig::load('use_protoaculous') == 1 || MageBridgeModelConfig::load('use_protoculous') == 1) {
                             $skip_scripts = [
                                 'prototype/prototype.js',
                                 'scriptaculous/builder.js',
@@ -482,7 +482,7 @@ class MageBridgeModelBridgeHeaders extends MageBridgeModelBridgeSegment
                         }
 
                         // Skip these, if the Google API is already loaded
-                        if (MagebridgeModelConfig::load('use_google_api') == 1) {
+                        if (MageBridgeModelConfig::load('use_google_api') == 1) {
                             if (preg_match('/prototype.js$/', $item['name'])) {
                                 continue;
                             }
@@ -494,7 +494,7 @@ class MageBridgeModelBridgeHeaders extends MageBridgeModelBridgeSegment
 
                     // Detect jQuery and replace it
                     if (preg_match('/jquery-([0-9]+)\.([0-9]+)\.([0-9]+)/', $item['path']) || preg_match('/jquery.js$/', $item['path']) || preg_match('/jquery.min.js$/', $item['path'])) {
-                        if (MagebridgeModelConfig::load('replace_jquery') == 1) {
+                        if (MageBridgeModelConfig::load('replace_jquery') == 1) {
                             MageBridgeTemplateHelper::load('jquery');
                             continue;
                         }
@@ -506,10 +506,10 @@ class MageBridgeModelBridgeHeaders extends MageBridgeModelBridgeSegment
                     }
 
                     // Load this script through JS merging or not
-                    if (MagebridgeModelConfig::load('merge_js') == 1) {
+                    if (MageBridgeModelConfig::load('merge_js') == 1) {
                         $jslist[] = $item['name'];
                     } else {
-                        if (MagebridgeModelConfig::load('merge_js') !== 2 || empty($headers['merge_js'])) {
+                        if (MageBridgeModelConfig::load('merge_js') !== 2 || empty($headers['merge_js'])) {
                             if (!preg_match('/^http/', $item['path'])) {
                                 $item['path'] = $bridge->getMagentoUrl() . $item['path'];
                             }
@@ -522,7 +522,7 @@ class MageBridgeModelBridgeHeaders extends MageBridgeModelBridgeSegment
                 }
             }
 
-            if (MagebridgeModelConfig::load('merge_js') == 2 && !empty($headers['merge_js'])) {
+            if (MageBridgeModelConfig::load('merge_js') == 2 && !empty($headers['merge_js'])) {
                 $this->addScript($headers['merge_js']);
             } else {
                 if (!empty($jslist)) {
@@ -649,7 +649,7 @@ class MageBridgeModelBridgeHeaders extends MageBridgeModelBridgeSegment
     public function loadPrototype()
     {
         // Load Prototype through Google API
-        if (MagebridgeModelConfig::load('use_google_api') == 1) {
+        if (MageBridgeModelConfig::load('use_google_api') == 1) {
             $this->addScript('https://ajax.googleapis.com/ajax/libs/prototype/1.7.3.0/prototype.js');
             $this->addScript('https://ajax.googleapis.com/ajax/libs/scriptaculous/1.9.0/scriptaculous.js');
 
@@ -657,14 +657,14 @@ class MageBridgeModelBridgeHeaders extends MageBridgeModelBridgeSegment
 
         // Load Protoaculous
         } else {
-            if (MagebridgeModelConfig::load('use_protoaculous') == 1) {
+            if (MageBridgeModelConfig::load('use_protoaculous') == 1) {
                 $this->addScript('media/com_magebridge/js/protoaculous.1.9.0-1.7.3.0.min.js');
 
                 return true;
 
             // Load Protoculous
             } else {
-                if (MagebridgeModelConfig::load('use_protoculous') == 1) {
+                if (MageBridgeModelConfig::load('use_protoculous') == 1) {
                     $this->addScript('media/com_magebridge/js/protoculous-1.0.2-packed.js');
 
                     return true;

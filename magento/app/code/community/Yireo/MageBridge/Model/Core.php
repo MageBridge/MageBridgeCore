@@ -1,4 +1,5 @@
 <?php
+
 /**
  * MageBridge
  *
@@ -146,6 +147,7 @@ class Yireo_MageBridge_Model_Core
         $request->setParam('form_key', $formKey);
 
         Mage::getSingleton('magebridge/debug')->notice('Spoofing form key: ' . $formKey);
+        return true;
     }
 
     /**
@@ -171,6 +173,7 @@ class Yireo_MageBridge_Model_Core
         ];
 
         Mage::getModel('magebridge/user_api')->login($data);
+        return true;
     }
 
     /**
@@ -301,6 +304,7 @@ class Yireo_MageBridge_Model_Core
         } elseif (strstr($this->getRequestUrl(), 'checkout/onepage/success')) {
             $customerSession->setNextUrl($_SERVER['HTTP_REFERER']);
         }
+        return true;
     }
 
     /**
@@ -321,7 +325,9 @@ class Yireo_MageBridge_Model_Core
 
         $location = $this->getStoreObject()->getBaseUrl();
         if (preg_match('/(uenc|referer)\/([^\/]+)/', $this->getRequestUrl(), $match)) {
-            $location = Mage::helper('magebridge/encryption')->base64_decode($match[2]);
+            /** @var Yireo_MageBridge_Helper_Encryption */
+            $helper = Mage::helper('magebridge/encryption');
+            $location = $helper->base64_decode($match[2]);
         }
 
         $referer = null;
@@ -332,6 +338,7 @@ class Yireo_MageBridge_Model_Core
         if (stristr($referer, '/checkout/') == false && stristr($referer, 'firecheckout') == false) {
             header('X-MageBridge-Location-Customer: ' . $location);
         }
+        return true;
     }
 
     /**
@@ -345,7 +352,9 @@ class Yireo_MageBridge_Model_Core
         if ($redirectToCart == false && $continueShoppingToPrevious && strstr($this->getRequestUrl(), 'checkout/cart/add')) {
             $location = null;
             if (preg_match('/(uenc|referer)\/([^\/]+)/', $this->getRequestUrl(), $match)) {
-                $location = Mage::helper('magebridge/encryption')->base64_decode($match[2]);
+                /** @var Yireo_MageBridge_Helper_Encryption */
+                $helper = Mage::helper('magebridge/encryption');
+                $location = $helper->base64_decode($match[2]);
             }
 
             if (!empty($location)) {
@@ -357,7 +366,7 @@ class Yireo_MageBridge_Model_Core
     /**
      * Method to change the regular Magento configuration as needed
      *
-     * @return bool
+     * @return void
      */
     public function setConfig()
     {
@@ -383,8 +392,6 @@ class Yireo_MageBridge_Model_Core
                 Mage::getSingleton('magebridge/debug')->error('Unable to modify configuration: ' . $e->getMessage());
             }
         }
-
-        return true;
     }
 
     /**
@@ -515,7 +522,7 @@ class Yireo_MageBridge_Model_Core
      *
      * @param null
      *
-     * @return bool
+     * @return void
      */
     public function setSefUrl()
     {
@@ -534,8 +541,6 @@ class Yireo_MageBridge_Model_Core
                 $store->overrideCachedConfig($path, $value);
             }
         }
-
-        return true;
     }
 
     /**
@@ -571,7 +576,9 @@ class Yireo_MageBridge_Model_Core
         }
 
         // Refresh the cache
-        if ($refreshCache == true && Mage::app()->useCache('config') && Mage::helper('magebridge')->useApiDetect() == true) {
+        /** @var Yireo_MageBridge_Helper_Data */
+        $helper = Mage::helper('magebridge');
+        if ($refreshCache == true && Mage::app()->useCache('config') && $helper->useApiDetect() == true) {
             Mage::getSingleton('magebridge/debug')->notice('Refresh configuration cache');
             Mage::getConfig()->removeCache();
         }
@@ -642,14 +649,17 @@ class Yireo_MageBridge_Model_Core
             $current_value = (string)Mage::getConfig()->getNode('magebridge/joomla/' . $key, $scope, $scopeId);
         }
 
-        /** @var Yireo_MageBridge_Model_Debug $magebridgeDebug */
+        /** @var Yireo_MageBridge_Model_Debug */
         $magebridgeDebug = Mage::getSingleton('magebridge/debug');
+
+        /** @var Yireo_MageBridge_Helper_Data */
+        $helper = Mage::helper('magebridge');
 
         // Determine whether to save the current value
         $save = false;
         if (empty($current_value)) {
             $save = true;
-        } elseif (Mage::helper('magebridge')->useApiDetect() == true && $scope != 'default') {
+        } elseif ($helper->useApiDetect() == true && $scope != 'default') {
             if ($key == 'api_url' && preg_replace('/^(http|https)\:/', '', $current_value) != preg_replace('/^(http|https)\:/', '', $value)) {
                 $magebridgeDebug->notice('New API-value for "' . $key . '": "' . $current_value . '"; previously "' . $value . '"');
                 $save = true;
@@ -916,7 +926,7 @@ class Yireo_MageBridge_Model_Core
      *
      * @param null
      *
-     * @return null
+     * @return void
      */
     public function closeBridge()
     {
@@ -982,11 +992,15 @@ class Yireo_MageBridge_Model_Core
      */
     public function getMageConfig()
     {
+        /** @var Yireo_MageBridge_Helper_Core */
+        $coreHelper = Mage::helper('magebridge/core');
+        /** @var Yireo_MageBridge_Helper_User */
+        $userHelper = Mage::helper('magebridge/user');
         // Fetch current information
-        $currentCategoryId = Mage::helper('magebridge/core')->getCurrentCategoryId();
-        $currentCategoryPath = Mage::helper('magebridge/core')->getCurrentCategoryPath();
-        $currentProductId = Mage::helper('magebridge/core')->getCurrentProductId();
-        $currentProductSku = Mage::helper('magebridge/core')->getCurrentProductSku();
+        $currentCategoryId = $coreHelper->getCurrentCategoryId();
+        $currentCategoryPath = $coreHelper->getCurrentCategoryPath();
+        $currentProductId = $coreHelper->getCurrentProductId();
+        $currentProductSku = $coreHelper->getCurrentProductSku();
 
         // Construct extra data
         $store = $this->getStoreObject();
@@ -997,7 +1011,7 @@ class Yireo_MageBridge_Model_Core
             'admin/security/session_cookie_lifetime' => $store->getConfig('admin/security/session_cookie_lifetime'),
             'web/cookie/cookie_lifetime' => $store->getConfig('web/cookie/cookie_lifetime'),
             'customer/email' => Mage::getModel('customer/session')->getCustomer()->getEmail(),
-            'customer/joomla_id' => Mage::helper('magebridge/user')->getCurrentJoomlaId(),
+            'customer/joomla_id' => $userHelper->getCurrentJoomlaId(),
             'customer/magento_id' => Mage::getModel('customer/session')->getCustomerId(),
             'customer/magento_group_id' => Mage::getModel('customer/session')->getCustomer()->getGroupId(),
             'backend/path' => $this->getAdminPath(),
@@ -1062,7 +1076,7 @@ class Yireo_MageBridge_Model_Core
      * @param string $name
      * @param string $value
      *
-     * @return null
+     * @return void
      */
     public function setMageConfig($name, $value)
     {
@@ -1321,7 +1335,7 @@ class Yireo_MageBridge_Model_Core
      *
      * @param null
      *
-     * @return array
+     * @return void
      */
     public function setForcePreoutput($force_preoutput)
     {
@@ -1340,7 +1354,6 @@ class Yireo_MageBridge_Model_Core
     public function getEvents()
     {
         $events = Mage::getSingleton('magebridge/session')->getEvents();
-        ;
         Mage::getSingleton('magebridge/session')->cleanEvents();
         return $events;
     }
@@ -1352,7 +1365,7 @@ class Yireo_MageBridge_Model_Core
      *
      * @param array
      *
-     * @return null
+     * @return void
      */
     public function setEvents($events)
     {
@@ -1442,7 +1455,9 @@ class Yireo_MageBridge_Model_Core
      */
     public function encrypt($data)
     {
-        return Mage::helper('magebridge/encryption')->encrypt($data);
+        /** @var Yireo_MageBridge_Helper_Encryption */
+        $helper = Mage::helper('magebridge/encryption');
+        return $helper->encrypt($data);
     }
 
     /**
@@ -1454,7 +1469,9 @@ class Yireo_MageBridge_Model_Core
      */
     public function decrypt($data)
     {
-        return Mage::helper('magebridge/encryption')->decrypt($data);
+        /** @var Yireo_MageBridge_Helper_Encryption */
+        $helper = Mage::helper('magebridge/encryption');
+        return $helper->decrypt($data);
     }
 
     /**

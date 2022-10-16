@@ -44,7 +44,7 @@ abstract class MageBridgeModelProxyAbstract
     protected $bridge;
 
     /**
-     * @var MagebridgeModelDebug
+     * @var MageBridgeModelDebug
      */
     protected $debug;
 

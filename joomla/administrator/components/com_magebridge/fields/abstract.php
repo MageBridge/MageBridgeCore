@@ -23,7 +23,7 @@ jimport('joomla.form.formfield');
 /**
  * Generic Form Field-class
  */
-abstract class MagebridgeFormFieldAbstract extends JFormField
+abstract class MageBridgeFormFieldAbstract extends JFormField
 {
     /** @var MageBridgeModelBridge */
     protected $bridge;
@@ -35,7 +35,7 @@ abstract class MagebridgeFormFieldAbstract extends JFormField
     protected $debugger;
 
     /**
-     * MagebridgeFormFieldAbstract constructor.
+     * MageBridgeFormFieldAbstract constructor.
      *
      * @param null $form
      */
@@ -45,7 +45,7 @@ abstract class MagebridgeFormFieldAbstract extends JFormField
         $this->register = MageBridgeModelRegister::getInstance();
         $this->debugger = MageBridgeModelDebug::getInstance();
 
-        return parent::__construct($form);
+        parent::__construct($form);
     }
 
     /**
@@ -97,6 +97,6 @@ abstract class MagebridgeFormFieldAbstract extends JFormField
      */
     protected function getConfig($name)
     {
-        return MagebridgeModelConfig::load($name);
+        return MageBridgeModelConfig::load($name);
     }
 }

@@ -54,7 +54,7 @@ class ModMageBridgeMenuHelper extends MageBridgeModuleHelper
      */
     public static function register($params = null)
     {
-        $arguments = modMageBridgeMenuHelper::getArguments($params);
+        $arguments = ModMageBridgeMenuHelper::getArguments($params);
 
         return [['api', 'magebridge_category.tree', $arguments],];
     }
@@ -68,7 +68,7 @@ class ModMageBridgeMenuHelper extends MageBridgeModuleHelper
      */
     public static function build($params = null)
     {
-        $arguments = modMageBridgeMenuHelper::getArguments($params);
+        $arguments = ModMageBridgeMenuHelper::getArguments($params);
 
         return parent::getCall('getAPI', 'magebridge_category.tree', $arguments);
     }
@@ -96,7 +96,7 @@ class ModMageBridgeMenuHelper extends MageBridgeModuleHelper
         // Loop through the children to find the configured root-category
         if (isset($tree['children']) && is_array($tree['children']) && count($tree['children']) > 0) {
             foreach ($tree['children'] as $item) {
-                $subtree = modMageBridgeMenuHelper::setRoot($item, $root_id);
+                $subtree = ModMageBridgeMenuHelper::setRoot($item, $root_id);
                 if (!empty($subtree)) {
                     return $subtree;
                 }
@@ -116,8 +116,8 @@ class ModMageBridgeMenuHelper extends MageBridgeModuleHelper
      */
     public static function parseTree($tree, $startLevel = 1, $endLevel = 99)
     {
-        $current_category_id = modMageBridgeMenuHelper::getCurrentCategoryId();
-        $current_category_path = modMageBridgeMenuHelper::getCurrentCategoryPath();
+        $current_category_id = ModMageBridgeMenuHelper::getCurrentCategoryId();
+        $current_category_path = ModMageBridgeMenuHelper::getCurrentCategoryPath();
 
         if (is_array($tree) && count($tree) > 0) {
             foreach ($tree as $index => $item) {
@@ -159,7 +159,7 @@ class ModMageBridgeMenuHelper extends MageBridgeModuleHelper
 
                 // Parse the children-tree
                 if (!empty($item['children'])) {
-                    $item['children'] = modMageBridgeMenuHelper::parseTree($item['children'], $startLevel, $endLevel);
+                    $item['children'] = ModMageBridgeMenuHelper::parseTree($item['children'], $startLevel, $endLevel);
                 } else {
                     $item['children'] = [];
                 }
@@ -191,8 +191,8 @@ class ModMageBridgeMenuHelper extends MageBridgeModuleHelper
      */
     public static function getCssClass($params, $item, $level, $counter, $tree)
     {
-        $current_category_id = modMageBridgeMenuHelper::getCurrentCategoryId();
-        $current_category_path = modMageBridgeMenuHelper::getCurrentCategoryPath();
+        $current_category_id = ModMageBridgeMenuHelper::getCurrentCategoryId();
+        $current_category_path = ModMageBridgeMenuHelper::getCurrentCategoryPath();
 
         $class = [];
 

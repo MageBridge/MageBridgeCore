@@ -163,9 +163,9 @@ class MageBridgeStoreHelper
         }
 
         // Load the settings from the database
-        $storeview = MagebridgeModelConfig::load('storeview');
-        $storegroup = MagebridgeModelConfig::load('storegroup');
-        $website = MagebridgeModelConfig::load('website');
+        $storeview = MageBridgeModelConfig::load('storeview');
+        $storegroup = MageBridgeModelConfig::load('storegroup');
+        $website = MageBridgeModelConfig::load('website');
 
         // Never use a Store View or Store Group in the backend
         if ($application->isAdmin()) {

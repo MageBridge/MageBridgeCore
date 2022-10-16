@@ -80,7 +80,7 @@ class MageBridgeViewUsers extends MageBridgeView
                     $censored_values = ['name', 'username', 'email', 'magento_name'];
 
                     foreach ($censored_values as $censored_value) {
-                        $item->$censored_value = str_repeat('*', YireoHelper::strlen($item->$censored_value));
+                        $item->$censored_value = str_repeat('*', strlen($item->$censored_value));
                     }
                 }
 

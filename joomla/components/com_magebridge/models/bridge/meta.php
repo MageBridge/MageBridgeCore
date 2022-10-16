@@ -63,26 +63,26 @@ class MageBridgeModelBridgeMeta extends MageBridgeModelBridgeSegment
 
             $arguments = [
                 'api_session' => $bridge->getApiSession(),
-                'api_user' => MageBridgeEncryptionHelper::encrypt(MagebridgeModelConfig::load('api_user')),
-                'api_key' => MageBridgeEncryptionHelper::encrypt(MagebridgeModelConfig::load('api_key')),
+                'api_user' => MageBridgeEncryptionHelper::encrypt(MageBridgeModelConfig::load('api_user')),
+                'api_key' => MageBridgeEncryptionHelper::encrypt(MageBridgeModelConfig::load('api_key')),
                 'api_url' => JUri::root() . 'component/magebridge/?controller=jsonrpc&task=call',
                 'app' => $application->getClientId(), // 0 = site, 1 = admin
                 'app_type' => $app_type,
                 'app_value' => $app_value,
-                'storeview' => MagebridgeModelConfig::load('storeview'),
-                'storegroup' => MagebridgeModelConfig::load('storegroup'),
-                'website' => MagebridgeModelConfig::load('website'),
-                'customer_group' => MagebridgeModelConfig::load('customer_group'),
+                'storeview' => MageBridgeModelConfig::load('storeview'),
+                'storegroup' => MageBridgeModelConfig::load('storegroup'),
+                'website' => MageBridgeModelConfig::load('website'),
+                'customer_group' => MageBridgeModelConfig::load('customer_group'),
                 'joomla_url' => $bridge->getJoomlaBridgeUrl(),
                 'joomla_sef_url' => $bridge->getJoomlaBridgeSefUrl(),
                 'joomla_sef_suffix' => (int) MageBridgeUrlHelper::hasUrlSuffix(),
                 'joomla_user_email' => ($application->isSite() && !empty($user->email)) ? $user->email : null,
                 'joomla_current_url' => $uri->current(),
-                'modify_url' => MagebridgeModelConfig::load('modify_url'),
-                'enforce_ssl' => MagebridgeModelConfig::load('enforce_ssl'),
+                'modify_url' => MageBridgeModelConfig::load('modify_url'),
+                'enforce_ssl' => MageBridgeModelConfig::load('enforce_ssl'),
                 'has_ssl' => (int) $uri->isSSL(),
-                'payment_urls' => MagebridgeModelConfig::load('payment_urls'),
-                'enable_messages' => MagebridgeModelConfig::load('enable_messages'),
+                'payment_urls' => MageBridgeModelConfig::load('payment_urls'),
+                'enable_messages' => MageBridgeModelConfig::load('enable_messages'),
                 'joomla_session' => session_id(),
                 'joomla_conf_caching' => $config->get('caching', 60),
                 'joomla_conf_lifetime' => ($config->get('lifetime', 60) * 60),
@@ -96,20 +96,20 @@ class MageBridgeModelBridgeMeta extends MageBridgeModelBridgeSegment
                 'http_host' => $uri->toString(['host']),
                 'user_agent' => ((isset($_SERVER['HTTP_USER_AGENT'])) ? $_SERVER['HTTP_USER_AGENT'] : ''),
                 'remote_addr' => ((isset($_SERVER['REMOTE_ADDR'])) ? $_SERVER['REMOTE_ADDR'] : ''),
-                'supportkey' => MagebridgeModelConfig::load('supportkey'),
+                'supportkey' => MageBridgeModelConfig::load('supportkey'),
                 'debug' => (int) MageBridgeModelDebug::isDebug(),
-                'debug_level' => MagebridgeModelConfig::load('debug_level'),
-                'debug_display_errors' => MagebridgeModelConfig::load('debug_display_errors'),
-                'protocol' => MagebridgeModelConfig::load('protocol'),
+                'debug_level' => MageBridgeModelConfig::load('debug_level'),
+                'debug_display_errors' => MageBridgeModelConfig::load('debug_display_errors'),
+                'protocol' => MageBridgeModelConfig::load('protocol'),
                 'state' => 'initializing',
                 'ajax' => (int) $bridge->isAjax(),
                 'disable_css' => MageBridgeHelper::getDisableCss(),
                 'disable_js' => MageBridgeHelper::getDisableJs(), ];
 
             if (MageBridgeTemplateHelper::isMobile()) {
-                $arguments['theme'] = MagebridgeModelConfig::load('mobile_magento_theme');
+                $arguments['theme'] = MageBridgeModelConfig::load('mobile_magento_theme');
             } else {
-                $arguments['theme'] = MagebridgeModelConfig::load('magento_theme');
+                $arguments['theme'] = MageBridgeModelConfig::load('magento_theme');
             }
 
             foreach ($arguments as $name => $value) {
@@ -129,7 +129,7 @@ class MageBridgeModelBridgeMeta extends MageBridgeModelBridgeSegment
      *
      * @param null
      *
-     * @return array
+     * @return void
      */
     public function reset()
     {

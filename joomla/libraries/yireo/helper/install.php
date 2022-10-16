@@ -165,7 +165,7 @@ class YireoHelperInstall
         }
 
         // Write received data to file
-        JFile::write($file, $data);
+        Joomla\Filesystem\File::write($file, $data);
 
         // Return the name of the downloaded package
         return basename($file);

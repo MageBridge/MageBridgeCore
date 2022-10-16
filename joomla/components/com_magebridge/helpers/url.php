@@ -186,7 +186,7 @@ class MageBridgeUrlHelper
         static $urls = null;
 
         if ($urls == null) {
-            if (MagebridgeModelConfig::load('load_urls') == 1) {
+            if (MageBridgeModelConfig::load('load_urls') == 1) {
                 $query = "SELECT `id`,`source`,`source_type`,`destination`,`access` FROM #__magebridge_urls WHERE `published` = 1 ORDER BY `ordering`";
                 $db = JFactory::getDbo();
                 $db->setQuery($query);
@@ -247,7 +247,7 @@ class MageBridgeUrlHelper
      */
     public static function enableRootMenu()
     {
-        if (MagebridgeModelConfig::load('use_rootmenu') == 1) {
+        if (MageBridgeModelConfig::load('use_rootmenu') == 1) {
             return true;
         }
 
@@ -263,7 +263,7 @@ class MageBridgeUrlHelper
      */
     public static function enforceRootMenu()
     {
-        if (MagebridgeModelConfig::load('enforce_rootmenu') == 1) {
+        if (MageBridgeModelConfig::load('enforce_rootmenu') == 1) {
             return true;
         }
 
@@ -329,7 +329,7 @@ class MageBridgeUrlHelper
     public static function getRootItem()
     {
         // Return false, if Root Menu-Item usage is disabled
-        if (MagebridgeModelConfig::load('use_rootmenu') == false) {
+        if (MageBridgeModelConfig::load('use_rootmenu') == false) {
             return false;
         }
 
@@ -478,8 +478,8 @@ class MageBridgeUrlHelper
         $hostname = JUri::getInstance()
             ->toString(['host']);
 
-        if ($hostname == MagebridgeModelConfig::load('host')) {
-            $url = str_replace(MagebridgeModelConfig::load('protocol') . '://' . MagebridgeModelConfig::load('host'), '', $url); // Strip the Magento host
+        if ($hostname == MageBridgeModelConfig::load('host')) {
+            $url = str_replace(MageBridgeModelConfig::load('protocol') . '://' . MageBridgeModelConfig::load('host'), '', $url); // Strip the Magento host
         }
 
         return $url;
@@ -658,7 +658,7 @@ class MageBridgeUrlHelper
             return $request;
         }
 
-        $link_to_magento = MagebridgeModelConfig::load('link_to_magento');
+        $link_to_magento = MageBridgeModelConfig::load('link_to_magento');
 
         if ($link_to_magento == 1) {
             $bridge = MageBridge::getBridge();
@@ -673,7 +673,7 @@ class MageBridgeUrlHelper
             return $bridge->getMagentoUrl() . $request;
         }
 
-        $enforce_ssl = MagebridgeModelConfig::load('enforce_ssl');
+        $enforce_ssl = MageBridgeModelConfig::load('enforce_ssl');
 
         if ($enforce_ssl == 1 || $enforce_ssl == 2) {
             $ssl = 1;
@@ -721,7 +721,7 @@ class MageBridgeUrlHelper
         ];
 
         // Extra payment-pages to be served with SSL
-        $payment_urls = explode(',', MagebridgeModelConfig::load('payment_urls'));
+        $payment_urls = explode(',', MageBridgeModelConfig::load('payment_urls'));
 
         if (!empty($payment_urls)) {
             foreach ($payment_urls as $url) {

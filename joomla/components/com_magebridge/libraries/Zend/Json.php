@@ -151,7 +151,7 @@ class Zend_Json
             $encodedResult = Zend_Json_Encoder::encode($valueToEncode, $cycleCheck, $options);
         }
 
-        //only do post-proccessing to revert back the Zend_Json_Expr if any.
+        //only do post-processing to revert back the Zend_Json_Expr if any.
         if (count($javascriptExpressions) > 0) {
             $count = count($javascriptExpressions);
             for ($i = 0; $i < $count; $i++) {
@@ -182,7 +182,7 @@ class Zend_Json
      *
      * @see encode
      * @param mixed $valueToCheck a string - object property to be encoded
-     * @return void
+     * @return mixed
      */
     protected static function _recursiveJsonExprFinder(
         &$value,
@@ -224,7 +224,7 @@ class Zend_Json
      *
      * This function converts the XML formatted string into a PHP array by
      * calling a recursive (protected static) function in this class. Then, it
-     * converts that PHP array into JSON by calling the "encode" static funcion.
+     * converts that PHP array into JSON by calling the "encode" static function.
      *
      * Throws a Zend_Json_Exception if the input not a XML formatted string.
      * NOTE: Encoding native javascript expressions via Zend_Json_Expr is not possible.
@@ -316,7 +316,7 @@ class Zend_Json
             // Is the input array size 0? Then, we reached the rare CDATA text if any.
             if (count($simpleXmlElementObject) <= 0) {
                 // Let us return the lonely CDATA. It could even be
-                // an empty element or just filled with whitespaces.
+                // an empty element or just filled with white-spaces.
                 return (trim(strval($copyOfSimpleXmlElementObject)));
             } // End of if (count($simpleXmlElementObject) <= 0)
 
@@ -354,7 +354,7 @@ class Zend_Json
             // the text between the XML tags.
 
             // In order to allow Zend_Json_Expr from xml, we check if the node
-            // matchs the pattern that try to detect if it is a new Zend_Json_Expr
+            // matches the pattern that try to detect if it is a new Zend_Json_Expr
             // if it matches, we return a new Zend_Json_Expr instead of a text node
             $pattern = '/^[\s]*new Zend_Json_Expr[\s]*\([\s]*[\"\']{1}(.*)[\"\']{1}[\s]*\)[\s]*$/';
             $matchings = [];

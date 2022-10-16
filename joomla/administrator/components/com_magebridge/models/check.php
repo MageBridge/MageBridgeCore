@@ -82,9 +82,9 @@ class MagebridgeModelCheck extends YireoCommonModel
     public function doConfigChecks()
     {
         $group  = 'config';
-        $config = MagebridgeModelConfig::load();
+        $config = MageBridgeModelConfig::load();
         foreach ($config as $c) {
-            $result = MagebridgeModelConfig::check($c['name'], $c['value']);
+            $result = MageBridgeModelConfig::check($c['name'], $c['value']);
 
             if (!empty($result)) {
                 $this->addResult($group, $c['name'], self::CHECK_WARNING, $result);
@@ -163,7 +163,7 @@ class MagebridgeModelCheck extends YireoCommonModel
      */
     public function doSystemChecks($installer = false)
     {
-        $config          = MagebridgeModelConfig::load();
+        $config          = MageBridgeModelConfig::load();
         $joomlaConfig = JFactory::getConfig();
         $server_software = (isset($_SERVER['software'])) ? $_SERVER['software'] : null;
 

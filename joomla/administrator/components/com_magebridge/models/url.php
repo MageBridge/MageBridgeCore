@@ -44,7 +44,7 @@ class MagebridgeModelUrl extends YireoModelItem
 
         // Change the setting "load_urls" in the MageBridge configuration
         if ($data['published'] == 1) {
-            MagebridgeModelConfig::getSingleton()->saveValue('load_urls', 1);
+            MageBridgeModelConfig::getSingleton()->saveValue('load_urls', 1);
         }
 
         return $rt;

@@ -115,12 +115,12 @@ class Yireo_MageBridge_Model_Block
             $block = $controller->getAction()->getLayout()->createBlock($block_type);
             $instances[$block_name] = $block;
         } catch(Exception $e) {
-            Mage::getSingleton('magebridge/debug')->error('Failed to get block: type '.$type.': '.$e->getMessage());
+            Mage::getSingleton('magebridge/debug')->error('Failed to get block: type '.$block_type.': '.$e->getMessage());
         }
 
         // General check if the block is empty
         if (empty($block)) {
-            Mage::getSingleton('magebridge/debug')->warning('Empty block with type '.$type);
+            Mage::getSingleton('magebridge/debug')->warning('Empty block with type '.$block_type);
             return null;
         }
 
@@ -150,8 +150,9 @@ class Yireo_MageBridge_Model_Block
         }
 
         // Prepare the response for the bridge
-        $response = Mage::helper('magebridge/encryption')->base64_encode($response);
-        return $response;
+        /** @var Yireo_MageBridge_Helper_Encryption */
+        $helper = Mage::helper('magebridge/encryption');
+        return $helper->base64_encode($response);
     }
 
     /*
@@ -257,7 +258,9 @@ class Yireo_MageBridge_Model_Block
         }
 
         $request = Mage::app()->getRequest()->getRequestUri();
-        $allowCaching = Mage::helper('magebridge/cache')->allowCaching($block_name, $request);
+        /** @var Yireo_MageBridge_Helper_Cache */
+        $helper = Mage::helper('magebridge/cache');
+        $allowCaching = $helper->allowCaching($block_name, $request);
 
         $cacheMeta = [
             'cache_key' => $block->getCacheKey(),
@@ -280,7 +283,9 @@ class Yireo_MageBridge_Model_Block
     public function filter($html = '')
     {
         // Decode the HTML
-        $html = Mage::helper('magebridge/encryption')->base64_decode($html);
+        /** @var Yireo_MageBridge_Helper_Encryption */
+        $helper = Mage::helper('magebridge/encryption');
+        $html = $helper->base64_decode($html);
 
         // Try to filter the HTML through the widget filter or either the email filter
         if (!$processor = Mage::getModel('widget/template_filter')) {
@@ -300,7 +305,7 @@ class Yireo_MageBridge_Model_Block
             }
         }
 
-        return Mage::helper('magebridge/encryption')->base64_encode($html);
+        return $helper->base64_encode($html);
     }
 
     /*
@@ -312,13 +317,15 @@ class Yireo_MageBridge_Model_Block
      */
     public function coreBlockAbstractToHtmlBefore($observer)
     {
-        if (Mage::app()->useCache('block_html') && Mage::helper('magebridge/cache')->enabled()) {
+        /** @var Yireo_MageBridge_Helper_Cache */
+        $helper = Mage::helper('magebridge/cache');
+        if (Mage::app()->useCache('block_html') && $helper->enabled()) {
             $block = $observer->getEvent()->getBlock();
             $layoutName = $block->getNameInLayout();
-            $uniquePageId = Mage::helper('magebridge/cache')->getPageId();
+            $uniquePageId = $helper->getPageId();
             $request = Mage::app()->getRequest()->getRequestUri();
 
-            $allowCaching = Mage::helper('magebridge/cache')->allowCaching($layoutName, $request);
+            $allowCaching = $helper->allowCaching($layoutName, $request);
             if ($allowCaching == true) {
                 $cacheTag = 'magebridge_block_'.$layoutName.'-'.$uniquePageId;
                 $block->addData([

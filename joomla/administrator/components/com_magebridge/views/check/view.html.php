@@ -120,8 +120,8 @@ class MageBridgeViewCheck extends YireoCommonView
         $bar = JToolbar::getInstance('toolbar');
         $bar->appendButton('Standard', 'preview', 'Browse', 'refresh', false);
 
-        $this->url  = MagebridgeModelConfig::load('url') . 'magebridge.php';
-        $this->host = MagebridgeModelConfig::load('host');
+        $this->url  = MageBridgeModelConfig::load('url') . 'magebridge.php';
+        $this->host = MageBridgeModelConfig::load('host');
 
         parent::display('browser');
     }
@@ -134,8 +134,8 @@ class MageBridgeViewCheck extends YireoCommonView
     public function displayResult($tpl)
     {
         // Fetch configuration data
-        $url  = MagebridgeModelConfig::load('url') . 'magebridge.php';
-        $host = MagebridgeModelConfig::load('host');
+        $url  = MageBridgeModelConfig::load('url') . 'magebridge.php';
+        $host = MageBridgeModelConfig::load('host');
 
         // Do basic resolving on the host if it is not an IP-address
         if (preg_match('/^([0-9\.]+)$/', $host) == false) {

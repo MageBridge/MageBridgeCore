@@ -24,11 +24,10 @@ class Yireo_MageBridge_Model_Dispatcher
      */
     public function getResult($name, $arguments = null)
     {
+        // Construct the event
+        $event = 'joomla'.ucfirst($name);
         // Only continue if this event is listed here
         if (in_array($event, $this->getEvents())) {
-            // Construct the event
-            $event = 'joomla'.ucfirst($name);
-
             // Throw the event and return the result
             return Mage::dispatchEvent($event, $arguments);
         }

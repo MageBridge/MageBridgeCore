@@ -62,19 +62,17 @@ class YireoAbstractModel extends JModelLegacy
      *
      * @param array $config
      *
-     * @return mixed
+     * @return void
      */
     public function __construct($config = [])
     {
-        $rt = parent::__construct($config);
+        parent::__construct($config);
 
         $this->config = $config;
         $this->app    = JFactory::getApplication();
         $this->input  = $this->app->input;
 
         $this->handleAbstractDeprecated();
-
-        return $rt;
     }
 
     /**

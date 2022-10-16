@@ -124,7 +124,7 @@ class MagebridgeModelUpdate extends YireoCommonModel
         // Construct the update URL
         $extension_uri = $extension['name'];
         $extension_uri .= '_j25';
-        $extension_uri .= '.' . MagebridgeModelConfig::load('update_format');
+        $extension_uri .= '.' . MageBridgeModelConfig::load('update_format');
 
         if (!empty($extension['download_url'])) {
             $extension_url = $extension['download_url'];
@@ -134,7 +134,7 @@ class MagebridgeModelUpdate extends YireoCommonModel
         }
 
         // Either use fopen() or CURL
-        if (ini_get('allow_url_fopen') == 1 && MagebridgeModelConfig::load('update_method') == 'joomla') {
+        if (ini_get('allow_url_fopen') == 1 && MageBridgeModelConfig::load('update_method') == 'joomla') {
             $package_file = JInstallerHelper::downloadPackage($extension_url, $extension_uri);
         } else {
             $package_file = MageBridgeUpdateHelper::downloadPackage($extension_url, $extension_uri);
@@ -252,7 +252,7 @@ class MagebridgeModelUpdate extends YireoCommonModel
 
         // Build the arguments
         $arguments = [
-            'key'      => MagebridgeModelConfig::load('supportkey'),
+            'key'      => MageBridgeModelConfig::load('supportkey'),
             'domain'   => $_SERVER['HTTP_HOST'],
             'resource' => 'download',
             'request'  => $extension_name,

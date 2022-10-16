@@ -15,7 +15,7 @@ defined('JPATH_BASE') or die();
 /**
  * Form Field-class
  */
-class MagebridgeFormFieldHttpauth extends MagebridgeFormFieldAbstract
+class MagebridgeFormFieldHttpauth extends MageBridgeFormFieldAbstract
 {
     /**
      * Form field type

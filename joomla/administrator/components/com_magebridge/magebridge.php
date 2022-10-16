@@ -35,7 +35,7 @@ if (MageBridgeAclHelper::isAuthorized() == false) {
 }
 
 // Initialize debugging
-MagebridgeModelDebug::init();
+MageBridgeModelDebug::init();
 
 // Require the current controller
 $view = $app->input->getCmd('view');

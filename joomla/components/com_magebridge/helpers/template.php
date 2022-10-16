@@ -73,7 +73,7 @@ class MageBridgeTemplateHelper
      *
      * @param null
      *
-     * @return bool
+     * @return void
      */
     public static function removeMagentoScripts()
     {
@@ -102,8 +102,8 @@ class MageBridgeTemplateHelper
 
         $document->setHeadData($headers);
 
-        MagebridgeModelConfig::load('disable_js_footools', 1);
-        MagebridgeModelConfig::load('disable_js_mootools', 0);
+        MageBridgeModelConfig::load('disable_js_footools', 1);
+        MageBridgeModelConfig::load('disable_js_mootools', 0);
     }
 
     /**
@@ -432,7 +432,7 @@ class MageBridgeTemplateHelper
             return true;
         }
 
-        $customer_pages = trim(MagebridgeModelConfig::load('customer_pages'));
+        $customer_pages = trim(MageBridgeModelConfig::load('customer_pages'));
 
         if (!empty($customer_pages)) {
             $customer_pages = explode("\n", $customer_pages);
@@ -711,7 +711,7 @@ class MageBridgeTemplateHelper
         }
 
         // Check for flushing of positions within the MageBridge configuration
-        $globalArray = explode(',', MagebridgeModelConfig::load($setting));
+        $globalArray = explode(',', MageBridgeModelConfig::load($setting));
         $plugin = JPluginHelper::getPlugin('system', 'magebridgepositions');
         $pluginParams = json_decode($plugin->params, true);
         $pluginArray = (isset($pluginParams[$setting])) ? explode(',', $pluginParams[$setting]) : [];
@@ -785,7 +785,7 @@ class MageBridgeTemplateHelper
      * @param string $type
      * @param string $file
      *
-     * @return bool
+     * @return void
      */
     public static function load($type, $file = null)
     {
@@ -800,7 +800,7 @@ class MageBridgeTemplateHelper
             case 'jquery':
 
                 // Load jQuery through the Google API
-                if (MagebridgeModelConfig::load('use_google_api') == 1) {
+                if (MageBridgeModelConfig::load('use_google_api') == 1) {
                     $prefix = (JUri::getInstance()
                         ->isSSL()) ? 'https' : 'http';
                     $document->addScript($prefix . '://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js');
@@ -930,7 +930,7 @@ class MageBridgeTemplateHelper
      * @param string $type
      * @param string $file
      *
-     * @return bool
+     * @return string
      */
     public static function get($variable = null)
     {
@@ -938,6 +938,8 @@ class MageBridgeTemplateHelper
             case 'jquery':
                 return 'jquery/jquery-1.8.1.min.js';
         }
+
+        return '';
     }
 
     /**
@@ -946,7 +948,7 @@ class MageBridgeTemplateHelper
      * @param string $type
      * @param string $file
      *
-     * @return bool
+     * @return void
      */
     public static function debug()
     {

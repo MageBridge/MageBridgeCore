@@ -166,6 +166,8 @@ class MageBridgeViewLogs extends YireoViewList
                 return JText::_($name);
             }
         }
+
+        return '';
     }
 
     /**

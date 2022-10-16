@@ -48,10 +48,10 @@ class Yireo_MageBridge_Helper_Update extends Mage_Core_Helper_Abstract
         // If a file has been removed, refresh the Magento Downloader
         if ($fileMatch == true) {
             if (file_exists($downloaderFolder.'cache.cfg')) {
-                @unlink($downloaderFilder.'cache.cfg');
+                @unlink($downloaderFolder.'cache.cfg');
             }
             if (file_exists($downloaderFolder.'connect.cfg')) {
-                @unlink($downloaderFilder.'connect.cfg');
+                @unlink($downloaderFolder.'connect.cfg');
             }
         }
     }

@@ -27,7 +27,7 @@ if (!function_exists('MageBridgeMenuPrintTree')) {
         ?>
 		<ul>
 		<?php foreach ($tree as $item) : ?>
-			<?php $class = modMageBridgeMenuHelper::getCssClass($params, $item, $level, $i, $tree); ?>
+			<?php $class = ModMageBridgeMenuHelper::getCssClass($params, $item, $level, $i, $tree); ?>
 			<li class="<?php echo $class; ?>">
 				<a href="<?php echo $item['url']; ?>" class="<?php echo $class; ?>"><span><?php echo $item['name']; ?></span></a>
 				<?php if ($params->get('include_product_count') == 1 && isset($item['product_count'])) { ?>(<?php echo (int)$item['product_count']; ?>)<?php } ?>
@@ -47,7 +47,7 @@ if (!function_exists('MageBridgeMenuPrintTree')) {
 <ul class="menu<?php echo $params->get('class_sfx'); ?>">
 <?php foreach ($catalog_tree as $item) : ?>
 	<?php $i = 0; ?>
-	<?php $class = modMageBridgeMenuHelper::getCssClass($params, $item, $startLevel, $i, $catalog_tree); ?>
+	<?php $class = ModMageBridgeMenuHelper::getCssClass($params, $item, $startLevel, $i, $catalog_tree); ?>
 	<li class="<?php echo $class; ?>">
 		<a href="<?php echo $item['url']; ?>" class="<?php echo $class; ?>"><span><?php echo $item['name']; ?></span></a>
 		<?php if ($params->get('include_product_count') == 1 && isset($item['product_count'])) { ?>(<?php echo (int)$item['product_count']; ?>)<?php } ?>

@@ -27,7 +27,7 @@ class MageBridgeModuleHelper extends JModuleHelper
      */
     public static function loadMageBridgeModules()
     {
-        if (MagebridgeModelConfig::load('preload_all_modules') == 0 && JFactory::getApplication()->input->getInt('Itemid') != 0) {
+        if (MageBridgeModelConfig::load('preload_all_modules') == 0 && JFactory::getApplication()->input->getInt('Itemid') != 0) {
             static $modules = null;
 
             if (is_array($modules) == false) {

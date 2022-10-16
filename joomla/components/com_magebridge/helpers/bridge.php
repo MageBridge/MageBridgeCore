@@ -29,7 +29,7 @@ class MageBridgeBridgeHelper
     public static function getBridgableCookies()
     {
         // When bridging all cookies, simply collect all names and use them
-        $allCookies = MagebridgeModelConfig::load('bridge_cookie_all');
+        $allCookies = MageBridgeModelConfig::load('bridge_cookie_all');
 
         if ($allCookies == 1 && !empty($_COOKIE)) {
             $cookies = [];
@@ -77,7 +77,7 @@ class MageBridgeBridgeHelper
      */
     public static function getCustomCookies()
     {
-        $customCookies = MagebridgeModelConfig::load('bridge_cookie_custom');
+        $customCookies = MageBridgeModelConfig::load('bridge_cookie_custom');
         $customCookiesArray = [];
 
         if (!empty($customCookies)) {

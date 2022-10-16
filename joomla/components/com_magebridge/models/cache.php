@@ -64,7 +64,7 @@ class MageBridgeModelCache
         $this->cache_name = $name.'_'.md5($this->request);
         $this->cache_folder = JPATH_SITE.'/cache/com_magebridge';
         $this->cache_file = $this->cache_folder.'/'.$this->cache_name.'.php';
-        $this->cache_time = (!empty($cache_time)) ? (int)$cache_time : MagebridgeModelConfig::load('cache_time');
+        $this->cache_time = (!empty($cache_time)) ? (int)$cache_time : MageBridgeModelConfig::load('cache_time');
     }
 
     /**
@@ -83,7 +83,7 @@ class MageBridgeModelCache
         // Try to create the cache directory when needed
         if (!is_dir($this->cache_folder)) {
             jimport('joomla.filesystem.folder');
-            $rt = JFolder::create($this->cache_folder);
+            $rt = Joomla\Filesystem\Folder::create($this->cache_folder);
             if ($rt == false) {
                 return false;
             }
@@ -173,6 +173,6 @@ class MageBridgeModelCache
      */
     public function isEnabled()
     {
-        return (bool)MagebridgeModelConfig::load('enable_cache');
+        return (bool)MageBridgeModelConfig::load('enable_cache');
     }
 }

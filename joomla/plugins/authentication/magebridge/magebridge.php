@@ -165,7 +165,7 @@ class PlgAuthenticationMageBridge extends JPlugin
      */
     private function getParam($name = null)
     {
-        return MagebridgeModelConfig::load($name);
+        return MageBridgeModelConfig::load($name);
     }
 
     /**

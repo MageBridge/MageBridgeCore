@@ -69,7 +69,7 @@ class MageBridgeConnectorStore extends MageBridgeConnector
     public function getStore()
     {
         // If the database configuration specified no stores, skip this step
-        if (MagebridgeModelConfig::load('load_stores') == 0) {
+        if (MageBridgeModelConfig::load('load_stores') == 0) {
             return null;
         }
 

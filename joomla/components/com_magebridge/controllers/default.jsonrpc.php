@@ -27,13 +27,11 @@ class MageBridgeControllerJsonrpc extends YireoAbstractController
 
     public function __construct($config = [])
     {
-        $rt = parent::__construct($config);
+        parent::__construct($config);
 
         MageBridgeModelDebug::getDebugOrigin(MageBridgeModelDebug::MAGEBRIDGE_DEBUG_ORIGIN_JOOMLA_JSONRPC);
         $this->debug = MageBridgeModelDebug::getInstance();
         $this->app = JFactory::getApplication();
-
-        return $rt;
     }
 
     /**
@@ -176,10 +174,10 @@ class MageBridgeControllerJsonrpc extends YireoAbstractController
             $apiUser = MageBridgeEncryptionHelper::decrypt($auth['api_user']);
             $apiKey = MageBridgeEncryptionHelper::decrypt($auth['api_key']);
 
-            if ($apiUser != MagebridgeModelConfig::load('api_user')) {
+            if ($apiUser != MageBridgeModelConfig::load('api_user')) {
                 $this->debug->error('JSON-RPC: API-authentication failed: Username "' . $apiUser . '" did not match');
             } else {
-                if ($apiKey != MagebridgeModelConfig::load('api_key')) {
+                if ($apiKey != MageBridgeModelConfig::load('api_key')) {
                     $this->debug->error('JSON-RPC: API-authentication failed: Key "' . $apiKey . '" did not match');
                 } else {
                     return true;

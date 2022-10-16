@@ -95,12 +95,12 @@ class MageBridgeModelBridgeBlock extends MageBridgeModelBridgeSegment
         $block_data = MageBridgeBlockHelper::parseBlock($block_data);
 
         // Replace Joomla! jdoc:include tags
-        if (MagebridgeModelConfig::load('enable_jdoc_tags') == 1) {
+        if (MageBridgeModelConfig::load('enable_jdoc_tags') == 1) {
             $block_data = MageBridgeBlockHelper::parseJdocTags($block_data);
         }
 
         // Run Content Plugins on this block-html
-        if (MagebridgeModelConfig::load('enable_content_plugins') == 1) {
+        if (MageBridgeModelConfig::load('enable_content_plugins') == 1) {
             // Prepare a simple item (like an article) for use with Content Plugins
             $item = (object) null;
             $item->text = $block_data;
@@ -130,7 +130,7 @@ class MageBridgeModelBridgeBlock extends MageBridgeModelBridgeSegment
         }
 
         // Filter the block throw the "magebridge" plugin group
-        if (MagebridgeModelConfig::load('enable_block_rendering') == 1) {
+        if (MageBridgeModelConfig::load('enable_block_rendering') == 1) {
             JPluginHelper::importPlugin('magebridge');
             JFactory::getApplication()
                 ->triggerEvent('onBeforeDisplayBlock', [&$block_name, $arguments, &$block_data]);

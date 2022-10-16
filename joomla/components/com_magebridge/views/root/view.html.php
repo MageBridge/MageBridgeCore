@@ -50,8 +50,8 @@ class MageBridgeViewRoot extends MageBridgeView
 
         // Add controller information
         $mageConfig = $bridge->getMageConfig();
-        $this->mage_controller = (isset($mageConfig['controller'])) ? $mageConfig['controller'] : null;
-        $this->mage_action = (isset($mageConfig['action'])) ? $mageConfig['action'] : null;
+        $mageController = (isset($mageConfig['controller'])) ? $mageConfig['controller'] : null;
+        $mageAction = (isset($mageConfig['action'])) ? $mageConfig['action'] : null;
 
         // Assemble the page class
         $contentClass = ['magebridge-content'];

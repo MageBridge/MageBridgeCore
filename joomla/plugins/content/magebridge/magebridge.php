@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Joomla! MageBridge - Content plugin
  *
@@ -78,6 +79,8 @@ class PlgContentMageBridge extends JPlugin
                 $row->text = $result;
             }
         }
+
+        return false;
     }
 
     /**

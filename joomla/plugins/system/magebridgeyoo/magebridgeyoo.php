@@ -178,7 +178,7 @@ class plgSystemMageBridgeYoo extends JPlugin
             return false;
         }
 
-        $disable_js_mootools = MagebridgeModelConfig::load('disable_js_mootools');
+        $disable_js_mootools = MageBridgeModelConfig::load('disable_js_mootools');
         if (MageBridgeTemplateHelper::hasPrototypeJs() && $disable_js_mootools == 1) {
             $body = JResponse::getBody();
             $body = preg_replace('/Warp.Settings(.*);/', '', $body);

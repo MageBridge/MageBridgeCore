@@ -87,7 +87,7 @@ foreach ($this->data as $package) {
         $checked = '<input type="checkbox" class="'.implode(' ', $checkbox_class).'" name="packages[]" value="'.$package['name'].'" />';
     }
 
-    $token = (method_exists('JSession', 'getFormToken')) ? JSession::getFormToken() : JUtility::getToken();
+    $token = JSession::getFormToken();
     $upgrade_url = 'index.php?option=com_magebridge&task=update&packages[]='.$package['name'].'&'.$token.'=1';
 
     if (isset($package['app'])) {

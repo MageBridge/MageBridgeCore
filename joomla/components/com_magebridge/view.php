@@ -30,7 +30,7 @@ class MageBridgeView extends YireoAbstractView
     public function __construct($config = [])
     {
         // Call the parent constructor
-        $rt = parent::__construct($config);
+        parent::__construct($config);
 
         // Import use full variables from JFactory
         $this->db = JFactory::getDbo();
@@ -38,8 +38,6 @@ class MageBridgeView extends YireoAbstractView
         $this->user = JFactory::getUser();
         $this->app = JFactory::getApplication();
         $this->input = $this->app->input;
-
-        return $rt;
     }
 
     /**
@@ -80,7 +78,7 @@ class MageBridgeView extends YireoAbstractView
             $register->add('block', $this->block_name);
 
             // Only request breadcrumbs if we are loading another page than the homepage
-            if (MagebridgeModelConfig::load('enable_breadcrumbs') == 1) {
+            if (MageBridgeModelConfig::load('enable_breadcrumbs') == 1) {
                 $request = MageBridgeUrlHelper::getRequest();
                 if (!empty($request)) {
                     $register->add('breadcrumbs');
@@ -96,7 +94,7 @@ class MageBridgeView extends YireoAbstractView
             // Add things for the frontend specifically
             $application = JFactory::getApplication();
             if ($application->isSite()) {
-                if (MagebridgeModelConfig::load('enable_breadcrumbs') == 1) {
+                if (MageBridgeModelConfig::load('enable_breadcrumbs') == 1) {
                     $bridge->setBreadcrumbs();
                 }
             }
@@ -173,6 +171,6 @@ class MageBridgeView extends YireoAbstractView
      */
     public function getOfflineMessage()
     {
-        return MagebridgeModelConfig::load('offline_message');
+        return MageBridgeModelConfig::load('offline_message');
     }
 }

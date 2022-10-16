@@ -19,7 +19,7 @@ require_once JPATH_SITE . '/components/com_magebridge/models/config/value.php';
 /**
  * Bridge configuration class
  */
-class MagebridgeModelConfig extends YireoAbstractModel
+class MageBridgeModelConfig extends YireoAbstractModel
 {
     /**
      * Array of configured data
@@ -75,7 +75,7 @@ class MagebridgeModelConfig extends YireoAbstractModel
      *
      * @param array $data
      *
-     * @return array
+     * @return void
      */
     public function setData($data)
     {
@@ -275,12 +275,12 @@ class MagebridgeModelConfig extends YireoAbstractModel
     {
         // Reset an empty value to its original value
         if (empty($value)) {
-            $value = MagebridgeModelConfig::load($element);
+            $value = MageBridgeModelConfig::load($element);
         }
 
         // Check for settings that should not be kept empty
         $nonempty = ['host', 'website', 'api_user', 'api_key'];
-        if (MagebridgeModelConfig::allEmpty() == false && in_array($element, $nonempty) && empty($value)) {
+        if (MageBridgeModelConfig::allEmpty() == false && in_array($element, $nonempty) && empty($value)) {
             return JText::sprintf('Setting "%s" is empty - Please configure it below', JText::_($element));
         }
 
@@ -294,7 +294,7 @@ class MagebridgeModelConfig extends YireoAbstractModel
                 return JText::sprintf('DNS lookup of hostname %s failed', $value);
             }
 
-            if (MagebridgeModelConfig::load('api_widgets') == true) {
+            if (MageBridgeModelConfig::load('api_widgets') == true) {
                 $bridge = MageBridgeModelBridge::getInstance();
                 $data   = $bridge->build();
 
@@ -374,7 +374,7 @@ class MagebridgeModelConfig extends YireoAbstractModel
         $root         = MageBridgeUrlHelper::getRootItem();
         $joomla_host  = JUri::getInstance()
             ->toString(['host']);
-        $magento_host = MagebridgeModelConfig::load('host');
+        $magento_host = MageBridgeModelConfig::load('host');
 
         // Check whether the Magento basedir conflicts with the MageBridge alias
         if (!empty($root) && !empty($root->route) && $root->route == $value && $joomla_host == $magento_host) {
@@ -395,7 +395,7 @@ class MagebridgeModelConfig extends YireoAbstractModel
 
         if (empty($allEmpty)) {
             $allEmpty = true;
-            $config   = MagebridgeModelConfig::load();
+            $config   = MageBridgeModelConfig::load();
             foreach ($config as $c) {
                 if ($c['core'] == 0) {
                     $allEmpty = false;
@@ -489,7 +489,7 @@ class MagebridgeModelConfig extends YireoAbstractModel
         }
 
         // Load the existing configuration
-        $config = MagebridgeModelConfig::load();
+        $config = MageBridgeModelConfig::load();
 
         // Overload each existing value with the posted value (if it exists)
         foreach ($config as $name => $c) {
@@ -551,7 +551,7 @@ class MagebridgeModelConfig extends YireoAbstractModel
             'value' => $value,
         ];
 
-        $config = MagebridgeModelConfig::load();
+        $config = MageBridgeModelConfig::load();
 
         if (isset($config[$name])) {
             $data['id'] = $config[$name]['id'];

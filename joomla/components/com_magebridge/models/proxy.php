@@ -137,7 +137,7 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
      */
     protected function matchDirectOutputUrls()
     {
-        $direct_output_urls   = MageBridgeHelper::csvToArray(MagebridgeModelConfig::load('direct_output'));
+        $direct_output_urls   = MageBridgeHelper::csvToArray(MageBridgeModelConfig::load('direct_output'));
         $direct_output_urls[] = 'checkout/onepage/getAdditional';
 
         if (!empty($direct_output_urls)) {
@@ -231,7 +231,7 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
                 $response = MageBridgeHelper::filterContent($response);
             }
 
-            header('Content-Length: ' . YireoHelper::strlen($response));
+            header('Content-Length: ' . strlen($response));
         }
 
         // Nothing is compressed with this bridge
@@ -317,7 +317,7 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
             $data = $this->encodeData($data);
 
             // Fetch the data by using POST
-            $rawResponse = $this->getRemote($this->bridge->getMagentoBridgeUrl(), $data, MagebridgeModelConfig::load('method'), true);
+            $rawResponse = $this->getRemote($this->bridge->getMagentoBridgeUrl(), $data, MageBridgeModelConfig::load('method'), true);
             $rawResponse = ltrim($rawResponse);
 
             // Decode the reply
@@ -432,9 +432,9 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
             CURLOPT_MAXREDIRS            => 0,
             CURLOPT_SSL_VERIFYPEER       => false,
             CURLOPT_SSL_VERIFYHOST       => false,
-            CURLOPT_CONNECTTIMEOUT       => MagebridgeModelConfig::load('curl_timeout'),
-            CURLOPT_TIMEOUT              => MagebridgeModelConfig::load('curl_timeout'),
-            CURLOPT_DNS_CACHE_TIMEOUT    => MagebridgeModelConfig::load('curl_timeout'),
+            CURLOPT_CONNECTTIMEOUT       => MageBridgeModelConfig::load('curl_timeout'),
+            CURLOPT_TIMEOUT              => MageBridgeModelConfig::load('curl_timeout'),
+            CURLOPT_DNS_CACHE_TIMEOUT    => MageBridgeModelConfig::load('curl_timeout'),
             CURLOPT_DNS_USE_GLOBAL_CACHE => true,
             CURLOPT_COOKIESESSION        => true,
             CURLOPT_FRESH_CONNECT        => false,
@@ -451,7 +451,7 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
     protected function setCurlSslDetails(&$handle)
     {
         // Set additional SSL options
-        $sslVersion = MagebridgeModelConfig::load('ssl_version');
+        $sslVersion = MageBridgeModelConfig::load('ssl_version');
 
         if (!empty($sslVersion) && !is_numeric($sslVersion)) {
             $sslVersion = constant('CURL_SSLVERSION_' . $sslVersion);
@@ -461,7 +461,7 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
             curl_setopt($handle, CURLOPT_SSLVERSION, $sslVersion);
         }
 
-        $sslCiphers = MagebridgeModelConfig::load('ssl_ciphers');
+        $sslCiphers = MageBridgeModelConfig::load('ssl_ciphers');
 
         if (!empty($sslCiphers)) {
             curl_setopt($handle, CURLOPT_SSL_CIPHER_LIST, $sslCiphers);
@@ -476,11 +476,11 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
     protected function setCurlHttpAuthentication(&$handle)
     {
         // CURL HTTP-authentication
-        $http_user     = MagebridgeModelConfig::load('http_user');
-        $http_password = MagebridgeModelConfig::load('http_password');
+        $http_user     = MageBridgeModelConfig::load('http_user');
+        $http_password = MageBridgeModelConfig::load('http_password');
 
-        if (MagebridgeModelConfig::load('http_auth') == 1) {
-            curl_setopt($handle, CURLOPT_HTTPAUTH, MagebridgeModelConfig::load('http_authtype'));
+        if (MageBridgeModelConfig::load('http_auth') == 1) {
+            curl_setopt($handle, CURLOPT_HTTPAUTH, MageBridgeModelConfig::load('http_authtype'));
             curl_setopt($handle, CURLOPT_USERPWD, $http_user . ':' . $http_password);
         }
     }
@@ -588,14 +588,14 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
         }
 
         // Add some extra HTTP headers for HTTP Keep Alive
-        if (MagebridgeModelConfig::load('keep_alive') == 0) {
+        if (MageBridgeModelConfig::load('keep_alive') == 0) {
             $httpHeaders[] = 'Connection: close';
         } else {
             $httpHeaders[] = 'Connection: keep-alive';
         }
 
         // Spoof the browser
-        if (MagebridgeModelConfig::load('spoof_browser') == 1) {
+        if (MageBridgeModelConfig::load('spoof_browser') == 1) {
             if ($runBridge == true && $this->app->isSite() == 1) {
                 curl_setopt($handle, CURLOPT_REFERER, MageBridgeUrlHelper::getRequest());
                 curl_setopt($handle, CURLOPT_USERAGENT, ((isset($_SERVER['HTTP_USER_AGENT'])) ? $_SERVER['HTTP_USER_AGENT'] : ''));
@@ -619,7 +619,7 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
 
         // Set extra options when a POST is handled
         if ($type == 'post') {
-            $arguments = (is_array($arguments) && MagebridgeModelConfig::load('curl_post_as_array') == 0) ? http_build_query($arguments) : $arguments;
+            $arguments = (is_array($arguments) && MageBridgeModelConfig::load('curl_post_as_array') == 0) ? http_build_query($arguments) : $arguments;
             curl_setopt($handle, CURLOPT_POST, true);
             curl_setopt($handle, CURLOPT_POSTFIELDS, $arguments);
             $httpHeaders[] = 'Expect:';
@@ -635,7 +635,7 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
         $this->debug->notice('CURL init: ' . $url . ' (' . ((MageBridgeUrlHelper::getRequest()) ? MageBridgeUrlHelper::getRequest() : 'no request') . ')');
         $this->handleFileDownloads($handle);
         $data = curl_exec($handle);
-        $size = YireoHelper::strlen($data);
+        $size = strlen($data);
 
         if ($size > 1024) {
             $size = round($size / 1024, 2) . 'Kb';
@@ -760,7 +760,7 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
             $this->state = '404 NOT FOUND';
             curl_close($handle);
 
-            if ($this->app->isSite() == 1 && MagebridgeModelConfig::load('enable_notfound') == 1) {
+            if ($this->app->isSite() == 1 && MageBridgeModelConfig::load('enable_notfound') == 1) {
                 JError::raiseError(404, JText::_('Page Not Found'));
 
                 return null;
@@ -791,7 +791,7 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
         $cookies[] = $defaultSessionName; // Add the default session for sake of badly written Magento extensions
 
         // Handle cookies
-        if (MagebridgeModelConfig::load('bridge_cookie_all') == 1) {
+        if (MageBridgeModelConfig::load('bridge_cookie_all') == 1) {
             preg_match_all('/Set-Cookie: ([a-zA-Z0-9\-\_\.]+)\=(.*)/i', $this->head['headers'], $matches);
         } else {
             preg_match_all('/Set-Cookie: (' . implode('|', $cookies) . ')\=(.*)/i', $this->head['headers'], $matches);
@@ -913,9 +913,9 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
             $referer = $this->bridge->getHttpReferer();
 
             if ($location == $this->bridge->getJoomlaBridgeUrl()) {
-                if (MagebridgeModelConfig::load('use_homepage_for_homepage_redirects') == 1) {
+                if (MageBridgeModelConfig::load('use_homepage_for_homepage_redirects') == 1) {
                     $location = JUri::base();
-                } elseif (MagebridgeModelConfig::load('use_referer_for_homepage_redirects') == 1 && !empty($referer) && $referer != JUri::current()) {
+                } elseif (MageBridgeModelConfig::load('use_referer_for_homepage_redirects') == 1 && !empty($referer) && $referer != JUri::current()) {
                     $location = $referer;
                 }
             }
@@ -1099,7 +1099,7 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
     {
         print $data;
 
-        return YireoHelper::strlen($data);
+        return strlen($data);
     }
 
     /**
@@ -1114,7 +1114,7 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
     {
         header(rtrim($data));
 
-        return YireoHelper::strlen($data);
+        return strlen($data);
     }
 
     /**
@@ -1129,7 +1129,7 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
     {
         $this->rawheaders[] = $header;
 
-        return YireoHelper::strlen($header);
+        return strlen($header);
     }
 
     /**
@@ -1139,7 +1139,7 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
      */
     protected function canSpoofHeaders($data)
     {
-        if (MagebridgeModelConfig::load('spoof_headers') == 1) {
+        if (MageBridgeModelConfig::load('spoof_headers') == 1) {
             return true;
         }
 
@@ -1232,6 +1232,8 @@ class MageBridgeModelProxy extends MageBridgeModelProxyAbstract
                 header($header);
             }
         }
+
+        return true;
     }
 
     /**

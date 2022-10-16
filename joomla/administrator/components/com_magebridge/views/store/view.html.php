@@ -175,7 +175,7 @@ class MageBridgeViewStore extends YireoViewForm
      */
     protected function getFieldStoreview($default = null)
     {
-        return MageBridgeFormHelper::getField('magebridge.storeview', 'name', $value, null);
+        return MageBridgeFormHelper::getField('magebridge.storeview', 'name', $default, null);
     }
 
     /**
@@ -187,6 +187,6 @@ class MageBridgeViewStore extends YireoViewForm
      */
     protected function getFieldStoregroup($default = null)
     {
-        return MageBridgeFormHelper::getField('magebridge.storegroup', 'name', $value, null);
+        return MageBridgeFormHelper::getField('magebridge.storegroup', 'name', $default, null);
     }
 }

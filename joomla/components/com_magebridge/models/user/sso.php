@@ -33,7 +33,7 @@ class MageBridgeModelUserSSO
     protected $bridge;
 
     /**
-     * @var MagebridgeModelDebug
+     * @var MageBridgeModelDebug
      */
     protected $debug;
 
@@ -60,7 +60,7 @@ class MageBridgeModelUserSSO
     {
         $this->app    = JFactory::getApplication();
         $this->bridge = MageBridgeModelBridge::getInstance();
-        $this->debug  = MagebridgeModelDebug::getInstance();
+        $this->debug  = MageBridgeModelDebug::getInstance();
     }
 
     /**

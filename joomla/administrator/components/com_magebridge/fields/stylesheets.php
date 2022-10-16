@@ -21,7 +21,7 @@ use Joomla\Utilities\ArrayHelper;
 /**
  * Form Field-class for selecting Magento CSS-stylesheets
  */
-class MagebridgeFormFieldStylesheets extends MagebridgeFormFieldAbstract
+class MagebridgeFormFieldStylesheets extends MageBridgeFormFieldAbstract
 {
     /**
      * Form field type

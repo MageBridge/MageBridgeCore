@@ -41,7 +41,7 @@ class MageBridgeDebugHelper
             return false;
         }
 
-        if (MagebridgeModelConfig::load('debug_bar') == false) {
+        if (MageBridgeModelConfig::load('debug_bar') == false) {
             return false;
         }
 
@@ -69,7 +69,7 @@ class MageBridgeDebugHelper
         }
 
         // Debug the MageBridge request
-        if (MagebridgeModelConfig::load('debug_bar_request')) {
+        if (MageBridgeModelConfig::load('debug_bar_request')) {
             $this->addGenericInformation();
             $this->addPageInformation();
         }
@@ -169,7 +169,7 @@ class MageBridgeDebugHelper
      */
     public function addStore()
     {
-        if (MagebridgeModelConfig::load('debug_bar_store')) {
+        if (MageBridgeModelConfig::load('debug_bar_store')) {
             JError::raiseNotice('notice', JText::sprintf('Magento store loaded: %s (%s)', $this->bridge->getSessionData('store_name'), $this->bridge->getSessionData('store_code')));
         }
     }
@@ -201,7 +201,7 @@ class MageBridgeDebugHelper
      */
     public function addDebugBarParts()
     {
-        if (MagebridgeModelConfig::load('debug_bar_parts') == false) {
+        if (MageBridgeModelConfig::load('debug_bar_parts') == false) {
             return false;
         }
 
@@ -235,5 +235,7 @@ class MageBridgeDebugHelper
             }
             $i++;
         }
+
+        return true;
     }
 }

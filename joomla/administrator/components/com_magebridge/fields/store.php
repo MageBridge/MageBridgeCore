@@ -18,7 +18,7 @@ require_once JPATH_SITE . '/components/com_magebridge/helpers/loader.php';
 /**
  * Form Field-class for selecting Magento stores (with a hierarchy)
  */
-class MagebridgeFormFieldStore extends MagebridgeFormFieldAbstract
+class MagebridgeFormFieldStore extends MageBridgeFormFieldAbstract
 {
     /**
      * Form field type
@@ -37,7 +37,7 @@ class MagebridgeFormFieldStore extends MagebridgeFormFieldAbstract
         $value     = $this->value;
 
         // Check whether the API widgets are enabled
-        if (MagebridgeModelConfig::load('api_widgets') == true) {
+        if (MageBridgeModelConfig::load('api_widgets') == true) {
             $rows = MageBridgeWidgetHelper::getWidgetData('store');
 
             // Parse the result into an HTML form-field

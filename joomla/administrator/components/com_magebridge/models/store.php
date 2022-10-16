@@ -48,7 +48,7 @@ class MagebridgeModelStore extends YireoModel
                 'storeview'  => '',
             ];
 
-            MagebridgeModelConfig::store($data);
+            MageBridgeModelConfig::getSingleton()->store($data);
         }
 
         return parent::delete($cid);
@@ -123,7 +123,7 @@ class MagebridgeModelStore extends YireoModel
             ];
         }
 
-        MagebridgeModelConfig::store($post);
+        MageBridgeModelConfig::getSingleton()->store($post);
 
         return;
     }

@@ -37,7 +37,7 @@ class MageBridgeControllerSso extends YireoAbstractController
         // Determine the redirect URL
         $redirectUrl = base64_decode(JFactory::getApplication()->input->getString('redirect'));
         if (empty($redirectUrl)) {
-            $redirectUrl = MageBridgeModelBridge::getMagentoUrl();
+            $redirectUrl = MageBridgeModelBridge::getInstance()->getMagentoUrl();
         }
 
         // Redirect
@@ -58,7 +58,7 @@ class MageBridgeControllerSso extends YireoAbstractController
         // Determine the redirect URL
         $redirectUrl = base64_decode(JFactory::getApplication()->input->getString('redirect'));
         if (empty($redirectUrl)) {
-            $redirectUrl = MageBridgeModelBridge::getMagentoUrl();
+            $redirectUrl = MageBridgeModelBridge::getInstance()->getMagentoUrl();
         }
 
         // Redirect

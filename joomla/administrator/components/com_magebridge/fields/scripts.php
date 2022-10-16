@@ -18,7 +18,7 @@ require_once JPATH_SITE . '/components/com_magebridge/helpers/loader.php';
 /**
  * Form Field-class for selecting Magento JavaScript scripts
  */
-class MagebridgeFormFieldScripts extends MagebridgeFormFieldAbstract
+class MagebridgeFormFieldScripts extends MageBridgeFormFieldAbstract
 {
     /**
      * Form field type

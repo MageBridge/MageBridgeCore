@@ -51,7 +51,7 @@ trait YireoModelTraitFormable
             return false;
         }
 
-        if (empty($data)) {
+        if (empty($data) && method_exists($this, 'getData')) {
             $data = $this->getData();
         }
 

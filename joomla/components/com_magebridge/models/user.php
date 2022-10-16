@@ -28,7 +28,7 @@ class MageBridgeModelUser
     protected $app;
 
     /**
-     * @var MagebridgeModelDebug
+     * @var MageBridgeModelDebug
      */
     protected $debug;
 
@@ -54,7 +54,7 @@ class MageBridgeModelUser
     public function __construct()
     {
         $this->app   = JFactory::getApplication();
-        $this->debug = MagebridgeModelDebug::getInstance();
+        $this->debug = MageBridgeModelDebug::getInstance();
     }
 
     /**
@@ -264,10 +264,10 @@ class MageBridgeModelUser
         }
 
         // Add the Website ID to this user
-        $user['website_id'] = MagebridgeModelConfig::load('website');
+        $user['website_id'] = MageBridgeModelConfig::load('website');
 
         // Add the default customer-group ID to this user (in case we need to create a new user)
-        $user['default_customer_group'] = MagebridgeModelConfig::load('customer_group');
+        $user['default_customer_group'] = MageBridgeModelConfig::load('customer_group');
 
         // Add the customer-group ID to this user (based upon groups configured in #__magebridge_usergroups)
         $user['customer_group'] = MageBridgeUserHelper::getMagentoGroupId($user);
@@ -301,7 +301,7 @@ class MageBridgeModelUser
     public function delete($user)
     {
         // Add the Website ID to this user
-        $user['website_id'] = MagebridgeModelConfig::load('website');
+        $user['website_id'] = MageBridgeModelConfig::load('website');
 
         // Initalize the needed objects
         $bridge   = MageBridgeModelBridge::getInstance();
@@ -327,7 +327,7 @@ class MageBridgeModelUser
         // Backend access
         if ($this->app->isSite() == false) {
             // Check if authentication is enabled for the backend
-            if (MagebridgeModelConfig::load('enable_auth_backend') != 1) {
+            if (MageBridgeModelConfig::load('enable_auth_backend') != 1) {
                 return false;
             }
 
@@ -336,7 +336,7 @@ class MageBridgeModelUser
         // Frontend access
         } else {
             // Check if authentication is enabled for the frontend
-            if (MagebridgeModelConfig::load('enable_auth_frontend') != 1) {
+            if (MageBridgeModelConfig::load('enable_auth_frontend') != 1) {
                 return false;
             }
 

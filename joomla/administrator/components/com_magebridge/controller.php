@@ -69,7 +69,7 @@ class MageBridgeController extends YireoController
 
         // Redirect to the Magento Admin Panel
         if ($this->app->input->getCmd('view') == 'magento') {
-            $link = MagebridgeModelConfig::load('url') . 'index.php/' . MagebridgeModelConfig::load('backend');
+            $link = MageBridgeModelConfig::load('url') . 'index.php/' . MageBridgeModelConfig::load('backend');
 
             return $this->setRedirect($link);
         }
@@ -138,7 +138,7 @@ class MageBridgeController extends YireoController
 
         // Determine the toggle value
         $name  = 'advanced';
-        $value = MagebridgeModelConfig::load($name);
+        $value = MageBridgeModelConfig::load($name);
 
         if ($value == 1) {
             $value = 0;
@@ -146,7 +146,7 @@ class MageBridgeController extends YireoController
             $value = 1;
         }
 
-        MagebridgeModelConfig::getSingleton()
+        MageBridgeModelConfig::getSingleton()
             ->saveValue($name, $value);
 
         $link = 'index.php?option=com_magebridge&view=config';

@@ -91,11 +91,11 @@ defined('_JEXEC') or die('Restricted access');
                     $css[] = 'inactive';
                 }
 
-                if (YireoHelper::strlen($product['name']) > 50) {
+                if (strlen($product['name']) > 50) {
                     $product['name'] = substr($product['name'], 0, 47) . '...';
                 }
 
-                if (YireoHelper::strlen($product['url_key']) > 30) {
+                if (strlen($product['url_key']) > 30) {
                     $product['url_key'] = substr($product['url_key'], 0, 27) . '...';
                 }
 

@@ -44,8 +44,8 @@ class MageBridgeControllerUsers extends MageBridgeController
     {
         // Gather the variables
         $users = $this->getUserList();
-        $website_id = MagebridgeModelConfig::load('users_website_id');
-        $group_id = MagebridgeModelConfig::load('users_group_id');
+        $website_id = MageBridgeModelConfig::load('users_website_id');
+        $group_id = MageBridgeModelConfig::load('users_group_id');
 
         // Perform preliminary checks
         if (empty($users)) {
@@ -71,7 +71,7 @@ class MageBridgeControllerUsers extends MageBridgeController
         $output = $this->getOutput($users, $website_id, $group_id);
 
         header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-        header('Content-Length: ' . YireoHelper::strlen($output));
+        header('Content-Length: ' . strlen($output));
         header('Content-type: text/x-csv');
         header('Content-Disposition: attachment; filename=' . $filename);
         print $output;
@@ -135,7 +135,7 @@ class MageBridgeControllerUsers extends MageBridgeController
                     'firstname' => $fields[$firstname],
                     'lastname' => $fields[$lastname],];
                 $user = MageBridgeUserHelper::convert($user);
-                $rt = MageBridgeModelUser::create($user, true);
+                $rt = MageBridgeModelUser::getInstance()->create($user, true);
 
                 if ($rt == true) {
                     $user_records_ok++;

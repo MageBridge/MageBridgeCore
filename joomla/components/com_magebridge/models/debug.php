@@ -28,7 +28,7 @@ define('MAGEBRIDGE_DEBUG_ORIGIN_MAGENTO_JSONRPC', 'magento_jsonrpc');
 /**
  * Bridge debugging class
  */
-class MagebridgeModelDebug
+class MageBridgeModelDebug
 {
     public const MAGEBRIDGE_DEBUG_ORIGIN_JOOMLA = 'joomla';
     public const MAGEBRIDGE_DEBUG_ORIGIN_MAGENTO = 'magento';
@@ -69,7 +69,7 @@ class MagebridgeModelDebug
         if ($flag == 0) {
             $flag = 1;
 
-            if (MagebridgeModelDebug::isDebug() == true && MagebridgeModelConfig::load('debug_display_errors') == 1) {
+            if (MageBridgeModelDebug::isDebug() == true && MageBridgeModelConfig::load('debug_display_errors') == 1) {
                 ini_set('display_errors', 1);
             }
         }
@@ -83,9 +83,9 @@ class MagebridgeModelDebug
         static $flag = 0;
         if ($flag == 0) {
             $flag = 1;
-            if (MagebridgeModelDebug::isDebug() == true) {
+            if (MageBridgeModelDebug::isDebug() == true) {
                 MageBridgeModelDebug::getInstance()
-                    ->notice("Support Key: " . MagebridgeModelConfig::load('supportkey'));
+                    ->notice("Support Key: " . MageBridgeModelConfig::load('supportkey'));
             }
         }
     }
@@ -188,7 +188,7 @@ class MagebridgeModelDebug
             return true;
         }
 
-        if (MagebridgeModelDebug::isDebug() == false) {
+        if (MageBridgeModelDebug::isDebug() == false) {
             return false;
         }
 
@@ -326,8 +326,8 @@ class MagebridgeModelDebug
         if ($debug == null) {
             $debug = false;
 
-            if (MagebridgeModelConfig::load('debug') == 1 && !empty($_SERVER['REMOTE_ADDR'])) {
-                $ips = MagebridgeModelConfig::load('debug_ip');
+            if (MageBridgeModelConfig::load('debug') == 1 && !empty($_SERVER['REMOTE_ADDR'])) {
+                $ips = MageBridgeModelConfig::load('debug_ip');
 
                 if (strlen($ips) > 0 && $ip_array = explode(',', $ips)) {
                     foreach ($ip_array as $ip) {
@@ -361,21 +361,21 @@ class MagebridgeModelDebug
             }
         }
 
-        if (MagebridgeModelDebug::isDebug() == false) {
+        if (MageBridgeModelDebug::isDebug() == false) {
             return false;
         }
 
-        if (MagebridgeModelConfig::load('debug_level') == 'error' && $data['type'] != MAGEBRIDGE_DEBUG_ERROR) {
+        if (MageBridgeModelConfig::load('debug_level') == 'error' && $data['type'] != MAGEBRIDGE_DEBUG_ERROR) {
             return false;
         }
 
-        if (MagebridgeModelConfig::load('debug_level') == 'profiler' && $data['type'] != MAGEBRIDGE_DEBUG_PROFILER) {
+        if (MageBridgeModelConfig::load('debug_level') == 'profiler' && $data['type'] != MAGEBRIDGE_DEBUG_PROFILER) {
             return false;
         }
 
         $this->_data[] = $data;
 
-        switch (MagebridgeModelConfig::load('debug_log')) {
+        switch (MageBridgeModelConfig::load('debug_log')) {
             case 'db':
                 $this->_writeDb($data);
                 break;

@@ -20,13 +20,13 @@ $layout = $params->get('layout', 'default');
 
 // Call the helper
 require_once(dirname(__FILE__) . '/helper.php');
-$blockName = modMageBridgeBlockHelper::getBlockName($params);
+$blockName = ModMageBridgeBlockHelper::getBlockName($params);
 
 // Build the block
 if ($layout == 'ajax') {
-    modMageBridgeBlockHelper::ajaxbuild($params);
+    ModMageBridgeBlockHelper::ajaxbuild($params);
 } else {
-    $block = modMageBridgeBlockHelper::build($params);
+    $block = ModMageBridgeBlockHelper::build($params);
 
     if (empty($block)) {
         return false;

@@ -28,8 +28,8 @@ class ModMageBridgeBlockHelper
     public static function register($params = null)
     {
         // Get the block name
-        $blockName = modMageBridgeBlockHelper::getBlockName($params);
-        $arguments = modMageBridgeBlockHelper::getArguments($params);
+        $blockName = ModMageBridgeBlockHelper::getBlockName($params);
+        $arguments = ModMageBridgeBlockHelper::getArguments($params);
 
         // Initialize the register
         $register = [];
@@ -47,12 +47,12 @@ class ModMageBridgeBlockHelper
      *
      * @access public
      * @param JRegistry $params
-     * @return string
+     * @return void
      */
     public static function ajaxbuild($params = null)
     {
         // Get the block name
-        $blockName = modMageBridgeBlockHelper::getBlockName($params);
+        $blockName = ModMageBridgeBlockHelper::getBlockName($params);
 
         // Include the MageBridge bridge
         $bridge = MageBridgeModelBridge::getInstance();
@@ -83,8 +83,8 @@ class ModMageBridgeBlockHelper
     public static function build($params = null)
     {
         // Get the block name
-        $blockName = modMageBridgeBlockHelper::getBlockName($params);
-        $arguments = modMageBridgeBlockHelper::getArguments($params);
+        $blockName = ModMageBridgeBlockHelper::getBlockName($params);
+        $arguments = ModMageBridgeBlockHelper::getArguments($params);
 
         // Include the MageBridge bridge
         $bridge = MageBridgeModelBridge::getInstance();

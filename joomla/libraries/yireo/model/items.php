@@ -99,7 +99,7 @@ class YireoModelItems extends YireoDataModel
      *
      * @param mixed $config
      *
-     * @return mixed
+     * @return void
      */
     public function __construct($config = [])
     {
@@ -111,7 +111,7 @@ class YireoModelItems extends YireoDataModel
         }
 
         // Call the parent constructor
-        $rt = parent::__construct($config);
+        parent::__construct($config);
 
         $this->setConfig('skip_table', false);
         $this->setConfig('table_prefix_auto', true);
@@ -124,8 +124,6 @@ class YireoModelItems extends YireoDataModel
 
         // Set the parameters for the frontend
         $this->initParams();
-
-        return $rt;
     }
 
     /**
@@ -500,7 +498,7 @@ class YireoModelItems extends YireoDataModel
     /**
      * Method to reset all filters
      *
-     * @return string
+     * @return void
      */
     public function resetFilters()
     {

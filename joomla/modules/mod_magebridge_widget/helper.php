@@ -46,7 +46,7 @@ class ModMageBridgeWidgetHelper
      *
      * @access public
      * @param JRegistry $params
-     * @return string
+     * @return void
      */
     public static function ajaxbuild($params = null)
     {

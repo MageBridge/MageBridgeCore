@@ -21,7 +21,7 @@ use Joomla\Utilities\ArrayHelper;
 /**
  * Form Field-class
  */
-class MagebridgeFormFieldDisablejs extends MagebridgeFormFieldAbstract
+class MagebridgeFormFieldDisablejs extends MageBridgeFormFieldAbstract
 {
     /**
      * Form field type

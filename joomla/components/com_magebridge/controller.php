@@ -167,7 +167,7 @@ class MageBridgeController extends YireoAbstractController
         }
 
         // Check for an admin request
-        $backend = MagebridgeModelConfig::load('backend');
+        $backend = MageBridgeModelConfig::load('backend');
 
         if (!empty($backend) && substr($request, 0, strlen($backend)) === $backend) {
             $request = str_replace($backend, '', $request);

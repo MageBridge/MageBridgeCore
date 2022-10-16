@@ -74,7 +74,7 @@ class YireoViewForm extends YireoView
         JForm::addFieldPath(JPATH_COMPONENT_ADMINISTRATOR . '/fields');
 
         // Call the parent constructor
-        $rt = parent::__construct($config);
+        parent::__construct($config);
 
         // Detect the editor field
         if (empty($this->_editor_field) && !empty($this->table)) {
@@ -90,8 +90,6 @@ class YireoViewForm extends YireoView
                 $this->_editor_field = 'text';
             }
         }
-
-        return $rt;
     }
 
     /*

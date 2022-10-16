@@ -18,7 +18,7 @@ require_once JPATH_SITE . '/components/com_magebridge/helpers/loader.php';
 /**
  * Form Field-class for choosing a specific Magento category in a modal box
  */
-class MagebridgeFormFieldCategory extends MagebridgeFormFieldAbstract
+class MagebridgeFormFieldCategory extends MageBridgeFormFieldAbstract
 {
     /**
      * Form field type

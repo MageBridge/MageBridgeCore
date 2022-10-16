@@ -409,15 +409,14 @@ class MageBridgeModelRegister
      *
      * @param array $data
      *
-     * @return array
+     * @return void
      */
     public function merge($data)
     {
         // If there is no data yet, we are done pretty quickly
         if (empty($this->data)) {
             $this->data = $data;
-
-            return true;
+            return;
         }
 
         MageBridgeModelDebug::getInstance()

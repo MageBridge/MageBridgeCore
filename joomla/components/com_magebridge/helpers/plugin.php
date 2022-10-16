@@ -28,7 +28,7 @@ class MageBridgePluginHelper
     private $bridge;
 
     /**
-     * @var MagebridgeModelDebug
+     * @var MageBridgeModelDebug
      */
     private $debug;
 
@@ -74,7 +74,7 @@ class MageBridgePluginHelper
     public function __construct()
     {
         $this->bridge = MageBridge::getBridge();
-        $this->debug  = MagebridgeModelDebug::getInstance();
+        $this->debug  = MageBridgeModelDebug::getInstance();
     }
 
     /**

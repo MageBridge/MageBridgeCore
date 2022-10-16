@@ -15,7 +15,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Bridge configuration class
  */
-class MagebridgeModelConfigDefaults
+class MageBridgeModelConfigDefaults
 {
     /**
      * Array of default values

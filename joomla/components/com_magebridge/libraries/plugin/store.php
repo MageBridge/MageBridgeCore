@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Joomla! component MageBridge
  *
@@ -13,7 +14,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Import the MageBridge autoloader
-require_once JPATH_SITE.'/components/com_magebridge/helpers/loader.php';
+require_once JPATH_SITE . '/components/com_magebridge/helpers/loader.php';
 
 /**
  * Parent plugin-class
@@ -32,7 +33,7 @@ class MageBridgePluginStore extends MageBridgePlugin
      * @param	   object  $subject The object to observe
      * @param	   array   $config  An array that holds the plugin configuration
      */
-    public function __construct(& $subject, $config)
+    public function __construct(&$subject, $config)
     {
         parent::__construct($subject, $config);
         $this->loadLanguage();
@@ -65,7 +66,7 @@ class MageBridgePluginStore extends MageBridgePlugin
         }
 
         // Add the plugin-form to main form
-        $formFile = JPATH_SITE.'/plugins/magebridgestore/'.$this->_name.'/form/form.xml';
+        $formFile = JPATH_SITE . '/plugins/magebridgestore/' . $this->_name . '/form/form.xml';
         if (file_exists($formFile)) {
             $form->loadFile($formFile, false);
         }
@@ -77,6 +78,8 @@ class MageBridgePluginStore extends MageBridgePlugin
                 $form->bind(['actions' => [$this->connector_field => $data['connector_value']]]);
             }
         }
+
+        return true;
     }
 
     /**
@@ -99,6 +102,8 @@ class MageBridgePluginStore extends MageBridgePlugin
                 $actions = [$this->connector_field => $connector->connector_value];
             }
         }
+
+        return true;
     }
 
     /**

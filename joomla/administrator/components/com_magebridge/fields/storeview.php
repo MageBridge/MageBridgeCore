@@ -18,7 +18,7 @@ require_once JPATH_SITE . '/components/com_magebridge/helpers/loader.php';
 /**
  * Form Field-class for selecting Magento store-groups
  */
-class MagebridgeFormFieldStoreview extends MagebridgeFormFieldAbstract
+class MagebridgeFormFieldStoreview extends MageBridgeFormFieldAbstract
 {
     /**
      * Form field type

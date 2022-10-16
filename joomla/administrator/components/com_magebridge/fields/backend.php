@@ -18,7 +18,7 @@ require_once JPATH_SITE . '/components/com_magebridge/helpers/loader.php';
 /**
  * Form Field-class for the path to the Magento Admin Panel
  */
-class MagebridgeFormFieldBackend extends MagebridgeFormFieldAbstract
+class MagebridgeFormFieldBackend extends MageBridgeFormFieldAbstract
 {
     /**
      * Form field type
