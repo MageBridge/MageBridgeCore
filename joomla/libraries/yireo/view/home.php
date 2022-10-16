@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Joomla! Yireo Library
  *
@@ -51,7 +52,14 @@ class YireoViewHome extends YireoView
         // Initialize the toolbar
         if (file_exists(JPATH_COMPONENT . '/config.xml')) {
             if ($this->user->authorise('core.admin')) {
-                JToolbarHelper::preferences($this->getConfig('option'), 600, 800);
+                $bar = JToolbar::getInstance('toolbar');
+                // Add a button linking to config for component.
+                $bar->appendButton(
+                    'Link',
+                    'options',
+                    'JToolbar_Options',
+                    'index.php?option=com_config&amp;view=component&amp;component=' . urlencode($this->getConfig('option')) . '&amp;return=' . urlencode(base64_encode((string) JUri::getInstance()))
+                );
             }
         }
 
@@ -131,15 +139,13 @@ class YireoViewHome extends YireoView
     public function setTitle($title = null, $class = 'logo')
     {
         $component_title = YireoHelper::getData('title');
-        $title           = JText::_('LIB_YIREO_VIEW_HOME');
-
-        if (file_exists(JPATH_SITE . '/media/' . $this->getConfig('option') . '/images/' . $class . '.png')) {
-            JToolbarHelper::title($component_title . ': ' . $title, $class);
-
-            return;
-        }
-
-        JToolbarHelper::title($component_title . ': ' . $title, 'generic.png');
+        $title           = $component_title . ': ' . JText::_('LIB_YIREO_VIEW_HOME');
+        $icon = file_exists(JPATH_SITE . '/media/' . $this->getConfig('option') . '/images/' . $class . '.png') ? $class : 'generic.png';
+        $layout = new JLayoutFile('joomla.toolbar.title');
+        $html   = $layout->render(['title' => $title, 'icon' => $icon]);
+        $app = JFactory::getApplication();
+        $app->JComponentTitle = $html;
+        JFactory::getDocument()->setTitle(strip_tags($title) . ' - ' . $app->get('sitename') . ' - ' . JText::_('JADMINISTRATION'));
     }
 
     /**

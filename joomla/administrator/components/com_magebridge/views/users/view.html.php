@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Joomla! component MageBridge
  *
@@ -30,8 +31,9 @@ class MageBridgeViewUsers extends MageBridgeView
     public function display($tpl = null)
     {
         // Set toolbar items for the page
-        JToolbarHelper::custom('export', 'export.png', null, 'Export', false);
-        JToolbarHelper::custom('import', 'import.png', null, 'Import', false);
+        $bar = JToolbar::getInstance('toolbar');
+        $bar->appendButton('Standard', 'export', 'Export', 'export', false);
+        $bar->appendButton('Standard', 'import', 'Import', 'import', false);
 
         $this->setMenu();
 

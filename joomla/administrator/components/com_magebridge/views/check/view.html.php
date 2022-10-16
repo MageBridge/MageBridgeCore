@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Joomla! component MageBridge
  *
@@ -78,8 +79,8 @@ class MageBridgeViewCheck extends YireoCommonView
 
         // Load libraries
         JHtml::_('behavior.tooltip');
-
-        JToolbarHelper::custom('refresh', 'preview.png', 'preview_f2.png', 'Refresh', false);
+        $bar = JToolbar::getInstance('toolbar');
+        $bar->appendButton('Standard', 'preview', 'Refresh', 'refresh', false);
 
         $this->checks = $this->get('checks');
 
@@ -102,9 +103,8 @@ class MageBridgeViewCheck extends YireoCommonView
 
         // Initialize common elements
         MageBridgeViewHelper::initialize('PRODUCT_RELATION_TEST');
-
-        JToolbarHelper::custom('check_product', 'preview.png', 'preview_f2.png', 'Run', false);
-
+        $bar = JToolbar::getInstance('toolbar');
+        $bar->appendButton('Standard', 'preview', 'Run', 'check_product', false);
         parent::display('product');
     }
 
@@ -117,8 +117,8 @@ class MageBridgeViewCheck extends YireoCommonView
     {
         // Initialize common elements
         MageBridgeViewHelper::initialize('Internal Browse Test');
-
-        JToolbarHelper::custom('refresh', 'preview.png', 'preview_f2.png', 'Browse', false);
+        $bar = JToolbar::getInstance('toolbar');
+        $bar->appendButton('Standard', 'preview', 'Browse', 'refresh', false);
 
         $this->url  = MagebridgeModelConfig::load('url') . 'magebridge.php';
         $this->host = MagebridgeModelConfig::load('host');

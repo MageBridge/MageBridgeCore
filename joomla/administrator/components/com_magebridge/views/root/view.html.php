@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Joomla! component MageBridge
  *
@@ -13,7 +14,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Include the parent class
-require_once JPATH_COMPONENT.'/view.php';
+require_once JPATH_COMPONENT . '/view.php';
 
 /**
  * HTML View class
@@ -28,7 +29,14 @@ class MageBridgeViewRoot extends MageBridgeView
      */
     public function display($tpl = null)
     {
-        JToolBarHelper::title(JText::_('MageBridge') . ': ' . JText::_('Magento Admin Panel'), 'yireo');
+        $title = JText::_('MageBridge') . ': ' . JText::_('Magento Admin Panel');
+        $icon = 'yireo';
+        $layout = new JLayoutFile('joomla.toolbar.title');
+        $html   = $layout->render(['title' => $title, 'icon' => $icon]);
+
+        $app = JFactory::getApplication();
+        $app->JComponentTitle = $html;
+        JFactory::getDocument()->setTitle(strip_tags($title) . ' - ' . $app->get('sitename') . ' - ' . JText::_('JADMINISTRATION'));
         parent::display($tpl);
     }
 }

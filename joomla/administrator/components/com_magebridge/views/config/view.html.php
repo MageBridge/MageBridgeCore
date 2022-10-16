@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Joomla! component MageBridge
  *
@@ -40,19 +41,25 @@ class MageBridgeViewConfig extends YireoCommonView
             return parent::display($layout);
         }
 
+        $bar = JToolbar::getInstance('toolbar');
         // Toolbar options
         if (MageBridgeAclHelper::isDemo() == false) {
-            JToolbarHelper::custom('export', 'export.png', null, 'Export', false);
+            $bar->appendButton('Standard', 'export', 'Export', 'export', false);
         }
 
         if (MageBridgeAclHelper::isDemo() == false) {
-            JToolbarHelper::custom('import', 'import.png', null, 'Import', false);
+            $bar->appendButton('Standard', 'import', 'Import', 'import', false);
         }
-
-        JToolbarHelper::preferences('com_magebridge');
-        JToolbarHelper::save();
-        JToolbarHelper::apply();
-        JToolbarHelper::cancel();
+        // Add a button linking to config for component.
+        $bar->appendButton(
+            'Link',
+            'options',
+            'JToolbar_Options',
+            'index.php?option=com_config&amp;view=component&amp;component=' . urlencode('com_magebridge') . '&amp;return=' . urlencode(base64_encode((string) JUri::getInstance()))
+        );
+        $bar->appendButton('Standard', 'save', 'JTOOLBAR_SAVE', 'save', false);
+        $bar->appendButton('Standard', 'apply', 'JTOOLBAR_APPLY', 'apply', false);
+        $bar->appendButton('Standard', 'cancel', 'JTOOLBAR_CANCEL', 'cancel', false);
 
         // Extra scripts
         MageBridgeTemplateHelper::load('jquery');
@@ -110,8 +117,9 @@ class MageBridgeViewConfig extends YireoCommonView
         // Otherwise check all values
         $config = MagebridgeModelConfig::load();
         foreach ($config as $c) {
-            if (isset($c['name']) && isset($c['value']) && $message = MageBridge::getConfig()
-                    ->check($c['name'], $c['value'])
+            if (
+                isset($c['name']) && isset($c['value']) && $message = MageBridge::getConfig()
+                ->check($c['name'], $c['value'])
             ) {
                 JError::raiseWarning(500, $message);
             }

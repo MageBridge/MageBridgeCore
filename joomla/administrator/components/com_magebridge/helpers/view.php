@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Joomla! component MageBridge
  *
@@ -30,19 +31,25 @@ class MageBridgeViewHelper
         $view = JFactory::getApplication()->input->getCmd('view');
 
         // Add CSS-code
-        $document->addStyleSheet(JUri::root().'media/com_magebridge/css/backend.css');
-        $document->addStyleSheet(JUri::root().'media/com_magebridge/css/backend-view-'.$view.'.css');
+        $document->addStyleSheet(JUri::root() . 'media/com_magebridge/css/backend.css');
+        $document->addStyleSheet(JUri::root() . 'media/com_magebridge/css/backend-view-' . $view . '.css');
 
         if (MageBridgeHelper::isJoomla25()) {
-            $document->addStyleSheet(JUri::root().'media/com_magebridge/css/backend-j25.css');
+            $document->addStyleSheet(JUri::root() . 'media/com_magebridge/css/backend-j25.css');
         }
         if (MageBridgeHelper::isJoomla35()) {
-            $document->addStyleSheet(JUri::root().'media/com_magebridge/css/backend-j35.css');
+            $document->addStyleSheet(JUri::root() . 'media/com_magebridge/css/backend-j35.css');
         }
 
         // Page title
-        $title = JText::_('COM_MAGEBRIDGE_VIEW_'.strtoupper(str_replace(' ', '_', $title)));
-        JToolBarHelper::title('MageBridge: '.$title, 'logo.png');
+        $title = JText::_('MageBridge') . ': ' . JText::_('COM_MAGEBRIDGE_VIEW_' . strtoupper(str_replace(' ', '_', $title)));
+        $icon = 'logo.png';
+        $layout = new JLayoutFile('joomla.toolbar.title');
+        $html   = $layout->render(['title' => $title, 'icon' => $icon]);
+
+        $app = JFactory::getApplication();
+        $app->JComponentTitle = $html;
+        JFactory::getDocument()->setTitle(strip_tags($title) . ' - ' . $app->get('sitename') . ' - ' . JText::_('JADMINISTRATION'));
 
         // Add the menu
         self::addMenuItems();
@@ -81,7 +88,7 @@ class MageBridgeViewHelper
             // @todo: Integrate this with the abstract-helper
 
             // Skip this view, if it does not exist on the filesystem
-            if (!is_dir(JPATH_COMPONENT.'/views/'.$view)) {
+            if (!is_dir(JPATH_COMPONENT . '/views/' . $view)) {
                 continue;
             }
 
@@ -92,8 +99,8 @@ class MageBridgeViewHelper
 
             // Add the view
             $active = (JFactory::getApplication()->input->getCmd('view') == $view) ? true : false;
-            $url = 'index.php?option=com_magebridge&view='.$view;
-            $title = JText::_('COM_MAGEBRIDGE_VIEW_'.$view);
+            $url = 'index.php?option=com_magebridge&view=' . $view;
+            $title = JText::_('COM_MAGEBRIDGE_VIEW_' . $view);
 
             $alreadySet = false;
             foreach ($currentItems as $currentItem) {

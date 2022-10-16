@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Joomla! component MageBridge
  *
@@ -13,7 +14,7 @@
 defined('_JEXEC') or die();
 
 // Require the parent view
-require_once JPATH_COMPONENT.'/view.php';
+require_once JPATH_COMPONENT . '/view.php';
 
 // Define constants
 define('MAGEBRIDGE_UPDATE_NOTAVAILABLE', 0);
@@ -62,9 +63,10 @@ class MageBridgeViewUpdate extends YireoView
         $filter_search = $this->getFilter('search');
 
         // Toolbar options
-        JToolBarHelper::custom('home', 'back', '', 'LIB_YIREO_VIEW_TOOLBAR_HOME', false);
-        JToolBarHelper::custom('refresh', 'loop', '', 'LIB_YIREO_VIEW_TOOLBAR_REFRESH', false);
-        JToolBarHelper::custom('updateQueries', 'archive', '', 'LIB_YIREO_VIEW_TOOLBAR_DBUPGRADE', false);
+        $bar = JToolbar::getInstance('toolbar');
+        $bar->appendButton('Standard', 'back', 'LIB_YIREO_VIEW_TOOLBAR_HOME', 'home', false);
+        $bar->appendButton('Standard', 'loop', 'LIB_YIREO_VIEW_TOOLBAR_REFRESH', 'refresh', false);
+        $bar->appendButton('Standard', 'archive', 'LIB_YIREO_VIEW_TOOLBAR_DBUPGRADE', 'updateQueries', false);
 
         // Add jQuery for selection effects
         MageBridgeTemplateHelper::load('jquery');
@@ -81,8 +83,10 @@ class MageBridgeViewUpdate extends YireoView
 
             foreach ($data as $index => $extension) {
                 if (!empty($filter_search)) {
-                    if (!stristr($extension['name'], $filter_search) && !stristr($extension['title'], $filter_search)
-                        && !stristr($extension['description'], $filter_search)) {
+                    if (
+                        !stristr($extension['name'], $filter_search) && !stristr($extension['title'], $filter_search)
+                        && !stristr($extension['description'], $filter_search)
+                    ) {
                         unset($data[$index]);
                         continue;
                     }
@@ -107,10 +111,11 @@ class MageBridgeViewUpdate extends YireoView
                             if ($extension['type'] != 'plugin') {
                                 unset($data[$index]);
                                 continue;
-                            } elseif ($filter_type[1] == 'other' && in_array(
-                                $extension['group'],
-                                ['magebridgeproduct', 'magebridgenewsletter', 'magebridgestore', 'magebridgeprofile']
-                            )
+                            } elseif (
+                                $filter_type[1] == 'other' && in_array(
+                                    $extension['group'],
+                                    ['magebridgeproduct', 'magebridgenewsletter', 'magebridgestore', 'magebridgeprofile']
+                                )
                             ) {
                                 unset($data[$index]);
                                 continue;
@@ -144,7 +149,8 @@ class MageBridgeViewUpdate extends YireoView
         if ($update == MAGEBRIDGE_UPDATE_NOTAVAILABLE) {
             JError::raiseWarning('MB', JText::_('COM_MAGEBRIDGE_VIEW_UPDATE_EMPTY_VERSION'));
         } else {
-            JToolBarHelper::custom('update', 'download.png', 'download_f2.png', 'Update', false);
+            $bar = JToolbar::getInstance('toolbar');
+            $bar->appendButton('Standard', 'download', 'Update', 'update', false);
         }
 
         if ($update == MAGEBRIDGE_UPDATE_AVAILABLE) {
